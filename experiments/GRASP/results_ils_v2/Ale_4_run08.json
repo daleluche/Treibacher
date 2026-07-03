@@ -1,0 +1,112 @@
+{
+  "instance": "Ale_4",
+  "dataset": "Real",
+  "run_id": 8,
+  "seed": 8,
+  "algo_version": "v2.0",
+  "objective": 128005.31,
+  "shortage": 125359.0,
+  "excess": 2646310.0,
+  "gap_vs_mip": 0.2187,
+  "time_to_best": 740.76,
+  "total_time": 3602.088,
+  "iterations": 2194,
+  "grasp_iters": 552,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 1.134,
+      "Z": 159121.826,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 2.472,
+      "Z": 155884.652,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 3,
+      "time_s": 3.483,
+      "Z": 141754.242,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 10,
+      "time_s": 12.114,
+      "Z": 140107.657,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 12,
+      "time_s": 15.972,
+      "Z": 131177.888,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 102,
+      "time_s": 163.733,
+      "Z": 129763.506,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 214,
+      "time_s": 348.808,
+      "Z": 129663.478,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 339,
+      "time_s": 548.257,
+      "Z": 129532.453,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 8,
+      "grasp_iter": 443,
+      "time_s": 733.243,
+      "Z": 128093.939,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 14,
+      "grasp_iter": 443,
+      "time_s": 740.76,
+      "Z": 128005.31,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    145,
+    150,
+    148,
+    145,
+    145,
+    143,
+    141,
+    159,
+    150,
+    146,
+    139,
+    120,
+    36,
+    41,
+    142,
+    148,
+    146,
+    153,
+    138
+  ],
+  "T": 19,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 127725.976
+}

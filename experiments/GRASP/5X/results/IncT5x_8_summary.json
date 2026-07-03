@@ -1,0 +1,17 @@
+{
+  "instance": "IncT5x_8",
+  "dataset": "5X",
+  "T": 95,
+  "J": 159,
+  "I": 52,
+  "n_runs": 10,
+  "Z_best": 253991.037,
+  "Z_mean": 264877.4125,
+  "Z_std": 6009.141198,
+  "Z_worst": 272785.766,
+  "t2best_best": 49.797,
+  "t2best_mean": 761.511,
+  "iters_mean": 145.9,
+  "mip_bound": 175931.402325,
+  "gap_best_vs_mip": 44.3694
+}

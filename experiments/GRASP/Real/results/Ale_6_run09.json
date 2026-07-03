@@ -1,0 +1,111 @@
+{
+  "instance": "Ale_6",
+  "dataset": "Real",
+  "run_id": 9,
+  "seed": 505096524,
+  "objective": 64063.201,
+  "shortage": 61874.0,
+  "excess": 2189201.0,
+  "gap_vs_mip": -3.9208,
+  "time_to_best": 221.27,
+  "total_time": 1800.306,
+  "iterations": 2416,
+  "improvements": [
+    {
+      "iteration": 1,
+      "time_s": 0.07,
+      "Z": 131210.628
+    },
+    {
+      "iteration": 2,
+      "time_s": 0.255,
+      "Z": 120152.841
+    },
+    {
+      "iteration": 4,
+      "time_s": 0.528,
+      "Z": 100656.595
+    },
+    {
+      "iteration": 5,
+      "time_s": 0.711,
+      "Z": 98302.352
+    },
+    {
+      "iteration": 6,
+      "time_s": 0.959,
+      "Z": 94865.257
+    },
+    {
+      "iteration": 6,
+      "time_s": 1.06,
+      "Z": 94829.857,
+      "from_pr": true
+    },
+    {
+      "iteration": 7,
+      "time_s": 1.271,
+      "Z": 93254.876
+    },
+    {
+      "iteration": 11,
+      "time_s": 2.69,
+      "Z": 87415.373
+    },
+    {
+      "iteration": 13,
+      "time_s": 3.522,
+      "Z": 86694.34
+    },
+    {
+      "iteration": 16,
+      "time_s": 4.716,
+      "Z": 83387.284
+    },
+    {
+      "iteration": 18,
+      "time_s": 5.414,
+      "Z": 70019.982
+    },
+    {
+      "iteration": 18,
+      "time_s": 5.565,
+      "Z": 69955.432,
+      "from_pr": true
+    },
+    {
+      "iteration": 137,
+      "time_s": 67.007,
+      "Z": 68362.741
+    },
+    {
+      "iteration": 375,
+      "time_s": 221.27,
+      "Z": 64063.201
+    }
+  ],
+  "scheduling": [
+    19,
+    145,
+    150,
+    140,
+    148,
+    45,
+    133,
+    141,
+    147,
+    159,
+    146,
+    120,
+    150,
+    148,
+    138,
+    134,
+    145,
+    139,
+    13
+  ],
+  "T": 19,
+  "J": 159,
+  "I": 52
+}

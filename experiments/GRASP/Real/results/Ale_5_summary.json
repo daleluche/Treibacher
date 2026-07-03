@@ -1,0 +1,17 @@
+{
+  "instance": "Ale_5",
+  "dataset": "Real",
+  "T": 19,
+  "J": 159,
+  "I": 52,
+  "n_runs": 10,
+  "Z_best": 32050.424,
+  "Z_mean": 35795.6651,
+  "Z_std": 1862.052115,
+  "Z_worst": 37821.446,
+  "t2best_best": 301.834,
+  "t2best_mean": 752.569,
+  "iters_mean": 2423.2,
+  "mip_bound": 35426.141,
+  "gap_best_vs_mip": -9.5289
+}

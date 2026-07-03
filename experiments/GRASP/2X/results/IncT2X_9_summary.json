@@ -1,0 +1,17 @@
+{
+  "instance": "IncT2X_9",
+  "dataset": "2X",
+  "T": 38,
+  "J": 159,
+  "I": 52,
+  "n_runs": 10,
+  "Z_best": 24464.038,
+  "Z_mean": 29638.2797,
+  "Z_std": 2708.452781,
+  "Z_worst": 34240.182,
+  "t2best_best": 72.749,
+  "t2best_mean": 910.67,
+  "iters_mean": 622.7,
+  "mip_bound": 18632.113,
+  "gap_best_vs_mip": 31.3004
+}

@@ -1,0 +1,502 @@
+[
+  {
+    "instance": "Real/Ale_1.py",
+    "time_s": 32.7,
+    "obj": 86264.683,
+    "bound": 86264.683,
+    "gap_pct": 0.0,
+    "nodes": 14924.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_10.py",
+    "time_s": 3.7,
+    "obj": 5639.568,
+    "bound": 5639.568,
+    "gap_pct": 0.0,
+    "nodes": 1057.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_2.py",
+    "time_s": 3.3,
+    "obj": 99950.709,
+    "bound": 99950.709,
+    "gap_pct": 0.0,
+    "nodes": 486.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_3.py",
+    "time_s": 3.6,
+    "obj": 39695.173,
+    "bound": 39695.173,
+    "gap_pct": 0.0,
+    "nodes": 1735.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_4.py",
+    "time_s": 3.4,
+    "obj": 127725.976,
+    "bound": 127725.976,
+    "gap_pct": 0.0,
+    "nodes": 3236.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_5.py",
+    "time_s": 3.7,
+    "obj": 35426.141,
+    "bound": 35426.141,
+    "gap_pct": 0.0,
+    "nodes": 3269.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_6.py",
+    "time_s": 2.9,
+    "obj": 66677.463,
+    "bound": 66677.463,
+    "gap_pct": 0.0,
+    "nodes": 309.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_7.py",
+    "time_s": 36.4,
+    "obj": 10568.618,
+    "bound": 10568.618,
+    "gap_pct": 0.0,
+    "nodes": 75422.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_8.py",
+    "time_s": 2.8,
+    "obj": 160911.938,
+    "bound": 160911.938,
+    "gap_pct": 0.0,
+    "nodes": 0.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "Real/Ale_9.py",
+    "time_s": 4.2,
+    "obj": 15627.917,
+    "bound": 15627.917,
+    "gap_pct": 0.0,
+    "nodes": 6385.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_1.py",
+    "time_s": 221.3,
+    "obj": 40179.544,
+    "bound": 40179.544,
+    "gap_pct": 0.0,
+    "nodes": 230945.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_10.py",
+    "time_s": 185.5,
+    "obj": 8335.23,
+    "bound": 8335.23,
+    "gap_pct": 0.0,
+    "nodes": 172051.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_2.py",
+    "time_s": 56.6,
+    "obj": 105100.906,
+    "bound": 105100.906,
+    "gap_pct": 0.0,
+    "nodes": 27188.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_3.py",
+    "time_s": 1314.4,
+    "obj": 42938.57,
+    "bound": 42938.57,
+    "gap_pct": 0.0,
+    "nodes": 814458.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_4.py",
+    "time_s": 66.3,
+    "obj": 131571.0,
+    "bound": 131571.0,
+    "gap_pct": 0.0,
+    "nodes": 25572.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_5.py",
+    "time_s": 339.2,
+    "obj": 38183.994,
+    "bound": 38183.994,
+    "gap_pct": 0.0,
+    "nodes": 728576.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_6.py",
+    "time_s": 456.9,
+    "obj": 70335.169,
+    "bound": 70335.169,
+    "gap_pct": 0.0,
+    "nodes": 523861.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_7.py",
+    "time_s": 1758.4,
+    "obj": 13506.887,
+    "bound": 13506.887,
+    "gap_pct": 0.0,
+    "nodes": 731298.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_8.py",
+    "time_s": 84.1,
+    "obj": 169018.311,
+    "bound": 169018.311,
+    "gap_pct": 0.0,
+    "nodes": 39935.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "2X/IncT2X_9.py",
+    "time_s": 2397.1,
+    "obj": 18632.113,
+    "bound": 18632.113,
+    "gap_pct": 0.0,
+    "nodes": 1467106.0,
+    "status": "ModelStatus.OptimalGlobal",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_1.py",
+    "time_s": 3603.4,
+    "obj": 43446.121,
+    "bound": 42904.315727,
+    "gap_pct": 1.247074,
+    "nodes": 180687.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_10.py",
+    "time_s": 3644.4,
+    "obj": 10937.023,
+    "bound": 10471.158125,
+    "gap_pct": 4.259522,
+    "nodes": 733013.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_2.py",
+    "time_s": 3632.7,
+    "obj": 108645.892,
+    "bound": 108359.620274,
+    "gap_pct": 0.263491,
+    "nodes": 433319.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_3.py",
+    "time_s": 3621.1,
+    "obj": 46154.492,
+    "bound": 45644.861159,
+    "gap_pct": 1.104185,
+    "nodes": 215780.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_4.py",
+    "time_s": 3611.3,
+    "obj": 134477.501,
+    "bound": 134178.43315,
+    "gap_pct": 0.222392,
+    "nodes": 977480.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_5.py",
+    "time_s": 3650.5,
+    "obj": 40735.322,
+    "bound": 40455.733016,
+    "gap_pct": 0.686355,
+    "nodes": 290668.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_6.py",
+    "time_s": 3615.2,
+    "obj": 73458.775,
+    "bound": 73051.893245,
+    "gap_pct": 0.553891,
+    "nodes": 700270.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_7.py",
+    "time_s": 3612.8,
+    "obj": 16586.707,
+    "bound": 15039.992885,
+    "gap_pct": 9.325022,
+    "nodes": 142774.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_8.py",
+    "time_s": 3608.4,
+    "obj": 171950.123,
+    "bound": 171746.536196,
+    "gap_pct": 0.118399,
+    "nodes": 733033.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "3X/IncT3x_9.py",
+    "time_s": 3618.9,
+    "obj": 21779.42,
+    "bound": 20997.222834,
+    "gap_pct": 3.591451,
+    "nodes": 174338.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_1.py",
+    "time_s": 3604.9,
+    "obj": 47060.324,
+    "bound": 45210.936087,
+    "gap_pct": 3.929824,
+    "nodes": 94111.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_10.py",
+    "time_s": 3604.6,
+    "obj": 13436.508,
+    "bound": 12183.327453,
+    "gap_pct": 9.326683,
+    "nodes": 69199.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_2.py",
+    "time_s": 3605.7,
+    "obj": 112112.118,
+    "bound": 110449.480819,
+    "gap_pct": 1.483013,
+    "nodes": 87850.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_3.py",
+    "time_s": 3605.0,
+    "obj": 49654.614,
+    "bound": 48519.519319,
+    "gap_pct": 2.28598,
+    "nodes": 85301.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_4.py",
+    "time_s": 3618.9,
+    "obj": 137442.852,
+    "bound": 136511.585127,
+    "gap_pct": 0.677567,
+    "nodes": 192304.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_5.py",
+    "time_s": 3621.2,
+    "obj": 43478.85,
+    "bound": 42840.136072,
+    "gap_pct": 1.469022,
+    "nodes": 268601.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_6.py",
+    "time_s": 3621.7,
+    "obj": 76838.09,
+    "bound": 75529.307595,
+    "gap_pct": 1.703299,
+    "nodes": 231697.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_7.py",
+    "time_s": 3604.0,
+    "obj": 19975.839,
+    "bound": 16212.102393,
+    "gap_pct": 18.841444,
+    "nodes": 63494.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_8.py",
+    "time_s": 3637.1,
+    "obj": 174700.915,
+    "bound": 174130.345802,
+    "gap_pct": 0.326598,
+    "nodes": 303154.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "4X/IncT4x_9.py",
+    "time_s": 3629.1,
+    "obj": 24728.428,
+    "bound": 23355.207598,
+    "gap_pct": 5.553205,
+    "nodes": 392066.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_1.py",
+    "time_s": 3605.8,
+    "obj": 50531.718,
+    "bound": 46914.051044,
+    "gap_pct": 7.1592,
+    "nodes": 64321.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_10.py",
+    "time_s": 3605.8,
+    "obj": 17970.346,
+    "bound": 13779.688617,
+    "gap_pct": 23.319848,
+    "nodes": 55927.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_2.py",
+    "time_s": 3605.8,
+    "obj": 116736.699,
+    "bound": 112829.374817,
+    "gap_pct": 3.347126,
+    "nodes": 63315.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_3.py",
+    "time_s": 3605.3,
+    "obj": 54387.75,
+    "bound": 51303.43758,
+    "gap_pct": 5.670969,
+    "nodes": 63034.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_4.py",
+    "time_s": 3608.9,
+    "obj": 141718.617,
+    "bound": 138795.686305,
+    "gap_pct": 2.062489,
+    "nodes": 91472.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_5.py",
+    "time_s": 3614.6,
+    "obj": 46154.55,
+    "bound": 45124.846777,
+    "gap_pct": 2.23099,
+    "nodes": 110467.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_6.py",
+    "time_s": 3619.6,
+    "obj": 80612.087,
+    "bound": 77810.495571,
+    "gap_pct": 3.475399,
+    "nodes": 170876.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_7.py",
+    "time_s": 3618.4,
+    "obj": 23105.003,
+    "bound": 17937.048854,
+    "gap_pct": 22.367252,
+    "nodes": 115553.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_8.py",
+    "time_s": 3613.1,
+    "obj": 177696.017,
+    "bound": 175331.514404,
+    "gap_pct": 1.330645,
+    "nodes": 131994.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_9.py",
+    "time_s": 3606.0,
+    "obj": 29151.91,
+    "bound": 24011.330431,
+    "gap_pct": 17.633766,
+    "nodes": 60367.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  }
+]

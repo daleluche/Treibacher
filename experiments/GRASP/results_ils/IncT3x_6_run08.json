@@ -1,0 +1,240 @@
+{
+  "instance": "IncT3x_6",
+  "dataset": "3X",
+  "run_id": 8,
+  "seed": 8,
+  "objective": 108907.293,
+  "shortage": 92900.0,
+  "excess": 16007293.0,
+  "gap_vs_mip": 48.9988,
+  "time_to_best": 1794.688,
+  "total_time": 1800.62,
+  "iterations": 715,
+  "grasp_iters": 193,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.048,
+      "Z": 307450.199,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 0.852,
+      "Z": 212117.767,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 4.233,
+      "Z": 189804.844,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 5,
+      "time_s": 6.065,
+      "Z": 175341.478,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 10,
+      "time_s": 16.716,
+      "Z": 137937.928,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 9,
+      "grasp_iter": 166,
+      "time_s": 376.269,
+      "Z": 137366.633,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 37,
+      "grasp_iter": 167,
+      "time_s": 431.24,
+      "Z": 136786.209,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 43,
+      "grasp_iter": 167,
+      "time_s": 441.655,
+      "Z": 132436.242,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 83,
+      "grasp_iter": 168,
+      "time_s": 520.984,
+      "Z": 130975.502,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 83,
+      "grasp_iter": 168,
+      "time_s": 522.573,
+      "Z": 130032.941,
+      "tag": "PR"
+    },
+    {
+      "iteration": 138,
+      "grasp_iter": 170,
+      "time_s": 639.266,
+      "Z": 126926.709,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 149,
+      "grasp_iter": 170,
+      "time_s": 657.265,
+      "Z": 123760.351,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 184,
+      "grasp_iter": 171,
+      "time_s": 726.475,
+      "Z": 123735.201,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 284,
+      "grasp_iter": 175,
+      "time_s": 925.399,
+      "Z": 120106.719,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 284,
+      "grasp_iter": 175,
+      "time_s": 927.037,
+      "Z": 118420.104,
+      "tag": "PR"
+    },
+    {
+      "iteration": 295,
+      "grasp_iter": 175,
+      "time_s": 946.107,
+      "Z": 117665.116,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 377,
+      "grasp_iter": 179,
+      "time_s": 1111.02,
+      "Z": 115166.616,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 397,
+      "grasp_iter": 179,
+      "time_s": 1146.553,
+      "Z": 111059.951,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 511,
+      "grasp_iter": 184,
+      "time_s": 1382.058,
+      "Z": 110926.451,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 511,
+      "grasp_iter": 184,
+      "time_s": 1383.548,
+      "Z": 110552.926,
+      "tag": "PR"
+    },
+    {
+      "iteration": 640,
+      "grasp_iter": 190,
+      "time_s": 1637.349,
+      "Z": 108926.809,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 703,
+      "grasp_iter": 193,
+      "time_s": 1774.454,
+      "Z": 108908.734,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 713,
+      "grasp_iter": 193,
+      "time_s": 1794.688,
+      "Z": 108907.293,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    19,
+    145,
+    150,
+    19,
+    53,
+    151,
+    140,
+    126,
+    147,
+    133,
+    146,
+    137,
+    148,
+    138,
+    122,
+    150,
+    23,
+    145,
+    150,
+    151,
+    149,
+    125,
+    140,
+    11,
+    139,
+    146,
+    141,
+    150,
+    54,
+    147,
+    141,
+    148,
+    17,
+    144,
+    143,
+    151,
+    25,
+    152,
+    137,
+    145,
+    125,
+    151,
+    159,
+    146,
+    152,
+    152,
+    141,
+    150,
+    147,
+    147,
+    24,
+    24,
+    1,
+    143,
+    140,
+    153,
+    17
+  ],
+  "T": 57,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 73092.751
+}

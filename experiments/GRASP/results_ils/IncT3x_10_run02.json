@@ -1,0 +1,233 @@
+{
+  "instance": "IncT3x_10",
+  "dataset": "3X",
+  "run_id": 2,
+  "seed": 2,
+  "objective": 50736.089,
+  "shortage": 36303.0,
+  "excess": 14433089.0,
+  "gap_vs_mip": 383.1381,
+  "time_to_best": 1731.571,
+  "total_time": 1801.166,
+  "iterations": 828,
+  "grasp_iters": 231,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.073,
+      "Z": 285949.014,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 0.988,
+      "Z": 159146.079,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 3,
+      "time_s": 2.36,
+      "Z": 97729.908,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 4.024,
+      "Z": 90528.404,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 5,
+      "time_s": 6.124,
+      "Z": 75008.902,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 10,
+      "time_s": 14.497,
+      "Z": 74537.163,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 42,
+      "grasp_iter": 197,
+      "time_s": 428.767,
+      "Z": 70933.29,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 78,
+      "grasp_iter": 198,
+      "time_s": 490.901,
+      "Z": 70903.465,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 124,
+      "grasp_iter": 200,
+      "time_s": 569.97,
+      "Z": 70393.479,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 150,
+      "grasp_iter": 201,
+      "time_s": 616.458,
+      "Z": 70377.429,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 150,
+      "grasp_iter": 201,
+      "time_s": 617.709,
+      "Z": 65912.879,
+      "tag": "PR"
+    },
+    {
+      "iteration": 196,
+      "grasp_iter": 203,
+      "time_s": 690.762,
+      "Z": 64749.429,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 199,
+      "grasp_iter": 203,
+      "time_s": 695.154,
+      "Z": 63104.945,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 206,
+      "grasp_iter": 203,
+      "time_s": 706.738,
+      "Z": 61447.763,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 207,
+      "grasp_iter": 203,
+      "time_s": 708.017,
+      "Z": 61158.208,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 207,
+      "grasp_iter": 203,
+      "time_s": 709.436,
+      "Z": 57096.686,
+      "tag": "PR"
+    },
+    {
+      "iteration": 233,
+      "grasp_iter": 204,
+      "time_s": 750.283,
+      "Z": 54830.01,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 253,
+      "grasp_iter": 204,
+      "time_s": 785.26,
+      "Z": 54815.335,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 485,
+      "grasp_iter": 215,
+      "time_s": 1187.569,
+      "Z": 54063.932,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 570,
+      "grasp_iter": 219,
+      "time_s": 1342.932,
+      "Z": 52493.664,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 570,
+      "grasp_iter": 219,
+      "time_s": 1344.28,
+      "Z": 52073.832,
+      "tag": "PR"
+    },
+    {
+      "iteration": 786,
+      "grasp_iter": 229,
+      "time_s": 1731.571,
+      "Z": 50736.089,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    151,
+    143,
+    150,
+    143,
+    126,
+    145,
+    146,
+    141,
+    148,
+    145,
+    147,
+    137,
+    45,
+    145,
+    149,
+    122,
+    150,
+    156,
+    2,
+    142,
+    134,
+    146,
+    138,
+    151,
+    24,
+    151,
+    151,
+    149,
+    152,
+    17,
+    152,
+    155,
+    147,
+    146,
+    18,
+    18,
+    150,
+    141,
+    146,
+    133,
+    140,
+    156,
+    158,
+    153,
+    142,
+    141,
+    150,
+    157,
+    148,
+    152,
+    24,
+    0,
+    157,
+    153,
+    1,
+    156,
+    157
+  ],
+  "T": 57,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 10501.363
+}

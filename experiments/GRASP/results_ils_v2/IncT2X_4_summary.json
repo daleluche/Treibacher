@@ -1,0 +1,22 @@
+{
+  "instance": "IncT2X_4",
+  "dataset": "2X",
+  "algo_version": "v2.0",
+  "T": 38,
+  "J": 160,
+  "I": 50,
+  "n_runs": 10,
+  "n_workers": 10,
+  "time_limit_s": 3600.0,
+  "Z_best": 132911.883,
+  "Z_mean": 135572.9463,
+  "Z_std": 2165.675127,
+  "Z_worst": 140517.153,
+  "t2best_best": 1558.411,
+  "t2best_mean": 2812.49,
+  "ils_iters_mean": 332.7,
+  "mip_bound": 131571.0,
+  "gap_best_vs_mip": 1.0191,
+  "gap_mean_vs_mip": 3.0416,
+  "cross_run_pr_z": 132911.883
+}

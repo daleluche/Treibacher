@@ -1,0 +1,5231 @@
+{
+  "instance": "Ale_1",
+  "dataset": "Real",
+  "source_gms": "Ale_1.gms",
+  "run_timestamp": "2026-05-19T18:52:44",
+  "num_periods": 25,
+  "num_processes": 160,
+  "num_products": 50,
+  "num_variables": 6501.0,
+  "num_equations": 1276.0,
+  "num_nonzeros": 339201.0,
+  "num_discrete": 4000.0,
+  "solver": "CPLEX",
+  "optcr": 0.0,
+  "iterlim": 10000000,
+  "reslim_s": 3600,
+  "optfile_used": false,
+  "model_status": "ModelStatus.OptimalGlobal",
+  "solve_status": "SolveStatus.NormalCompletion",
+  "objective_value": 86264.683,
+  "best_bound": 86264.683,
+  "gap_pct": 0.0,
+  "wall_time_s": 30.748,
+  "algorithm_time_s": 32.045,
+  "total_solve_time_s": 30.717,
+  "total_solver_time_s": 30.558,
+  "model_gen_time_s": 0.172,
+  "solve_model_time_s": 30.266,
+  "num_nodes_used": 14924.0,
+  "num_iterations": 612942.0,
+  "num_infeasibilities": 0.0,
+  "max_infeasibility": 0.0,
+  "solver_version": "nan",
+  "num_periods_scheduled": 23,
+  "scheduling": [
+    {
+      "period": 1,
+      "process": 120
+    },
+    {
+      "period": 2,
+      "process": 150
+    },
+    {
+      "period": 3,
+      "process": 137
+    },
+    {
+      "period": 4,
+      "process": 145
+    },
+    {
+      "period": 5,
+      "process": 148
+    },
+    {
+      "period": 6,
+      "process": 147
+    },
+    {
+      "period": 7,
+      "process": 148
+    },
+    {
+      "period": 8,
+      "process": 45
+    },
+    {
+      "period": 9,
+      "process": 146
+    },
+    {
+      "period": 10,
+      "process": 143
+    },
+    {
+      "period": 11,
+      "process": 150
+    },
+    {
+      "period": 12,
+      "process": 23
+    },
+    {
+      "period": 13,
+      "process": 145
+    },
+    {
+      "period": 14,
+      "process": 150
+    },
+    {
+      "period": 15,
+      "process": 139
+    },
+    {
+      "period": 16,
+      "process": 146
+    },
+    {
+      "period": 17,
+      "process": 24
+    },
+    {
+      "period": 18,
+      "process": 143
+    },
+    {
+      "period": 19,
+      "process": 151
+    },
+    {
+      "period": 20,
+      "process": 155
+    },
+    {
+      "period": 21,
+      "process": 125
+    },
+    {
+      "period": 22,
+      "process": 18
+    },
+    {
+      "period": 25,
+      "process": 158
+    }
+  ],
+  "product_details": [
+    {
+      "product": "EK8A_100",
+      "period": 1,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 2,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 3,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 4,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 5,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 6,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 7,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 8,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 9,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 10,
+      "shortage": 850.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 11,
+      "shortage": 0,
+      "excess": 150.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 12,
+      "shortage": 0,
+      "excess": 150.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 13,
+      "shortage": 0,
+      "excess": 850.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1850.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 15,
+      "shortage": 0,
+      "excess": 2550.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 16,
+      "shortage": 0,
+      "excess": 2550.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 17,
+      "shortage": 0,
+      "excess": 2550.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 18,
+      "shortage": 0,
+      "excess": 3300.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 19,
+      "shortage": 0,
+      "excess": 3300.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 20,
+      "shortage": 0,
+      "excess": 3300.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 21,
+      "shortage": 0,
+      "excess": 3400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 22,
+      "shortage": 0,
+      "excess": 3400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 23,
+      "shortage": 0,
+      "excess": 3400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 24,
+      "shortage": 0,
+      "excess": 3400.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 25,
+      "shortage": 0,
+      "excess": 3400.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 1,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 2,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 3,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 4,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 5,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 6,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 7,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 8,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 9,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 10,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 11,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 12,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 13,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1300.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 15,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 16,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 17,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 18,
+      "shortage": 1000.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 19,
+      "shortage": 550.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 20,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 1,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 2,
+      "shortage": 625.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 3,
+      "shortage": 625.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 4,
+      "shortage": 1725.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 5,
+      "shortage": 700.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 6,
+      "shortage": 700.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 7,
+      "shortage": 175.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 8,
+      "shortage": 175.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 9,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 10,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 11,
+      "shortage": 0,
+      "excess": 375.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 12,
+      "shortage": 0,
+      "excess": 375.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 13,
+      "shortage": 0,
+      "excess": 875.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1150.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1150.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 16,
+      "shortage": 0,
+      "excess": 925.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 17,
+      "shortage": 0,
+      "excess": 925.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 18,
+      "shortage": 0,
+      "excess": 925.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 19,
+      "shortage": 0,
+      "excess": 960.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 20,
+      "shortage": 0,
+      "excess": 960.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1660.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1660.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1660.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1660.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1660.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 9,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 10,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 11,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 12,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 13,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 14,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 15,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 16,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 17,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 18,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 19,
+      "shortage": 0,
+      "excess": 850.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 20,
+      "shortage": 0,
+      "excess": 850.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 21,
+      "shortage": 0,
+      "excess": 850.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 22,
+      "shortage": 0,
+      "excess": 650.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 23,
+      "shortage": 0,
+      "excess": 650.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 24,
+      "shortage": 0,
+      "excess": 650.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 25,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 1,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 2,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 3,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 4,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 5,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 6,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 7,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 8,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 9,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 10,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 11,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 12,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 13,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 14,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_180",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_20",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 1,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 2,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 3,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 4,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 5,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 6,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 7,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 8,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 9,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 10,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 11,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 12,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 13,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 14,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_220",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 2,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 3,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 4,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 5,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 6,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 7,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 8,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 9,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 10,
+      "shortage": 350.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 11,
+      "shortage": 0,
+      "excess": 150.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 12,
+      "shortage": 0,
+      "excess": 150.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 13,
+      "shortage": 750.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 14,
+      "shortage": 250.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1750.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1750.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1750.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 18,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 10,
+      "shortage": 0,
+      "excess": 250.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 11,
+      "shortage": 0,
+      "excess": 250.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 12,
+      "shortage": 850.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 13,
+      "shortage": 850.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 14,
+      "shortage": 850.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1150.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1150.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1150.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 21,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 22,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 23,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 24,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 25,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 1,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 2,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 3,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 4,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 5,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 6,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 7,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 8,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 9,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 10,
+      "shortage": 250.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 11,
+      "shortage": 250.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 12,
+      "shortage": 250.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 13,
+      "shortage": 250.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 14,
+      "shortage": 550.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1950.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 16,
+      "shortage": 0,
+      "excess": 950.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 17,
+      "shortage": 0,
+      "excess": 950.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 18,
+      "shortage": 0,
+      "excess": 200.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 19,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 21,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 22,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 23,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 24,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 25,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 1,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 2,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 3,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 4,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 5,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 6,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 7,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 8,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 9,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 10,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 11,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 12,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 13,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 14,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 15,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 16,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 17,
+      "shortage": 300.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 18,
+      "shortage": 300.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 19,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 20,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 24,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 25,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 1,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 2,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 3,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 4,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 5,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 6,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 7,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 8,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 9,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 10,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 11,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 12,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 13,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 14,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 15,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 16,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 17,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1100.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 20,
+      "shortage": 0,
+      "excess": 400.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 21,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 22,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 23,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 24,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 25,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 1,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 2,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 3,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 4,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 5,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 6,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 7,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 8,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 9,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 10,
+      "shortage": 2500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 11,
+      "shortage": 2500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 12,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 13,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 14,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 15,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 17,
+      "shortage": 0,
+      "excess": 4000.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 20,
+      "shortage": 0,
+      "excess": 2900.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 21,
+      "shortage": 0,
+      "excess": 4400.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 22,
+      "shortage": 0,
+      "excess": 3900.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 23,
+      "shortage": 0,
+      "excess": 3900.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 25,
+      "shortage": 0,
+      "excess": 900.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 1,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 2,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 3,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 4,
+      "shortage": 0,
+      "excess": 2400.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 5,
+      "shortage": 0,
+      "excess": 4400.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 6,
+      "shortage": 2400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 7,
+      "shortage": 400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 8,
+      "shortage": 2100.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 9,
+      "shortage": 1600.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 10,
+      "shortage": 1100.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 11,
+      "shortage": 1100.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 12,
+      "shortage": 300.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 13,
+      "shortage": 0,
+      "excess": 1100.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1100.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 15,
+      "shortage": 0,
+      "excess": 3100.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 16,
+      "shortage": 0,
+      "excess": 3600.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 17,
+      "shortage": 0,
+      "excess": 6100.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 18,
+      "shortage": 0,
+      "excess": 5800.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 19,
+      "shortage": 0,
+      "excess": 6800.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 20,
+      "shortage": 0,
+      "excess": 7200.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 21,
+      "shortage": 0,
+      "excess": 8200.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 22,
+      "shortage": 0,
+      "excess": 8600.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 23,
+      "shortage": 0,
+      "excess": 8600.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 24,
+      "shortage": 0,
+      "excess": 8600.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 25,
+      "shortage": 0,
+      "excess": 8600.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 1,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 2,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 3,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 4,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 5,
+      "shortage": 0,
+      "excess": 1050.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 6,
+      "shortage": 0,
+      "excess": 1050.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 7,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 8,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 9,
+      "shortage": 0,
+      "excess": 2800.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 10,
+      "shortage": 0,
+      "excess": 3050.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 11,
+      "shortage": 0,
+      "excess": 3050.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 12,
+      "shortage": 0,
+      "excess": 3050.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 13,
+      "shortage": 0,
+      "excess": 3050.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 14,
+      "shortage": 0,
+      "excess": 3050.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 15,
+      "shortage": 0,
+      "excess": 3450.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1950.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1950.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 18,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1983.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1983.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 21,
+      "shortage": 0,
+      "excess": 2283.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 22,
+      "shortage": 0,
+      "excess": 2283.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 23,
+      "shortage": 0,
+      "excess": 2283.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 24,
+      "shortage": 0,
+      "excess": 2283.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 25,
+      "shortage": 0,
+      "excess": 2283.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 2,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 3,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 4,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 5,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 6,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 7,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 8,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 9,
+      "shortage": 300.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 10,
+      "shortage": 300.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 11,
+      "shortage": 0,
+      "excess": 4200.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 12,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 13,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 14,
+      "shortage": 0,
+      "excess": 7700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 15,
+      "shortage": 0,
+      "excess": 7700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 16,
+      "shortage": 0,
+      "excess": 7700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 17,
+      "shortage": 0,
+      "excess": 7700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 18,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 19,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 20,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 21,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 22,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 23,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 24,
+      "shortage": 0,
+      "excess": 130.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 25,
+      "shortage": 0,
+      "excess": 130.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 4,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 5,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 6,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 7,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 8,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 9,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 10,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 11,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 12,
+      "shortage": 1200.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 13,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 14,
+      "shortage": 300.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 15,
+      "shortage": 300.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 16,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 17,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 18,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 19,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 20,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 21,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 22,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 23,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 24,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 25,
+      "shortage": 0,
+      "excess": 3600.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 7,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 8,
+      "shortage": 1035.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 9,
+      "shortage": 0,
+      "excess": 1165.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 10,
+      "shortage": 0,
+      "excess": 1165.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 11,
+      "shortage": 0,
+      "excess": 1165.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 12,
+      "shortage": 0,
+      "excess": 1165.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 13,
+      "shortage": 0,
+      "excess": 365.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 14,
+      "shortage": 0,
+      "excess": 365.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 15,
+      "shortage": 0,
+      "excess": 365.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 16,
+      "shortage": 0,
+      "excess": 5365.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 17,
+      "shortage": 0,
+      "excess": 5365.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 18,
+      "shortage": 0,
+      "excess": 5365.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 19,
+      "shortage": 0,
+      "excess": 4565.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 20,
+      "shortage": 0,
+      "excess": 4565.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 21,
+      "shortage": 0,
+      "excess": 4565.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 22,
+      "shortage": 0,
+      "excess": 4565.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 23,
+      "shortage": 0,
+      "excess": 4565.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 24,
+      "shortage": 0,
+      "excess": 4565.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 25,
+      "shortage": 0,
+      "excess": 4565.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 2,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 3,
+      "shortage": 0,
+      "excess": 1600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 4,
+      "shortage": 0,
+      "excess": 13600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 5,
+      "shortage": 0,
+      "excess": 13600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 6,
+      "shortage": 0,
+      "excess": 13600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 7,
+      "shortage": 0,
+      "excess": 13600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 8,
+      "shortage": 0,
+      "excess": 13600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 9,
+      "shortage": 0,
+      "excess": 13600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 10,
+      "shortage": 0,
+      "excess": 13600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 11,
+      "shortage": 0,
+      "excess": 18100.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 12,
+      "shortage": 0,
+      "excess": 1100.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 13,
+      "shortage": 0,
+      "excess": 13100.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 14,
+      "shortage": 0,
+      "excess": 17600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 15,
+      "shortage": 0,
+      "excess": 17600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 16,
+      "shortage": 0,
+      "excess": 17600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 17,
+      "shortage": 0,
+      "excess": 17600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 18,
+      "shortage": 0,
+      "excess": 17600.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 19,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 20,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 21,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 22,
+      "shortage": 0,
+      "excess": 24000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 23,
+      "shortage": 0,
+      "excess": 24000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 24,
+      "shortage": 0,
+      "excess": 24000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 25,
+      "shortage": 0,
+      "excess": 24000.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 2,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 3,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 4,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 5,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 6,
+      "shortage": 0,
+      "excess": 4400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 7,
+      "shortage": 0,
+      "excess": 4400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 8,
+      "shortage": 0,
+      "excess": 4400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 9,
+      "shortage": 0,
+      "excess": 4400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 10,
+      "shortage": 0,
+      "excess": 4400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 11,
+      "shortage": 0,
+      "excess": 7400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 12,
+      "shortage": 0,
+      "excess": 7400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 13,
+      "shortage": 0,
+      "excess": 7400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 14,
+      "shortage": 0,
+      "excess": 9400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 15,
+      "shortage": 0,
+      "excess": 7400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 16,
+      "shortage": 0,
+      "excess": 5400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 17,
+      "shortage": 0,
+      "excess": 5400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 18,
+      "shortage": 0,
+      "excess": 5400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 19,
+      "shortage": 0,
+      "excess": 5400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 20,
+      "shortage": 0,
+      "excess": 5400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 21,
+      "shortage": 0,
+      "excess": 5400.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 22,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 23,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 24,
+      "shortage": 0,
+      "excess": 3700.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 25,
+      "shortage": 0,
+      "excess": 700.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 6,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 7,
+      "shortage": 0,
+      "excess": 7100.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 8,
+      "shortage": 0,
+      "excess": 7100.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 9,
+      "shortage": 0,
+      "excess": 7100.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 10,
+      "shortage": 0,
+      "excess": 7100.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 11,
+      "shortage": 0,
+      "excess": 7100.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 12,
+      "shortage": 0,
+      "excess": 6200.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 13,
+      "shortage": 0,
+      "excess": 6200.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 14,
+      "shortage": 0,
+      "excess": 6200.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 15,
+      "shortage": 0,
+      "excess": 6200.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 16,
+      "shortage": 0,
+      "excess": 6200.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 17,
+      "shortage": 0,
+      "excess": 6200.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 18,
+      "shortage": 0,
+      "excess": 6200.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 19,
+      "shortage": 0,
+      "excess": 5520.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 20,
+      "shortage": 0,
+      "excess": 5520.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 21,
+      "shortage": 0,
+      "excess": 5520.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 22,
+      "shortage": 0,
+      "excess": 5520.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 23,
+      "shortage": 0,
+      "excess": 5520.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 24,
+      "shortage": 0,
+      "excess": 5520.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 25,
+      "shortage": 0,
+      "excess": 4920.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 2,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 3,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 4,
+      "shortage": 0,
+      "excess": 9400.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 5,
+      "shortage": 0,
+      "excess": 14900.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 6,
+      "shortage": 0,
+      "excess": 17900.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 7,
+      "shortage": 0,
+      "excess": 23400.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 8,
+      "shortage": 0,
+      "excess": 23400.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 9,
+      "shortage": 0,
+      "excess": 23400.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 10,
+      "shortage": 0,
+      "excess": 23400.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 11,
+      "shortage": 0,
+      "excess": 27900.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 12,
+      "shortage": 8100.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 13,
+      "shortage": 3200.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1300.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1300.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1300.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 17,
+      "shortage": 0,
+      "excess": 5800.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 18,
+      "shortage": 0,
+      "excess": 300.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1150.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 20,
+      "shortage": 0,
+      "excess": 2650.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 21,
+      "shortage": 0,
+      "excess": 850.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 22,
+      "shortage": 0,
+      "excess": 2350.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 23,
+      "shortage": 0,
+      "excess": 2350.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 24,
+      "shortage": 0,
+      "excess": 2350.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 25,
+      "shortage": 0,
+      "excess": 2350.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 2,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 3,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 4,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 5,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 6,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 7,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 8,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 9,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 10,
+      "shortage": 4000.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 11,
+      "shortage": 1000.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 12,
+      "shortage": 1000.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 13,
+      "shortage": 1100.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 19,
+      "shortage": 0,
+      "excess": 4900.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 20,
+      "shortage": 0,
+      "excess": 4900.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 21,
+      "shortage": 100.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 9,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 10,
+      "shortage": 800.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 11,
+      "shortage": 800.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 12,
+      "shortage": 800.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 13,
+      "shortage": 800.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 14,
+      "shortage": 800.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 15,
+      "shortage": 800.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 16,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 17,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 18,
+      "shortage": 678.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 19,
+      "shortage": 0,
+      "excess": 2322.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 20,
+      "shortage": 0,
+      "excess": 2322.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 21,
+      "shortage": 0,
+      "excess": 2322.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 22,
+      "shortage": 0,
+      "excess": 2322.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 23,
+      "shortage": 0,
+      "excess": 2322.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 24,
+      "shortage": 0,
+      "excess": 922.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 25,
+      "shortage": 0,
+      "excess": 922.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 5,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 6,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 7,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 8,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 9,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 10,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 11,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 12,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 13,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1800.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1400.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 22,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 23,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 24,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 25,
+      "shortage": 0,
+      "excess": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 1,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 2,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 3,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 4,
+      "shortage": 0,
+      "excess": 5500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 5,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 6,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 7,
+      "shortage": 0,
+      "excess": 7500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 8,
+      "shortage": 0,
+      "excess": 10500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 9,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 10,
+      "shortage": 0,
+      "excess": 5500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 11,
+      "shortage": 0,
+      "excess": 7000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 12,
+      "shortage": 0,
+      "excess": 4000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 13,
+      "shortage": 0,
+      "excess": 7000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 14,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 15,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 16,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 17,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 18,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 19,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 20,
+      "shortage": 0,
+      "excess": 16500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 21,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 22,
+      "shortage": 0,
+      "excess": 19500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 23,
+      "shortage": 0,
+      "excess": 19500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 24,
+      "shortage": 0,
+      "excess": 18500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 25,
+      "shortage": 0,
+      "excess": 18500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 2,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 3,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 4,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 5,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 6,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 7,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 8,
+      "shortage": 0,
+      "excess": 6300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 9,
+      "shortage": 0,
+      "excess": 6300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 10,
+      "shortage": 0,
+      "excess": 6300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 11,
+      "shortage": 0,
+      "excess": 15300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 12,
+      "shortage": 0,
+      "excess": 14800.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 13,
+      "shortage": 0,
+      "excess": 14800.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 14,
+      "shortage": 0,
+      "excess": 23800.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 15,
+      "shortage": 0,
+      "excess": 23800.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 16,
+      "shortage": 0,
+      "excess": 23800.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 17,
+      "shortage": 0,
+      "excess": 23800.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 18,
+      "shortage": 0,
+      "excess": 11300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 19,
+      "shortage": 0,
+      "excess": 11300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 20,
+      "shortage": 0,
+      "excess": 10300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 21,
+      "shortage": 0,
+      "excess": 10300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 22,
+      "shortage": 0,
+      "excess": 10300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 23,
+      "shortage": 0,
+      "excess": 10300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 24,
+      "shortage": 0,
+      "excess": 10300.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 25,
+      "shortage": 0,
+      "excess": 10300.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 2,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 3,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 4,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 5,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 6,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 7,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 8,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 9,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 10,
+      "shortage": 0,
+      "excess": 2600.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 11,
+      "shortage": 0,
+      "excess": 3600.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 12,
+      "shortage": 0,
+      "excess": 2900.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 13,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 18,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 19,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 20,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 21,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 22,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 23,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 24,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1900.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 8,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 9,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 10,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 11,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 12,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 13,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 14,
+      "shortage": 0,
+      "excess": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 15,
+      "shortage": 0,
+      "excess": 8750.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 16,
+      "shortage": 0,
+      "excess": 8750.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 17,
+      "shortage": 0,
+      "excess": 8750.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 18,
+      "shortage": 0,
+      "excess": 7750.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 19,
+      "shortage": 0,
+      "excess": 7450.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 20,
+      "shortage": 0,
+      "excess": 7450.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 21,
+      "shortage": 0,
+      "excess": 16450.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 22,
+      "shortage": 0,
+      "excess": 16450.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 23,
+      "shortage": 0,
+      "excess": 16450.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 24,
+      "shortage": 0,
+      "excess": 16450.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 25,
+      "shortage": 0,
+      "excess": 16450.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 1,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 2,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 3,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 4,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 5,
+      "shortage": 0,
+      "excess": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 6,
+      "shortage": 0,
+      "excess": 10100.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 7,
+      "shortage": 0,
+      "excess": 10100.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 8,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 9,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 10,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 11,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 12,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 13,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 14,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 15,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 16,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 17,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 18,
+      "shortage": 0,
+      "excess": 9719.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 19,
+      "shortage": 0,
+      "excess": 9519.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 20,
+      "shortage": 0,
+      "excess": 9519.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 21,
+      "shortage": 0,
+      "excess": 9519.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 22,
+      "shortage": 0,
+      "excess": 9219.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 23,
+      "shortage": 0,
+      "excess": 9219.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 24,
+      "shortage": 0,
+      "excess": 9219.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 25,
+      "shortage": 0,
+      "excess": 9219.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 4,
+      "shortage": 1500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 5,
+      "shortage": 1500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 6,
+      "shortage": 1500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 7,
+      "shortage": 2500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 8,
+      "shortage": 2500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 9,
+      "shortage": 2500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 10,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 11,
+      "shortage": 0,
+      "excess": 6500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 12,
+      "shortage": 0,
+      "excess": 4500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 13,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 14,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 15,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 18,
+      "shortage": 0,
+      "excess": 12500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 19,
+      "shortage": 0,
+      "excess": 11500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 20,
+      "shortage": 0,
+      "excess": 11500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 21,
+      "shortage": 0,
+      "excess": 10500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 22,
+      "shortage": 0,
+      "excess": 10500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 23,
+      "shortage": 0,
+      "excess": 10500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 24,
+      "shortage": 0,
+      "excess": 10500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 25,
+      "shortage": 0,
+      "excess": 8500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 3,
+      "shortage": 0,
+      "excess": 22000.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 4,
+      "shortage": 0,
+      "excess": 20000.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 5,
+      "shortage": 0,
+      "excess": 20000.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 6,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 7,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 8,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 9,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 10,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 11,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 12,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 13,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 14,
+      "shortage": 0,
+      "excess": 17500.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 15,
+      "shortage": 0,
+      "excess": 17200.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 16,
+      "shortage": 0,
+      "excess": 17200.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 17,
+      "shortage": 0,
+      "excess": 17200.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 18,
+      "shortage": 0,
+      "excess": 16900.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 19,
+      "shortage": 0,
+      "excess": 16900.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 20,
+      "shortage": 0,
+      "excess": 16900.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 21,
+      "shortage": 0,
+      "excess": 16900.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 22,
+      "shortage": 0,
+      "excess": 16400.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 23,
+      "shortage": 0,
+      "excess": 16400.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 24,
+      "shortage": 0,
+      "excess": 15700.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 25,
+      "shortage": 0,
+      "excess": 15700.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 10,
+      "shortage": 0,
+      "excess": 10000.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 11,
+      "shortage": 0,
+      "excess": 10000.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 12,
+      "shortage": 0,
+      "excess": 8200.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 13,
+      "shortage": 0,
+      "excess": 7300.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 14,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 15,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 16,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 17,
+      "shortage": 0,
+      "excess": 100.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 18,
+      "shortage": 0,
+      "excess": 6600.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 19,
+      "shortage": 0,
+      "excess": 6600.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 20,
+      "shortage": 0,
+      "excess": 6600.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 21,
+      "shortage": 0,
+      "excess": 5700.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 22,
+      "shortage": 0,
+      "excess": 5700.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 23,
+      "shortage": 0,
+      "excess": 5700.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 24,
+      "shortage": 0,
+      "excess": 5700.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 25,
+      "shortage": 0,
+      "excess": 5700.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 4,
+      "shortage": 1400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 5,
+      "shortage": 1400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 6,
+      "shortage": 1400.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 7,
+      "shortage": 1800.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 8,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 9,
+      "shortage": 0,
+      "excess": 3200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 10,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 11,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 12,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 13,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 14,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 15,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 16,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 17,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1200.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 20,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 21,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 22,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 23,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 24,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 25,
+      "shortage": 0,
+      "excess": 600.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 1,
+      "shortage": 0,
+      "excess": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 2,
+      "shortage": 0,
+      "excess": 4550.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 3,
+      "shortage": 0,
+      "excess": 4550.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 4,
+      "shortage": 0,
+      "excess": 4550.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 5,
+      "shortage": 0,
+      "excess": 4550.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 6,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 7,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 8,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 9,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 10,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 11,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 12,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 13,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 14,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 15,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 16,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 17,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 18,
+      "shortage": 0,
+      "excess": 4100.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 19,
+      "shortage": 0,
+      "excess": 3903.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 20,
+      "shortage": 0,
+      "excess": 3903.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 21,
+      "shortage": 0,
+      "excess": 3903.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 22,
+      "shortage": 0,
+      "excess": 3903.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 23,
+      "shortage": 0,
+      "excess": 3903.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 24,
+      "shortage": 0,
+      "excess": 3903.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 25,
+      "shortage": 0,
+      "excess": 3903.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 7,
+      "shortage": 700.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 8,
+      "shortage": 0,
+      "excess": 5300.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 9,
+      "shortage": 0,
+      "excess": 5300.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 10,
+      "shortage": 0,
+      "excess": 5300.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 11,
+      "shortage": 0,
+      "excess": 5300.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 12,
+      "shortage": 0,
+      "excess": 5300.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 13,
+      "shortage": 0,
+      "excess": 4600.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 14,
+      "shortage": 0,
+      "excess": 4600.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 15,
+      "shortage": 0,
+      "excess": 4600.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 16,
+      "shortage": 0,
+      "excess": 4600.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 17,
+      "shortage": 0,
+      "excess": 4600.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 18,
+      "shortage": 0,
+      "excess": 2200.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1450.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 20,
+      "shortage": 0,
+      "excess": 1450.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 21,
+      "shortage": 0,
+      "excess": 1450.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 22,
+      "shortage": 0,
+      "excess": 1450.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 23,
+      "shortage": 0,
+      "excess": 1450.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 24,
+      "shortage": 0,
+      "excess": 1450.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 25,
+      "shortage": 0,
+      "excess": 1450.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 4,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 5,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 6,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 7,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 8,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 9,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 10,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 11,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 12,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 13,
+      "shortage": 0,
+      "excess": 14930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 14,
+      "shortage": 0,
+      "excess": 14930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 15,
+      "shortage": 0,
+      "excess": 14930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 16,
+      "shortage": 0,
+      "excess": 14930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 17,
+      "shortage": 0,
+      "excess": 14930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 18,
+      "shortage": 0,
+      "excess": 6930.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 19,
+      "shortage": 0,
+      "excess": 6230.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 20,
+      "shortage": 0,
+      "excess": 6230.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 21,
+      "shortage": 0,
+      "excess": 6230.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 22,
+      "shortage": 0,
+      "excess": 3230.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 23,
+      "shortage": 0,
+      "excess": 3230.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 24,
+      "shortage": 0,
+      "excess": 2230.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 25,
+      "shortage": 0,
+      "excess": 2230.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 7,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 8,
+      "shortage": 0,
+      "excess": 1500.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 9,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 10,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 11,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 12,
+      "shortage": 0,
+      "excess": 500.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 18,
+      "shortage": 200.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 19,
+      "shortage": 470.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 20,
+      "shortage": 470.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 21,
+      "shortage": 0,
+      "excess": 3530.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 22,
+      "shortage": 0,
+      "excess": 3530.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 23,
+      "shortage": 0,
+      "excess": 3530.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 24,
+      "shortage": 0,
+      "excess": 3530.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 25,
+      "shortage": 0,
+      "excess": 3530.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 9,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 10,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 11,
+      "shortage": 500.0,
+      "excess": 0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 12,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 13,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 14,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 15,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 16,
+      "shortage": 0,
+      "excess": 2700.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 17,
+      "shortage": 0,
+      "excess": 7000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 18,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 19,
+      "shortage": 0,
+      "excess": 1000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 22,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 23,
+      "shortage": 0,
+      "excess": 2500.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 24,
+      "shortage": 0,
+      "excess": 2000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 25,
+      "shortage": 0,
+      "excess": 2000.0
+    }
+  ]
+}

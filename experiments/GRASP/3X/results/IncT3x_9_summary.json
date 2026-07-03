@@ -1,0 +1,17 @@
+{
+  "instance": "IncT3x_9",
+  "dataset": "3X",
+  "T": 57,
+  "J": 159,
+  "I": 52,
+  "n_runs": 10,
+  "Z_best": 32288.285,
+  "Z_mean": 39920.9529,
+  "Z_std": 4047.964998,
+  "Z_worst": 45781.345,
+  "t2best_best": 199.488,
+  "t2best_mean": 976.974,
+  "iters_mean": 302.4,
+  "mip_bound": null,
+  "gap_best_vs_mip": null
+}

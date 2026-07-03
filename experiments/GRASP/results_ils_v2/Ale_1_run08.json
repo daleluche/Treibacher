@@ -1,0 +1,146 @@
+{
+  "instance": "Ale_1",
+  "dataset": "Real",
+  "run_id": 8,
+  "seed": 8,
+  "algo_version": "v2.0",
+  "objective": 87530.108,
+  "shortage": 84378.0,
+  "excess": 3152108.0,
+  "gap_vs_mip": 1.4669,
+  "time_to_best": 2926.338,
+  "total_time": 3602.846,
+  "iterations": 1115,
+  "grasp_iters": 290,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 1.551,
+      "Z": 144966.431,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 5.528,
+      "Z": 124999.711,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 7,
+      "time_s": 12.703,
+      "Z": 122569.254,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 8,
+      "time_s": 15.25,
+      "Z": 120792.541,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 9,
+      "time_s": 17.774,
+      "Z": 108590.851,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 19,
+      "time_s": 53.641,
+      "Z": 99617.011,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 38,
+      "time_s": 114.0,
+      "Z": 94777.834,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 185,
+      "time_s": 553.421,
+      "Z": 94714.547,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 820,
+      "grasp_iter": 276,
+      "time_s": 2817.636,
+      "Z": 91392.023,
+      "tag": "GRASP_restart"
+    },
+    {
+      "iteration": 823,
+      "grasp_iter": 276,
+      "time_s": 2826.837,
+      "Z": 90376.208,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 828,
+      "grasp_iter": 276,
+      "time_s": 2840.429,
+      "Z": 89004.583,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 834,
+      "grasp_iter": 276,
+      "time_s": 2859.047,
+      "Z": 87610.983,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 855,
+      "grasp_iter": 277,
+      "time_s": 2926.007,
+      "Z": 87597.033,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 855,
+      "grasp_iter": 277,
+      "time_s": 2926.338,
+      "Z": 87530.108,
+      "tag": "PR"
+    }
+  ],
+  "scheduling": [
+    120,
+    150,
+    159,
+    145,
+    148,
+    147,
+    148,
+    45,
+    146,
+    143,
+    150,
+    23,
+    145,
+    150,
+    139,
+    146,
+    24,
+    143,
+    151,
+    155,
+    142,
+    160,
+    151,
+    1,
+    4
+  ],
+  "T": 25,
+  "J": 161,
+  "I": 50,
+  "mip_bound": 86264.683
+}

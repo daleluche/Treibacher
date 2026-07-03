@@ -1,0 +1,119 @@
+{
+  "instance": "Ale_6",
+  "dataset": "Real",
+  "run_id": 7,
+  "seed": 7,
+  "algo_version": "v2.0",
+  "objective": 68946.952,
+  "shortage": 66821.0,
+  "excess": 2125952.0,
+  "gap_vs_mip": 3.4037,
+  "time_to_best": 736.425,
+  "total_time": 3600.132,
+  "iterations": 2035,
+  "grasp_iters": 642,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.769,
+      "Z": 98682.711,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 1.827,
+      "Z": 80229.464,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 3,
+      "time_s": 2.287,
+      "Z": 77958.948,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 3.521,
+      "Z": 76131.219,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 14,
+      "time_s": 11.826,
+      "Z": 74142.607,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 49,
+      "time_s": 54.038,
+      "Z": 73332.086,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 66,
+      "time_s": 77.079,
+      "Z": 71658.835,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 345,
+      "time_s": 458.112,
+      "Z": 69497.144,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 2,
+      "grasp_iter": 542,
+      "time_s": 722.371,
+      "Z": 69302.464,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 6,
+      "grasp_iter": 542,
+      "time_s": 727.146,
+      "Z": 69013.102,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 17,
+      "grasp_iter": 542,
+      "time_s": 736.425,
+      "Z": 68946.952,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    19,
+    145,
+    150,
+    148,
+    151,
+    140,
+    53,
+    77,
+    139,
+    150,
+    146,
+    159,
+    122,
+    154,
+    147,
+    144,
+    143,
+    151,
+    145
+  ],
+  "T": 19,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 66677.463
+}

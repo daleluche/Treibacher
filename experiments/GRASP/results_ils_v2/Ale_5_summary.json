@@ -1,0 +1,22 @@
+{
+  "instance": "Ale_5",
+  "dataset": "Real",
+  "algo_version": "v2.0",
+  "T": 19,
+  "J": 160,
+  "I": 50,
+  "n_runs": 10,
+  "n_workers": 10,
+  "time_limit_s": 3600.0,
+  "Z_best": 35426.141,
+  "Z_mean": 35454.8027,
+  "Z_std": 78.748256,
+  "Z_worst": 35690.183,
+  "t2best_best": 633.476,
+  "t2best_mean": 792.572,
+  "ils_iters_mean": 2149.0,
+  "mip_bound": 35426.141,
+  "gap_best_vs_mip": 0.0,
+  "gap_mean_vs_mip": 0.0809,
+  "cross_run_pr_z": null
+}

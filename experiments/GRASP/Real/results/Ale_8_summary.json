@@ -1,0 +1,17 @@
+{
+  "instance": "Ale_8",
+  "dataset": "Real",
+  "T": 19,
+  "J": 159,
+  "I": 52,
+  "n_runs": 10,
+  "Z_best": 170774.817,
+  "Z_mean": 173723.4726,
+  "Z_std": 2278.350827,
+  "Z_worst": 177000.345,
+  "t2best_best": 80.722,
+  "t2best_mean": 845.423,
+  "iters_mean": 2639.6,
+  "mip_bound": 160911.938,
+  "gap_best_vs_mip": 6.1294
+}

@@ -1,0 +1,240 @@
+{
+  "instance": "IncT3x_3",
+  "dataset": "3X",
+  "run_id": 6,
+  "seed": 6,
+  "objective": 90825.699,
+  "shortage": 77758.0,
+  "excess": 13067699.0,
+  "gap_vs_mip": 98.7887,
+  "time_to_best": 1509.546,
+  "total_time": 1800.62,
+  "iterations": 731,
+  "grasp_iters": 204,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.015,
+      "Z": 335357.008,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 0.605,
+      "Z": 210718.591,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 3.156,
+      "Z": 147200.219,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 8,
+      "time_s": 11.143,
+      "Z": 143847.726,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 9,
+      "time_s": 13.03,
+      "Z": 139648.132,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 11,
+      "time_s": 16.496,
+      "Z": 124983.986,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 132,
+      "time_s": 274.404,
+      "Z": 115700.237,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 6,
+      "grasp_iter": 174,
+      "time_s": 371.613,
+      "Z": 115294.28,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 47,
+      "grasp_iter": 176,
+      "time_s": 454.343,
+      "Z": 115201.53,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 54,
+      "grasp_iter": 176,
+      "time_s": 468.362,
+      "Z": 112575.915,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 78,
+      "grasp_iter": 177,
+      "time_s": 521.638,
+      "Z": 112552.165,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 78,
+      "grasp_iter": 177,
+      "time_s": 523.154,
+      "Z": 112095.19,
+      "tag": "PR"
+    },
+    {
+      "iteration": 157,
+      "grasp_iter": 180,
+      "time_s": 676.701,
+      "Z": 112004.255,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 226,
+      "grasp_iter": 183,
+      "time_s": 812.43,
+      "Z": 104132.663,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 264,
+      "grasp_iter": 184,
+      "time_s": 883.26,
+      "Z": 103591.84,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 359,
+      "grasp_iter": 188,
+      "time_s": 1066.21,
+      "Z": 98801.906,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 359,
+      "grasp_iter": 188,
+      "time_s": 1067.742,
+      "Z": 98138.739,
+      "tag": "PR"
+    },
+    {
+      "iteration": 365,
+      "grasp_iter": 188,
+      "time_s": 1077.311,
+      "Z": 98083.414,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 394,
+      "grasp_iter": 189,
+      "time_s": 1127.594,
+      "Z": 98078.214,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 435,
+      "grasp_iter": 191,
+      "time_s": 1209.537,
+      "Z": 97474.872,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 468,
+      "grasp_iter": 192,
+      "time_s": 1268.956,
+      "Z": 97463.689,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 468,
+      "grasp_iter": 192,
+      "time_s": 1270.376,
+      "Z": 96721.096,
+      "tag": "PR"
+    },
+    {
+      "iteration": 586,
+      "grasp_iter": 197,
+      "time_s": 1509.546,
+      "Z": 90825.699,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    23,
+    53,
+    149,
+    145,
+    150,
+    141,
+    120,
+    139,
+    151,
+    146,
+    148,
+    137,
+    147,
+    143,
+    125,
+    148,
+    143,
+    150,
+    146,
+    150,
+    139,
+    152,
+    24,
+    151,
+    142,
+    149,
+    151,
+    145,
+    144,
+    17,
+    156,
+    147,
+    153,
+    146,
+    143,
+    146,
+    151,
+    152,
+    76,
+    152,
+    140,
+    21,
+    140,
+    144,
+    143,
+    0,
+    150,
+    0,
+    157,
+    0,
+    156,
+    157,
+    1,
+    148,
+    142,
+    21,
+    145
+  ],
+  "T": 57,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 45689.573
+}

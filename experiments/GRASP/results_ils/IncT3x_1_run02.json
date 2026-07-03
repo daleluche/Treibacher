@@ -1,0 +1,240 @@
+{
+  "instance": "IncT3x_1",
+  "dataset": "3X",
+  "run_id": 2,
+  "seed": 2,
+  "objective": 102931.83,
+  "shortage": 88567.0,
+  "excess": 14364830.0,
+  "gap_vs_mip": 139.4923,
+  "time_to_best": 1758.304,
+  "total_time": 1801.631,
+  "iterations": 685,
+  "grasp_iters": 170,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.061,
+      "Z": 267383.975,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 0.796,
+      "Z": 166019.671,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 3,
+      "time_s": 2.253,
+      "Z": 162755.854,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 4.266,
+      "Z": 143991.015,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 11,
+      "time_s": 21.95,
+      "Z": 131579.638,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 110,
+      "time_s": 275.074,
+      "Z": 123699.089,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 10,
+      "grasp_iter": 143,
+      "time_s": 376.202,
+      "Z": 122801.733,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 93,
+      "grasp_iter": 147,
+      "time_s": 549.902,
+      "Z": 120370.526,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 94,
+      "grasp_iter": 147,
+      "time_s": 551.82,
+      "Z": 119316.07,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 110,
+      "grasp_iter": 147,
+      "time_s": 587.308,
+      "Z": 117244.584,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 110,
+      "grasp_iter": 147,
+      "time_s": 589.118,
+      "Z": 116003.327,
+      "tag": "PR"
+    },
+    {
+      "iteration": 114,
+      "grasp_iter": 147,
+      "time_s": 594.973,
+      "Z": 115424.565,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 123,
+      "grasp_iter": 147,
+      "time_s": 616.012,
+      "Z": 113804.265,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 150,
+      "grasp_iter": 148,
+      "time_s": 671.005,
+      "Z": 109809.876,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 257,
+      "grasp_iter": 153,
+      "time_s": 901.318,
+      "Z": 109260.345,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 257,
+      "grasp_iter": 153,
+      "time_s": 903.037,
+      "Z": 105828.533,
+      "tag": "PR"
+    },
+    {
+      "iteration": 371,
+      "grasp_iter": 158,
+      "time_s": 1149.134,
+      "Z": 105754.083,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 471,
+      "grasp_iter": 162,
+      "time_s": 1357.357,
+      "Z": 104730.945,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 608,
+      "grasp_iter": 168,
+      "time_s": 1635.099,
+      "Z": 104551.995,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 616,
+      "grasp_iter": 168,
+      "time_s": 1648.918,
+      "Z": 104110.507,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 616,
+      "grasp_iter": 168,
+      "time_s": 1650.543,
+      "Z": 103327.307,
+      "tag": "PR"
+    },
+    {
+      "iteration": 647,
+      "grasp_iter": 169,
+      "time_s": 1723.535,
+      "Z": 103296.757,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 663,
+      "grasp_iter": 169,
+      "time_s": 1758.304,
+      "Z": 102931.83,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    137,
+    145,
+    42,
+    145,
+    8,
+    148,
+    148,
+    150,
+    146,
+    143,
+    19,
+    126,
+    150,
+    139,
+    151,
+    18,
+    18,
+    126,
+    143,
+    142,
+    146,
+    152,
+    148,
+    150,
+    152,
+    152,
+    139,
+    141,
+    147,
+    18,
+    138,
+    139,
+    150,
+    141,
+    140,
+    151,
+    153,
+    153,
+    155,
+    53,
+    124,
+    155,
+    149,
+    146,
+    146,
+    152,
+    124,
+    153,
+    0,
+    0,
+    150,
+    0,
+    0,
+    142,
+    158,
+    0,
+    0
+  ],
+  "T": 57,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 42979.183
+}

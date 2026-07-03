@@ -1,0 +1,22 @@
+{
+  "instance": "IncT4x_9",
+  "dataset": "4X",
+  "algo_version": "v2.0",
+  "T": 76,
+  "J": 160,
+  "I": 50,
+  "n_runs": 10,
+  "n_workers": 10,
+  "time_limit_s": 3600.0,
+  "Z_best": 29515.394,
+  "Z_mean": 35252.9033,
+  "Z_std": 4120.698172,
+  "Z_worst": 43786.319,
+  "t2best_best": 168.533,
+  "t2best_mean": 2843.04,
+  "ils_iters_mean": 11.3,
+  "mip_bound": 23391.565,
+  "gap_best_vs_mip": 26.1796,
+  "gap_mean_vs_mip": 50.7078,
+  "cross_run_pr_z": 29515.394
+}

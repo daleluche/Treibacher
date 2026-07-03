@@ -1,0 +1,17 @@
+{
+  "instance": "IncT4x_4",
+  "dataset": "4X",
+  "T": 76,
+  "J": 159,
+  "I": 52,
+  "n_runs": 10,
+  "Z_best": 175884.943,
+  "Z_mean": 185326.7338,
+  "Z_std": 4521.014862,
+  "Z_worst": 190046.128,
+  "t2best_best": 234.161,
+  "t2best_mean": 1060.677,
+  "iters_mean": 227.9,
+  "mip_bound": 136586.18608,
+  "gap_best_vs_mip": 28.7721
+}

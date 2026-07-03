@@ -1,0 +1,22 @@
+{
+  "instance": "IncT5x_6",
+  "dataset": "5X",
+  "algo_version": "v2.0",
+  "T": 95,
+  "J": 160,
+  "I": 50,
+  "n_runs": 10,
+  "n_workers": 10,
+  "time_limit_s": 3600.0,
+  "Z_best": 94255.685,
+  "Z_mean": 99032.0577,
+  "Z_std": 2703.991829,
+  "Z_worst": 104628.853,
+  "t2best_best": 440.528,
+  "t2best_mean": 2428.268,
+  "ils_iters_mean": 7.1,
+  "mip_bound": 77922.383,
+  "gap_best_vs_mip": 20.961,
+  "gap_mean_vs_mip": 27.0906,
+  "cross_run_pr_z": 94255.685
+}

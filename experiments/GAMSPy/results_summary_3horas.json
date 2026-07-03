@@ -1,0 +1,32 @@
+[
+  {
+    "instance": "5X/IncT5x_7.py",
+    "time_s": 10825.7,
+    "obj": 22166.183,
+    "bound": 18546.29353,
+    "gap_pct": 16.330685,
+    "nodes": 361883.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_8.py",
+    "time_s": 10840.2,
+    "obj": 177536.272,
+    "bound": 175931.402325,
+    "gap_pct": 0.903967,
+    "nodes": 396510.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  },
+  {
+    "instance": "5X/IncT5x_9.py",
+    "time_s": 10810.4,
+    "obj": 28653.896,
+    "bound": 24011.330431,
+    "gap_pct": 16.202214,
+    "nodes": 88308.0,
+    "status": "ModelStatus.Integer",
+    "rc": 0
+  }
+]
