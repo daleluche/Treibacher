@@ -1,0 +1,228 @@
+"""
+build_master_dataset.py
+=======================
+Consolidates all computational results in the Treibacher repository into
+two tidy datasets:
+
+  analysis/output/master_runs.csv       one row per run (exact or heuristic)
+  analysis/output/master_instances.csv  one row per (instance x method)
+
+Methods:
+  CPLEX22_1h  experiments/GAMSPy/<ds>/results/*.json          (reslim_s = 3600)
+  CPLEX22_3h  experiments/GAMSPy/<ds>/results_3horas/*.json   (reslim_s = 10800)
+  GRASP_v1    experiments/GRASP/<ds>/results/*_run*.json      (~1800 s budget)
+  ILS_v1      experiments/GRASP/results_ils/*_run*.json       (~1800 s budget)
+  ILS_v2      experiments/GRASP/results_ils_v2/*_run*.json    (3600 s budget)
+
+Time budgets are read from JSON fields (reslim_s / time_limit_s) when
+available; otherwise inferred as the ceiling of observed total_time.
+
+Run from the repository root:  python analysis/build_master_dataset.py
+"""
+from __future__ import annotations
+
+import glob
+import json
+import math
+import os
+import sys
+
+import numpy as np
+import pandas as pd
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+OUT = os.path.join(ROOT, "analysis", "output")
+os.makedirs(OUT, exist_ok=True)
+
+DATASETS = ["Real", "2X", "3X", "4X", "5X"]
+EPS = 1e-6
+
+
+def _load(path: str) -> dict:
+    with open(path, "r", encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+# --------------------------------------------------------------------------- #
+# 1. Exact runs (GAMSPy / CPLEX 22)
+# --------------------------------------------------------------------------- #
+def collect_exact() -> list[dict]:
+    rows = []
+    for ds in DATASETS:
+        for folder, method in [("results", "CPLEX22_1h"),
+                               ("results_3horas", "CPLEX22_3h")]:
+            for f in sorted(glob.glob(
+                    os.path.join(ROOT, "experiments", "GAMSPy", ds, folder, "*.json"))):
+                d = _load(f)
+                rows.append({
+                    "method": method,
+                    "dataset": ds,
+                    "instance": d["instance"],
+                    "run_id": 1,
+                    "seed": None,
+                    "Z": d.get("objective_value"),
+                    "bound": d.get("best_bound"),
+                    "gap_solver_pct": d.get("gap_pct"),
+                    "time_to_best_s": None,
+                    "total_time_s": d.get("wall_time_s"),
+                    "time_budget_s": d.get("reslim_s"),
+                    "model_status": str(d.get("model_status", "")).replace("ModelStatus.", ""),
+                    "iterations": d.get("num_iterations"),
+                    "T": d.get("num_periods"),
+                    "J": d.get("num_processes"),
+                    "I": d.get("num_products"),
+                })
+    return rows
+
+
+# --------------------------------------------------------------------------- #
+# 2. Heuristic runs
+# --------------------------------------------------------------------------- #
+HEURISTIC_SOURCES = [
+    # (method, glob pattern for run files, glob pattern for summary files)
+    ("GRASP_v1", "experiments/GRASP/*/results/*_run*.json",
+     "experiments/GRASP/*/results/*_summary.json"),
+    ("ILS_v1", "experiments/GRASP/results_ils/*_run*.json",
+     "experiments/GRASP/results_ils/*_summary.json"),
+    ("ILS_v2", "experiments/GRASP/results_ils_v2/*_run*.json",
+     "experiments/GRASP/results_ils_v2/*_summary.json"),
+]
+
+
+def collect_heuristics() -> tuple[list[dict], dict]:
+    rows = []
+    budgets: dict[str, float] = {}
+
+    for method, run_pat, sum_pat in HEURISTIC_SOURCES:
+        # explicit budget from summaries when available
+        budget = None
+        for f in glob.glob(os.path.join(ROOT, sum_pat)):
+            d = _load(f)
+            if d.get("time_limit_s"):
+                budget = float(d["time_limit_s"])
+                break
+
+        observed_max = 0.0
+        for f in sorted(glob.glob(os.path.join(ROOT, run_pat))):
+            d = _load(f)
+            observed_max = max(observed_max, float(d.get("total_time", 0.0)))
+            rows.append({
+                "method": method,
+                "dataset": d.get("dataset"),
+                "instance": d.get("instance"),
+                "run_id": d.get("run_id"),
+                "seed": d.get("seed"),
+                "Z": d.get("objective"),
+                "bound": None,
+                "gap_solver_pct": None,
+                "time_to_best_s": d.get("time_to_best"),
+                "total_time_s": d.get("total_time"),
+                "time_budget_s": budget,     # filled below if None
+                "model_status": None,
+                "iterations": d.get("iterations"),
+                "T": d.get("T"),
+                "J": d.get("J"),
+                "I": d.get("I"),
+            })
+        if budget is None:
+            # infer: round observed max up to nearest 100 s
+            budget = math.ceil(observed_max / 100.0) * 100.0
+            for r in rows:
+                if r["method"] == method and r["time_budget_s"] is None:
+                    r["time_budget_s"] = budget
+        budgets[method] = budget
+    return rows, budgets
+
+
+# --------------------------------------------------------------------------- #
+# 3. Build, validate, aggregate
+# --------------------------------------------------------------------------- #
+def main() -> int:
+    exact = collect_exact()
+    heur, budgets = collect_heuristics()
+    runs = pd.DataFrame(exact + heur)
+
+    runs = runs.sort_values(["method", "dataset", "instance", "run_id"]).reset_index(drop=True)
+    runs.to_csv(os.path.join(OUT, "master_runs.csv"), index=False)
+
+    # instance-level aggregation
+    def agg(g: pd.DataFrame) -> pd.Series:
+        return pd.Series({
+            "n_runs": len(g),
+            "Z_best": g["Z"].min(),
+            "Z_mean": g["Z"].mean(),
+            "Z_std": g["Z"].std(ddof=1) if len(g) > 1 else 0.0,
+            "Z_worst": g["Z"].max(),
+            "t2b_mean": g["time_to_best_s"].mean(),
+            "total_time_mean": g["total_time_s"].mean(),
+            "time_budget_s": g["time_budget_s"].max(),
+            "bound": g["bound"].max(),
+            "gap_solver_pct": g["gap_solver_pct"].max(),
+            "model_status": g["model_status"].dropna().iloc[0] if g["model_status"].notna().any() else None,
+            "T": g["T"].dropna().max(),
+            "J": g["J"].dropna().max(),
+            "I": g["I"].dropna().max(),
+        })
+
+    inst = (runs.groupby(["method", "dataset", "instance"])
+                .apply(agg, include_groups=False).reset_index())
+    inst.to_csv(os.path.join(OUT, "master_instances.csv"), index=False)
+
+    # ------------------------------------------------------------------ #
+    # Validation report
+    # ------------------------------------------------------------------ #
+    print("=" * 72)
+    print("VALIDATION REPORT — master dataset")
+    print("=" * 72)
+    ok = True
+
+    for method in ["CPLEX22_3h", "ILS_v2"]:
+        n = inst.loc[inst.method == method, "instance"].nunique()
+        expected = 47 if method == "CPLEX22_3h" else 50   # 3 missing 3X jsons
+        flag = "OK" if n == expected else "FAIL"
+        if flag == "FAIL":
+            ok = False
+        print(f"[{flag}] {method}: {n} distinct instances (expected {expected})")
+
+    n_v2 = len(runs[runs.method == "ILS_v2"])
+    flag = "OK" if n_v2 == 500 else "FAIL"
+    ok &= (n_v2 == 500)
+    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 500)")
+
+    bad_z = runs[(runs.Z.isna()) | (runs.Z < -EPS)]
+    flag = "OK" if bad_z.empty else "FAIL"
+    ok &= bad_z.empty
+    print(f"[{flag}] null/negative Z values: {len(bad_z)}")
+
+    ex = runs[runs.method.str.startswith("CPLEX")]
+    viol = ex[ex.bound > ex.Z + EPS]
+    flag = "OK" if viol.empty else "FAIL"
+    ok &= viol.empty
+    print(f"[{flag}] exact rows with bound > Z: {len(viol)}")
+
+    # sanity: heuristic best >= dual bound of proven-optimal instances
+    opt = inst[(inst.method == "CPLEX22_3h") & (inst.model_status == "OptimalGlobal")]
+    v2 = inst[inst.method == "ILS_v2"].set_index("instance")
+    n_viol = 0
+    for _, r in opt.iterrows():
+        if r.instance in v2.index and v2.loc[r.instance, "Z_best"] < r.bound - 1e-4:
+            n_viol += 1
+            print(f"    !! {r.instance}: ILS_v2 Z_best {v2.loc[r.instance, 'Z_best']:.3f}"
+                  f" < optimal bound {r.bound:.3f}")
+    flag = "OK" if n_viol == 0 else "FAIL"
+    ok &= (n_viol == 0)
+    print(f"[{flag}] ILS_v2 Z_best below proven-optimal bound: {n_viol} instances")
+
+    print("\nInferred/declared time budgets (s):", budgets)
+
+    print("\nSummary: n runs and mean Z by method x dataset")
+    piv = runs.pivot_table(index="method", columns="dataset", values="Z",
+                           aggfunc=["count", "mean"])
+    print(piv.round(1).to_string())
+
+    print("\n" + ("ALL CHECKS PASSED" if ok else "SOME CHECKS FAILED"))
+    return 0 if ok else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
