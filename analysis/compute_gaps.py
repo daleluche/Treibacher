@@ -12,8 +12,9 @@ Gap definitions (percent):
   gap_ils2_vs_primal  = 100 * (ILS2_best - CPLEX_Z)    / max(CPLEX_Z, 1)
   gap_ils2_vs_BKS     = 100 * (ILS2_best - BKS)        / max(BKS, 1)
 
-CPLEX reference is the 3 h run; for the three 3X instances without a 3 h
-result the 1 h run is used and flagged in `cplex_budget_used`.
+CPLEX reference is the 3 h run. The 1 h primal is also reported and included
+as a best-known-solution candidate because longer runs can occasionally return
+a slightly worse incumbent.
 
 Run from the repository root:  python analysis/compute_gaps.py
 """
@@ -63,6 +64,11 @@ def main() -> int:
         bound = cx["bound"] if cx is not None else np.nan
         cplex_gap = cx["gap_solver_pct"] if cx is not None else np.nan
         status = cx["model_status"] if cx is not None else None
+        cplex_Z_1h = (
+            wide["CPLEX22_1h"].loc[name, "Z_best"]
+            if "CPLEX22_1h" in wide and name in wide["CPLEX22_1h"].index
+            else np.nan
+        )
 
         # --- heuristics ---------------------------------------------------- #
         def get(m: str, col: str) -> float:
@@ -74,7 +80,7 @@ def main() -> int:
         grasp1_best = get("GRASP_v1", "Z_best")
 
         # --- BKS ------------------------------------------------------------ #
-        candidates = [v for v in (cplex_Z, ils2_best, ils1_best, grasp1_best)
+        candidates = [v for v in (cplex_Z, cplex_Z_1h, ils2_best, ils1_best, grasp1_best)
                       if not np.isnan(v)]
         bks = min(candidates)
 
@@ -82,7 +88,7 @@ def main() -> int:
             "dataset": ds, "instance": name,
             "T": int(meta["T"]), "J": int(meta["J"]), "I": int(meta["I"]),
             "cplex_budget_used": cplex_budget,
-            "cplex_Z": cplex_Z, "cplex_bound": bound,
+            "cplex_Z": cplex_Z, "cplex_Z_1h": cplex_Z_1h, "cplex_bound": bound,
             "cplex_gap_pct": cplex_gap, "cplex_status": status,
             "ils2_Z_best": ils2_best, "ils2_Z_mean": ils2_mean,
             "ils2_Z_std": ils2_std,
