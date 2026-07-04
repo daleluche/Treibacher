@@ -7,6 +7,7 @@ from pathlib import Path
 import numpy as np
 
 from experiments.matheuristics.psp_instance import evaluate, load_instance
+from experiments.matheuristics.rf_fo_psp import make_windows
 from experiments.matheuristics.synthetic_tiny import build_synthetic_tiny
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -60,3 +61,13 @@ def test_synthetic_tiny_is_deterministic_and_evaluable() -> None:
 
     assert z_value == shortage_total + 0.001 * excess_total
     assert z_value > 0.0
+
+
+def test_rf_windows_anchor_final_window() -> None:
+    """RF windows should cover the horizon and anchor the last window at T."""
+    assert make_windows(length=25, width=10, step=5) == [
+        (0, 10),
+        (5, 15),
+        (10, 20),
+        (15, 25),
+    ]

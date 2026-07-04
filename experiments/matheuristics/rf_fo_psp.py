@@ -52,9 +52,13 @@ class MatheuristicResult:
     z_rf: float
     improvements: list[dict]
     rf_windows: int
+    rf_wall_time: float
+    rf_validation_checks: list[dict]
     fo_accepts: int
     warm_start_checked: bool
     warm_start_log_has_mipstart: bool
+    warm_start_log_excerpt: str | None
+    rf_window_diag: list[dict]
 
 
 class PSPGamspyModel:
@@ -130,97 +134,156 @@ class PSPGamspyModel:
 
     def _initialize_bounds(self) -> None:
         """Set initial variable bounds before the first solve."""
+        zero = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        one = np.ones((self.inst.J, self.inst.T), dtype=np.float64)
+        self._set_variable_records(self.X, zero, zero, one)
+        self._set_variable_records(self.XR, zero, zero, one)
+
+    def _set_variable_records(
+        self,
+        variable: Variable,
+        level: np.ndarray,
+        lower: np.ndarray,
+        upper: np.ndarray,
+    ) -> None:
+        """Bulk-update variable records for fast bound changes."""
+        records = []
         for period in range(self.inst.T):
             for process in range(self.inst.J):
-                j = self.j_records[process]
-                t = self.t_records[period]
-                self.X.lo[j, t] = 0
-                self.X.up[j, t] = 1
-                self.XR.lo[j, t] = 0
-                self.XR.up[j, t] = 1
+                records.append(
+                    [
+                        self.j_records[process],
+                        self.t_records[period],
+                        float(level[process, period]),
+                        0.0,
+                        float(lower[process, period]),
+                        float(upper[process, period]),
+                        1.0,
+                    ]
+                )
+        variable.setRecords(
+            pd.DataFrame(
+                records,
+                columns=["j", "t", "level", "marginal", "lower", "upper", "scale"],
+            )
+        )
+
+    def _incumbent_matrix(self, incumbent: np.ndarray) -> np.ndarray:
+        """Return a J x T binary matrix for a 1-indexed incumbent schedule."""
+        matrix = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        for period, process in enumerate(incumbent):
+            if int(process) > 0:
+                matrix[int(process) - 1, period] = 1.0
+        return matrix
 
     def set_rf_regimes(self, fixed_until: int, window: set[int], incumbent: np.ndarray) -> None:
         """Apply RF relaxed, binary, and fixed period regimes by bounds."""
+        x_level = self._incumbent_matrix(incumbent)
+        x_lower = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        x_upper = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_level = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_lower = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_upper = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+
         for period in range(self.inst.T):
-            for process in range(self.inst.J):
-                j = self.j_records[process]
-                t = self.t_records[period]
-                if period < fixed_until:
-                    value = 1 if int(incumbent[period]) == process + 1 else 0
-                    self.X.fx[j, t] = value
-                    self.XR.fx[j, t] = 0
-                elif period in window:
-                    self.X.lo[j, t] = 0
-                    self.X.up[j, t] = 1
-                    self.XR.fx[j, t] = 0
-                else:
-                    self.X.fx[j, t] = 0
-                    self.XR.lo[j, t] = 0
-                    self.XR.up[j, t] = 1
+            if period < fixed_until:
+                x_lower[:, period] = x_level[:, period]
+                x_upper[:, period] = x_level[:, period]
+            elif period in window:
+                x_upper[:, period] = 1.0
+            else:
+                xr_upper[:, period] = 1.0
+        self._set_variable_records(self.X, x_level, x_lower, x_upper)
+        self._set_variable_records(self.XR, xr_level, xr_lower, xr_upper)
 
     def set_fo_regimes(self, window: set[int], incumbent: np.ndarray) -> None:
         """Apply FO fixed-outside and binary-inside regimes by bounds."""
+        x_level = self._incumbent_matrix(incumbent)
+        x_lower = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        x_upper = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_level = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_lower = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_upper = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+
         for period in range(self.inst.T):
-            for process in range(self.inst.J):
-                j = self.j_records[process]
-                t = self.t_records[period]
-                self.XR.fx[j, t] = 0
-                if period in window:
-                    self.X.lo[j, t] = 0
-                    self.X.up[j, t] = 1
-                else:
-                    value = 1 if int(incumbent[period]) == process + 1 else 0
-                    self.X.fx[j, t] = value
+            if period in window:
+                x_upper[:, period] = 1.0
+            else:
+                x_lower[:, period] = x_level[:, period]
+                x_upper[:, period] = x_level[:, period]
+        self._set_variable_records(self.X, x_level, x_lower, x_upper)
+        self._set_variable_records(self.XR, xr_level, xr_lower, xr_upper)
 
     def set_mip_start(self, incumbent: np.ndarray) -> None:
         """Set X.l from the incumbent schedule before an FO solve."""
-        for period in range(self.inst.T):
-            for process in range(self.inst.J):
-                self.X.l[self.j_records[process], self.t_records[period]] = (
-                    1 if int(incumbent[period]) == process + 1 else 0
-                )
+        records = self.X.records.copy()
+        records = records.rename(columns=str.lower)
+        levels = {
+            (self.j_records[process], self.t_records[period]): (
+                1.0 if int(incumbent[period]) == process + 1 else 0.0
+            )
+            for period in range(self.inst.T)
+            for process in range(self.inst.J)
+        }
+        records["level"] = [levels[(str(row["j"]), str(row["t"]))] for _, row in records.iterrows()]
+        self.X.setRecords(records)
 
     def solve(self, time_limit: float, mipstart: bool = False) -> tuple[bool, str]:
         """Solve the current model and return whether a solution was loaded."""
         if time_limit <= 0:
             return False, ""
         output = io.StringIO()
-        solver_options = {"mipstart": 1} if mipstart else None
+        solver_options = {"tilim": float(time_limit), "epgap": 0.001}
+        if mipstart:
+            solver_options["mipstart"] = 1
         self.model.solve(
             solver="CPLEX",
-            options=Options(relative_optimality_gap=0.0, time_limit=float(time_limit)),
+            options=Options(relative_optimality_gap=0.001, time_limit=float(time_limit)),
             solver_options=solver_options,
             output=output,
         )
         return self.X.records is not None, output.getvalue()
 
-    def extract_schedule(self) -> np.ndarray:
+    def extract_schedule(self, base_schedule: np.ndarray | None = None, periods: set[int] | None = None) -> np.ndarray:
         """Extract a 1-indexed schedule from X levels with tolerance."""
         records = self.X.records
         if records is None:
             raise RuntimeError("No X records are available after solve.")
         records = records.rename(columns=str.lower)
-        schedule = np.zeros(self.inst.T, dtype=np.int64)
-        for period in range(self.inst.T):
+        schedule = np.zeros(self.inst.T, dtype=np.int64) if base_schedule is None else base_schedule.copy()
+        target_periods = range(self.inst.T) if periods is None else sorted(periods)
+        for period in target_periods:
             t = self.t_records[period]
             active = records[(records["t"] == t) & (records["level"] > 0.5)]
             if len(active) > 1:
                 raise RuntimeError(f"More than one process is active in period {period + 1}.")
+            schedule[period] = 0
             if len(active) == 1:
                 schedule[period] = int(active.iloc[0]["j"])
         return schedule
 
 
 def make_windows(length: int, width: int, step: int) -> list[tuple[int, int]]:
-    """Create overlapping zero-based windows covering all periods."""
+    """Create zero-based RF windows with the last window anchored at the end."""
+    if length <= 0 or width <= 0 or step <= 0:
+        raise ValueError("length, width, and step must be positive.")
+    width = min(width, length)
+    starts = list(range(0, length, step))
+    final_start = max(0, length - width)
+    starts.append(final_start)
     windows = []
-    start = 0
-    while start < length:
+    seen = set()
+    for start in sorted(starts):
+        if start > final_start:
+            continue
         end = min(length, start + width)
-        windows.append((start, end))
-        if end == length:
-            break
-        start += step
+        window = (start, end)
+        if window not in seen:
+            windows.append(window)
+            seen.add(window)
+    covered = set().union(*(set(range(start, end)) for start, end in windows))
+    if covered != set(range(length)):
+        raise AssertionError("RF windows do not cover the full horizon.")
     return windows
 
 
@@ -270,32 +333,83 @@ def solve_relax_and_fix(
     params: RunParams,
     start_time: float,
     improvements: list[dict],
-) -> tuple[np.ndarray, float, int]:
+) -> tuple[np.ndarray, float, int, float, list[dict], list[dict]]:
     """Construct an incumbent with relax-and-fix."""
+    rf_start = time.perf_counter()
     windows = make_windows(inst.T, params.sigma, params.step)
     rf_budget = 0.25 * params.budget
     incumbent = np.zeros(inst.T, dtype=np.int64)
     best_z = math.inf
+    validation_checks: list[dict] = []
+    window_diag: list[dict] = []
+    executed_windows = 0
+    completed_with_solver = False
 
     for idx, (start, end) in enumerate(windows):
+        if time_left(start_time, params.budget) < 10.0:
+            incumbent = greedy_fill_window(inst, incumbent, start, inst.T)
+            window_diag.append(
+                {
+                    "window_start": start + 1,
+                    "window_end": end,
+                    "status": "budget_guard_greedy_tail",
+                    "reslim_used": 0.0,
+                    "wall_time_s": 0.0,
+                }
+            )
+            break
         fixed_until = start
         window = set(range(start, end))
         remaining_rf = max(0.0, rf_budget - (time.perf_counter() - start_time))
         remaining_total = time_left(start_time, params.budget)
         remaining_windows = max(1, len(windows) - idx)
-        tl = min(params.tl_rf, remaining_rf / remaining_windows, remaining_total)
+        tl = max(5.0, min(params.tl_rf, remaining_rf / remaining_windows, remaining_total))
 
         model.set_rf_regimes(fixed_until=fixed_until, window=window, incumbent=incumbent)
+        solve_start = time.perf_counter()
         solved, _ = model.solve(tl)
+        solve_wall = time.perf_counter() - solve_start
         if not solved:
-            solved, _ = model.solve(min(2.0 * tl, time_left(start_time, params.budget)))
+            retry_tl = max(5.0, min(2.0 * tl, time_left(start_time, params.budget)))
+            retry_start = time.perf_counter()
+            solved, _ = model.solve(retry_tl)
+            solve_wall += time.perf_counter() - retry_start
+            tl += retry_tl
 
         if solved:
-            incumbent = model.extract_schedule()
+            incumbent = model.extract_schedule(base_schedule=incumbent, periods=window)
+            status = "solved"
+            completed_with_solver = end == inst.T
         else:
             incumbent = greedy_fill_window(inst, incumbent, start, end)
+            status = "greedy_window"
+        executed_windows += 1
 
         z_eval, _, _ = evaluate(incumbent, inst)
+        z_model = float(model.model.objective_value) if model.model.objective_value is not None else math.nan
+        has_relaxed_tail = end < inst.T
+        validation_checks.append(
+            {
+                "window_start": start + 1,
+                "window_end": end,
+                "has_relaxed_tail": has_relaxed_tail,
+                "Z_model": round(z_model, 6) if not math.isnan(z_model) else None,
+                "Z_evaluate": round(z_eval, 6),
+                "abs_diff": None if has_relaxed_tail or math.isnan(z_model) else round(abs(z_model - z_eval), 6),
+                "passed": bool(has_relaxed_tail or (not math.isnan(z_model) and abs(z_model - z_eval) < 0.01)),
+            }
+        )
+        window_diag.append(
+            {
+                "window_start": start + 1,
+                "window_end": end,
+                "status": status,
+                "reslim_used": round(tl, 3),
+                "wall_time_s": round(solve_wall, 3),
+                "fixed_until": fixed_until,
+                "relaxed_tail": end < inst.T,
+            }
+        )
         if z_eval < best_z - EPS:
             best_z = z_eval
             improvements.append(
@@ -309,11 +423,20 @@ def solve_relax_and_fix(
         if time_left(start_time, params.budget) <= 0:
             break
 
+    if windows[-1][1] != inst.T:
+        raise AssertionError("The final RF window does not reach the end of the horizon.")
+    if not np.all(incumbent >= 0):
+        raise AssertionError("RF returned an invalid schedule.")
+
     z_model = float(model.model.objective_value) if model.model.objective_value is not None else best_z
     z_eval, _, _ = evaluate(incumbent, inst)
-    if abs(z_model - z_eval) >= 0.01:
+    if completed_with_solver and abs(z_model - z_eval) >= 0.01:
         raise RuntimeError(f"RF validation failed: model Z={z_model}, evaluator Z={z_eval}.")
-    return incumbent, z_eval, len(windows)
+    if validation_checks:
+        validation_checks[-1]["abs_diff"] = round(abs(z_model - z_eval), 6) if completed_with_solver else None
+        validation_checks[-1]["passed"] = bool(completed_with_solver and abs(z_model - z_eval) < 0.01)
+        validation_checks[-1]["completed_with_solver"] = completed_with_solver
+    return incumbent, z_eval, executed_windows, time.perf_counter() - rf_start, validation_checks, window_diag
 
 
 def solve_fix_and_optimize(
@@ -324,28 +447,31 @@ def solve_fix_and_optimize(
     incumbent: np.ndarray,
     improvements: list[dict],
     seed: int,
-) -> tuple[np.ndarray, float, int, bool, bool]:
+) -> tuple[np.ndarray, float, int, bool, bool, str | None]:
     """Improve an incumbent with fix-and-optimize windows."""
     rng = random.Random(seed)
     z_inc, _, _ = evaluate(incumbent, inst)
     accepts = 0
     warm_checked = False
     warm_has_mipstart = False
+    warm_log_excerpt: str | None = None
 
     def try_window(start: int, end: int, phase: str) -> bool:
-        nonlocal incumbent, z_inc, accepts, warm_checked, warm_has_mipstart
-        if time_left(start_time, params.budget) <= 0:
+        nonlocal incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt
+        if time_left(start_time, params.budget) < 10.0:
             return False
         window = set(range(start, end))
         model.set_fo_regimes(window=window, incumbent=incumbent)
         model.set_mip_start(incumbent)
-        solved, log_text = model.solve(min(params.tl_fo, time_left(start_time, params.budget)), mipstart=True)
+        solved, log_text = model.solve(max(5.0, min(params.tl_fo, time_left(start_time, params.budget))), mipstart=True)
         if not warm_checked:
             warm_checked = True
-            warm_has_mipstart = "mip start" in log_text.lower()
+            normalized_log = log_text.lower()
+            warm_has_mipstart = "mip start" in normalized_log or "mipstart" in normalized_log
+            warm_log_excerpt = extract_mipstart_excerpt(log_text)
         if not solved:
             return False
-        candidate = model.extract_schedule()
+        candidate = model.extract_schedule(base_schedule=incumbent, periods=window)
         z_new, _, _ = evaluate(candidate, inst)
         if z_new < z_inc - EPS:
             incumbent = candidate
@@ -381,7 +507,16 @@ def solve_fix_and_optimize(
             if time_left(start_time, params.budget) <= 0:
                 break
 
-    return incumbent, z_inc, accepts, warm_checked, warm_has_mipstart
+    return incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt
+
+
+def extract_mipstart_excerpt(log_text: str) -> str | None:
+    """Return the first CPLEX log line mentioning a MIP start."""
+    for line in log_text.splitlines():
+        normalized = line.lower()
+        if "mip start" in normalized or "mipstart" in normalized:
+            return line.strip()
+    return None
 
 
 def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> MatheuristicResult:
@@ -390,20 +525,33 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     inst = load_instance(instance_path)
     model = PSPGamspyModel(inst)
     improvements: list[dict] = []
+    rf_wall_time = 0.0
+    rf_validation_checks: list[dict] = []
+    rf_window_diag: list[dict] = []
 
     if params.start_from:
         incumbent = incumbent_from_json(Path(params.start_from), inst)
         z_rf, _, _ = evaluate(incumbent, inst)
         rf_windows = 0
     else:
-        incumbent, z_rf, rf_windows = solve_relax_and_fix(model, inst, params, start_time, improvements)
+        incumbent, z_rf, rf_windows, rf_wall_time, rf_validation_checks, rf_window_diag = solve_relax_and_fix(
+            model, inst, params, start_time, improvements
+        )
 
     fo_accepts = 0
     warm_checked = False
     warm_has_mipstart = False
+    warm_log_excerpt = None
     z_final = z_rf
     if params.method == "rf+fo" and time_left(start_time, params.budget) > 0:
-        incumbent, z_final, fo_accepts, warm_checked, warm_has_mipstart = solve_fix_and_optimize(
+        (
+            incumbent,
+            z_final,
+            fo_accepts,
+            warm_checked,
+            warm_has_mipstart,
+            warm_log_excerpt,
+        ) = solve_fix_and_optimize(
             model, inst, params, start_time, incumbent, improvements, seed
         )
 
@@ -419,9 +567,13 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         z_rf=z_rf,
         improvements=improvements,
         rf_windows=rf_windows,
+        rf_wall_time=rf_wall_time,
+        rf_validation_checks=rf_validation_checks,
         fo_accepts=fo_accepts,
         warm_start_checked=warm_checked,
         warm_start_log_has_mipstart=warm_has_mipstart,
+        warm_start_log_excerpt=warm_log_excerpt,
+        rf_window_diag=rf_window_diag,
     )
 
 
@@ -445,9 +597,13 @@ def write_result(instance_path: Path, params: RunParams, seed: int, result: Math
         "wall_time_total": None,
         "versions": {"gamspy": getattr(__import__("gamspy"), "__version__", None), "solver": "CPLEX"},
         "rf_windows": result.rf_windows,
+        "rf_wall_time": round(result.rf_wall_time, 3),
+        "rf_validation_checks": result.rf_validation_checks,
+        "rf_window_diag": result.rf_window_diag,
         "fo_accepts": result.fo_accepts,
         "warm_start_checked": result.warm_start_checked,
         "warm_start_log_has_mipstart": result.warm_start_log_has_mipstart,
+        "warm_start_log_excerpt": result.warm_start_log_excerpt,
         "run_timestamp": dt.datetime.now().isoformat(timespec="seconds"),
     }
     output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -495,6 +651,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     print(
         f"Z_rf={result.z_rf:.6f} Z_final={result.z_final:.6f} "
         f"rf_windows={result.rf_windows} fo_accepts={result.fo_accepts} "
+        f"rf_wall_time={result.rf_wall_time:.3f}s "
         f"wall_time_total={data['wall_time_total']:.3f}s"
     )
     if result.warm_start_checked and not result.warm_start_log_has_mipstart:
