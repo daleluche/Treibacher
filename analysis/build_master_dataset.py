@@ -178,7 +178,7 @@ def main() -> int:
 
     for method in ["CPLEX22_3h", "ILS_v2"]:
         n = inst.loc[inst.method == method, "instance"].nunique()
-        expected = 47 if method == "CPLEX22_3h" else 50   # 3 missing 3X jsons
+        expected = 50
         flag = "OK" if n == expected else "FAIL"
         if flag == "FAIL":
             ok = False
