@@ -1,0 +1,49 @@
+{
+  "instance": "synthetic_tiny",
+  "dataset": "Synthetic",
+  "method": "rf+fo",
+  "params": {
+    "budget": 60.0,
+    "sigma": 10,
+    "step": 5,
+    "omega": 12,
+    "step_fo": 6,
+    "tl_rf": 120.0,
+    "tl_fo": 60.0,
+    "method": "rf+fo",
+    "start_from": null
+  },
+  "seed": 1,
+  "Z_final": 248.049,
+  "shortage": 248.0,
+  "excess": 49.0,
+  "schedule": [
+    4,
+    8,
+    2,
+    8,
+    5,
+    2,
+    8,
+    2
+  ],
+  "improvements": [
+    {
+      "time_s": 6.064,
+      "Z": 248.049,
+      "phase": "RF",
+      "window_start": 1
+    }
+  ],
+  "Z_rf": 248.049,
+  "wall_time_total": 61.455,
+  "versions": {
+    "gamspy": "1.23.0",
+    "solver": "CPLEX"
+  },
+  "rf_windows": 1,
+  "fo_accepts": 0,
+  "warm_start_checked": true,
+  "warm_start_log_has_mipstart": true,
+  "run_timestamp": "2026-07-04T10:34:30"
+}
