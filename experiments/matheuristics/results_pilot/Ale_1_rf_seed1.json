@@ -1,7 +1,7 @@
 {
   "instance": "Ale_1",
   "dataset": "Real",
-  "method": "rf+fo",
+  "method": "rf",
   "params": {
     "budget": 3600.0,
     "sigma": 10,
@@ -10,104 +10,74 @@
     "step_fo": 6,
     "tl_rf": 120.0,
     "tl_fo": 60.0,
-    "method": "rf+fo",
+    "method": "rf",
     "start_from": null
   },
   "seed": 1,
-  "Z_final": 86850.339,
-  "shortage": 83434.0,
-  "excess": 3416339.0,
+  "Z_final": 91993.707,
+  "shortage": 89002.0,
+  "excess": 2991707.0,
   "schedule": [
     126,
     150,
-    137,
+    159,
     53,
     148,
     147,
     148,
     145,
     146,
+    20,
     150,
-    24,
     145,
+    24,
     143,
-    150,
     139,
     122,
     146,
-    23,
+    150,
     143,
     155,
-    151,
+    24,
+    146,
+    159,
     142,
-    11,
-    158,
-    158
+    0
   ],
   "improvements": [
     {
-      "time_s": 2.985,
+      "time_s": 3.069,
       "Z": 1417592.057,
       "phase": "RF",
       "window_start": 1
     },
     {
-      "time_s": 4.826,
+      "time_s": 4.936,
       "Z": 396615.398,
       "phase": "RF",
       "window_start": 6
     },
     {
-      "time_s": 6.406,
+      "time_s": 6.51,
       "Z": 125200.759,
       "phase": "RF",
       "window_start": 11
     },
     {
-      "time_s": 7.399,
+      "time_s": 7.473,
       "Z": 91993.707,
       "phase": "RF",
       "window_start": 16
-    },
-    {
-      "time_s": 8.735,
-      "Z": 91383.707,
-      "phase": "FO_sweep",
-      "window_start": 1
-    },
-    {
-      "time_s": 12.027,
-      "Z": 90969.037,
-      "phase": "FO_sweep",
-      "window_start": 13
-    },
-    {
-      "time_s": 13.309,
-      "Z": 90901.087,
-      "phase": "FO_sweep",
-      "window_start": 14
-    },
-    {
-      "time_s": 26.512,
-      "Z": 88094.462,
-      "phase": "FO_random",
-      "window_start": 10
-    },
-    {
-      "time_s": 31.306,
-      "Z": 86850.339,
-      "phase": "FO_random",
-      "window_start": 14
     }
   ],
   "Z_rf": 91993.707,
-  "wall_time_total": 3600.02,
+  "wall_time_total": 7.493,
   "versions": {
     "gamspy": "1.23.0",
     "solver": "CPLEX"
   },
   "rf_windows": 4,
-  "rf_wall_time": 7.062,
+  "rf_wall_time": 7.085,
   "rf_validation_checks": [
     {
       "window_start": 1,
@@ -153,7 +123,7 @@
       "window_end": 10,
       "status": "solved",
       "reslim_used": 120.0,
-      "wall_time_s": 2.602,
+      "wall_time_s": 2.636,
       "fixed_until": 0,
       "relaxed_tail": true
     },
@@ -162,7 +132,7 @@
       "window_end": 15,
       "status": "solved",
       "reslim_used": 120.0,
-      "wall_time_s": 1.798,
+      "wall_time_s": 1.823,
       "fixed_until": 5,
       "relaxed_tail": true
     },
@@ -171,7 +141,7 @@
       "window_end": 20,
       "status": "solved",
       "reslim_used": 120.0,
-      "wall_time_s": 1.539,
+      "wall_time_s": 1.534,
       "fixed_until": 10,
       "relaxed_tail": true
     },
@@ -180,21 +150,15 @@
       "window_end": 25,
       "status": "solved",
       "reslim_used": 120.0,
-      "wall_time_s": 0.952,
+      "wall_time_s": 0.921,
       "fixed_until": 15,
       "relaxed_tail": false
     }
   ],
-  "fo_accepts": 5,
-  "warm_start_checked": true,
-  "warm_start_log_has_mipstart": true,
-  "warm_start_log_excerpt": ">>  mipstart 1",
-  "warm_start_log_evidence_lines": [
-    ">>  mipstart 1",
-    "Processing 1 MIP starts.",
-    "MIP start 'm1' defined solution with objective 91993.7070.",
-    "1 of 1 MIP starts provided solutions.",
-    "MIP start 'm1' defined initial solution with objective 91993.7070."
-  ],
-  "run_timestamp": "2026-07-04T14:14:36"
+  "fo_accepts": 0,
+  "warm_start_checked": false,
+  "warm_start_log_has_mipstart": false,
+  "warm_start_log_excerpt": null,
+  "warm_start_log_evidence_lines": [],
+  "run_timestamp": "2026-07-04T13:14:35"
 }

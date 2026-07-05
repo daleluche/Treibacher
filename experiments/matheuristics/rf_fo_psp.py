@@ -58,6 +58,7 @@ class MatheuristicResult:
     warm_start_checked: bool
     warm_start_log_has_mipstart: bool
     warm_start_log_excerpt: str | None
+    warm_start_log_evidence_lines: list[str]
     rf_window_diag: list[dict]
 
 
@@ -455,9 +456,10 @@ def solve_fix_and_optimize(
     warm_checked = False
     warm_has_mipstart = False
     warm_log_excerpt: str | None = None
+    warm_evidence_lines: list[str] = []
 
     def try_window(start: int, end: int, phase: str) -> bool:
-        nonlocal incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt
+        nonlocal incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
         if time_left(start_time, params.budget) < 10.0:
             return False
         window = set(range(start, end))
@@ -469,6 +471,7 @@ def solve_fix_and_optimize(
             normalized_log = log_text.lower()
             warm_has_mipstart = "mip start" in normalized_log or "mipstart" in normalized_log
             warm_log_excerpt = extract_mipstart_excerpt(log_text)
+            warm_evidence_lines = extract_mipstart_evidence(log_text)
         if not solved:
             return False
         candidate = model.extract_schedule(base_schedule=incumbent, periods=window)
@@ -507,7 +510,7 @@ def solve_fix_and_optimize(
             if time_left(start_time, params.budget) <= 0:
                 break
 
-    return incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt
+    return incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
 
 
 def extract_mipstart_excerpt(log_text: str) -> str | None:
@@ -517,6 +520,19 @@ def extract_mipstart_excerpt(log_text: str) -> str | None:
         if "mip start" in normalized or "mipstart" in normalized:
             return line.strip()
     return None
+
+
+def extract_mipstart_evidence(log_text: str) -> list[str]:
+    """Return CPLEX log lines that can evidence MIP start handling."""
+    keywords = ("mip start", "mipstart", "defined initial solution", "initial solution")
+    lines = []
+    for line in log_text.splitlines():
+        normalized = line.lower()
+        if any(keyword in normalized for keyword in keywords):
+            stripped = line.strip()
+            if stripped and stripped not in lines:
+                lines.append(stripped)
+    return lines[:10]
 
 
 def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> MatheuristicResult:
@@ -542,6 +558,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     warm_checked = False
     warm_has_mipstart = False
     warm_log_excerpt = None
+    warm_evidence_lines: list[str] = []
     z_final = z_rf
     if params.method == "rf+fo" and time_left(start_time, params.budget) > 0:
         (
@@ -551,6 +568,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
             warm_checked,
             warm_has_mipstart,
             warm_log_excerpt,
+            warm_evidence_lines,
         ) = solve_fix_and_optimize(
             model, inst, params, start_time, incumbent, improvements, seed
         )
@@ -573,6 +591,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         warm_start_checked=warm_checked,
         warm_start_log_has_mipstart=warm_has_mipstart,
         warm_start_log_excerpt=warm_log_excerpt,
+        warm_start_log_evidence_lines=warm_evidence_lines,
         rf_window_diag=rf_window_diag,
     )
 
@@ -604,6 +623,7 @@ def write_result(instance_path: Path, params: RunParams, seed: int, result: Math
         "warm_start_checked": result.warm_start_checked,
         "warm_start_log_has_mipstart": result.warm_start_log_has_mipstart,
         "warm_start_log_excerpt": result.warm_start_log_excerpt,
+        "warm_start_log_evidence_lines": result.warm_start_log_evidence_lines,
         "run_timestamp": dt.datetime.now().isoformat(timespec="seconds"),
     }
     output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
