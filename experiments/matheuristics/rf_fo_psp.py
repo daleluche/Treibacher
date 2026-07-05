@@ -44,6 +44,7 @@ class RunParams:
     method: str
     start_from: str | None
     threads: int
+    output_suffix: str | None
 
 
 @dataclass
@@ -52,6 +53,7 @@ class MatheuristicResult:
 
     schedule: list[int]
     z_final: float
+    z_best_overall: float
     shortage: float
     excess: float
     z_rf: float
@@ -238,17 +240,17 @@ class PSPGamspyModel:
         records["level"] = [levels[(str(row["j"]), str(row["t"]))] for _, row in records.iterrows()]
         self.X.setRecords(records)
 
-    def solve(self, time_limit: float, mipstart: bool = False) -> tuple[bool, str]:
+    def solve(self, time_limit: float, mipstart: bool = False, optcr: float = 0.001) -> tuple[bool, str]:
         """Solve the current model and return whether a solution was loaded."""
         if time_limit <= 0:
             return False, ""
         output = io.StringIO()
-        solver_options = {"tilim": float(time_limit), "epgap": 0.001, "threads": int(self.threads)}
+        solver_options = {"tilim": float(time_limit), "epgap": float(optcr), "threads": int(self.threads)}
         if mipstart:
             solver_options["mipstart"] = 1
         self.model.solve(
             solver="CPLEX",
-            options=Options(relative_optimality_gap=0.001, time_limit=float(time_limit)),
+            options=Options(relative_optimality_gap=float(optcr), time_limit=float(time_limit)),
             solver_options=solver_options,
             output=output,
         )
@@ -351,7 +353,7 @@ def solve_relax_and_fix(
     """Construct an incumbent with relax-and-fix."""
     rf_start = time.perf_counter()
     windows = make_windows(inst.T, params.sigma, params.step)
-    rf_budget = 0.25 * params.budget
+    rf_budget = min(0.25 * params.budget, len(windows) * params.tl_rf)
     incumbent = np.zeros(inst.T, dtype=np.int64)
     best_z = math.inf
     validation_checks: list[dict] = []
@@ -381,12 +383,12 @@ def solve_relax_and_fix(
 
         model.set_rf_regimes(fixed_until=fixed_until, window=window, incumbent=incumbent)
         solve_start = time.perf_counter()
-        solved, _ = model.solve(tl)
+        solved, _ = model.solve(tl, optcr=0.001)
         solve_wall = time.perf_counter() - solve_start
         if not solved:
             retry_tl = max(5.0, min(2.0 * tl, time_left(start_time, params.budget)))
             retry_start = time.perf_counter()
-            solved, _ = model.solve(retry_tl)
+            solved, _ = model.solve(retry_tl, optcr=0.001)
             solve_wall += time.perf_counter() - retry_start
             tl += retry_tl
 
@@ -461,7 +463,7 @@ def solve_fix_and_optimize(
     incumbent: np.ndarray,
     improvements: list[dict],
     seed: int,
-) -> tuple[np.ndarray, float, int, bool, bool, str | None]:
+) -> tuple[np.ndarray, float, int, bool, bool, str | None, list[str]]:
     """Improve an incumbent with fix-and-optimize windows."""
     rng = random.Random(seed)
     z_inc, _, _ = evaluate(incumbent, inst)
@@ -478,7 +480,11 @@ def solve_fix_and_optimize(
         window = set(range(start, end))
         model.set_fo_regimes(window=window, incumbent=incumbent)
         model.set_mip_start(incumbent)
-        solved, log_text = model.solve(max(5.0, min(params.tl_fo, time_left(start_time, params.budget))), mipstart=True)
+        solved, log_text = model.solve(
+            max(5.0, min(params.tl_fo, time_left(start_time, params.budget))),
+            mipstart=True,
+            optcr=0.01,
+        )
         if not warm_checked:
             warm_checked = True
             normalized_log = log_text.lower()
@@ -616,6 +622,8 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         incumbent, z_rf, rf_windows, rf_wall_time, rf_validation_checks, rf_window_diag = solve_relax_and_fix(
             model, inst, params, start_time, improvements
         )
+    best_schedule = incumbent.copy()
+    z_best_overall = z_rf
 
     fo_accepts = 0
     warm_checked = False
@@ -635,14 +643,19 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         ) = solve_fix_and_optimize(
             model, inst, params, start_time, incumbent, improvements, seed
         )
+        if z_final < z_best_overall - EPS:
+            best_schedule = incumbent.copy()
+            z_best_overall = z_final
 
-    z_final, shortage, excess = evaluate(incumbent, inst)
+    z_final, shortage, excess = evaluate(best_schedule, inst)
+    z_best_overall = z_final
     if z_final > z_rf + EPS and params.method == "rf+fo":
         raise RuntimeError(f"FO worsened incumbent: Z_final={z_final}, Z_rf={z_rf}.")
 
     return MatheuristicResult(
-        schedule=[int(value) for value in incumbent],
+        schedule=[int(value) for value in best_schedule],
         z_final=z_final,
+        z_best_overall=z_best_overall,
         shortage=shortage,
         excess=excess,
         z_rf=z_rf,
@@ -665,7 +678,8 @@ def write_result(instance_path: Path, params: RunParams, seed: int, result: Math
     """Write the result JSON expected by the pilot workflow."""
     inst = load_instance(instance_path)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-    output_path = RESULTS_DIR / f"{inst.name}_{params.method.replace('+', '_')}_seed{seed}.json"
+    suffix = params.output_suffix or ""
+    output_path = RESULTS_DIR / f"{inst.name}_{params.method.replace('+', '_')}_seed{seed}{suffix}.json"
     payload = {
         "instance": inst.name,
         "dataset": inst.dataset,
@@ -673,6 +687,7 @@ def write_result(instance_path: Path, params: RunParams, seed: int, result: Math
         "params": asdict(params),
         "seed": seed,
         "Z_final": round(result.z_final, 6),
+        "Z_best_overall": round(result.z_best_overall, 6),
         "shortage": round(result.shortage, 6),
         "excess": round(result.excess, 6),
         "schedule": result.schedule,
@@ -715,6 +730,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--start-from", default=None)
     parser.add_argument("--method", choices=["rf", "rf+fo"], default="rf+fo")
     parser.add_argument("--threads", type=int, default=0, help="CPLEX threads option; 0 lets CPLEX use all.")
+    parser.add_argument("--output-suffix", default=None, help="Optional suffix before .json, e.g. _v2.")
     return parser.parse_args(argv)
 
 
@@ -732,6 +748,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         method=args.method,
         start_from=args.start_from,
         threads=args.threads,
+        output_suffix=args.output_suffix,
     )
     wall_start = time.perf_counter()
     result = run_matheuristic(args.instance, params, args.seed)
@@ -742,6 +759,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     print(f"Result JSON: {output_path}")
     print(
         f"Z_rf={result.z_rf:.6f} Z_final={result.z_final:.6f} "
+        f"Z_best_overall={result.z_best_overall:.6f} "
         f"rf_windows={result.rf_windows} fo_accepts={result.fo_accepts} "
         f"rf_wall_time={result.rf_wall_time:.3f}s "
         f"wall_time_total={data['wall_time_total']:.3f}s"
