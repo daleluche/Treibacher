@@ -34,7 +34,7 @@ def result_path(instance: str, method: str, seed: int) -> Path:
     return RESULTS_DIR / f"{instance}_{method.replace('+', '_')}_seed{seed}.json"
 
 
-def result_matches(path: Path, method: str, seed: int, budget: float) -> bool:
+def result_matches(path: Path, method: str, seed: int, budget: float, threads: int) -> bool:
     """Return whether an existing JSON matches this pilot run configuration."""
     if not path.exists():
         return False
@@ -47,6 +47,7 @@ def result_matches(path: Path, method: str, seed: int, budget: float) -> bool:
         data.get("method") == method
         and int(data.get("seed", -1)) == seed
         and abs(float(params.get("budget", -1.0)) - budget) < 1e-9
+        and int(params.get("threads", -1)) == threads
     )
 
 
@@ -70,7 +71,7 @@ def should_run(instance: str, method: str, selected: set[str]) -> bool:
     return instance in selected or f"{instance}:{method}" in selected
 
 
-def run_one(instance_path: Path, method: str, budget: float, seed: int) -> None:
+def run_one(instance_path: Path, method: str, budget: float, seed: int, threads: int) -> None:
     """Run one RF/FO command and stream output."""
     cmd = [
         sys.executable,
@@ -83,6 +84,8 @@ def run_one(instance_path: Path, method: str, budget: float, seed: int) -> None:
         str(seed),
         "--method",
         method,
+        "--threads",
+        str(threads),
     ]
     subprocess.run(cmd, cwd=ROOT, check=True)
 
@@ -124,6 +127,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--only", nargs="*", default=None, help="Instances or instance:method pairs to run.")
     parser.add_argument("--force", action="store_true", help="Rerun matching JSONs instead of resuming.")
     parser.add_argument("--dry-run", action="store_true", help="Print selected runs without executing.")
+    parser.add_argument("--threads", type=int, default=0, help="CPLEX threads option; 0 lets CPLEX use all.")
     return parser.parse_args(argv)
 
 
@@ -144,14 +148,14 @@ def main(argv: Iterable[str] | None = None) -> int:
     for idx, (dataset, instance, path, method) in enumerate(planned, start=1):
         out_path = result_path(instance, method, args.seed)
         label = f"{idx}/{len(planned)} {dataset}/{instance} {method}"
-        if not args.force and result_matches(out_path, method, args.seed, args.budget):
+        if not args.force and result_matches(out_path, method, args.seed, args.budget, args.threads):
             print(f"[SKIP] {label}: {out_path}")
             continue
         if args.dry_run:
             print(f"[DRY] {label}: {path}")
             continue
         print(f"[RUN] {label}: budget={args.budget:.0f}s seed={args.seed}")
-        run_one(path, method, args.budget, args.seed)
+        run_one(path, method, args.budget, args.seed, args.threads)
 
     table = summarize_table(args.seed)
     print("\nPilot summary")

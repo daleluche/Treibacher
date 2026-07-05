@@ -6,7 +6,11 @@ import datetime as dt
 import io
 import json
 import math
+import os
+import platform
 import random
+import re
+import subprocess
 import sys
 import time
 from dataclasses import asdict, dataclass
@@ -39,6 +43,7 @@ class RunParams:
     tl_fo: float
     method: str
     start_from: str | None
+    threads: int
 
 
 @dataclass
@@ -60,13 +65,17 @@ class MatheuristicResult:
     warm_start_log_excerpt: str | None
     warm_start_log_evidence_lines: list[str]
     rf_window_diag: list[dict]
+    solver_version: str | None
+    hardware: dict
 
 
 class PSPGamspyModel:
     """Single GAMSPy model with X and XR controlled by bounds."""
 
-    def __init__(self, inst: PSPInstance) -> None:
+    def __init__(self, inst: PSPInstance, threads: int = 0) -> None:
         self.inst = inst
+        self.threads = threads
+        self.solver_version: str | None = None
         self.container = Container()
         self.i_records = inst.products
         self.j_records = [str(j) for j in range(1, inst.J + 1)]
@@ -234,7 +243,7 @@ class PSPGamspyModel:
         if time_limit <= 0:
             return False, ""
         output = io.StringIO()
-        solver_options = {"tilim": float(time_limit), "epgap": 0.001}
+        solver_options = {"tilim": float(time_limit), "epgap": 0.001, "threads": int(self.threads)}
         if mipstart:
             solver_options["mipstart"] = 1
         self.model.solve(
@@ -243,7 +252,11 @@ class PSPGamspyModel:
             solver_options=solver_options,
             output=output,
         )
-        return self.X.records is not None, output.getvalue()
+        log_text = output.getvalue()
+        parsed_version = parse_solver_version(log_text)
+        if parsed_version:
+            self.solver_version = parsed_version
+        return self.X.records is not None, log_text
 
     def extract_schedule(self, base_schedule: np.ndarray | None = None, periods: set[int] | None = None) -> np.ndarray:
         """Extract a 1-indexed schedule from X levels with tolerance."""
@@ -535,11 +548,61 @@ def extract_mipstart_evidence(log_text: str) -> list[str]:
     return lines[:10]
 
 
+def parse_solver_version(log_text: str) -> str | None:
+    """Parse the CPLEX version identifier from solver output."""
+    match = re.search(r"Version identifier:\s*([^|\r\n]+)", log_text)
+    if match:
+        return match.group(1).strip()
+    match = re.search(r"Cplex\s+([0-9]+(?:\.[0-9]+)+)", log_text, flags=re.IGNORECASE)
+    if match:
+        return match.group(1).strip()
+    return None
+
+
+def hardware_provenance() -> dict:
+    """Collect hardware provenance for experimental JSON outputs."""
+    physical = None
+    ram_bytes = None
+    processor_model = None
+    try:
+        import psutil
+
+        physical = psutil.cpu_count(logical=False)
+        ram_bytes = int(psutil.virtual_memory().total)
+    except Exception:
+        physical = None
+        ram_bytes = None
+    if platform.system().lower() == "windows":
+        try:
+            processor_model = subprocess.check_output(
+                [
+                    "powershell",
+                    "-NoProfile",
+                    "-Command",
+                    "(Get-CimInstance Win32_Processor | Select-Object -First 1 -ExpandProperty Name)",
+                ],
+                text=True,
+                stderr=subprocess.DEVNULL,
+                timeout=5,
+            ).strip()
+        except Exception:
+            processor_model = None
+
+    return {
+        "processor": platform.processor(),
+        "processor_model": processor_model or platform.processor(),
+        "cpu_count_logical": os.cpu_count(),
+        "cpu_count_physical": physical,
+        "ram_bytes": ram_bytes,
+        "platform": platform.platform(),
+    }
+
+
 def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> MatheuristicResult:
     """Run RF or RF+FO on one instance."""
     start_time = time.perf_counter()
     inst = load_instance(instance_path)
-    model = PSPGamspyModel(inst)
+    model = PSPGamspyModel(inst, threads=params.threads)
     improvements: list[dict] = []
     rf_wall_time = 0.0
     rf_validation_checks: list[dict] = []
@@ -593,6 +656,8 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         warm_start_log_excerpt=warm_log_excerpt,
         warm_start_log_evidence_lines=warm_evidence_lines,
         rf_window_diag=rf_window_diag,
+        solver_version=model.solver_version,
+        hardware=hardware_provenance(),
     )
 
 
@@ -614,7 +679,12 @@ def write_result(instance_path: Path, params: RunParams, seed: int, result: Math
         "improvements": result.improvements,
         "Z_rf": round(result.z_rf, 6),
         "wall_time_total": None,
-        "versions": {"gamspy": getattr(__import__("gamspy"), "__version__", None), "solver": "CPLEX"},
+        "versions": {
+            "gamspy": getattr(__import__("gamspy"), "__version__", None),
+            "solver": "CPLEX",
+            "solver_version": result.solver_version,
+        },
+        "hardware": result.hardware,
         "rf_windows": result.rf_windows,
         "rf_wall_time": round(result.rf_wall_time, 3),
         "rf_validation_checks": result.rf_validation_checks,
@@ -644,6 +714,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--tl-fo", type=float, default=60.0)
     parser.add_argument("--start-from", default=None)
     parser.add_argument("--method", choices=["rf", "rf+fo"], default="rf+fo")
+    parser.add_argument("--threads", type=int, default=0, help="CPLEX threads option; 0 lets CPLEX use all.")
     return parser.parse_args(argv)
 
 
@@ -660,6 +731,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         tl_fo=args.tl_fo,
         method=args.method,
         start_from=args.start_from,
+        threads=args.threads,
     )
     wall_start = time.perf_counter()
     result = run_matheuristic(args.instance, params, args.seed)
