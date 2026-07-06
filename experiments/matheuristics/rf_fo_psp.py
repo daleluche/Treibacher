@@ -227,6 +227,17 @@ class PSPGamspyModel:
         self._set_variable_records(self.X, x_level, x_lower, x_upper)
         self._set_variable_records(self.XR, xr_level, xr_lower, xr_upper)
 
+    def set_monolithic_mip_regime(self, incumbent: np.ndarray) -> None:
+        """Apply the full MIP regime with all X binary and all XR fixed to zero."""
+        x_level = self._incumbent_matrix(incumbent)
+        x_lower = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        x_upper = np.ones((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_level = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_lower = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        xr_upper = np.zeros((self.inst.J, self.inst.T), dtype=np.float64)
+        self._set_variable_records(self.X, x_level, x_lower, x_upper)
+        self._set_variable_records(self.XR, xr_level, xr_lower, xr_upper)
+
     def set_mip_start(self, incumbent: np.ndarray) -> None:
         """Set X.l from the incumbent schedule before an FO solve."""
         records = self.X.records.copy()
@@ -548,6 +559,45 @@ def solve_fix_and_optimize(
     return incumbent, z_inc, accepts, sweeps_completed, warm_checked, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
 
 
+def solve_monolithic_mip(
+    model: PSPGamspyModel,
+    inst: PSPInstance,
+    params: RunParams,
+    start_time: float,
+    incumbent: np.ndarray,
+    improvements: list[dict],
+) -> tuple[np.ndarray, float, bool, bool, str | None, list[str]]:
+    """Solve the full MIP using the RF incumbent as a MIP start."""
+    z_inc, _, _ = evaluate(incumbent, inst)
+    if time_left(start_time, params.budget) <= 0:
+        return incumbent, z_inc, False, False, None, []
+
+    model.set_monolithic_mip_regime(incumbent)
+    model.set_mip_start(incumbent)
+    solved, log_text = model.solve(time_left(start_time, params.budget), mipstart=True, optcr=0.0)
+    normalized_log = log_text.lower()
+    warm_has_mipstart = "mip start" in normalized_log or "mipstart" in normalized_log
+    warm_log_excerpt = extract_mipstart_excerpt(log_text)
+    warm_evidence_lines = extract_mipstart_evidence(log_text)
+
+    if not solved:
+        return incumbent, z_inc, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+
+    candidate = model.extract_schedule()
+    z_new, _, _ = evaluate(candidate, inst)
+    improvements.append(
+        {
+            "time_s": round(time.perf_counter() - start_time, 3),
+            "Z": round(z_new, 6),
+            "phase": "MIP",
+            "window_start": None,
+        }
+    )
+    if z_new < z_inc - EPS:
+        return candidate, z_new, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+    return incumbent, z_inc, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+
+
 def extract_mipstart_excerpt(log_text: str) -> str | None:
     """Return the first CPLEX log line mentioning a MIP start."""
     for line in log_text.splitlines():
@@ -621,7 +671,7 @@ def hardware_provenance() -> dict:
 
 
 def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> MatheuristicResult:
-    """Run RF or RF+FO on one instance."""
+    """Run RF, RF+FO, or RF+MIP on one instance."""
     start_time = time.perf_counter()
     inst = load_instance(instance_path)
     model = PSPGamspyModel(inst, threads=params.threads)
@@ -664,11 +714,23 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         if z_final < z_best_overall - EPS:
             best_schedule = incumbent.copy()
             z_best_overall = z_final
+    elif params.method == "rf+mip" and time_left(start_time, params.budget) > 0:
+        (
+            incumbent,
+            z_final,
+            warm_checked,
+            warm_has_mipstart,
+            warm_log_excerpt,
+            warm_evidence_lines,
+        ) = solve_monolithic_mip(model, inst, params, start_time, incumbent, improvements)
+        if z_final < z_best_overall - EPS:
+            best_schedule = incumbent.copy()
+            z_best_overall = z_final
 
     z_final, shortage, excess = evaluate(best_schedule, inst)
     z_best_overall = z_final
-    if z_final > z_rf + EPS and params.method == "rf+fo":
-        raise RuntimeError(f"FO worsened incumbent: Z_final={z_final}, Z_rf={z_rf}.")
+    if z_final > z_rf + EPS and params.method in {"rf+fo", "rf+mip"}:
+        raise RuntimeError(f"Improvement phase worsened incumbent: Z_final={z_final}, Z_rf={z_rf}.")
 
     return MatheuristicResult(
         schedule=[int(value) for value in best_schedule],
@@ -754,7 +816,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--tl-rf", type=float, default=120.0)
     parser.add_argument("--tl-fo", type=float, default=60.0)
     parser.add_argument("--start-from", default=None)
-    parser.add_argument("--method", choices=["rf", "rf+fo"], default="rf+fo")
+    parser.add_argument("--method", choices=["rf", "rf+fo", "rf+mip"], default="rf+fo")
     parser.add_argument("--threads", type=int, default=0, help="CPLEX threads option; 0 lets CPLEX use all.")
     parser.add_argument("--output-suffix", default=None, help="Optional suffix before .json, e.g. _v2.")
     return parser.parse_args(argv)
