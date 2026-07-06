@@ -1,0 +1,154 @@
+{
+  "seed": 20260706,
+  "base_instances": [
+    "Ale_2",
+    "Ale_3",
+    "Ale_4",
+    "Ale_5",
+    "Ale_6"
+  ],
+  "generated": [
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_1",
+      "base_instance": "Ale_2",
+      "factor": 8,
+      "seed": 20268707,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_1.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_2",
+      "base_instance": "Ale_3",
+      "factor": 8,
+      "seed": 20268708,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_2.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_3",
+      "base_instance": "Ale_4",
+      "factor": 8,
+      "seed": 20268709,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_3.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_4",
+      "base_instance": "Ale_5",
+      "factor": 8,
+      "seed": 20268710,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_4.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_5",
+      "base_instance": "Ale_6",
+      "factor": 8,
+      "seed": 20268711,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_5.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_1",
+      "base_instance": "Ale_2",
+      "factor": 10,
+      "seed": 20270707,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_1.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_2",
+      "base_instance": "Ale_3",
+      "factor": 10,
+      "seed": 20270708,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_2.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_3",
+      "base_instance": "Ale_4",
+      "factor": 10,
+      "seed": 20270709,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_3.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_4",
+      "base_instance": "Ale_5",
+      "factor": 10,
+      "seed": 20270710,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_4.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_5",
+      "base_instance": "Ale_6",
+      "factor": 10,
+      "seed": 20270711,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_5.py"
+    }
+  ],
+  "validation_2x": {
+    "total_demand": {
+      "existing": 558800.0,
+      "synthetic": 558800.0,
+      "relative_difference": 0.0,
+      "passed": true
+    },
+    "nonzero_records": {
+      "existing": 286.2,
+      "synthetic": 286.4,
+      "relative_difference": 0.0006988120195666968,
+      "passed": true
+    },
+    "nonzero_per_product_mean": {
+      "existing": 5.723999999999999,
+      "synthetic": 5.728,
+      "relative_difference": 0.0006988120195668148,
+      "passed": true
+    },
+    "nonzero_per_product_std": {
+      "existing": 4.276542181163696,
+      "synthetic": 4.26117636349681,
+      "relative_difference": 0.00359304714321891,
+      "passed": true
+    },
+    "demand_per_product_mean": {
+      "existing": 11176.0,
+      "synthetic": 11176.0,
+      "relative_difference": 0.0,
+      "passed": true
+    },
+    "demand_per_product_std": {
+      "existing": 14463.741701233468,
+      "synthetic": 14463.741701233468,
+      "relative_difference": 0.0,
+      "passed": true
+    },
+    "demand_per_period_mean": {
+      "existing": 14705.263157894738,
+      "synthetic": 14705.263157894737,
+      "relative_difference": 1.2369648771428515e-16,
+      "passed": true
+    },
+    "demand_per_period_std": {
+      "existing": 12386.668573050401,
+      "synthetic": 11169.911996075134,
+      "relative_difference": 0.09823114018102956,
+      "passed": true
+    },
+    "positive_quantity_mean": {
+      "existing": 1955.6585797546693,
+      "synthetic": 1954.8886623301591,
+      "relative_difference": 0.000393687033350537,
+      "passed": true
+    },
+    "positive_quantity_std": {
+      "existing": 3212.0105514913794,
+      "synthetic": 3133.943119673478,
+      "relative_difference": 0.02430484911752656,
+      "passed": true
+    }
+  }
+}
