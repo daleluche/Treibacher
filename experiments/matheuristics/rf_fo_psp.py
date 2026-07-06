@@ -598,6 +598,37 @@ def solve_monolithic_mip(
     return incumbent, z_inc, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
 
 
+def solve_cold_monolithic_mip(
+    model: PSPGamspyModel,
+    inst: PSPInstance,
+    params: RunParams,
+    start_time: float,
+    improvements: list[dict],
+) -> tuple[np.ndarray, float]:
+    """Solve the full MIP without a warm start."""
+    incumbent = np.zeros(inst.T, dtype=np.int64)
+    z_inc, _, _ = evaluate(incumbent, inst)
+    if time_left(start_time, params.budget) <= 0:
+        return incumbent, z_inc
+
+    model.set_monolithic_mip_regime(incumbent)
+    solved, _ = model.solve(time_left(start_time, params.budget), mipstart=False, optcr=0.0)
+    if not solved:
+        return incumbent, z_inc
+
+    candidate = model.extract_schedule()
+    z_new, _, _ = evaluate(candidate, inst)
+    improvements.append(
+        {
+            "time_s": round(time.perf_counter() - start_time, 3),
+            "Z": round(z_new, 6),
+            "phase": "MIP",
+            "window_start": None,
+        }
+    )
+    return candidate, z_new
+
+
 def extract_mipstart_excerpt(log_text: str) -> str | None:
     """Return the first CPLEX log line mentioning a MIP start."""
     for line in log_text.splitlines():
@@ -671,7 +702,7 @@ def hardware_provenance() -> dict:
 
 
 def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> MatheuristicResult:
-    """Run RF, RF+FO, or RF+MIP on one instance."""
+    """Run RF, RF+FO, RF+MIP, or cold MIP on one instance."""
     start_time = time.perf_counter()
     inst = load_instance(instance_path)
     model = PSPGamspyModel(inst, threads=params.threads)
@@ -680,7 +711,10 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     rf_validation_checks: list[dict] = []
     rf_window_diag: list[dict] = []
 
-    if params.start_from:
+    if params.method == "mip":
+        incumbent, z_rf = solve_cold_monolithic_mip(model, inst, params, start_time, improvements)
+        rf_windows = 0
+    elif params.start_from:
         incumbent = incumbent_from_json(Path(params.start_from), inst)
         z_rf, _, _ = evaluate(incumbent, inst)
         rf_windows = 0
@@ -816,7 +850,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--tl-rf", type=float, default=120.0)
     parser.add_argument("--tl-fo", type=float, default=60.0)
     parser.add_argument("--start-from", default=None)
-    parser.add_argument("--method", choices=["rf", "rf+fo", "rf+mip"], default="rf+fo")
+    parser.add_argument("--method", choices=["rf", "rf+fo", "rf+mip", "mip"], default="rf+fo")
     parser.add_argument("--threads", type=int, default=0, help="CPLEX threads option; 0 lets CPLEX use all.")
     parser.add_argument("--output-suffix", default=None, help="Optional suffix before .json, e.g. _v2.")
     return parser.parse_args(argv)
