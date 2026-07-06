@@ -62,6 +62,7 @@ class MatheuristicResult:
     rf_wall_time: float
     rf_validation_checks: list[dict]
     fo_accepts: int
+    fo_sweeps_completed: int
     warm_start_checked: bool
     warm_start_log_has_mipstart: bool
     warm_start_log_excerpt: str | None
@@ -463,11 +464,12 @@ def solve_fix_and_optimize(
     incumbent: np.ndarray,
     improvements: list[dict],
     seed: int,
-) -> tuple[np.ndarray, float, int, bool, bool, str | None, list[str]]:
+) -> tuple[np.ndarray, float, int, int, bool, bool, str | None, list[str]]:
     """Improve an incumbent with fix-and-optimize windows."""
     rng = random.Random(seed)
     z_inc, _, _ = evaluate(incumbent, inst)
     accepts = 0
+    sweeps_completed = 0
     warm_checked = False
     warm_has_mipstart = False
     warm_log_excerpt: str | None = None
@@ -511,25 +513,39 @@ def solve_fix_and_optimize(
         return False
 
     improved_in_sweep = True
-    while time_left(start_time, params.budget) > 0 and improved_in_sweep:
+    while time_left(start_time, params.budget) >= 10.0 and improved_in_sweep:
         improved_in_sweep = False
+        completed = True
         for start, end in make_windows(inst.T, params.omega, params.step_fo):
-            improved_in_sweep |= try_window(start, end, "FO_sweep")
-            if time_left(start_time, params.budget) <= 0:
+            if time_left(start_time, params.budget) < 10.0:
+                completed = False
                 break
+            improved_in_sweep |= try_window(start, end, "FO_sweep")
+            if time_left(start_time, params.budget) < 10.0:
+                completed = False
+                break
+        if completed:
+            sweeps_completed += 1
 
-    while time_left(start_time, params.budget) > 0:
+    while time_left(start_time, params.budget) >= 10.0:
         offset = rng.randrange(max(1, min(params.omega, inst.T)))
         starts = list(range(offset, inst.T, params.omega))
         if offset > 0:
             starts.insert(0, 0)
+        completed = True
         for start in starts:
+            if time_left(start_time, params.budget) < 10.0:
+                completed = False
+                break
             end = min(inst.T, start + params.omega)
             try_window(start, end, "FO_random")
-            if time_left(start_time, params.budget) <= 0:
+            if time_left(start_time, params.budget) < 10.0:
+                completed = False
                 break
+        if completed:
+            sweeps_completed += 1
 
-    return incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+    return incumbent, z_inc, accepts, sweeps_completed, warm_checked, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
 
 
 def extract_mipstart_excerpt(log_text: str) -> str | None:
@@ -626,6 +642,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     z_best_overall = z_rf
 
     fo_accepts = 0
+    fo_sweeps_completed = 0
     warm_checked = False
     warm_has_mipstart = False
     warm_log_excerpt = None
@@ -636,6 +653,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
             incumbent,
             z_final,
             fo_accepts,
+            fo_sweeps_completed,
             warm_checked,
             warm_has_mipstart,
             warm_log_excerpt,
@@ -664,6 +682,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         rf_wall_time=rf_wall_time,
         rf_validation_checks=rf_validation_checks,
         fo_accepts=fo_accepts,
+        fo_sweeps_completed=fo_sweeps_completed,
         warm_start_checked=warm_checked,
         warm_start_log_has_mipstart=warm_has_mipstart,
         warm_start_log_excerpt=warm_log_excerpt,
@@ -674,12 +693,18 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     )
 
 
-def write_result(instance_path: Path, params: RunParams, seed: int, result: MatheuristicResult) -> Path:
+def write_result(
+    instance_path: Path,
+    params: RunParams,
+    seed: int,
+    result: MatheuristicResult,
+    output_dir: Path = RESULTS_DIR,
+) -> Path:
     """Write the result JSON expected by the pilot workflow."""
     inst = load_instance(instance_path)
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_dir.mkdir(parents=True, exist_ok=True)
     suffix = params.output_suffix or ""
-    output_path = RESULTS_DIR / f"{inst.name}_{params.method.replace('+', '_')}_seed{seed}{suffix}.json"
+    output_path = output_dir / f"{inst.name}_{params.method.replace('+', '_')}_seed{seed}{suffix}.json"
     payload = {
         "instance": inst.name,
         "dataset": inst.dataset,
@@ -705,6 +730,7 @@ def write_result(instance_path: Path, params: RunParams, seed: int, result: Math
         "rf_validation_checks": result.rf_validation_checks,
         "rf_window_diag": result.rf_window_diag,
         "fo_accepts": result.fo_accepts,
+        "fo_sweeps_completed": result.fo_sweeps_completed,
         "warm_start_checked": result.warm_start_checked,
         "warm_start_log_has_mipstart": result.warm_start_log_has_mipstart,
         "warm_start_log_excerpt": result.warm_start_log_excerpt,
@@ -761,6 +787,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         f"Z_rf={result.z_rf:.6f} Z_final={result.z_final:.6f} "
         f"Z_best_overall={result.z_best_overall:.6f} "
         f"rf_windows={result.rf_windows} fo_accepts={result.fo_accepts} "
+        f"fo_sweeps_completed={result.fo_sweeps_completed} "
         f"rf_wall_time={result.rf_wall_time:.3f}s "
         f"wall_time_total={data['wall_time_total']:.3f}s"
     )
