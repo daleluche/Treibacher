@@ -316,8 +316,24 @@ def make_windows(length: int, width: int, step: int) -> list[tuple[int, int]]:
     return windows
 
 
+def evaluate_prefix(schedule: np.ndarray, inst: PSPInstance, last_period: int) -> float:
+    """Evaluate the PSP objective accumulated through a prefix of periods."""
+    production = np.zeros(inst.I, dtype=float)
+    objective = 0.0
+    for period in range(last_period + 1):
+        process = int(schedule[period])
+        if process > 0:
+            production += inst.A[:, process - 1]
+        demand = inst.D[:, : period + 1].sum(axis=1)
+        balance = production - demand
+        shortage = np.maximum(-balance, 0.0)
+        excess = np.maximum(balance, 0.0)
+        objective += float(shortage.sum() + 0.001 * excess.sum())
+    return objective
+
+
 def greedy_fill_window(inst: PSPInstance, schedule: np.ndarray, start: int, end: int) -> np.ndarray:
-    """Fill a window with the process that minimizes the current full objective."""
+    """Fill a window by greedily minimizing the prefix objective period by period."""
     candidate = schedule.copy()
     for period in range(start, end):
         best_process = 0
@@ -325,7 +341,7 @@ def greedy_fill_window(inst: PSPInstance, schedule: np.ndarray, start: int, end:
         for process in range(0, inst.J + 1):
             trial = candidate.copy()
             trial[period] = process
-            z_value, _, _ = evaluate(trial, inst)
+            z_value = evaluate_prefix(trial, inst, period)
             if z_value < best_z:
                 best_z = z_value
                 best_process = process
