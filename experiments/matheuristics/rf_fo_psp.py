@@ -28,6 +28,7 @@ from experiments.matheuristics.psp_instance import PSPInstance, evaluate, load_i
 
 RESULTS_DIR = Path(__file__).resolve().parent / "results_pilot"
 EPS = 1e-6
+MIN_RF_WINDOW_TL = 5.0
 
 
 @dataclass(frozen=True)
@@ -53,6 +54,8 @@ class MatheuristicResult:
 
     schedule: list[int]
     construction: str
+    z_greedy: float | None
+    greedy_wall_time: float
     z_final: float
     z_best_overall: float
     shortage: float
@@ -253,10 +256,10 @@ class PSPGamspyModel:
         records["level"] = [levels[(str(row["j"]), str(row["t"]))] for _, row in records.iterrows()]
         self.X.setRecords(records)
 
-    def solve(self, time_limit: float, mipstart: bool = False, optcr: float = 0.001) -> tuple[bool, str]:
+    def solve(self, time_limit: float, mipstart: bool = False, optcr: float = 0.001) -> tuple[bool, str, str]:
         """Solve the current model and return whether a solution was loaded."""
         if time_limit <= 0:
-            return False, ""
+            return False, "", "NoTime"
         output = io.StringIO()
         solver_options = {"tilim": float(time_limit), "epgap": float(optcr), "threads": int(self.threads)}
         if mipstart:
@@ -271,7 +274,7 @@ class PSPGamspyModel:
         parsed_version = parse_solver_version(log_text)
         if parsed_version:
             self.solver_version = parsed_version
-        return self.X.records is not None, log_text
+        return self.X.records is not None, log_text, str(self.model.solve_status)
 
     def extract_schedule(self, base_schedule: np.ndarray | None = None, periods: set[int] | None = None) -> np.ndarray:
         """Extract a 1-indexed schedule from X levels with tolerance."""
@@ -372,6 +375,16 @@ def time_left(start_time: float, budget: float) -> float:
     return max(0.0, budget - (time.perf_counter() - start_time))
 
 
+def classify_window_status(has_solution: bool, solve_status: str, log_text: str) -> str:
+    """Classify a window solve status for downstream window-log datasets."""
+    evidence = f"{solve_status}\n{log_text}".lower()
+    if not has_solution:
+        return "no_solution"
+    if "resourceinterrupt" in evidence or "resource interrupt" in evidence:
+        return "interrupted"
+    return "solved"
+
+
 def solve_relax_and_fix(
     model: PSPGamspyModel,
     inst: PSPInstance,
@@ -391,7 +404,8 @@ def solve_relax_and_fix(
     completed_with_solver = False
 
     for idx, (start, end) in enumerate(windows):
-        if time_left(start_time, params.budget) < 10.0:
+        rf_elapsed = time.perf_counter() - rf_start
+        if rf_elapsed >= rf_budget or time_left(start_time, params.budget) < 10.0:
             incumbent = greedy_fill_window(inst, incumbent, start, inst.T)
             window_diag.append(
                 {
@@ -405,25 +419,38 @@ def solve_relax_and_fix(
             break
         fixed_until = start
         window = set(range(start, end))
-        remaining_rf = max(0.0, rf_budget - (time.perf_counter() - start_time))
+        remaining_rf = max(0.0, rf_budget - rf_elapsed)
         remaining_total = time_left(start_time, params.budget)
         remaining_windows = max(1, len(windows) - idx)
-        tl = max(5.0, min(params.tl_rf, remaining_rf / remaining_windows, remaining_total))
+        tl = min(params.tl_rf, remaining_rf / remaining_windows, remaining_total)
+        if tl < MIN_RF_WINDOW_TL:
+            incumbent = greedy_fill_window(inst, incumbent, start, inst.T)
+            window_diag.append(
+                {
+                    "window_start": start + 1,
+                    "window_end": end,
+                    "status": "budget_guard_greedy_tail",
+                    "reslim_used": 0.0,
+                    "wall_time_s": 0.0,
+                }
+            )
+            break
 
         model.set_rf_regimes(fixed_until=fixed_until, window=window, incumbent=incumbent)
         solve_start = time.perf_counter()
-        solved, _ = model.solve(tl, optcr=0.001)
+        solved, log_text, solve_status = model.solve(tl, optcr=0.001)
         solve_wall = time.perf_counter() - solve_start
         if not solved:
-            retry_tl = max(5.0, min(2.0 * tl, time_left(start_time, params.budget)))
-            retry_start = time.perf_counter()
-            solved, _ = model.solve(retry_tl, optcr=0.001)
-            solve_wall += time.perf_counter() - retry_start
-            tl += retry_tl
+            retry_tl = min(tl, max(0.0, rf_budget - (time.perf_counter() - rf_start)), time_left(start_time, params.budget))
+            if retry_tl > 0.0:
+                retry_start = time.perf_counter()
+                solved, log_text, solve_status = model.solve(retry_tl, optcr=0.001)
+                solve_wall += time.perf_counter() - retry_start
+                tl += retry_tl
 
         if solved:
             incumbent = model.extract_schedule(base_schedule=incumbent, periods=window)
-            status = "solved"
+            status = classify_window_status(solved, solve_status, log_text)
             completed_with_solver = end == inst.T
         else:
             incumbent = greedy_fill_window(inst, incumbent, start, end)
@@ -542,7 +569,7 @@ def solve_fix_and_optimize(
         window = set(range(start, end))
         model.set_fo_regimes(window=window, incumbent=incumbent)
         model.set_mip_start(incumbent)
-        solved, log_text = model.solve(
+        solved, log_text, _ = model.solve(
             max(5.0, min(params.tl_fo, time_left(start_time, params.budget))),
             mipstart=True,
             optcr=0.01,
@@ -623,7 +650,7 @@ def solve_monolithic_mip(
 
     model.set_monolithic_mip_regime(incumbent)
     model.set_mip_start(incumbent)
-    solved, log_text = model.solve(time_left(start_time, params.budget), mipstart=True, optcr=0.0)
+    solved, log_text, _ = model.solve(time_left(start_time, params.budget), mipstart=True, optcr=0.0)
     normalized_log = log_text.lower()
     warm_has_mipstart = "mip start" in normalized_log or "mipstart" in normalized_log
     warm_log_excerpt = extract_mipstart_excerpt(log_text)
@@ -661,7 +688,7 @@ def solve_cold_monolithic_mip(
         return incumbent, z_inc
 
     model.set_monolithic_mip_regime(incumbent)
-    solved, _ = model.solve(time_left(start_time, params.budget), mipstart=False, optcr=0.0)
+    solved, _, _ = model.solve(time_left(start_time, params.budget), mipstart=False, optcr=0.0)
     if not solved:
         return incumbent, z_inc
 
@@ -760,6 +787,8 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     rf_validation_checks: list[dict] = []
     rf_window_diag: list[dict] = []
     construction = "rf"
+    z_greedy: float | None = None
+    greedy_wall_time = 0.0
 
     if params.method == "mip":
         incumbent, z_rf = solve_cold_monolithic_mip(model, inst, params, start_time, improvements)
@@ -771,18 +800,30 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         rf_windows = 0
         construction = "external"
     else:
+        greedy_incumbent, z_greedy, greedy_wall_time, greedy_diag = solve_greedy_construction(
+            inst, start_time, improvements
+        )
         rf_windows_plan = make_windows(inst.T, params.sigma, params.step)
         rf_budget = min(0.25 * params.budget, len(rf_windows_plan) * params.tl_rf)
         if rf_budget / len(rf_windows_plan) < 10.0:
             construction = "greedy"
-            incumbent, z_rf, rf_wall_time, rf_window_diag = solve_greedy_construction(inst, start_time, improvements)
+            incumbent = greedy_incumbent
+            z_rf = z_greedy
             rf_windows = 0
+            rf_window_diag = greedy_diag
         else:
-            incumbent, z_rf, rf_windows, rf_wall_time, rf_validation_checks, rf_window_diag = solve_relax_and_fix(
+            rf_incumbent, z_rf, rf_windows, rf_wall_time, rf_validation_checks, rf_window_diag = solve_relax_and_fix(
                 model, inst, params, start_time, improvements
             )
+            if z_greedy <= z_rf + EPS:
+                incumbent = greedy_incumbent
+                construction = "greedy_floor"
+            else:
+                incumbent = rf_incumbent
+                construction = "rf"
     best_schedule = incumbent.copy()
-    z_best_overall = z_rf
+    z_best_overall, _, _ = evaluate(incumbent, inst)
+    z_initial = z_best_overall
 
     fo_accepts = 0
     fo_sweeps_completed = 0
@@ -790,7 +831,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     warm_has_mipstart = False
     warm_log_excerpt = None
     warm_evidence_lines: list[str] = []
-    z_final = z_rf
+    z_final = z_best_overall
     if params.method == "rf+fo" and time_left(start_time, params.budget) > 0:
         (
             incumbent,
@@ -822,12 +863,14 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
 
     z_final, shortage, excess = evaluate(best_schedule, inst)
     z_best_overall = z_final
-    if z_final > z_rf + EPS and params.method in {"rf+fo", "rf+mip"}:
-        raise RuntimeError(f"Improvement phase worsened incumbent: Z_final={z_final}, Z_rf={z_rf}.")
+    if z_final > z_initial + EPS and params.method in {"rf+fo", "rf+mip"}:
+        raise RuntimeError(f"Improvement phase worsened incumbent: Z_final={z_final}, Z_start={z_initial}.")
 
     return MatheuristicResult(
         schedule=[int(value) for value in best_schedule],
         construction=construction,
+        z_greedy=z_greedy,
+        greedy_wall_time=greedy_wall_time,
         z_final=z_final,
         z_best_overall=z_best_overall,
         shortage=shortage,
@@ -866,10 +909,12 @@ def write_result(
         "dataset": inst.dataset,
         "method": params.method,
         "construction": result.construction,
+        "construction_used": result.construction,
         "params": asdict(params),
         "seed": seed,
         "Z_final": round(result.z_final, 6),
         "Z_best_overall": round(result.z_best_overall, 6),
+        "Z_greedy": None if result.z_greedy is None else round(result.z_greedy, 6),
         "shortage": round(result.shortage, 6),
         "excess": round(result.excess, 6),
         "schedule": result.schedule,
@@ -884,6 +929,8 @@ def write_result(
         "hardware": result.hardware,
         "rf_windows": result.rf_windows,
         "rf_wall_time": round(result.rf_wall_time, 3),
+        "rf_wall_time_s": round(result.rf_wall_time, 3),
+        "greedy_wall_time_s": round(result.greedy_wall_time, 3),
         "rf_validation_checks": result.rf_validation_checks,
         "rf_window_diag": result.rf_window_diag,
         "fo_accepts": result.fo_accepts,
@@ -944,10 +991,12 @@ def main(argv: Iterable[str] | None = None) -> int:
     print(
         f"Z_rf={result.z_rf:.6f} Z_final={result.z_final:.6f} "
         f"Z_best_overall={result.z_best_overall:.6f} "
+        f"Z_greedy={result.z_greedy if result.z_greedy is not None else 'NA'} "
         f"construction={result.construction} "
         f"rf_windows={result.rf_windows} fo_accepts={result.fo_accepts} "
         f"fo_sweeps_completed={result.fo_sweeps_completed} "
         f"rf_wall_time={result.rf_wall_time:.3f}s "
+        f"greedy_wall_time={result.greedy_wall_time:.3f}s "
         f"wall_time_total={data['wall_time_total']:.3f}s"
     )
     if result.warm_start_checked and not result.warm_start_log_has_mipstart:
