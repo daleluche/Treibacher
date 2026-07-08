@@ -2,13 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import json
 import re
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
-
-import numpy as np
 
 if __package__ in (None, ""):
     import sys
@@ -21,19 +20,8 @@ ROOT = Path(__file__).resolve().parents[2]
 GAMSPY_DIR = ROOT / "experiments" / "GAMSPy"
 REAL_DIR = GAMSPY_DIR / "Real"
 DEFAULT_BASES = ("Ale_2", "Ale_3", "Ale_4", "Ale_5", "Ale_6")
-DEFAULT_SEED = 20260706
-VALIDATION_KEYS = (
-    "total_demand",
-    "nonzero_records",
-    "nonzero_per_product_mean",
-    "nonzero_per_product_std",
-    "demand_per_product_mean",
-    "demand_per_product_std",
-    "demand_per_period_mean",
-    "demand_per_period_std",
-    "positive_quantity_mean",
-    "positive_quantity_std",
-)
+VALIDATION_BASES = tuple(f"Ale_{idx}" for idx in range(2, 11))
+DEFAULT_PROVENANCE_SEED = 20260706
 
 
 @dataclass(frozen=True)
@@ -44,7 +32,7 @@ class GeneratedInstance:
     instance: str
     base_instance: str
     factor: int
-    seed: int
+    provenance_seed: int
     path: Path
 
 
@@ -77,6 +65,18 @@ def replace_num_periods(text: str, periods: int) -> str:
     return text
 
 
+def base_suffix(base_name: str) -> int:
+    """Return the numeric suffix from an Ale_j instance name."""
+    return int(base_name.rsplit("_", 1)[1])
+
+
+def inct_instance_name(factor: int, suffix: int) -> str:
+    """Return the historical IncT instance name for a factor and Ale suffix."""
+    if factor == 2:
+        return f"IncT2X_{suffix}"
+    return f"IncT{factor}x_{suffix}"
+
+
 def demand_records_literal(records: list[list[object]]) -> str:
     """Format D_RECORDS as a stable Python list literal."""
     lines = ["["]
@@ -105,7 +105,7 @@ def generate_demand_records(inst: PSPInstance, factor: int) -> list[list[object]
     return records
 
 
-def render_instance(template_path: Path, dataset: str, instance: str, factor: int, seed: int) -> str:
+def render_instance(template_path: Path, dataset: str, instance: str, factor: int) -> str:
     """Render one generated GAMSPy instance script from a real-instance template."""
     template = template_path.read_text(encoding="utf-8")
     base = load_instance(template_path)
@@ -126,7 +126,7 @@ def render_instance(template_path: Path, dataset: str, instance: str, factor: in
 def generate_set(
     factor: int,
     count: int,
-    seed: int,
+    provenance_seed: int,
     output_root: Path,
     bases: Iterable[str] = DEFAULT_BASES,
     dry_run: bool = False,
@@ -141,11 +141,11 @@ def generate_set(
         output_dir.mkdir(parents=True, exist_ok=True)
 
     generated = []
-    for idx, base_name in enumerate(selected_bases, start=1):
-        instance = f"IncT{factor}x_{idx}"
-        instance_seed = seed + factor * 1000 + idx
+    for base_name in selected_bases:
+        suffix = base_suffix(base_name)
+        instance = inct_instance_name(factor, suffix)
         template_path = REAL_DIR / f"{base_name}.py"
-        text = render_instance(template_path, dataset=dataset, instance=instance, factor=factor, seed=instance_seed)
+        text = render_instance(template_path, dataset=dataset, instance=instance, factor=factor)
         output_path = output_dir / f"{instance}.py"
         if not dry_run:
             output_path.write_text(text, encoding="utf-8")
@@ -155,41 +155,35 @@ def generate_set(
                 instance=instance,
                 base_instance=base_name,
                 factor=factor,
-                seed=instance_seed,
+                provenance_seed=provenance_seed,
                 path=output_path,
             )
         )
     return generated
 
 
-def instance_stats(paths: Iterable[Path]) -> dict[str, float]:
-    """Compute aggregate demand statistics for a collection of instances."""
-    per_instance = []
-    for path in paths:
-        inst = load_instance(path)
-        demand = inst.D
-        positive = demand[demand > 0]
-        per_instance.append(
-            {
-                "total_demand": float(demand.sum()),
-                "nonzero_records": float((demand > 0).sum()),
-                "nonzero_per_product_mean": float((demand > 0).sum(axis=1).mean()),
-                "nonzero_per_product_std": float((demand > 0).sum(axis=1).std(ddof=0)),
-                "demand_per_product_mean": float(demand.sum(axis=1).mean()),
-                "demand_per_product_std": float(demand.sum(axis=1).std(ddof=0)),
-                "demand_per_period_mean": float(demand.sum(axis=0).mean()),
-                "demand_per_period_std": float(demand.sum(axis=0).std(ddof=0)),
-                "positive_quantity_mean": float(positive.mean()),
-                "positive_quantity_std": float(positive.std(ddof=0)),
-            }
-        )
-    if not per_instance:
-        raise ValueError("No instances supplied for statistics.")
-    return {key: float(np.mean([row[key] for row in per_instance])) for key in VALIDATION_KEYS}
+def normalized_records(text: str, varname: str) -> list[tuple[str, str, float]]:
+    """Return normalized literal records for exact comparisons."""
+    _, _, literal = extract_list_literal(text, varname)
+    return [(str(first), str(second), float(value)) for first, second, value in ast.literal_eval(literal)]
 
 
-def validate_against_existing_2x(seed: int, tolerance: float = 0.15) -> dict[str, dict[str, float | bool]]:
-    """Generate a temporary 2X set and compare aggregate statistics to existing 2X."""
+def scalar_int(text: str, varname: str) -> int:
+    """Return an integer scalar assignment from generated instance text."""
+    match = re.search(rf"^{re.escape(varname)}\s*=\s*(\d+)", text, flags=re.MULTILINE)
+    if not match:
+        raise ValueError(f"{varname} assignment not found.")
+    return int(match.group(1))
+
+
+def products_literal(text: str) -> list[str]:
+    """Return the PRODUCTS list from generated instance text."""
+    _, _, literal = extract_list_literal(text, "PRODUCTS")
+    return [str(item) for item in ast.literal_eval(literal)]
+
+
+def validate_exact_existing_families() -> dict[str, object]:
+    """Validate exact regeneration of IncT2X--IncT5x for Ale_2..Ale_10."""
     temp_root = ROOT / "experiments" / "instance_generator" / "_tmp_validation"
     if temp_root.exists():
         for path in sorted(temp_root.rglob("*"), reverse=True):
@@ -197,33 +191,58 @@ def validate_against_existing_2x(seed: int, tolerance: float = 0.15) -> dict[str
                 path.unlink()
             elif path.is_dir():
                 path.rmdir()
-    generated = generate_set(2, count=5, seed=seed, output_root=temp_root, dry_run=False)
-    synthetic_stats = instance_stats(item.path for item in generated)
-    existing_stats = instance_stats(sorted((GAMSPY_DIR / "2X").glob("*.py")))
-    report: dict[str, dict[str, float | bool]] = {}
-    for key in VALIDATION_KEYS:
-        existing = existing_stats[key]
-        synthetic = synthetic_stats[key]
-        rel_diff = 0.0 if existing == 0 else abs(synthetic - existing) / abs(existing)
-        report[key] = {
-            "existing": existing,
-            "synthetic": synthetic,
-            "relative_difference": rel_diff,
-            "passed": bool(rel_diff <= tolerance),
-        }
+
+    failures: list[dict[str, str]] = []
+    checked = 0
+    for factor in (2, 3, 4, 5):
+        dataset = f"{factor}X"
+        for base_name in VALIDATION_BASES:
+            suffix = base_suffix(base_name)
+            instance = inct_instance_name(factor, suffix)
+            existing_path = GAMSPY_DIR / dataset / f"{instance}.py"
+            generated_text = render_instance(
+                REAL_DIR / f"{base_name}.py",
+                dataset=dataset,
+                instance=instance,
+                factor=factor,
+            )
+            existing_text = existing_path.read_text(encoding="utf-8")
+            checked += 1
+            checks = {
+                "NUM_PERIODS": scalar_int(generated_text, "NUM_PERIODS") == scalar_int(existing_text, "NUM_PERIODS"),
+                "PRODUCTS": products_literal(generated_text) == products_literal(existing_text),
+                "A_RECORDS": normalized_records(generated_text, "A_RECORDS")
+                == normalized_records(existing_text, "A_RECORDS"),
+                "D_RECORDS": normalized_records(generated_text, "D_RECORDS")
+                == normalized_records(existing_text, "D_RECORDS"),
+            }
+            for field, passed in checks.items():
+                if not passed:
+                    failures.append({"dataset": dataset, "instance": instance, "field": field})
+
     for path in sorted(temp_root.rglob("*"), reverse=True):
         if path.is_file():
             path.unlink()
         elif path.is_dir():
             path.rmdir()
-    return report
+    passed = checked - len({(item["dataset"], item["instance"]) for item in failures})
+    return {
+        "scope": "IncT2X--IncT5x, Ale_2--Ale_10 only",
+        "excluded": "family suffix _1 is legacy and has an external thesis base not present as Ale_1",
+        "checked_instances": checked,
+        "passed_instances": passed,
+        "failed_instances": checked - passed,
+        "failures": failures,
+    }
 
 
-def write_manifest(generated: list[GeneratedInstance], validation: dict[str, dict[str, float | bool]], seed: int) -> Path:
+def write_manifest(generated: list[GeneratedInstance], validation: dict[str, object], provenance_seed: int) -> Path:
     """Write generation metadata for the created 8X/10X sets."""
     manifest_path = ROOT / "experiments" / "instance_generator" / "generation_manifest.json"
     payload = {
-        "seed": seed,
+        "provenance_seed": provenance_seed,
+        "deterministic": True,
+        "randomness_used": False,
         "base_instances": list(DEFAULT_BASES),
         "generated": [
             {
@@ -231,12 +250,12 @@ def write_manifest(generated: list[GeneratedInstance], validation: dict[str, dic
                 "instance": item.instance,
                 "base_instance": item.base_instance,
                 "factor": item.factor,
-                "seed": item.seed,
+                "provenance_seed": item.provenance_seed,
                 "path": str(item.path.relative_to(ROOT)),
             }
             for item in generated
         ],
-        "validation_2x": validation,
+        "exact_validation": validation,
     }
     manifest_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     return manifest_path
@@ -245,7 +264,7 @@ def write_manifest(generated: list[GeneratedInstance], validation: dict[str, dic
 def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     """Parse command-line options."""
     parser = argparse.ArgumentParser(description="Generate IncT horizon-extension PSP instances.")
-    parser.add_argument("--seed", type=int, default=DEFAULT_SEED)
+    parser.add_argument("--seed", type=int, default=DEFAULT_PROVENANCE_SEED)
     parser.add_argument("--count", type=int, default=5)
     parser.add_argument("--factors", nargs="+", type=int, default=[8, 10])
     parser.add_argument("--validate-only", action="store_true")
@@ -256,16 +275,14 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
 def main(argv: Iterable[str] | None = None) -> int:
     """Run the IncT instance generator."""
     args = parse_args(argv)
-    validation = validate_against_existing_2x(seed=args.seed)
-    failed = [key for key, row in validation.items() if not row["passed"]]
-    print("2X validation against existing instances")
-    for key, row in validation.items():
-        print(
-            f"{key}: existing={row['existing']:.6f} synthetic={row['synthetic']:.6f} "
-            f"rel_diff={row['relative_difference']:.4f} passed={row['passed']}"
-        )
-    if failed:
-        raise SystemExit(f"2X validation failed for: {', '.join(failed)}")
+    validation = validate_exact_existing_families()
+    print("Exact validation against existing IncT2X--IncT5x instances")
+    print(
+        f"passed={validation['passed_instances']}/{validation['checked_instances']} "
+        f"failed={validation['failed_instances']}"
+    )
+    if validation["failures"]:
+        raise SystemExit(f"Exact validation failed: {validation['failures']}")
     if args.validate_only:
         return 0
 
@@ -275,7 +292,7 @@ def main(argv: Iterable[str] | None = None) -> int:
             generate_set(
                 factor=factor,
                 count=args.count,
-                seed=args.seed,
+                provenance_seed=args.seed,
                 output_root=GAMSPY_DIR,
                 dry_run=args.dry_run,
             )
@@ -285,7 +302,7 @@ def main(argv: Iterable[str] | None = None) -> int:
         print(f"Manifest written to {manifest_path}")
     for item in generated:
         action = "Would write" if args.dry_run else "Wrote"
-        print(f"{action} {item.path} from {item.base_instance} seed={item.seed}")
+        print(f"{action} {item.path} from {item.base_instance} provenance_seed={item.provenance_seed}")
     return 0
 
 

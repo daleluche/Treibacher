@@ -1,64 +1,75 @@
 # IncT instance generator
 
-This folder contains the reproducible generator used to extend the PSP real
+This folder contains the deterministic generator used to extend the PSP real
 instances into larger IncT horizons.
 
-## Source interpretation
+## Thesis rule
 
-The thesis text referenced for Sections 6.2.1 and 6.2.2 was not available as a
-clean structured source in this repository. The available
-`docs/metaheuristicas.docx` is a methodological note about the metaheuristics,
-not the original instance-generation section. Therefore, the implementation
-uses reverse engineering against the existing `experiments/GAMSPy/2X`,
-`3X`, `4X`, and `5X` datasets.
+The IncT family follows the rule documented in the thesis, Section 6.2.2: the
+demand of the original horizon is repeated exactly in each 19-period block.
+For a factor `k`, an original demand record `(product, t, quantity)` is copied
+to:
 
-## Reverse-engineered decisions
+- `t`
+- `t + 19`
+- `t + 2 * 19`
+- ...
+- `t + (k - 1) * 19`
 
-The existing IncT instances show these invariants:
+Therefore `T = 19 * k`, product totals are multiplied by `k`, and individual
+positive demand quantities are not split or resampled.
 
-- `T = 19 * k` for the `kX` sets.
-- Total demand per product is exactly multiplied by `k`.
-- Positive demand quantities are preserved; the positive-quantity mean and
-  standard deviation are stable across `2X` to `5X`.
-- The period-load profile is preserved across blocks: for example,
-  `IncT2X_2` is exactly `Ale_2` repeated in two consecutive 19-period blocks.
+## Independent confirmation
 
-Given those facts, `generate_inct.py` extends each selected real instance by
-copying every positive demand record once per block. A real demand at period
-`t` becomes demands at `t`, `t + 19`, `t + 38`, and so on. This preserves the
-minimum positive quantity rule implied by the real data because demand chunks
-are not split into smaller quantities.
+The implementation was independently checked against the existing generated
+GAMSPy datasets. Regenerating `2X`, `3X`, `4X`, and `5X` for `j = 2..10`
+reproduces all 36 available instances exactly:
 
-The script records a seed in the manifest for reproducibility of the generation
-run. In the compatibility mode used here, the block-copy rule itself is
-deterministic because it matches the existing IncT datasets better than uniform
-random reassignment over the extended horizon.
+- `NUM_PERIODS`
+- `PRODUCTS`
+- `A_RECORDS`
+- `D_RECORDS`
 
-## Validation
+The suffix `_1` family is excluded from this exact correspondence because it is
+a legacy thesis instance with an external base that is not represented by the
+repository's `Ale_1` file. This is why the exact validation scope is
+`Ale_2..Ale_10`.
 
-The command below builds a temporary synthetic 2X set from the same rule and
-compares aggregate demand statistics against the existing 2X data:
+## Determinism
+
+Generation is deterministic. The `provenance_seed` in
+`generation_manifest.json` is retained only as run provenance for Sprint 2; no
+random sampling is used by the generator.
+
+## Commands
+
+Validate exact regeneration of the existing families:
 
 ```powershell
 python experiments\instance_generator\generate_inct.py --validate-only
 ```
 
-The validation checks total demand, nonzero demand records, demand per product,
-demand per period, and positive-quantity statistics. The accepted tolerance is
-15 percent per metric. With seed `20260706`, all checked metrics pass.
+Generate the Sprint 2 scale-up sets:
+
+```powershell
+python experiments\instance_generator\generate_inct.py
+```
 
 ## Generated sets
 
-The Sprint 2.5 generation uses:
+The Sprint 2.5 generation uses these base instances:
 
-- base instances: `Ale_2`, `Ale_3`, `Ale_4`, `Ale_5`, `Ale_6`
-- seed recorded in the manifest: `20260706`
-- generated factors: `8X` and `10X`
+- `Ale_2`
+- `Ale_3`
+- `Ale_4`
+- `Ale_5`
+- `Ale_6`
 
-Output files are written under:
+This preserves the existing convention `IncTkX_j <-> Ale_j`, so the generated
+files are:
 
-- `experiments/GAMSPy/8X/IncT8x_1.py` ... `IncT8x_5.py`
-- `experiments/GAMSPy/10X/IncT10x_1.py` ... `IncT10x_5.py`
+- `experiments/GAMSPy/8X/IncT8x_2.py` ... `IncT8x_6.py`
+- `experiments/GAMSPy/10X/IncT10x_2.py` ... `IncT10x_6.py`
 
-The metadata and validation report are stored in
+The metadata and exact validation report are stored in
 `experiments/instance_generator/generation_manifest.json`.
