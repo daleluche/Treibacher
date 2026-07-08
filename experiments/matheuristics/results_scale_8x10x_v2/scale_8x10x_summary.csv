@@ -1,0 +1,11 @@
+dataset,instance,Z_rf_fo,Z_rf_mip,Z_mip,best_decomp_method,best_decomp_Z,decomp_beats_mip,best_method,best_Z,path_rf_fo,path_rf_mip,path_mip
+8X,IncT8x_2,,,131839.464,,,False,mip,131839.464,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT8x_2_mip_seed1_b3600.json
+8X,IncT8x_3,,,71839.478,,,False,mip,71839.478,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT8x_3_mip_seed1_b3600.json
+8X,IncT8x_4,,,166073.216,,,False,mip,166073.216,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT8x_4_mip_seed1_b3600.json
+8X,IncT8x_5,,,59924.391,,,False,mip,59924.391,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT8x_5_mip_seed1_b3600.json
+8X,IncT8x_6,,,103833.803,,,False,mip,103833.803,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT8x_6_mip_seed1_b3600.json
+10X,IncT10x_2,,,185344.308,,,False,mip,185344.308,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT10x_2_mip_seed1_b3600.json
+10X,IncT10x_3,,,102753.138,,,False,mip,102753.138,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT10x_3_mip_seed1_b3600.json
+10X,IncT10x_4,,,185779.606,,,False,mip,185779.606,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT10x_4_mip_seed1_b3600.json
+10X,IncT10x_5,,87036.326,68914.12,rf+mip,87036.326,False,mip,68914.12,,experiments\matheuristics\results_scale_8x10x_v2\IncT10x_5_rf_mip_seed1_b3600.json,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT10x_5_mip_seed1_b3600.json
+10X,IncT10x_6,,,130545.565,,,False,mip,130545.565,,,D:\GitHub\Treibacher\experiments\matheuristics\results_scale_8x10x\IncT10x_6_mip_seed1_b3600.json
