@@ -52,6 +52,7 @@ class MatheuristicResult:
     """Summary of one RF/FO run."""
 
     schedule: list[int]
+    construction: str
     z_final: float
     z_best_overall: float
     shortage: float
@@ -467,6 +468,38 @@ def solve_relax_and_fix(
     return incumbent, z_eval, executed_windows, time.perf_counter() - rf_start, validation_checks, window_diag
 
 
+def solve_greedy_construction(
+    inst: PSPInstance,
+    start_time: float,
+    improvements: list[dict],
+) -> tuple[np.ndarray, float, float, list[dict]]:
+    """Construct a complete incumbent with the deterministic greedy heuristic."""
+    construction_start = time.perf_counter()
+    incumbent = greedy_fill_window(inst, np.zeros(inst.T, dtype=np.int64), 0, inst.T)
+    z_eval, _, _ = evaluate(incumbent, inst)
+    wall_time = time.perf_counter() - construction_start
+    improvements.append(
+        {
+            "time_s": round(time.perf_counter() - start_time, 3),
+            "Z": round(z_eval, 6),
+            "phase": "greedy_construction",
+            "window_start": 1,
+        }
+    )
+    diag = [
+        {
+            "window_start": 1,
+            "window_end": inst.T,
+            "status": "greedy_construction",
+            "reslim_used": 0.0,
+            "wall_time_s": round(wall_time, 3),
+            "fixed_until": 0,
+            "relaxed_tail": False,
+        }
+    ]
+    return incumbent, z_eval, wall_time, diag
+
+
 def solve_fix_and_optimize(
     model: PSPGamspyModel,
     inst: PSPInstance,
@@ -710,18 +743,28 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     rf_wall_time = 0.0
     rf_validation_checks: list[dict] = []
     rf_window_diag: list[dict] = []
+    construction = "rf"
 
     if params.method == "mip":
         incumbent, z_rf = solve_cold_monolithic_mip(model, inst, params, start_time, improvements)
         rf_windows = 0
+        construction = "mip"
     elif params.start_from:
         incumbent = incumbent_from_json(Path(params.start_from), inst)
         z_rf, _, _ = evaluate(incumbent, inst)
         rf_windows = 0
+        construction = "external"
     else:
-        incumbent, z_rf, rf_windows, rf_wall_time, rf_validation_checks, rf_window_diag = solve_relax_and_fix(
-            model, inst, params, start_time, improvements
-        )
+        rf_windows_plan = make_windows(inst.T, params.sigma, params.step)
+        rf_budget = min(0.25 * params.budget, len(rf_windows_plan) * params.tl_rf)
+        if rf_budget / len(rf_windows_plan) < 10.0:
+            construction = "greedy"
+            incumbent, z_rf, rf_wall_time, rf_window_diag = solve_greedy_construction(inst, start_time, improvements)
+            rf_windows = 0
+        else:
+            incumbent, z_rf, rf_windows, rf_wall_time, rf_validation_checks, rf_window_diag = solve_relax_and_fix(
+                model, inst, params, start_time, improvements
+            )
     best_schedule = incumbent.copy()
     z_best_overall = z_rf
 
@@ -768,6 +811,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
 
     return MatheuristicResult(
         schedule=[int(value) for value in best_schedule],
+        construction=construction,
         z_final=z_final,
         z_best_overall=z_best_overall,
         shortage=shortage,
@@ -805,6 +849,7 @@ def write_result(
         "instance": inst.name,
         "dataset": inst.dataset,
         "method": params.method,
+        "construction": result.construction,
         "params": asdict(params),
         "seed": seed,
         "Z_final": round(result.z_final, 6),
@@ -853,6 +898,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--method", choices=["rf", "rf+fo", "rf+mip", "mip"], default="rf+fo")
     parser.add_argument("--threads", type=int, default=0, help="CPLEX threads option; 0 lets CPLEX use all.")
     parser.add_argument("--output-suffix", default=None, help="Optional suffix before .json, e.g. _v2.")
+    parser.add_argument("--output-dir", type=Path, default=RESULTS_DIR, help="Directory for the result JSON.")
     return parser.parse_args(argv)
 
 
@@ -874,7 +920,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     )
     wall_start = time.perf_counter()
     result = run_matheuristic(args.instance, params, args.seed)
-    output_path = write_result(args.instance, params, args.seed, result)
+    output_path = write_result(args.instance, params, args.seed, result, output_dir=args.output_dir)
     data = json.loads(output_path.read_text(encoding="utf-8"))
     data["wall_time_total"] = round(time.perf_counter() - wall_start, 3)
     output_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
@@ -882,6 +928,7 @@ def main(argv: Iterable[str] | None = None) -> int:
     print(
         f"Z_rf={result.z_rf:.6f} Z_final={result.z_final:.6f} "
         f"Z_best_overall={result.z_best_overall:.6f} "
+        f"construction={result.construction} "
         f"rf_windows={result.rf_windows} fo_accepts={result.fo_accepts} "
         f"fo_sweeps_completed={result.fo_sweeps_completed} "
         f"rf_wall_time={result.rf_wall_time:.3f}s "
