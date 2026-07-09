@@ -75,6 +75,7 @@ class MatheuristicResult:
     rf_window_diag: list[dict]
     window_log_rows: list[dict]
     instrumentation_wall_time: float
+    early_stop_reason: str | None
     solver_version: str | None
     hardware: dict
 
@@ -767,7 +768,7 @@ def solve_fix_and_optimize(
     seed: int,
     window_log_rows: list[dict],
     run_id: str,
-) -> tuple[np.ndarray, float, int, int, bool, bool, str | None, list[str], float]:
+) -> tuple[np.ndarray, float, int, int, bool, bool, str | None, list[str], float, str | None]:
     """Improve an incumbent with fix-and-optimize windows."""
     rng = random.Random(seed)
     z_inc, _, _ = evaluate(incumbent, inst)
@@ -778,8 +779,9 @@ def solve_fix_and_optimize(
     warm_log_excerpt: str | None = None
     warm_evidence_lines: list[str] = []
     instrumentation_wall_time = 0.0
+    early_stop_reason: str | None = None
 
-    def try_window(start: int, end: int, phase: str) -> bool:
+    def try_window(start: int, end: int, phase: str, full_remaining_budget: bool = False) -> bool:
         nonlocal incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt
         nonlocal warm_evidence_lines, instrumentation_wall_time
         if time_left(start_time, params.budget) < 10.0:
@@ -789,7 +791,9 @@ def solve_fix_and_optimize(
         z_before = z_inc
         model.set_fo_regimes(window=window, incumbent=incumbent)
         model.set_mip_start(incumbent)
-        reslim_used = max(5.0, min(params.tl_fo, time_left(start_time, params.budget)))
+        reslim_used = time_left(start_time, params.budget) if full_remaining_budget else max(
+            5.0, min(params.tl_fo, time_left(start_time, params.budget))
+        )
         solve_start = time.perf_counter()
         solved, log_text, solve_status = model.solve(reslim_used, mipstart=True, optcr=0.01)
         solve_wall = time.perf_counter() - solve_start
@@ -866,6 +870,22 @@ def solve_fix_and_optimize(
             return True
         return False
 
+    if params.omega >= inst.T and time_left(start_time, params.budget) >= 10.0:
+        try_window(0, inst.T, "FO_sweep", full_remaining_budget=True)
+        early_stop_reason = "fo_window_covers_horizon"
+        return (
+            incumbent,
+            z_inc,
+            accepts,
+            sweeps_completed,
+            warm_checked,
+            warm_has_mipstart,
+            warm_log_excerpt,
+            warm_evidence_lines,
+            instrumentation_wall_time,
+            early_stop_reason,
+        )
+
     improved_in_sweep = True
     while time_left(start_time, params.budget) >= 10.0 and improved_in_sweep:
         improved_in_sweep = False
@@ -909,6 +929,7 @@ def solve_fix_and_optimize(
         warm_log_excerpt,
         warm_evidence_lines,
         instrumentation_wall_time,
+        early_stop_reason,
     )
 
 
@@ -1119,6 +1140,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     warm_has_mipstart = False
     warm_log_excerpt = None
     warm_evidence_lines: list[str] = []
+    early_stop_reason = None
     z_final = z_best_overall
     if params.method == "rf+fo" and time_left(start_time, params.budget) > 0:
         (
@@ -1131,6 +1153,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
             warm_log_excerpt,
             warm_evidence_lines,
             fo_instrumentation_wall_time,
+            early_stop_reason,
         ) = solve_fix_and_optimize(
             model, inst, params, start_time, incumbent, improvements, seed, window_log_rows, run_id
         )
@@ -1179,6 +1202,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         rf_window_diag=rf_window_diag,
         window_log_rows=window_log_rows,
         instrumentation_wall_time=instrumentation_wall_time,
+        early_stop_reason=early_stop_reason,
         solver_version=model.solver_version,
         hardware=hardware_provenance(),
     )
@@ -1224,6 +1248,7 @@ def write_result(
         "rf_wall_time_s": round(result.rf_wall_time, 3),
         "greedy_wall_time_s": round(result.greedy_wall_time, 3),
         "instrumentation_wall_time_s": round(result.instrumentation_wall_time, 6),
+        "early_stop_reason": result.early_stop_reason,
         "rf_validation_checks": result.rf_validation_checks,
         "rf_window_diag": result.rf_window_diag,
         "window_log_rows": len(result.window_log_rows),
