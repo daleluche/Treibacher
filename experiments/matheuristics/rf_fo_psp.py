@@ -46,6 +46,7 @@ class RunParams:
     start_from: str | None
     threads: int
     output_suffix: str | None
+    log_windows: bool = False
 
 
 @dataclass
@@ -72,6 +73,8 @@ class MatheuristicResult:
     warm_start_log_excerpt: str | None
     warm_start_log_evidence_lines: list[str]
     rf_window_diag: list[dict]
+    window_log_rows: list[dict]
+    instrumentation_wall_time: float
     solver_version: str | None
     hardware: dict
 
@@ -385,13 +388,142 @@ def classify_window_status(has_solution: bool, solve_status: str, log_text: str)
     return "solved"
 
 
+def schedule_period_profile(schedule: np.ndarray, inst: PSPInstance) -> dict:
+    """Return accumulated shortage/excess profiles by period for a schedule."""
+    production = np.zeros(inst.I, dtype=float)
+    shortage_by_period: list[float] = []
+    excess_by_period: list[float] = []
+    for period in range(inst.T):
+        process = int(schedule[period])
+        if process > 0:
+            production += inst.A[:, process - 1]
+        demand = inst.D[:, : period + 1].sum(axis=1)
+        balance = production - demand
+        shortage = float(np.maximum(-balance, 0.0).sum())
+        excess = float(np.maximum(balance, 0.0).sum())
+        shortage_by_period.append(shortage)
+        excess_by_period.append(excess)
+    max_shortage = max(shortage_by_period) if shortage_by_period else 0.0
+    max_period = shortage_by_period.index(max_shortage) + 1 if shortage_by_period else None
+    return {
+        "shortage_total": float(sum(shortage_by_period)),
+        "excess_total": float(sum(excess_by_period)),
+        "max_shortage_period": max_period,
+        "max_shortage_value": float(max_shortage),
+        "shortage_by_period": shortage_by_period,
+        "excess_by_period": excess_by_period,
+    }
+
+
+def parse_cplex_progress(log_text: str) -> dict:
+    """Extract coarse node and gap information from a CPLEX log when available."""
+    node_matches = re.findall(r"^\s*(\d+)\s+\d+\s+", log_text, flags=re.MULTILINE)
+    gap_matches = re.findall(r"(\d+(?:\.\d+)?)%", log_text)
+    return {
+        "cplex_nodes": int(node_matches[-1]) if node_matches else None,
+        "cplex_gap_percent": float(gap_matches[-1]) if gap_matches else None,
+    }
+
+
+def aggregate_equation_marginals(equation: Equation, period_column: str = "t") -> pd.DataFrame:
+    """Aggregate equation marginal records by period."""
+    records = equation.records
+    if records is None or records.empty:
+        return pd.DataFrame(columns=[period_column, "sum_marginal", "max_abs_marginal"])
+    records = records.rename(columns=str.lower)
+    if period_column not in records.columns or "marginal" not in records.columns:
+        return pd.DataFrame(columns=[period_column, "sum_marginal", "max_abs_marginal"])
+    grouped = records.groupby(period_column, observed=False)["marginal"].agg(
+        sum_marginal="sum",
+        max_abs_marginal=lambda values: float(np.abs(values).max()) if len(values) else 0.0,
+    )
+    return grouped.reset_index()
+
+
+def marginal_window_summary(model: PSPGamspyModel, start: int, end: int) -> dict:
+    """Summarize LP marginal signals for periods in a window."""
+    target = {str(period) for period in range(start + 1, end + 1)}
+    dem = aggregate_equation_marginals(model.EQ_DEM)
+    prop = aggregate_equation_marginals(model.EQ_PROP)
+
+    def subset(frame: pd.DataFrame) -> pd.DataFrame:
+        if frame.empty:
+            return frame
+        return frame[frame["t"].astype(str).isin(target)]
+
+    dem_window = subset(dem)
+    prop_window = subset(prop)
+    return {
+        "eq_dem_marginal_sum_window": float(dem_window["sum_marginal"].sum()) if not dem_window.empty else None,
+        "eq_dem_marginal_max_abs_window": float(dem_window["max_abs_marginal"].max()) if not dem_window.empty else None,
+        "eq_prop_marginal_sum_window": float(prop_window["sum_marginal"].sum()) if not prop_window.empty else None,
+        "eq_prop_marginal_max_abs_window": float(prop_window["max_abs_marginal"].max()) if not prop_window.empty else None,
+    }
+
+
+def append_window_log(
+    rows: list[dict],
+    *,
+    inst: PSPInstance,
+    model: PSPGamspyModel,
+    phase: str,
+    start: int,
+    end: int,
+    schedule_before: np.ndarray,
+    z_before: float,
+    z_after: float,
+    accepted: bool,
+    solve_wall: float,
+    status: str,
+    reslim_used: float,
+    log_text: str,
+    solve_status: str,
+    time_s: float,
+) -> float:
+    """Append one window-log row and return instrumentation overhead seconds."""
+    log_start = time.perf_counter()
+    profile = schedule_period_profile(schedule_before, inst)
+    progress = parse_cplex_progress(log_text)
+    marginals = marginal_window_summary(model, start, end)
+    rows.append(
+        {
+            "instance": inst.name,
+            "dataset": inst.dataset,
+            "phase": phase,
+            "window_start": start + 1,
+            "window_end": end,
+            "window_size": end - start,
+            "time_s": round(time_s, 6),
+            "solve_wall_time_s": round(solve_wall, 6),
+            "reslim_used_s": round(reslim_used, 6),
+            "status": status,
+            "solve_status": solve_status,
+            "Z_before": round(z_before, 6),
+            "Z_after": round(z_after, 6),
+            "accepted": bool(accepted),
+            "cplex_nodes": progress["cplex_nodes"],
+            "cplex_gap_percent": progress["cplex_gap_percent"],
+            "shortage_total_before": round(profile["shortage_total"], 6),
+            "excess_total_before": round(profile["excess_total"], 6),
+            "max_shortage_period_before": profile["max_shortage_period"],
+            "max_shortage_value_before": round(profile["max_shortage_value"], 6),
+            "shortage_by_period_before_json": json.dumps(profile["shortage_by_period"]),
+            "excess_by_period_before_json": json.dumps(profile["excess_by_period"]),
+            "eq_dem_marginal_semantics": "LP relaxation with integer variables fixed/reported by GAMS after the solve",
+            **marginals,
+        }
+    )
+    return time.perf_counter() - log_start
+
+
 def solve_relax_and_fix(
     model: PSPGamspyModel,
     inst: PSPInstance,
     params: RunParams,
     start_time: float,
     improvements: list[dict],
-) -> tuple[np.ndarray, float, int, float, list[dict], list[dict]]:
+    window_log_rows: list[dict],
+) -> tuple[np.ndarray, float, int, float, list[dict], list[dict], float]:
     """Construct an incumbent with relax-and-fix."""
     rf_start = time.perf_counter()
     windows = make_windows(inst.T, params.sigma, params.step)
@@ -402,6 +534,7 @@ def solve_relax_and_fix(
     window_diag: list[dict] = []
     executed_windows = 0
     completed_with_solver = False
+    instrumentation_wall_time = 0.0
 
     for idx, (start, end) in enumerate(windows):
         rf_elapsed = time.perf_counter() - rf_start
@@ -437,6 +570,8 @@ def solve_relax_and_fix(
             break
 
         model.set_rf_regimes(fixed_until=fixed_until, window=window, incumbent=incumbent)
+        schedule_before = incumbent.copy()
+        z_before, _, _ = evaluate(schedule_before, inst)
         solve_start = time.perf_counter()
         solved, log_text, solve_status = model.solve(tl, optcr=0.001)
         solve_wall = time.perf_counter() - solve_start
@@ -458,6 +593,25 @@ def solve_relax_and_fix(
         executed_windows += 1
 
         z_eval, _, _ = evaluate(incumbent, inst)
+        if params.log_windows:
+            instrumentation_wall_time += append_window_log(
+                window_log_rows,
+                inst=inst,
+                model=model,
+                phase="RF",
+                start=start,
+                end=end,
+                schedule_before=schedule_before,
+                z_before=z_before,
+                z_after=z_eval,
+                accepted=bool(z_eval < z_before - EPS),
+                solve_wall=solve_wall,
+                status=status,
+                reslim_used=tl,
+                log_text=log_text,
+                solve_status=solve_status,
+                time_s=time.perf_counter() - start_time,
+            )
         z_model = float(model.model.objective_value) if model.model.objective_value is not None else math.nan
         has_relaxed_tail = end < inst.T
         validation_checks.append(
@@ -508,7 +662,15 @@ def solve_relax_and_fix(
         validation_checks[-1]["abs_diff"] = round(abs(z_model - z_eval), 6) if completed_with_solver else None
         validation_checks[-1]["passed"] = bool(completed_with_solver and abs(z_model - z_eval) < 0.01)
         validation_checks[-1]["completed_with_solver"] = completed_with_solver
-    return incumbent, z_eval, executed_windows, time.perf_counter() - rf_start, validation_checks, window_diag
+    return (
+        incumbent,
+        z_eval,
+        executed_windows,
+        time.perf_counter() - rf_start,
+        validation_checks,
+        window_diag,
+        instrumentation_wall_time,
+    )
 
 
 def solve_greedy_construction(
@@ -551,7 +713,8 @@ def solve_fix_and_optimize(
     incumbent: np.ndarray,
     improvements: list[dict],
     seed: int,
-) -> tuple[np.ndarray, float, int, int, bool, bool, str | None, list[str]]:
+    window_log_rows: list[dict],
+) -> tuple[np.ndarray, float, int, int, bool, bool, str | None, list[str], float]:
     """Improve an incumbent with fix-and-optimize windows."""
     rng = random.Random(seed)
     z_inc, _, _ = evaluate(incumbent, inst)
@@ -561,19 +724,23 @@ def solve_fix_and_optimize(
     warm_has_mipstart = False
     warm_log_excerpt: str | None = None
     warm_evidence_lines: list[str] = []
+    instrumentation_wall_time = 0.0
 
     def try_window(start: int, end: int, phase: str) -> bool:
-        nonlocal incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+        nonlocal incumbent, z_inc, accepts, warm_checked, warm_has_mipstart, warm_log_excerpt
+        nonlocal warm_evidence_lines, instrumentation_wall_time
         if time_left(start_time, params.budget) < 10.0:
             return False
         window = set(range(start, end))
+        schedule_before = incumbent.copy()
+        z_before = z_inc
         model.set_fo_regimes(window=window, incumbent=incumbent)
         model.set_mip_start(incumbent)
-        solved, log_text, _ = model.solve(
-            max(5.0, min(params.tl_fo, time_left(start_time, params.budget))),
-            mipstart=True,
-            optcr=0.01,
-        )
+        reslim_used = max(5.0, min(params.tl_fo, time_left(start_time, params.budget)))
+        solve_start = time.perf_counter()
+        solved, log_text, solve_status = model.solve(reslim_used, mipstart=True, optcr=0.01)
+        solve_wall = time.perf_counter() - solve_start
+        status = classify_window_status(solved, solve_status, log_text)
         if not warm_checked:
             warm_checked = True
             normalized_log = log_text.lower()
@@ -581,10 +748,49 @@ def solve_fix_and_optimize(
             warm_log_excerpt = extract_mipstart_excerpt(log_text)
             warm_evidence_lines = extract_mipstart_evidence(log_text)
         if not solved:
+            if params.log_windows:
+                instrumentation_wall_time += append_window_log(
+                    window_log_rows,
+                    inst=inst,
+                    model=model,
+                    phase=phase,
+                    start=start,
+                    end=end,
+                    schedule_before=schedule_before,
+                    z_before=z_before,
+                    z_after=z_before,
+                    accepted=False,
+                    solve_wall=solve_wall,
+                    status=status,
+                    reslim_used=reslim_used,
+                    log_text=log_text,
+                    solve_status=solve_status,
+                    time_s=time.perf_counter() - start_time,
+                )
             return False
         candidate = model.extract_schedule(base_schedule=incumbent, periods=window)
         z_new, _, _ = evaluate(candidate, inst)
-        if z_new < z_inc - EPS:
+        accepted = z_new < z_inc - EPS
+        if params.log_windows:
+            instrumentation_wall_time += append_window_log(
+                window_log_rows,
+                inst=inst,
+                model=model,
+                phase=phase,
+                start=start,
+                end=end,
+                schedule_before=schedule_before,
+                z_before=z_before,
+                z_after=z_new,
+                accepted=accepted,
+                solve_wall=solve_wall,
+                status=status,
+                reslim_used=reslim_used,
+                log_text=log_text,
+                solve_status=solve_status,
+                time_s=time.perf_counter() - start_time,
+            )
+        if accepted:
             incumbent = candidate
             z_inc = z_new
             accepts += 1
@@ -632,7 +838,17 @@ def solve_fix_and_optimize(
         if completed:
             sweeps_completed += 1
 
-    return incumbent, z_inc, accepts, sweeps_completed, warm_checked, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+    return (
+        incumbent,
+        z_inc,
+        accepts,
+        sweeps_completed,
+        warm_checked,
+        warm_has_mipstart,
+        warm_log_excerpt,
+        warm_evidence_lines,
+        instrumentation_wall_time,
+    )
 
 
 def solve_monolithic_mip(
@@ -786,6 +1002,8 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     rf_wall_time = 0.0
     rf_validation_checks: list[dict] = []
     rf_window_diag: list[dict] = []
+    window_log_rows: list[dict] = []
+    instrumentation_wall_time = 0.0
     construction = "rf"
     z_greedy: float | None = None
     greedy_wall_time = 0.0
@@ -812,9 +1030,16 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
             rf_windows = 0
             rf_window_diag = greedy_diag
         else:
-            rf_incumbent, z_rf, rf_windows, rf_wall_time, rf_validation_checks, rf_window_diag = solve_relax_and_fix(
-                model, inst, params, start_time, improvements
-            )
+            (
+                rf_incumbent,
+                z_rf,
+                rf_windows,
+                rf_wall_time,
+                rf_validation_checks,
+                rf_window_diag,
+                rf_instrumentation_wall_time,
+            ) = solve_relax_and_fix(model, inst, params, start_time, improvements, window_log_rows)
+            instrumentation_wall_time += rf_instrumentation_wall_time
             if z_greedy <= z_rf + EPS:
                 incumbent = greedy_incumbent
                 construction = "greedy_floor"
@@ -842,9 +1067,11 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
             warm_has_mipstart,
             warm_log_excerpt,
             warm_evidence_lines,
+            fo_instrumentation_wall_time,
         ) = solve_fix_and_optimize(
-            model, inst, params, start_time, incumbent, improvements, seed
+            model, inst, params, start_time, incumbent, improvements, seed, window_log_rows
         )
+        instrumentation_wall_time += fo_instrumentation_wall_time
         if z_final < z_best_overall - EPS:
             best_schedule = incumbent.copy()
             z_best_overall = z_final
@@ -887,6 +1114,8 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         warm_start_log_excerpt=warm_log_excerpt,
         warm_start_log_evidence_lines=warm_evidence_lines,
         rf_window_diag=rf_window_diag,
+        window_log_rows=window_log_rows,
+        instrumentation_wall_time=instrumentation_wall_time,
         solver_version=model.solver_version,
         hardware=hardware_provenance(),
     )
@@ -931,8 +1160,10 @@ def write_result(
         "rf_wall_time": round(result.rf_wall_time, 3),
         "rf_wall_time_s": round(result.rf_wall_time, 3),
         "greedy_wall_time_s": round(result.greedy_wall_time, 3),
+        "instrumentation_wall_time_s": round(result.instrumentation_wall_time, 6),
         "rf_validation_checks": result.rf_validation_checks,
         "rf_window_diag": result.rf_window_diag,
+        "window_log_rows": len(result.window_log_rows),
         "fo_accepts": result.fo_accepts,
         "fo_sweeps_completed": result.fo_sweeps_completed,
         "warm_start_checked": result.warm_start_checked,
@@ -943,6 +1174,23 @@ def write_result(
     }
     output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     return output_path
+
+
+def write_window_log(result_path: Path, rows: list[dict]) -> Path | None:
+    """Write per-window instrumentation next to a result JSON."""
+    if not rows:
+        return None
+    log_dir = result_path.parent / "window_logs"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    frame = pd.DataFrame(rows)
+    parquet_path = log_dir / f"{result_path.stem}_windows.parquet"
+    try:
+        frame.to_parquet(parquet_path, index=False)
+        return parquet_path
+    except Exception:
+        csv_path = log_dir / f"{result_path.stem}_windows.csv"
+        frame.to_csv(csv_path, index=False)
+        return csv_path
 
 
 def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
@@ -962,6 +1210,7 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--threads", type=int, default=0, help="CPLEX threads option; 0 lets CPLEX use all.")
     parser.add_argument("--output-suffix", default=None, help="Optional suffix before .json, e.g. _v2.")
     parser.add_argument("--output-dir", type=Path, default=RESULTS_DIR, help="Directory for the result JSON.")
+    parser.add_argument("--log-windows", action="store_true", help="Write per-window instrumentation.")
     return parser.parse_args(argv)
 
 
@@ -980,12 +1229,22 @@ def main(argv: Iterable[str] | None = None) -> int:
         start_from=args.start_from,
         threads=args.threads,
         output_suffix=args.output_suffix,
+        log_windows=args.log_windows,
     )
     wall_start = time.perf_counter()
     result = run_matheuristic(args.instance, params, args.seed)
     output_path = write_result(args.instance, params, args.seed, result, output_dir=args.output_dir)
     data = json.loads(output_path.read_text(encoding="utf-8"))
     data["wall_time_total"] = round(time.perf_counter() - wall_start, 3)
+    data["window_log_path"] = None
+    if args.log_windows:
+        log_path = write_window_log(output_path, result.window_log_rows)
+        data["window_log_path"] = None if log_path is None else str(log_path)
+        data["instrumentation_overhead_percent"] = (
+            round(100.0 * result.instrumentation_wall_time / data["wall_time_total"], 6)
+            if data["wall_time_total"]
+            else 0.0
+        )
     output_path.write_text(json.dumps(data, indent=2), encoding="utf-8")
     print(f"Result JSON: {output_path}")
     print(
@@ -997,8 +1256,12 @@ def main(argv: Iterable[str] | None = None) -> int:
         f"fo_sweeps_completed={result.fo_sweeps_completed} "
         f"rf_wall_time={result.rf_wall_time:.3f}s "
         f"greedy_wall_time={result.greedy_wall_time:.3f}s "
+        f"instrumentation_wall_time={result.instrumentation_wall_time:.6f}s "
         f"wall_time_total={data['wall_time_total']:.3f}s"
     )
+    if args.log_windows:
+        print(f"Window log: {data['window_log_path']}")
+        print(f"Instrumentation overhead: {data['instrumentation_overhead_percent']:.6f}%")
     if result.warm_start_checked and not result.warm_start_log_has_mipstart:
         print("WARNING: CPLEX log did not contain a visible 'MIP start' message.")
     return 0
