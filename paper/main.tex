@@ -1,0 +1,85 @@
+% =====================================================================
+% Exact and matheuristic approaches for a real-world process selection
+% and lot-sizing problem in the electrofused grains industry
+% Target: Computers & Operations Research (Elsevier)
+% Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% =====================================================================
+\documentclass[review,authoryear]{elsarticle}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% ---- Working commands (remove before submission) --------------------
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\sprintii}[1]{\textcolor{blue}{\textbf{[SPRINT-2 DATA: #1]}}}
+
+% ---- Notation shortcuts ---------------------------------------------
+\newcommand{\RF}{\textsc{rf}}
+\newcommand{\FO}{\textsc{fo}}
+\newcommand{\RFFO}{\textsc{rf+fo}}
+\newcommand{\RFMIP}{\textsc{rf+mip}}
+\newcommand{\ILS}{\textsc{grasp-ils-pr}}
+
+\journal{Computers \& Operations Research}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Exact and matheuristic approaches for a real-world process
+selection and lot-sizing problem in the electrofused grains industry}
+
+\author[unesp]{Jos\'e Roberto Dale Luche\corref{cor1}}
+\ead{...} % TODO
+\author[ufscar]{Vit\'oria Pureza}
+\author[ufscar]{Reinaldo Morabito}
+\cortext[cor1]{Corresponding author.}
+\address[unesp]{S\~ao Paulo State University (UNESP), Guaratinguet\'a, SP, Brazil} % TODO confirm affiliation text
+\address[ufscar]{Department of Production Engineering, Federal University of S\~ao Carlos (UFSCar), S\~ao Carlos, SP, Brazil}
+
+\begin{abstract}
+\todo{Write last. Skeleton: (1) real-world PSP with co-production in
+fixed proportions; (2) fifteen years after the original case study,
+we revisit the problem with a modern MIP solver, quantifying solver
+progress; (3) we propose relax-and-fix / fix-and-optimize matheuristics
+and an RF-warm-started monolithic method, and benchmark them against a
+state-of-the-art hybrid GRASP-ILS with path relinking under a strict
+equal-resources protocol with pre-registered hypotheses; (4) headline
+numbers from Sprint 2; (5) public benchmark of 60 instances and a
+method-choice frontier in the scale $\times$ time-budget plane.}
+\end{abstract}
+
+\begin{keyword}
+Lot sizing \sep Process selection \sep Co-production \sep
+Matheuristics \sep Relax-and-fix \sep Fix-and-optimize \sep GRASP
+\end{keyword}
+
+\end{frontmatter}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/problem_model}
+\input{sections/matheuristics}
+\input{sections/metaheuristic}
+\input{sections/experiments}
+\input{sections/conclusions}
+
+\section*{Acknowledgements}
+\todo{Funding agencies (CNPq/FAPESP/CAPES?); company acknowledgement
+(anonymized); thank GAMS academic license if applicable.}
+
+\section*{Data availability}
+The complete benchmark (60 instances in open format), all solution
+files, and the source code of the matheuristics and analysis pipeline
+are available at \todo{Zenodo DOI + GitHub URL after anonymization
+decision}.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{references}
+
+\end{document}
