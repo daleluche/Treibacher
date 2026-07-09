@@ -440,8 +440,8 @@ def aggregate_equation_marginals(equation: Equation, period_column: str = "t") -
     return grouped.reset_index()
 
 
-def marginal_window_summary(model: PSPGamspyModel, start: int, end: int) -> dict:
-    """Summarize LP marginal signals for periods in a window."""
+def marginal_signal_summary(model: PSPGamspyModel, start: int, end: int, horizon: int) -> dict:
+    """Summarize LP marginal signals for a window and the full horizon."""
     target = {str(period) for period in range(start + 1, end + 1)}
     dem = aggregate_equation_marginals(model.EQ_DEM)
     prop = aggregate_equation_marginals(model.EQ_PROP)
@@ -453,12 +453,49 @@ def marginal_window_summary(model: PSPGamspyModel, start: int, end: int) -> dict
 
     dem_window = subset(dem)
     prop_window = subset(prop)
+
+    dem_abs_by_period = [0.0] * horizon
+    if model.EQ_DEM.records is not None and not model.EQ_DEM.records.empty:
+        dem_records = model.EQ_DEM.records.rename(columns=str.lower)
+        if "t" in dem_records.columns and "marginal" in dem_records.columns:
+            grouped_abs = dem_records.groupby("t", observed=False)["marginal"].apply(
+                lambda values: float(np.abs(values).sum())
+            )
+            for period_key, value in grouped_abs.items():
+                period = int(period_key) - 1
+                if 0 <= period < horizon:
+                    dem_abs_by_period[period] = float(value)
+
+    prop_by_period = [0.0] * horizon
+    if model.EQ_PROP.records is not None and not model.EQ_PROP.records.empty:
+        prop_records = model.EQ_PROP.records.rename(columns=str.lower)
+        if "t" in prop_records.columns and "marginal" in prop_records.columns:
+            for _, row in prop_records.iterrows():
+                period = int(row["t"]) - 1
+                if 0 <= period < horizon:
+                    prop_by_period[period] = float(row["marginal"])
+
     return {
         "eq_dem_marginal_sum_window": float(dem_window["sum_marginal"].sum()) if not dem_window.empty else None,
         "eq_dem_marginal_max_abs_window": float(dem_window["max_abs_marginal"].max()) if not dem_window.empty else None,
         "eq_prop_marginal_sum_window": float(prop_window["sum_marginal"].sum()) if not prop_window.empty else None,
         "eq_prop_marginal_max_abs_window": float(prop_window["max_abs_marginal"].max()) if not prop_window.empty else None,
+        "eqdem_marginal_abs_sum_by_period_json": json.dumps(dem_abs_by_period),
+        "eqprop_marginal_by_period_json": json.dumps(prop_by_period),
     }
+
+
+def xr_tail_fraction_nonzero(model: PSPGamspyModel, end: int) -> float:
+    """Return the fraction of relaxed-tail XR levels greater than tolerance."""
+    records = model.XR.records
+    if records is None or records.empty or end >= model.inst.T:
+        return 0.0
+    records = records.rename(columns=str.lower)
+    tail_periods = {str(period) for period in range(end + 1, model.inst.T + 1)}
+    tail = records[records["t"].astype(str).isin(tail_periods)]
+    if tail.empty:
+        return 0.0
+    return float((tail["level"].astype(float).abs() > 1e-6).mean())
 
 
 def append_window_log(
@@ -467,6 +504,10 @@ def append_window_log(
     inst: PSPInstance,
     model: PSPGamspyModel,
     phase: str,
+    method: str,
+    seed: int,
+    budget_s: float,
+    run_id: str,
     start: int,
     end: int,
     schedule_before: np.ndarray,
@@ -484,11 +525,15 @@ def append_window_log(
     log_start = time.perf_counter()
     profile = schedule_period_profile(schedule_before, inst)
     progress = parse_cplex_progress(log_text)
-    marginals = marginal_window_summary(model, start, end)
+    marginals = marginal_signal_summary(model, start, end, inst.T)
     rows.append(
         {
             "instance": inst.name,
             "dataset": inst.dataset,
+            "method": method,
+            "seed": int(seed),
+            "budget_s": float(budget_s),
+            "run_id": run_id,
             "phase": phase,
             "window_start": start + 1,
             "window_end": end,
@@ -503,6 +548,7 @@ def append_window_log(
             "accepted": bool(accepted),
             "cplex_nodes": progress["cplex_nodes"],
             "cplex_gap_percent": progress["cplex_gap_percent"],
+            "xr_frac_nonzero": xr_tail_fraction_nonzero(model, end),
             "shortage_total_before": round(profile["shortage_total"], 6),
             "excess_total_before": round(profile["excess_total"], 6),
             "max_shortage_period_before": profile["max_shortage_period"],
@@ -523,6 +569,8 @@ def solve_relax_and_fix(
     start_time: float,
     improvements: list[dict],
     window_log_rows: list[dict],
+    seed: int,
+    run_id: str,
 ) -> tuple[np.ndarray, float, int, float, list[dict], list[dict], float]:
     """Construct an incumbent with relax-and-fix."""
     rf_start = time.perf_counter()
@@ -599,6 +647,10 @@ def solve_relax_and_fix(
                 inst=inst,
                 model=model,
                 phase="RF",
+                method=params.method,
+                seed=seed,
+                budget_s=params.budget,
+                run_id=run_id,
                 start=start,
                 end=end,
                 schedule_before=schedule_before,
@@ -714,6 +766,7 @@ def solve_fix_and_optimize(
     improvements: list[dict],
     seed: int,
     window_log_rows: list[dict],
+    run_id: str,
 ) -> tuple[np.ndarray, float, int, int, bool, bool, str | None, list[str], float]:
     """Improve an incumbent with fix-and-optimize windows."""
     rng = random.Random(seed)
@@ -754,6 +807,10 @@ def solve_fix_and_optimize(
                     inst=inst,
                     model=model,
                     phase=phase,
+                    method=params.method,
+                    seed=seed,
+                    budget_s=params.budget,
+                    run_id=run_id,
                     start=start,
                     end=end,
                     schedule_before=schedule_before,
@@ -777,6 +834,10 @@ def solve_fix_and_optimize(
                 inst=inst,
                 model=model,
                 phase=phase,
+                method=params.method,
+                seed=seed,
+                budget_s=params.budget,
+                run_id=run_id,
                 start=start,
                 end=end,
                 schedule_before=schedule_before,
@@ -997,6 +1058,8 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     """Run RF, RF+FO, RF+MIP, or cold MIP on one instance."""
     start_time = time.perf_counter()
     inst = load_instance(instance_path)
+    suffix = params.output_suffix or ""
+    run_id = f"{inst.name}_{params.method.replace('+', '_')}_seed{seed}{suffix}"
     model = PSPGamspyModel(inst, threads=params.threads)
     improvements: list[dict] = []
     rf_wall_time = 0.0
@@ -1038,7 +1101,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
                 rf_validation_checks,
                 rf_window_diag,
                 rf_instrumentation_wall_time,
-            ) = solve_relax_and_fix(model, inst, params, start_time, improvements, window_log_rows)
+            ) = solve_relax_and_fix(model, inst, params, start_time, improvements, window_log_rows, seed, run_id)
             instrumentation_wall_time += rf_instrumentation_wall_time
             if z_greedy <= z_rf + EPS:
                 incumbent = greedy_incumbent
@@ -1069,7 +1132,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
             warm_evidence_lines,
             fo_instrumentation_wall_time,
         ) = solve_fix_and_optimize(
-            model, inst, params, start_time, incumbent, improvements, seed, window_log_rows
+            model, inst, params, start_time, incumbent, improvements, seed, window_log_rows, run_id
         )
         instrumentation_wall_time += fo_instrumentation_wall_time
         if z_final < z_best_overall - EPS:
