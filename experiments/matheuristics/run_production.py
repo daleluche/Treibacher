@@ -164,6 +164,21 @@ def rf_budget_guard(instance_path: Path, budget: float) -> float:
     return min(0.25 * budget, len(make_windows(inst.T, 10, 5)) * 120.0)
 
 
+def dataframe_to_markdown(frame: pd.DataFrame) -> str:
+    """Render a small dataframe as a GitHub-flavored Markdown table."""
+    if frame.empty:
+        return "_No rows._"
+    text = frame.fillna("").astype(str)
+    columns = list(text.columns)
+    lines = [
+        "| " + " | ".join(columns) + " |",
+        "| " + " | ".join("---" for _ in columns) + " |",
+    ]
+    for _, row in text.iterrows():
+        lines.append("| " + " | ".join(row[col] for col in columns) + " |")
+    return "\n".join(lines)
+
+
 def build_summary(output_dir: Path, grade: str, budget: float, jobs: list[tuple[Path, str, int]]) -> tuple[pd.DataFrame, list[dict]]:
     """Build a summary table and RF guard validation records."""
     rows = []
@@ -204,13 +219,13 @@ def build_summary(output_dir: Path, grade: str, budget: float, jobs: list[tuple[
         "",
         f"Budget: {int(budget)} seconds.",
         "",
-        summary.to_markdown(index=False),
+        dataframe_to_markdown(summary),
         "",
         "## RF Guard Validation",
         "",
     ]
     if guard_violations:
-        lines.append(pd.DataFrame(guard_violations).to_markdown(index=False))
+        lines.append(dataframe_to_markdown(pd.DataFrame(guard_violations)))
     else:
         lines.append("No RF wall-clock guard violations found.")
     (output_dir / f"grade_{grade.lower()}_report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
