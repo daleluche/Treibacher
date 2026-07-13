@@ -26,15 +26,22 @@ import json
 import math
 import os
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from experiments.matheuristics.psp_instance import load_instance
+
 OUT = os.path.join(ROOT, "analysis", "output")
 os.makedirs(OUT, exist_ok=True)
 
-DATASETS = ["Real", "2X", "3X", "4X", "5X"]
+DATASETS = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+EXACT_DATASETS = ["Real", "2X", "3X", "4X", "5X"]
 EPS = 1e-6
 
 
@@ -43,12 +50,35 @@ def _load(path: str) -> dict:
         return json.load(fh)
 
 
+def _method_label(method: str, budget: float | None) -> str:
+    """Return a stable method label that preserves the time budget."""
+    safe = str(method).replace("+", "_").replace("-", "_")
+    if budget is None or math.isnan(float(budget)):
+        return f"MAT_{safe}"
+    return f"MAT_{safe}_{int(round(float(budget)))}s"
+
+
+def instance_metadata() -> dict[str, dict]:
+    """Load T, J, and I metadata from GAMSPy instance scripts."""
+    meta: dict[str, dict] = {}
+    for dataset in DATASETS:
+        for path in sorted((Path(ROOT) / "experiments" / "GAMSPy" / dataset).glob("*.py")):
+            inst = load_instance(path)
+            meta[inst.name] = {
+                "dataset": inst.dataset,
+                "T": inst.T,
+                "J": inst.J,
+                "I": inst.I,
+            }
+    return meta
+
+
 # --------------------------------------------------------------------------- #
 # 1. Exact runs (GAMSPy / CPLEX 22)
 # --------------------------------------------------------------------------- #
 def collect_exact() -> list[dict]:
     rows = []
-    for ds in DATASETS:
+    for ds in EXACT_DATASETS:
         for folder, method in [("results", "CPLEX22_1h"),
                                ("results_3horas", "CPLEX22_3h")]:
             for f in sorted(glob.glob(
@@ -135,12 +165,80 @@ def collect_heuristics() -> tuple[list[dict], dict]:
 
 
 # --------------------------------------------------------------------------- #
+# 3. Matheuristic runs
+# --------------------------------------------------------------------------- #
+MATHEURISTIC_RESULT_DIRS = [
+    "results_pilot",
+    "results_tuning",
+    "results_short_budget",
+    "results_short_budget_v2",
+    "results_scale_8x10x",
+    "results_scale_8x10x_v2",
+    os.path.join("results_production", "b600"),
+    os.path.join("results_production", "a3600"),
+    os.path.join("results_production", "c_seeds"),
+]
+
+
+def collect_matheuristics(meta: dict[str, dict]) -> list[dict]:
+    """Collect matheuristic JSON outputs from all sprint result folders."""
+    rows = []
+    base = Path(ROOT) / "experiments" / "matheuristics"
+    for rel_dir in MATHEURISTIC_RESULT_DIRS:
+        directory = base / rel_dir
+        if not directory.exists():
+            continue
+        for path in sorted(directory.glob("*.json")):
+            data = _load(str(path))
+            if "Z_final" not in data or "method" not in data:
+                continue
+            params = data.get("params", {})
+            budget = float(params.get("budget", np.nan))
+            instance = data.get("instance")
+            inst_meta = meta.get(instance, {})
+            method = _method_label(data.get("method"), budget)
+            improvements = data.get("improvements") or []
+            time_to_best = None
+            if improvements:
+                best = min(improvements, key=lambda item: item.get("Z", math.inf))
+                time_to_best = best.get("time_s")
+            rows.append({
+                "method": method,
+                "dataset": data.get("dataset") or inst_meta.get("dataset"),
+                "instance": instance,
+                "run_id": data.get("run_id") or path.stem,
+                "seed": data.get("seed"),
+                "Z": data.get("Z_final"),
+                "bound": data.get("dual_bound"),
+                "gap_solver_pct": data.get("gap_solver_pct"),
+                "time_to_best_s": time_to_best,
+                "total_time_s": data.get("wall_time_total"),
+                "time_budget_s": budget,
+                "model_status": data.get("status"),
+                "iterations": None,
+                "T": inst_meta.get("T"),
+                "J": inst_meta.get("J"),
+                "I": inst_meta.get("I"),
+                "source_path": str(path.relative_to(Path(ROOT))),
+                "raw_method": data.get("method"),
+                "construction_used": data.get("construction_used"),
+                "Z_construction": data.get("construction", {}).get("Z")
+                if isinstance(data.get("construction"), dict)
+                else data.get("Z_rf"),
+                "rf_wall_time_s": data.get("rf_wall_time_s"),
+            })
+    return rows
+
+
+# --------------------------------------------------------------------------- #
 # 3. Build, validate, aggregate
 # --------------------------------------------------------------------------- #
 def main() -> int:
+    meta = instance_metadata()
     exact = collect_exact()
     heur, budgets = collect_heuristics()
-    runs = pd.DataFrame(exact + heur)
+    matheur = collect_matheuristics(meta)
+    runs = pd.DataFrame(exact + heur + matheur)
 
     runs = runs.sort_values(["method", "dataset", "instance", "run_id"]).reset_index(drop=True)
     runs.to_csv(os.path.join(OUT, "master_runs.csv"), index=False)
@@ -162,6 +260,8 @@ def main() -> int:
             "T": g["T"].dropna().max(),
             "J": g["J"].dropna().max(),
             "I": g["I"].dropna().max(),
+            "source_path": g["source_path"].dropna().iloc[0] if "source_path" in g and g["source_path"].notna().any() else None,
+            "raw_method": g["raw_method"].dropna().iloc[0] if "raw_method" in g and g["raw_method"].notna().any() else None,
         })
 
     inst = (runs.groupby(["method", "dataset", "instance"])
@@ -212,6 +312,11 @@ def main() -> int:
     flag = "OK" if n_viol == 0 else "FAIL"
     ok &= (n_viol == 0)
     print(f"[{flag}] ILS_v2 Z_best below proven-optimal bound: {n_viol} instances")
+
+    n_mat = len(runs[runs.method.astype(str).str.startswith("MAT_")])
+    flag = "OK" if n_mat > 0 else "FAIL"
+    ok &= (n_mat > 0)
+    print(f"[{flag}] matheuristic rows collected: {n_mat}")
 
     print("\nInferred/declared time budgets (s):", budgets)
 

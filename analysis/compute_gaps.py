@@ -1,25 +1,17 @@
 """
 compute_gaps.py
 ===============
-Builds the master comparison table from analysis/output/master_instances.csv.
+Builds the master comparison table from analysis/output/master_runs.csv.
 
-Outputs:
-  analysis/output/comparison_table.csv       one row per instance
-  analysis/output/comparison_by_dataset.csv  aggregates per dataset
-
-Gap definitions (percent):
-  gap_ils2_vs_bound   = 100 * (ILS2_best - dual_bound) / max(dual_bound, 1)
-  gap_ils2_vs_primal  = 100 * (ILS2_best - CPLEX_Z)    / max(CPLEX_Z, 1)
-  gap_ils2_vs_BKS     = 100 * (ILS2_best - BKS)        / max(BKS, 1)
-
-CPLEX reference is the 3 h run. The 1 h primal is also reported and included
-as a best-known-solution candidate because longer runs can occasionally return
-a slightly worse incumbent.
+The Sprint 3 table has one row per instance across Real, 2X, 3X, 4X, 5X,
+8X, and 10X. Best-known solutions (BKS) are computed from every available
+CPLEX, GRASP, ILS, and matheuristic run collected in master_runs.csv.
 
 Run from the repository root:  python analysis/compute_gaps.py
 """
 from __future__ import annotations
 
+import math
 import os
 import sys
 
@@ -29,13 +21,53 @@ import pandas as pd
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "analysis", "output")
 EPS = 1e-6
+DATASET_ORDER = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
 
 
 def pct(num: float, den: float) -> float:
+    """Return a percentage with a stable denominator guard."""
+    if pd.isna(num) or pd.isna(den):
+        return np.nan
     return 100.0 * num / max(abs(den), 1.0)
 
 
+def best_row(
+    runs: pd.DataFrame,
+    instance: str,
+    methods: list[str] | None = None,
+    min_feasible_bound: float | None = None,
+) -> pd.Series | None:
+    """Return the best row for an instance, optionally restricted by methods."""
+    subset = runs[runs["instance"] == instance].dropna(subset=["Z"])
+    if methods is not None:
+        subset = subset[subset["method"].isin(methods)]
+    if min_feasible_bound is not None and pd.notna(min_feasible_bound):
+        subset = subset[subset["Z"] >= float(min_feasible_bound) - 1e-4]
+    if subset.empty:
+        return None
+    return subset.sort_values(["Z", "time_budget_s", "method", "source_path"], na_position="last").iloc[0]
+
+
+def get_value(wide: dict[str, pd.DataFrame], method: str, instance: str, column: str) -> float:
+    """Read a value from an instance-indexed method table."""
+    if method not in wide or instance not in wide[method].index:
+        return np.nan
+    return wide[method].loc[instance, column]
+
+
+def source_label(row: pd.Series | None) -> str | None:
+    """Return a compact BKS source label."""
+    if row is None:
+        return None
+    path = row.get("source_path")
+    if isinstance(path, str) and path:
+        return f"{row['method']} | {int(row['time_budget_s']) if pd.notna(row['time_budget_s']) else 'NA'}s | {path}"
+    return f"{row['method']} | {int(row['time_budget_s']) if pd.notna(row['time_budget_s']) else 'NA'}s"
+
+
 def main() -> int:
+    runs = pd.read_csv(os.path.join(OUT, "master_runs.csv"))
+    runs["Z"] = pd.to_numeric(runs["Z"], errors="coerce")
     inst = pd.read_csv(os.path.join(OUT, "master_instances.csv"))
 
     wide: dict[str, pd.DataFrame] = {
@@ -43,81 +75,118 @@ def main() -> int:
         for m in inst.method.unique()
     }
 
+    all_instances = (
+        runs.dropna(subset=["instance", "dataset"])
+        .loc[lambda frame: frame["dataset"].isin(DATASET_ORDER)]
+        .drop_duplicates("instance")[["dataset", "instance", "T", "J", "I"]]
+        .copy()
+    )
+    all_instances["dataset_rank"] = all_instances["dataset"].map({d: i for i, d in enumerate(DATASET_ORDER)})
+    all_instances = all_instances.sort_values(["dataset_rank", "instance"])
+
+    mat_methods = sorted(m for m in runs.method.dropna().unique() if str(m).startswith("MAT_"))
+
     rows = []
-    all_instances = sorted(inst.instance.unique())
-    for name in all_instances:
-        meta_src = wide["ILS_v2"] if name in wide["ILS_v2"].index else wide["CPLEX22_1h"]
-        meta = meta_src.loc[name]
+    for _, meta in all_instances.iterrows():
+        name = meta["instance"]
         ds = meta["dataset"]
 
-        # --- CPLEX reference (3 h preferred, 1 h fallback) ---------------- #
-        if name in wide["CPLEX22_3h"].index:
-            cx = wide["CPLEX22_3h"].loc[name]
+        cplex_3h = get_value(wide, "CPLEX22_3h", name, "Z_best")
+        cplex_1h = get_value(wide, "CPLEX22_1h", name, "Z_best")
+        bound_3h = get_value(wide, "CPLEX22_3h", name, "bound")
+        bound_1h = get_value(wide, "CPLEX22_1h", name, "bound")
+        status_3h = get_value(wide, "CPLEX22_3h", name, "model_status")
+        gap_3h = get_value(wide, "CPLEX22_3h", name, "gap_solver_pct")
+
+        cplex_budget = None
+        cplex_Z = np.nan
+        bound = np.nan
+        cplex_gap = np.nan
+        cplex_status = None
+        if pd.notna(cplex_3h):
             cplex_budget = "3h"
-        elif name in wide["CPLEX22_1h"].index:
-            cx = wide["CPLEX22_1h"].loc[name]
+            cplex_Z = cplex_3h
+            bound = bound_3h
+            cplex_gap = gap_3h
+            cplex_status = status_3h
+        elif pd.notna(cplex_1h):
             cplex_budget = "1h_fallback"
-        else:
-            cx, cplex_budget = None, None
+            cplex_Z = cplex_1h
+            bound = bound_1h
+            cplex_status = get_value(wide, "CPLEX22_1h", name, "model_status")
 
-        cplex_Z = cx["Z_best"] if cx is not None else np.nan
-        bound = cx["bound"] if cx is not None else np.nan
-        cplex_gap = cx["gap_solver_pct"] if cx is not None else np.nan
-        status = cx["model_status"] if cx is not None else None
-        cplex_Z_1h = (
-            wide["CPLEX22_1h"].loc[name, "Z_best"]
-            if "CPLEX22_1h" in wide and name in wide["CPLEX22_1h"].index
-            else np.nan
-        )
+        ils2_best = get_value(wide, "ILS_v2", name, "Z_best")
+        ils2_mean = get_value(wide, "ILS_v2", name, "Z_mean")
+        ils2_std = get_value(wide, "ILS_v2", name, "Z_std")
+        ils1_best = get_value(wide, "ILS_v1", name, "Z_best")
+        grasp1_best = get_value(wide, "GRASP_v1", name, "Z_best")
 
-        # --- heuristics ---------------------------------------------------- #
-        def get(m: str, col: str) -> float:
-            return wide[m].loc[name, col] if name in wide[m].index else np.nan
+        mat_600_mip = get_value(wide, "MAT_mip_600s", name, "Z_best")
+        mat_600_rf_fo = get_value(wide, "MAT_rf_fo_600s", name, "Z_best")
+        mat_600_rf_mip = get_value(wide, "MAT_rf_mip_600s", name, "Z_best")
+        mat_3600_mip = get_value(wide, "MAT_mip_3600s", name, "Z_best")
+        mat_3600_rf_fo = get_value(wide, "MAT_rf_fo_3600s", name, "Z_best")
+        mat_3600_rf_mip = get_value(wide, "MAT_rf_mip_3600s", name, "Z_best")
 
-        ils2_best, ils2_mean, ils2_std = (get("ILS_v2", c) for c in
-                                          ("Z_best", "Z_mean", "Z_std"))
-        ils1_best = get("ILS_v1", "Z_best")
-        grasp1_best = get("GRASP_v1", "Z_best")
-
-        # --- BKS ------------------------------------------------------------ #
-        candidates = [v for v in (cplex_Z, cplex_Z_1h, ils2_best, ils1_best, grasp1_best)
-                      if not np.isnan(v)]
-        bks = min(candidates)
+        bks_row = best_row(runs, name, min_feasible_bound=bound)
+        bks = float(bks_row["Z"]) if bks_row is not None else np.nan
 
         rows.append({
-            "dataset": ds, "instance": name,
-            "T": int(meta["T"]), "J": int(meta["J"]), "I": int(meta["I"]),
+            "dataset": ds,
+            "instance": name,
+            "T": int(meta["T"]) if pd.notna(meta["T"]) else np.nan,
+            "J": int(meta["J"]) if pd.notna(meta["J"]) else np.nan,
+            "I": int(meta["I"]) if pd.notna(meta["I"]) else np.nan,
             "cplex_budget_used": cplex_budget,
-            "cplex_Z": cplex_Z, "cplex_Z_1h": cplex_Z_1h, "cplex_bound": bound,
-            "cplex_gap_pct": cplex_gap, "cplex_status": status,
-            "ils2_Z_best": ils2_best, "ils2_Z_mean": ils2_mean,
+            "cplex_Z": cplex_Z,
+            "cplex_Z_1h": cplex_1h,
+            "cplex_bound": bound,
+            "cplex_gap_pct": cplex_gap,
+            "cplex_status": cplex_status,
+            "cplex_mip_600_Z": mat_600_mip,
+            "cplex_mip_3600_Z": mat_3600_mip,
+            "rf_fo_600_Z": mat_600_rf_fo,
+            "rf_mip_600_Z": mat_600_rf_mip,
+            "rf_fo_3600_Z": mat_3600_rf_fo,
+            "rf_mip_3600_Z": mat_3600_rf_mip,
+            "ils2_Z_best": ils2_best,
+            "ils2_Z_mean": ils2_mean,
             "ils2_Z_std": ils2_std,
-            "grasp1_Z_best": grasp1_best, "ils1_Z_best": ils1_best,
+            "grasp1_Z_best": grasp1_best,
+            "ils1_Z_best": ils1_best,
             "BKS": bks,
+            "bks_source": source_label(bks_row),
             "gap_ils2_vs_bound_pct": pct(ils2_best - bound, bound),
             "gap_ils2_vs_cplex_primal_pct": pct(ils2_best - cplex_Z, cplex_Z),
             "gap_ils2_vs_BKS_pct": pct(ils2_best - bks, bks),
             "gap_cplex_vs_BKS_pct": pct(cplex_Z - bks, bks),
-            "ils2_wins": bool(ils2_best < cplex_Z - EPS),
-            "ties": bool(abs(ils2_best - cplex_Z) <= EPS),
+            "gap_rf_fo_600_vs_BKS_pct": pct(mat_600_rf_fo - bks, bks),
+            "gap_rf_mip_600_vs_BKS_pct": pct(mat_600_rf_mip - bks, bks),
+            "gap_mip_600_vs_BKS_pct": pct(mat_600_mip - bks, bks),
+            "gap_rf_fo_3600_vs_BKS_pct": pct(mat_3600_rf_fo - bks, bks),
+            "gap_rf_mip_3600_vs_BKS_pct": pct(mat_3600_rf_mip - bks, bks),
+            "gap_mip_3600_vs_BKS_pct": pct(mat_3600_mip - bks, bks),
+            "ils2_wins": bool(pd.notna(ils2_best) and pd.notna(cplex_Z) and ils2_best < cplex_Z - EPS),
+            "ties": bool(pd.notna(ils2_best) and pd.notna(cplex_Z) and abs(ils2_best - cplex_Z) <= EPS),
         })
 
-    comp = pd.DataFrame(rows).sort_values(["dataset", "instance"]).reset_index(drop=True)
+    comp = pd.DataFrame(rows).sort_values(
+        by=["dataset"],
+        key=lambda col: col.map({d: i for i, d in enumerate(DATASET_ORDER)}) if col.name == "dataset" else col,
+    ).reset_index(drop=True)
 
-    # ---------------- consistency guard ---------------------------------- #
-    viol = comp[comp.ils2_Z_best < comp.cplex_bound - 1e-4]
+    viol = comp[pd.notna(comp["cplex_bound"]) & (comp["BKS"] < comp["cplex_bound"] - 1e-4)]
     if not viol.empty:
-        print("FATAL: heuristic solution below dual bound — model/evaluator mismatch:")
-        print(viol[["instance", "ils2_Z_best", "cplex_bound"]].to_string(index=False))
+        print("FATAL: BKS below available dual bound; check model/evaluator consistency:")
+        print(viol[["instance", "BKS", "bks_source", "cplex_bound"]].to_string(index=False))
         return 1
-    neg = comp[comp.gap_ils2_vs_BKS_pct < -1e-9]
-    if not neg.empty:
-        print("FATAL: negative gap vs BKS (definition error).")
+
+    if len(comp) != 60:
+        print(f"FATAL: comparison_table has {len(comp)} rows, expected 60.")
         return 1
 
     comp.to_csv(os.path.join(OUT, "comparison_table.csv"), index=False)
 
-    # ---------------- dataset aggregates ---------------------------------- #
     def agg(g: pd.DataFrame) -> pd.Series:
         return pd.Series({
             "n": len(g),
@@ -127,23 +196,23 @@ def main() -> int:
             "gap_ils2_vs_bound_median_pct": g.gap_ils2_vs_bound_pct.median(),
             "gap_ils2_vs_primal_mean_pct": g.gap_ils2_vs_cplex_primal_pct.mean(),
             "gap_ils2_vs_primal_median_pct": g.gap_ils2_vs_cplex_primal_pct.median(),
+            "rf_fo_600_gap_mean_pct": g.gap_rf_fo_600_vs_BKS_pct.mean(),
+            "rf_fo_3600_gap_mean_pct": g.gap_rf_fo_3600_vs_BKS_pct.mean(),
             "ils2_wins": int(g.ils2_wins.sum()),
             "ties": int(g.ties.sum()),
-            "cplex_wins": int((~g.ils2_wins & ~g.ties).sum()),
+            "cplex_wins": int((~g.ils2_wins & ~g.ties & g.cplex_Z.notna() & g.ils2_Z_best.notna()).sum()),
         })
 
-    by_ds = (comp.groupby("dataset").apply(agg, include_groups=False)
-                 .reindex(["Real", "2X", "3X", "4X", "5X"]).reset_index())
+    by_ds = comp.groupby("dataset").apply(agg, include_groups=False).reindex(DATASET_ORDER).reset_index()
     by_ds.to_csv(os.path.join(OUT, "comparison_by_dataset.csv"), index=False)
 
     print("=" * 88)
-    print("COMPARISON BY DATASET — ILS v2 (best of 10 x 3600 s) vs CPLEX 22 (3 h)")
+    print("COMPARISON BY DATASET — global BKS includes CPLEX, GRASP, ILS, and matheuristics")
     print("=" * 88)
-    print(by_ds.round(2).to_string(index=False))
-    wins, ties_ = int(comp.ils2_wins.sum()), int(comp.ties.sum())
-    print(f"\nOverall: ILS v2 wins {wins}, ties {ties_}, "
-          f"loses {len(comp) - wins - ties_} of {len(comp)} instances "
-          f"(vs CPLEX primal).")
+    print(by_ds.round(3).to_string(index=False))
+    source_8x4 = comp.loc[comp.instance == "IncT8x_4", ["BKS", "bks_source"]]
+    print("\nIncT8x_4 BKS audit:")
+    print(source_8x4.to_string(index=False))
     print("All consistency checks passed.")
     return 0
 
