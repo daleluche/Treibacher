@@ -113,6 +113,9 @@ def performance_profile(data: pd.DataFrame, name: str, title: str) -> None:
     """Create a Dolan-More performance profile from method/objective rows."""
     pivot = data.pivot_table(index="instance", columns="method", values="Z_final", aggfunc="min")
     pivot = pivot.dropna(how="all")
+    pivot = pivot.dropna(axis=1, how="all")
+    if pivot.empty:
+        return
     best = pivot.min(axis=1)
     ratios = pivot.div(best, axis=0)
     taus = np.linspace(1.0, min(2.5, float(np.nanmax(ratios.values)) + 0.05), 140)
@@ -134,6 +137,72 @@ def performance_profile(data: pd.DataFrame, name: str, title: str) -> None:
     ax.grid(True, color="#dddddd", linewidth=0.7)
     ax.legend(frameon=False)
     save_figure(fig, name)
+
+
+def canonical_scale_v2_table(mat_runs: pd.DataFrame) -> pd.DataFrame:
+    """Return canonical 8X/10X @3600s rows: cold MIP from Sprint 2.5 and decompositions from v2."""
+    original = pd.read_csv(MAT / "results_scale_8x10x" / "scale_8x10x_summary.csv")
+    mip = original[["dataset", "instance", "Z_mip", "path_mip"]].rename(
+        columns={"Z_mip": "mip", "path_mip": "source_mip"}
+    )
+    v2 = mat_runs[
+        (mat_runs["source_folder"].str.contains("results_scale_8x10x_v2", na=False))
+        & (mat_runs["budget_s"] == 3600)
+        & (mat_runs["method"].isin(["rf+fo", "rf+mip"]))
+        & (mat_runs["seed"] == 1)
+    ].copy()
+    wide = v2.pivot_table(index=["dataset", "instance"], columns="method", values="Z_final", aggfunc="min").reset_index()
+    sources = (
+        v2.pivot_table(index=["dataset", "instance"], columns="method", values="source_path", aggfunc="first")
+        .reset_index()
+        .rename(columns={"rf+fo": "source_rf+fo", "rf+mip": "source_rf+mip"})
+    )
+    table = mip.merge(wide, on=["dataset", "instance"], how="left").merge(sources, on=["dataset", "instance"], how="left")
+    table["source_mip"] = "experiments/matheuristics/results_scale_8x10x (registered cold MIP)"
+    return table.sort_values(["dataset", "instance"])
+
+
+def canonical_3600_table(comp: pd.DataFrame, prod3600: pd.DataFrame, scale_v2: pd.DataFrame) -> pd.DataFrame:
+    """Build the canonical 3600s comparison table used in paper statistics and frontier cells."""
+    rows = []
+    rf_fo_a = prod3600[prod3600["method"] == "rf+fo"].set_index("instance")
+    for _, row in comp.iterrows():
+        dataset = row["dataset"]
+        instance = row["instance"]
+        if dataset in {"8X", "10X"}:
+            scale_row = scale_v2[scale_v2["instance"] == instance]
+            if scale_row.empty:
+                continue
+            scale_row = scale_row.iloc[0]
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "instance": instance,
+                    "mip": scale_row.get("mip"),
+                    "rf+fo": scale_row.get("rf+fo"),
+                    "rf+mip": scale_row.get("rf+mip"),
+                    "source_cell": "post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2",
+                }
+            )
+        else:
+            rows.append(
+                {
+                    "dataset": dataset,
+                    "instance": instance,
+                    "mip": row.get("cplex_Z_1h"),
+                    "rf+fo": rf_fo_a.loc[instance, "Z_final"] if instance in rf_fo_a.index else np.nan,
+                    "rf+mip": np.nan,
+                    "source_cell": "registered/production: CPLEX22_1h and Grade A rf+fo",
+                }
+            )
+    return pd.DataFrame(rows).sort_values(["dataset", "instance"])
+
+
+def canonical_600_table(prod600: pd.DataFrame) -> pd.DataFrame:
+    """Build the canonical 600s comparison table from Grade B."""
+    table = prod600.pivot_table(index=["dataset", "instance"], columns="method", values="Z_final", aggfunc="min").reset_index()
+    table["source_cell"] = "production Grade B @600s"
+    return table
 
 
 def convergence_plot(mat_runs: pd.DataFrame, instance: str) -> None:
@@ -167,37 +236,33 @@ def convergence_plot(mat_runs: pd.DataFrame, instance: str) -> None:
     save_figure(fig, f"convergence_{instance}")
 
 
-def frontier_table(comp: pd.DataFrame) -> pd.DataFrame:
+def frontier_table(comp: pd.DataFrame, canonical_600: pd.DataFrame, canonical_3600: pd.DataFrame) -> pd.DataFrame:
     """Build the method-frontier winner table by dataset and budget."""
     rows = []
     for dataset, group in comp.groupby("dataset"):
         for budget in [600, 3600, 10800]:
             winners: list[str] = []
-            for _, row in group.iterrows():
-                candidates = {}
-                if budget == 600:
-                    candidates = {
-                        "mip": row.get("cplex_mip_600_Z"),
-                        "rf+fo": row.get("rf_fo_600_Z"),
-                        "rf+mip": row.get("rf_mip_600_Z"),
-                    }
-                elif budget == 3600:
-                    mip = row.get("cplex_mip_3600_Z")
-                    if pd.isna(mip):
-                        mip = row.get("cplex_Z_1h")
-                    candidates = {
-                        "mip": mip,
-                        "rf+fo": row.get("rf_fo_3600_Z"),
-                        "rf+mip": row.get("rf_mip_3600_Z"),
-                    }
-                else:
+            source_cell = ""
+            if budget == 600:
+                source = canonical_600[canonical_600["dataset"] == dataset]
+                source_cell = "production Grade B @600s"
+            elif budget == 3600:
+                source = canonical_3600[canonical_3600["dataset"] == dataset]
+                source_cell = "; ".join(sorted(set(source["source_cell"].dropna()))) if not source.empty else ""
+            else:
+                source = group.copy()
+                source_cell = "registered CPLEX22_3h where available"
+            for _, row in source.iterrows():
+                if budget == 10800:
                     candidates = {"mip": row.get("cplex_Z")}
+                else:
+                    candidates = {method: row.get(method) for method in ["mip", "rf+mip", "rf+fo"]}
                 candidates = {k: v for k, v in candidates.items() if pd.notna(v)}
                 if candidates:
                     winners.append(min(candidates, key=candidates.get))
             counts = {m: winners.count(m) for m in ["mip", "rf+mip", "rf+fo"]}
             majority = max(counts, key=counts.get) if winners else "no data"
-            rows.append({"dataset": dataset, "budget_s": budget, "winner": majority, "n": len(winners), **counts})
+            rows.append({"dataset": dataset, "budget_s": budget, "winner": majority, "n": len(winners), "source_cell": source_cell, **counts})
     table = pd.DataFrame(rows)
     table["dataset"] = pd.Categorical(table["dataset"], DATASET_ORDER, ordered=True)
     return table.sort_values(["dataset", "budget_s"])
@@ -268,6 +333,32 @@ def v2_explanation(mat_runs: pd.DataFrame) -> pd.DataFrame:
     return v2[cols].sort_values(["dataset", "instance", "method"])
 
 
+def audit_inc_t3x3_seed_windows() -> tuple[pd.DataFrame, bool]:
+    """Compare FO_random window starts for IncT3x_3 seeds 2 and 3."""
+    rows = []
+    sequences: dict[int, list[tuple[int, int]]] = {}
+    base = MAT / "results_production" / "c_seeds" / "window_logs"
+    for seed in [2, 3]:
+        path = base / f"IncT3x_3_rf_fo_seed{seed}_b3600_windows.parquet"
+        df = pd.read_parquet(path)
+        random_rows = df[df["phase"].astype(str) == "FO_random"].copy()
+        seq = list(zip(random_rows["window_start"].astype(int), random_rows["window_end"].astype(int)))
+        sequences[seed] = seq
+        rows.append(
+            {
+                "instance": "IncT3x_3",
+                "seed": seed,
+                "fo_random_windows": len(seq),
+                "first_20_windows": "; ".join(f"{start}-{end}" for start, end in seq[:20]),
+                "window_log": str(path.relative_to(ROOT)),
+            }
+        )
+    differs = sequences[2] != sequences[3]
+    audit = pd.DataFrame(rows)
+    audit["sequences_differ"] = differs
+    return audit, differs
+
+
 def sprint2_hypotheses(short_df: pd.DataFrame, scale_df: pd.DataFrame, mat_runs: pd.DataFrame) -> list[dict]:
     """Evaluate the pre-registered Sprint 2 hypotheses exactly as written."""
     h1_rows = []
@@ -304,20 +395,36 @@ def main() -> int:
     seeds = pd.read_csv(MAT / "results_production" / "c_seeds" / "grade_c_summary.csv")
     short = pd.read_csv(MAT / "results_short_budget" / "short_budget_summary.csv")
     scale = pd.read_csv(MAT / "results_scale_8x10x" / "scale_8x10x_summary.csv")
+    scale_v2 = canonical_scale_v2_table(mat_runs)
+    canonical_600 = canonical_600_table(prod600)
+    canonical_3600 = canonical_3600_table(comp, prod3600, scale_v2)
 
     bks_audit = comp[["dataset", "instance", "BKS", "bks_source"]].copy()
     bks_audit.to_csv(OUT / "sprint3_bks_audit.csv", index=False)
     v2_table = v2_explanation(mat_runs)
     v2_table.to_csv(OUT / "sprint3_scale_v2_construction.csv", index=False)
+    scale_v2.to_csv(OUT / "sprint3_scale_8x10x_canonical_v2.csv", index=False)
+    canonical_3600.to_csv(OUT / "sprint3_canonical_3600_cells.csv", index=False)
+    source_cells = pd.concat(
+        [
+            canonical_600[["dataset", "source_cell"]].drop_duplicates().assign(budget_s=600),
+            canonical_3600[["dataset", "source_cell"]].drop_duplicates().assign(budget_s=3600),
+            comp[["dataset"]].drop_duplicates().assign(budget_s=10800, source_cell="registered CPLEX22_3h where available"),
+        ],
+        ignore_index=True,
+    ).sort_values(["dataset", "budget_s"])
+    source_cells.to_csv(OUT / "sprint3_cell_sources.csv", index=False)
 
     perf600 = prod600[prod600["method"].isin(["mip", "rf+fo", "rf+mip"])]
     performance_profile(perf600, "performance_profile_600s", "Performance profile at 600 seconds")
-    perf3600 = mat_runs[(mat_runs["budget_s"] == 3600) & (mat_runs["method"].isin(["mip", "rf+fo", "rf+mip"]))]
+    perf3600 = canonical_3600.melt(
+        id_vars=["dataset", "instance"], value_vars=["mip", "rf+fo", "rf+mip"], var_name="method", value_name="Z_final"
+    ).dropna(subset=["Z_final"])
     performance_profile(perf3600, "performance_profile_3600s", "Performance profile at 3600 seconds")
     for instance in ["IncT3x_7", "IncT5x_10", "IncT10x_2"]:
         convergence_plot(mat_runs, instance)
 
-    frontier = frontier_table(comp)
+    frontier = frontier_table(comp, canonical_600, canonical_3600)
     frontier.to_csv(OUT / "sprint3_frontier_counts.csv", index=False)
     frontier_heatmap(frontier)
 
@@ -328,7 +435,7 @@ def main() -> int:
     ]
     short600 = short[short["budget_s"] == 600].rename(columns={"Z_rf_fo": "rf+fo", "Z_ils_v2_best_until_budget": "ils"})
     stats_rows.append(paired_test(short600, "rf+fo", "ils", "600s rf+fo vs truncated ILS v2"))
-    scale_wide = scale.rename(columns={"Z_rf_fo": "rf+fo", "Z_rf_mip": "rf+mip", "Z_mip": "mip"})
+    scale_wide = scale_v2.rename(columns={"rf+fo": "rf+fo", "rf+mip": "rf+mip", "mip": "mip"})
     stats_rows.extend([
         paired_test(scale_wide, "rf+fo", "mip", "3600s 8X/10X rf+fo vs mip"),
         paired_test(scale_wide, "rf+mip", "mip", "3600s 8X/10X rf+mip vs mip"),
@@ -342,8 +449,11 @@ def main() -> int:
     )
     variability["Z_range"] = variability["Z_max"] - variability["Z_min"]
     variability.to_csv(OUT / "sprint3_seed_variability.csv", index=False)
+    seed_audit, seed_sequences_differ = audit_inc_t3x3_seed_windows()
+    seed_audit.to_csv(OUT / "sprint3_seed_window_audit.csv", index=False)
 
     hypotheses = sprint2_hypotheses(short, scale, mat_runs)
+    scale_stat = stats.loc[stats["comparison"] == "3600s 8X/10X rf+fo vs mip"].iloc[0]
 
     bks_8x4 = comp.loc[comp.instance == "IncT8x_4", ["BKS", "bks_source"]].iloc[0]
     report = [
@@ -351,9 +461,11 @@ def main() -> int:
         "",
         "## Technical summary",
         "",
-        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes all CPLEX, GRASP, ILS, tuning, pilot, short-budget, scale, v2, and production matheuristic JSONs.",
+        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.",
         "",
         f"The IncT8x_4 BKS audit passes the registered check: BKS = {bks_8x4['BKS']:.3f}, source = `{bks_8x4['bks_source']}`.",
+        "",
+        f"Using canonical v2 decomposition data for 8X/10X @3600s, the Wilcoxon row `3600s 8X/10X rf+fo vs mip` has median relative delta {scale_stat['median_rel_delta_pct']:.4f}%, p-value {scale_stat['p_value']:.4f}, and rank-biserial effect {scale_stat['rank_biserial']:.4f}.",
         "",
         "## Registered Sprint 2 hypotheses",
         "",
@@ -361,19 +473,25 @@ def main() -> int:
         "",
         "These are reported as registered historical verdicts. The corrected 8X/10X v2 runs and the production grades are treated as post-hoc evidence below.",
         "",
+        "## Cell source map",
+        "",
+        "Each frontier/statistical cell is tied to a single declared source. In particular, 8X/10X @3600s uses cold MIP from `results_scale_8x10x/` and matheuristics from `results_scale_8x10x_v2/`, labelled post-hoc.",
+        "",
+        markdown_table(source_cells.to_dict("records"), ["dataset", "budget_s", "source_cell"], digits=0),
+        "",
         "## Global BKS and comparison table",
         "",
         f"`comparison_table.csv` now has {len(comp)} rows and includes `bks_source`. Dataset coverage is: "
         + ", ".join(f"{k}={v}" for k, v in comp.dataset.value_counts().reindex(DATASET_ORDER).fillna(0).astype(int).items())
         + ".",
         "",
-        "BKS candidates are scanned from all registered sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. This affects legacy GRASP_v1 rows on a few Real instances and prevents infeasible/incomparable legacy objectives from overriding proven optima.",
+        "BKS candidates are scanned from registered CPLEX, ILS, and matheuristic sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. Legacy GRASP_v1 remains in `master_runs.csv` only and is intentionally excluded from paper comparison tables because the safeguard exposed evaluator inconsistencies.",
         "",
         "## Production frontier",
         "",
         "The method frontier is summarized by majority winner per dataset-budget cell. Counts are exact counts of available instances in the cell.",
         "",
-        markdown_table(frontier.to_dict("records"), ["dataset", "budget_s", "winner", "n", "mip", "rf+mip", "rf+fo"], digits=0),
+        markdown_table(frontier.to_dict("records"), ["dataset", "budget_s", "winner", "n", "mip", "rf+mip", "rf+fo", "source_cell"], digits=0),
         "",
         "Figures: `analysis/figures/performance_profile_600s.*`, `performance_profile_3600s.*`, `frontier_heatmap.*`, and convergence curves for IncT3x_7, IncT5x_10, and IncT10x_2.",
         "",
@@ -393,16 +511,26 @@ def main() -> int:
         "",
         markdown_table(variability.to_dict("records"), ["dataset", "instance", "Z_mean", "Z_std", "Z_min", "Z_max", "Z_range"], digits=3),
         "",
+        "### Seed plumbing audit",
+        "",
+        f"The IncT3x_3 FO_random window sequences differ across seeds 2 and 3 (`sequences_differ={str(seed_sequences_differ).lower()}`). Therefore a zero standard deviation for this instance is interpreted as legitimate robustness, not a seed plumbing bug.",
+        "",
+        markdown_table(seed_audit.to_dict("records"), ["instance", "seed", "fo_random_windows", "first_20_windows", "sequences_differ"], digits=0),
+        "",
         "## Scope and limitations",
         "",
-        "The 10800s frontier cells use the available CPLEX 3h baseline where present; 8X/10X have no 10800s cold MIP runs in this sprint and are marked as no data in that budget column. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s evidence comes from the scale and v2 folders rather than Grade A.",
+        "The 10800s frontier cells use the available CPLEX 3h baseline where present; 8X/10X have no 10800s cold MIP runs in this sprint and are marked as no data in that budget column. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.",
         "",
         "## Reproducibility outputs",
         "",
         "- `analysis/output/comparison_table.csv`",
         "- `analysis/output/sprint3_bks_audit.csv`",
         "- `analysis/output/sprint3_frontier_counts.csv`",
+        "- `analysis/output/sprint3_cell_sources.csv`",
+        "- `analysis/output/sprint3_canonical_3600_cells.csv`",
+        "- `analysis/output/sprint3_scale_8x10x_canonical_v2.csv`",
         "- `analysis/output/sprint3_scale_v2_construction.csv`",
+        "- `analysis/output/sprint3_seed_window_audit.csv`",
         "- `analysis/output/sprint3_statistical_tests.csv`",
         "- `analysis/output/sprint3_seed_variability.csv`",
         "- `analysis/figures/*.png` and `analysis/figures/*.pdf`",

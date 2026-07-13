@@ -4,8 +4,10 @@ compute_gaps.py
 Builds the master comparison table from analysis/output/master_runs.csv.
 
 The Sprint 3 table has one row per instance across Real, 2X, 3X, 4X, 5X,
-8X, and 10X. Best-known solutions (BKS) are computed from every available
-CPLEX, GRASP, ILS, and matheuristic run collected in master_runs.csv.
+8X, and 10X. Best-known solutions (BKS) are computed from CPLEX, ILS, and
+matheuristic runs collected in master_runs.csv. GRASP_v1 remains in the raw
+master dataset but is excluded from comparison tables because the BKS
+safeguard detected legacy evaluator inconsistencies.
 
 Run from the repository root:  python analysis/compute_gaps.py
 """
@@ -14,6 +16,7 @@ from __future__ import annotations
 import math
 import os
 import sys
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -22,6 +25,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "analysis", "output")
 EPS = 1e-6
 DATASET_ORDER = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+warnings.filterwarnings("ignore", message="Mean of empty slice", category=RuntimeWarning)
 
 
 def pct(num: float, den: float) -> float:
@@ -38,7 +42,7 @@ def best_row(
     min_feasible_bound: float | None = None,
 ) -> pd.Series | None:
     """Return the best row for an instance, optionally restricted by methods."""
-    subset = runs[runs["instance"] == instance].dropna(subset=["Z"])
+    subset = runs[(runs["instance"] == instance) & (runs["method"] != "GRASP_v1")].dropna(subset=["Z"])
     if methods is not None:
         subset = subset[subset["method"].isin(methods)]
     if min_feasible_bound is not None and pd.notna(min_feasible_bound):
@@ -119,8 +123,6 @@ def main() -> int:
         ils2_mean = get_value(wide, "ILS_v2", name, "Z_mean")
         ils2_std = get_value(wide, "ILS_v2", name, "Z_std")
         ils1_best = get_value(wide, "ILS_v1", name, "Z_best")
-        grasp1_best = get_value(wide, "GRASP_v1", name, "Z_best")
-
         mat_600_mip = get_value(wide, "MAT_mip_600s", name, "Z_best")
         mat_600_rf_fo = get_value(wide, "MAT_rf_fo_600s", name, "Z_best")
         mat_600_rf_mip = get_value(wide, "MAT_rf_mip_600s", name, "Z_best")
@@ -152,7 +154,6 @@ def main() -> int:
             "ils2_Z_best": ils2_best,
             "ils2_Z_mean": ils2_mean,
             "ils2_Z_std": ils2_std,
-            "grasp1_Z_best": grasp1_best,
             "ils1_Z_best": ils1_best,
             "BKS": bks,
             "bks_source": source_label(bks_row),
@@ -207,7 +208,7 @@ def main() -> int:
     by_ds.to_csv(os.path.join(OUT, "comparison_by_dataset.csv"), index=False)
 
     print("=" * 88)
-    print("COMPARISON BY DATASET — global BKS includes CPLEX, GRASP, ILS, and matheuristics")
+    print("COMPARISON BY DATASET — global BKS includes CPLEX, ILS, and matheuristics")
     print("=" * 88)
     print(by_ds.round(3).to_string(index=False))
     source_8x4 = comp.loc[comp.instance == "IncT8x_4", ["BKS", "bks_source"]]

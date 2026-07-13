@@ -2,9 +2,11 @@
 
 ## Technical summary
 
-The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes all CPLEX, GRASP, ILS, tuning, pilot, short-budget, scale, v2, and production matheuristic JSONs.
+The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.
 
 The IncT8x_4 BKS audit passes the registered check: BKS = 158113.714, source = `MAT_rf_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x\IncT8x_4_rf_mip_seed1_b3600.json`.
+
+Using canonical v2 decomposition data for 8X/10X @3600s, the Wilcoxon row `3600s 8X/10X rf+fo vs mip` has median relative delta -4.4997%, p-value 0.1934, and rank-biserial effect -0.4909.
 
 ## Registered Sprint 2 hypotheses
 
@@ -17,39 +19,67 @@ The IncT8x_4 BKS audit passes the registered check: BKS = 158113.714, source = `
 
 These are reported as registered historical verdicts. The corrected 8X/10X v2 runs and the production grades are treated as post-hoc evidence below.
 
+## Cell source map
+
+Each frontier/statistical cell is tied to a single declared source. In particular, 8X/10X @3600s uses cold MIP from `results_scale_8x10x/` and matheuristics from `results_scale_8x10x_v2/`, labelled post-hoc.
+
+| dataset | budget_s | source_cell |
+| --- | --- | --- |
+| 10X | 600 | production Grade B @600s |
+| 10X | 3600 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
+| 10X | 10800 | registered CPLEX22_3h where available |
+| 2X | 600 | production Grade B @600s |
+| 2X | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 2X | 10800 | registered CPLEX22_3h where available |
+| 3X | 600 | production Grade B @600s |
+| 3X | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 3X | 10800 | registered CPLEX22_3h where available |
+| 4X | 600 | production Grade B @600s |
+| 4X | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 4X | 10800 | registered CPLEX22_3h where available |
+| 5X | 600 | production Grade B @600s |
+| 5X | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 5X | 10800 | registered CPLEX22_3h where available |
+| 8X | 600 | production Grade B @600s |
+| 8X | 3600 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
+| 8X | 10800 | registered CPLEX22_3h where available |
+| Real | 600 | production Grade B @600s |
+| Real | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| Real | 10800 | registered CPLEX22_3h where available |
+
 ## Global BKS and comparison table
 
 `comparison_table.csv` now has 60 rows and includes `bks_source`. Dataset coverage is: Real=10, 2X=10, 3X=10, 4X=10, 5X=10, 8X=5, 10X=5.
 
-BKS candidates are scanned from all registered sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. This affects legacy GRASP_v1 rows on a few Real instances and prevents infeasible/incomparable legacy objectives from overriding proven optima.
+BKS candidates are scanned from registered CPLEX, ILS, and matheuristic sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. Legacy GRASP_v1 remains in `master_runs.csv` only and is intentionally excluded from paper comparison tables because the safeguard exposed evaluator inconsistencies.
 
 ## Production frontier
 
 The method frontier is summarized by majority winner per dataset-budget cell. Counts are exact counts of available instances in the cell.
 
-| dataset | budget_s | winner | n | mip | rf+mip | rf+fo |
-| --- | --- | --- | --- | --- | --- | --- |
-| Real | 600 | mip | 10 | 10 | 0 | 0 |
-| Real | 3600 | mip | 10 | 10 | 0 | 0 |
-| Real | 10800 | mip | 10 | 10 | 0 | 0 |
-| 2X | 600 | mip | 10 | 8 | 2 | 0 |
-| 2X | 3600 | mip | 10 | 10 | 0 | 0 |
-| 2X | 10800 | mip | 10 | 10 | 0 | 0 |
-| 3X | 600 | mip | 10 | 5 | 4 | 1 |
-| 3X | 3600 | mip | 10 | 9 | 0 | 1 |
-| 3X | 10800 | mip | 10 | 10 | 0 | 0 |
-| 4X | 600 | mip | 10 | 5 | 3 | 2 |
-| 4X | 3600 | mip | 10 | 9 | 0 | 1 |
-| 4X | 10800 | mip | 10 | 10 | 0 | 0 |
-| 5X | 600 | mip | 10 | 6 | 2 | 2 |
-| 5X | 3600 | mip | 10 | 6 | 0 | 4 |
-| 5X | 10800 | mip | 10 | 10 | 0 | 0 |
-| 8X | 600 | rf+mip | 5 | 1 | 3 | 1 |
-| 8X | 3600 | rf+mip | 5 | 0 | 4 | 1 |
-| 8X | 10800 | no data | 0 | 0 | 0 | 0 |
-| 10X | 600 | rf+fo | 5 | 1 | 0 | 4 |
-| 10X | 3600 | rf+fo | 5 | 1 | 1 | 3 |
-| 10X | 10800 | no data | 0 | 0 | 0 | 0 |
+| dataset | budget_s | winner | n | mip | rf+mip | rf+fo | source_cell |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Real | 600 | mip | 10 | 10 | 0 | 0 | production Grade B @600s |
+| Real | 3600 | mip | 10 | 10 | 0 | 0 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| Real | 10800 | mip | 10 | 10 | 0 | 0 | registered CPLEX22_3h where available |
+| 2X | 600 | mip | 10 | 8 | 2 | 0 | production Grade B @600s |
+| 2X | 3600 | mip | 10 | 10 | 0 | 0 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 2X | 10800 | mip | 10 | 10 | 0 | 0 | registered CPLEX22_3h where available |
+| 3X | 600 | mip | 10 | 5 | 4 | 1 | production Grade B @600s |
+| 3X | 3600 | mip | 10 | 9 | 0 | 1 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 3X | 10800 | mip | 10 | 10 | 0 | 0 | registered CPLEX22_3h where available |
+| 4X | 600 | mip | 10 | 5 | 3 | 2 | production Grade B @600s |
+| 4X | 3600 | mip | 10 | 9 | 0 | 1 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 4X | 10800 | mip | 10 | 10 | 0 | 0 | registered CPLEX22_3h where available |
+| 5X | 600 | mip | 10 | 6 | 2 | 2 | production Grade B @600s |
+| 5X | 3600 | mip | 10 | 6 | 0 | 4 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| 5X | 10800 | mip | 10 | 10 | 0 | 0 | registered CPLEX22_3h where available |
+| 8X | 600 | rf+mip | 5 | 1 | 3 | 1 | production Grade B @600s |
+| 8X | 3600 | rf+mip | 5 | 1 | 3 | 1 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
+| 8X | 10800 | no data | 0 | 0 | 0 | 0 | registered CPLEX22_3h where available |
+| 10X | 600 | rf+fo | 5 | 1 | 0 | 4 | production Grade B @600s |
+| 10X | 3600 | rf+fo | 5 | 1 | 1 | 3 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
+| 10X | 10800 | no data | 0 | 0 | 0 | 0 | registered CPLEX22_3h where available |
 
 Figures: `analysis/figures/performance_profile_600s.*`, `performance_profile_3600s.*`, `frontier_heatmap.*`, and convergence curves for IncT3x_7, IncT5x_10, and IncT10x_2.
 
@@ -89,8 +119,8 @@ Wilcoxon tests are paired by instance. Rank-biserial effect size is computed on 
 | 600s rf+fo vs mip | 60.0000 | 0.2724 | 0.1701 | 0.1177 |
 | 600s rf+mip vs mip | 60.0000 | 0.3202 | 0.1761 | 0.0000 |
 | 600s rf+fo vs truncated ILS v2 | 6.0000 | 0.0312 | -1.0000 | -20.4246 |
-| 3600s 8X/10X rf+fo vs mip | 10.0000 | 0.0098 | 0.8909 | 14.7536 |
-| 3600s 8X/10X rf+mip vs mip | 10.0000 | 0.5566 | -0.2364 | -1.2827 |
+| 3600s 8X/10X rf+fo vs mip | 10.0000 | 0.1934 | -0.4909 | -4.4997 |
+| 3600s 8X/10X rf+mip vs mip | 10.0000 | 1.0000 | -0.0182 | -1.7035 |
 
 ## Seed variability
 
@@ -109,16 +139,29 @@ Wilcoxon tests are paired by instance. Rank-biserial effect size is computed on 
 | 8X | IncT8x_5 | 60119.988 | 195.138 | 59982.004 | 60257.971 | 275.967 |
 | 8X | IncT8x_6 | 96744.939 | 237.906 | 96576.714 | 96913.164 | 336.450 |
 
+### Seed plumbing audit
+
+The IncT3x_3 FO_random window sequences differ across seeds 2 and 3 (`sequences_differ=true`). Therefore a zero standard deviation for this instance is interpreted as legitimate robustness, not a seed plumbing bug.
+
+| instance | seed | fo_random_windows | first_20_windows | sequences_differ |
+| --- | --- | --- | --- | --- |
+| IncT3x_3 | 2 | 646 | 1-20; 2-21; 22-41; 42-57; 1-20; 3-22; 23-42; 43-57; 1-20; 3-22; 23-42; 43-57; 1-20; 12-31; 32-51; 52-57; 1-20; 6-25; 26-45; 46-57 | 1 |
+| IncT3x_3 | 3 | 629 | 1-20; 8-27; 28-47; 48-57; 1-20; 19-38; 39-57; 1-20; 18-37; 38-57; 1-20; 5-24; 25-44; 45-57; 1-20; 12-31; 32-51; 52-57; 1-20; 20-39 | 1 |
+
 ## Scope and limitations
 
-The 10800s frontier cells use the available CPLEX 3h baseline where present; 8X/10X have no 10800s cold MIP runs in this sprint and are marked as no data in that budget column. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s evidence comes from the scale and v2 folders rather than Grade A.
+The 10800s frontier cells use the available CPLEX 3h baseline where present; 8X/10X have no 10800s cold MIP runs in this sprint and are marked as no data in that budget column. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.
 
 ## Reproducibility outputs
 
 - `analysis/output/comparison_table.csv`
 - `analysis/output/sprint3_bks_audit.csv`
 - `analysis/output/sprint3_frontier_counts.csv`
+- `analysis/output/sprint3_cell_sources.csv`
+- `analysis/output/sprint3_canonical_3600_cells.csv`
+- `analysis/output/sprint3_scale_8x10x_canonical_v2.csv`
 - `analysis/output/sprint3_scale_v2_construction.csv`
+- `analysis/output/sprint3_seed_window_audit.csv`
 - `analysis/output/sprint3_statistical_tests.csv`
 - `analysis/output/sprint3_seed_variability.csv`
 - `analysis/figures/*.png` and `analysis/figures/*.pdf`
