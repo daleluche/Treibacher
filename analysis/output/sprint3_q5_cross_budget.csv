@@ -1,0 +1,11 @@
+dataset,instance,mip_10800_Z,best_bound,gap_solver_pct,model_status,solve_status,source_mip_10800,best_decomp_3600_Z,best_decomp_3600_method,delta_rel_pct,winner,mip10800_strictly_better
+10X,IncT10x_2,163595.478,121983.558742,25.435862,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_2_mip_seed1_b10800.json,142834.183,rf+fo,14.535242589653777,decomp@3600,False
+10X,IncT10x_3,80690.614,63022.489107,21.896134,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_3_mip_seed1_b10800.json,87275.452,rf+mip,-7.544891317205671,mip@10800,True
+10X,IncT10x_4,168985.52,149996.9316,11.236814,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_4_mip_seed1_b10800.json,172982.609,rf+fo,-2.310688353648318,mip@10800,True
+10X,IncT10x_5,66696.973,56266.832414,15.638102,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_5_mip_seed1_b10800.json,83018.375,rf+fo,-19.65998732208382,mip@10800,True
+10X,IncT10x_6,111304.255,89998.806037,19.14163,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_6_mip_seed1_b10800.json,109047.046,rf+fo,2.0699405282376953,decomp@3600,False
+8X,IncT8x_2,128054.148,119114.37535,6.981244,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_2_mip_seed1_b10800.json,131246.445,rf+mip,-2.4322921660849603,mip@10800,True
+8X,IncT8x_3,67597.088,56443.211709,16.500528,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_3_mip_seed1_b10800.json,71896.386,rf+mip,-5.97985272861976,mip@10800,True
+8X,IncT8x_4,159561.553,146138.917624,8.412199,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_4_mip_seed1_b10800.json,160602.997,rf+mip,-0.6484586336828998,mip@10800,True
+8X,IncT8x_5,59137.359,51343.598242,13.179082,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_5_mip_seed1_b10800.json,58152.349,rf+mip,1.6938438720678244,decomp@3600,False
+8X,IncT8x_6,95679.146,86447.032741,9.649034,Integer,ResourceInterrupt,experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_6_mip_seed1_b10800.json,97667.582,rf+fo,-2.0359222162375246,mip@10800,True

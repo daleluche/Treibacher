@@ -2,7 +2,7 @@
 
 ## Technical summary
 
-The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.
+The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, MIP@10800s scale, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.
 
 The IncT8x_4 BKS audit passes the registered check: BKS = 158113.714, source = `MAT_rf_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x\IncT8x_4_rf_mip_seed1_b3600.json`.
 
@@ -21,13 +21,13 @@ These are reported as registered historical verdicts. The corrected 8X/10X v2 ru
 
 ## Cell source map
 
-Each frontier/statistical cell is tied to a single declared source. In particular, 8X/10X @3600s uses cold MIP from `results_scale_8x10x/` and matheuristics from `results_scale_8x10x_v2/`, labelled post-hoc.
+Each frontier/statistical cell is tied to a single declared source. In particular, 8X/10X @3600s uses cold MIP from `results_scale_8x10x/` and matheuristics from `results_scale_8x10x_v2/`, labelled post-hoc. The 8X/10X @10800s cells use cold MIP from `results_scale_8x10x_mip10800/` only; decompositions were not run at 10800s.
 
 | dataset | budget_s | source_cell |
 | --- | --- | --- |
 | 10X | 600 | production Grade B @600s |
 | 10X | 3600 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
-| 10X | 10800 | registered CPLEX22_3h where available |
+| 10X | 10800 | post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s |
 | 2X | 600 | production Grade B @600s |
 | 2X | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
 | 2X | 10800 | registered CPLEX22_3h where available |
@@ -42,7 +42,7 @@ Each frontier/statistical cell is tied to a single declared source. In particula
 | 5X | 10800 | registered CPLEX22_3h where available |
 | 8X | 600 | production Grade B @600s |
 | 8X | 3600 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
-| 8X | 10800 | registered CPLEX22_3h where available |
+| 8X | 10800 | post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s |
 | Real | 600 | production Grade B @600s |
 | Real | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
 | Real | 10800 | registered CPLEX22_3h where available |
@@ -76,10 +76,45 @@ The method frontier is summarized by majority winner per dataset-budget cell. Co
 | 5X | 10800 | mip | 10 | 10 | 0 | 0 | registered CPLEX22_3h where available |
 | 8X | 600 | rf+mip | 5 | 1 | 3 | 1 | production Grade B @600s |
 | 8X | 3600 | rf+mip | 5 | 1 | 3 | 1 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
-| 8X | 10800 | no data | 0 | 0 | 0 | 0 | registered CPLEX22_3h where available |
+| 8X | 10800 | mip | 5 | 5 | 0 | 0 | post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s |
 | 10X | 600 | rf+fo | 5 | 1 | 0 | 4 | production Grade B @600s |
 | 10X | 3600 | rf+fo | 5 | 1 | 1 | 3 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
-| 10X | 10800 | no data | 0 | 0 | 0 | 0 | registered CPLEX22_3h where available |
+| 10X | 10800 | mip | 5 | 5 | 0 | 0 | post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s |
+
+## Q5 -- cross-budget check
+
+Q5 is adjudicated literally: is cold MIP @10800s strictly better than the best canonical decomposed method @3600s (source `results_scale_8x10x_v2/`) in at least 3 of 5 instances, separately for 8X and 10X?
+
+| dataset | mip10800_wins | n | Q5_true |
+| --- | --- | --- | --- |
+| 10X | 3 | 5 | true |
+| 8X | 4 | 5 | true |
+
+| dataset | instance | mip_10800_Z | best_decomp_3600_Z | best_decomp_3600_method | delta_rel_pct | winner |
+| --- | --- | --- | --- | --- | --- | --- |
+| 10X | IncT10x_2 | 163595.478 | 142834.183 | rf+fo | 14.535 | decomp@3600 |
+| 10X | IncT10x_3 | 80690.614 | 87275.452 | rf+mip | -7.545 | mip@10800 |
+| 10X | IncT10x_4 | 168985.520 | 172982.609 | rf+fo | -2.311 | mip@10800 |
+| 10X | IncT10x_5 | 66696.973 | 83018.375 | rf+fo | -19.660 | mip@10800 |
+| 10X | IncT10x_6 | 111304.255 | 109047.046 | rf+fo | 2.070 | decomp@3600 |
+| 8X | IncT8x_2 | 128054.148 | 131246.445 | rf+mip | -2.432 | mip@10800 |
+| 8X | IncT8x_3 | 67597.088 | 71896.386 | rf+mip | -5.980 | mip@10800 |
+| 8X | IncT8x_4 | 159561.553 | 160602.997 | rf+mip | -0.648 | mip@10800 |
+| 8X | IncT8x_5 | 59137.359 | 58152.349 | rf+mip | 1.694 | decomp@3600 |
+| 8X | IncT8x_6 | 95679.146 | 97667.582 | rf+fo | -2.036 | mip@10800 |
+
+A negative delta means MIP@10800s is better; a positive delta means the 3600s decomposed run is better despite the shorter budget.
+
+## BKS changes after MIP@10800s
+
+| dataset | instance | BKS_previous | BKS_current | bks_source_previous | bks_source_current |
+| --- | --- | --- | --- | --- | --- |
+| 10X | IncT10x_3 | 87275.452 | 80690.614 | MAT_rf_mip_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x_v2\IncT10x_3_rf_mip_seed1_b3600.json | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_3_mip_seed1_b10800.json |
+| 10X | IncT10x_4 | 172982.609 | 168985.520 | MAT_rf_fo_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x_v2\IncT10x_4_rf_fo_seed1_b3600.json | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_4_mip_seed1_b10800.json |
+| 10X | IncT10x_5 | 68914.120 | 66696.973 | MAT_mip_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x\IncT10x_5_mip_seed1_b3600.json | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_5_mip_seed1_b10800.json |
+| 8X | IncT8x_2 | 131246.445 | 128054.148 | MAT_rf_mip_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x_v2\IncT8x_2_rf_mip_seed1_b3600.json | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_2_mip_seed1_b10800.json |
+| 8X | IncT8x_3 | 68783.650 | 67597.088 | MAT_rf_mip_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x\IncT8x_3_rf_mip_seed1_b3600.json | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_3_mip_seed1_b10800.json |
+| 8X | IncT8x_6 | 96576.714 | 95679.146 | MAT_rf_fo_3600s \| 3600s \| experiments\matheuristics\results_production\c_seeds\IncT8x_6_rf_fo_seed2_b3600.json | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_6_mip_seed1_b10800.json |
 
 Figures: `analysis/figures/performance_profile_600s.*`, `performance_profile_3600s.*`, `frontier_heatmap.*`, and convergence curves for IncT3x_7, IncT5x_10, and IncT10x_2.
 
@@ -145,18 +180,22 @@ The IncT3x_3 FO_random window sequences differ across seeds 2 and 3 (`sequences_
 
 | instance | seed | fo_random_windows | first_20_windows | sequences_differ |
 | --- | --- | --- | --- | --- |
-| IncT3x_3 | 2 | 646 | 1-20; 2-21; 22-41; 42-57; 1-20; 3-22; 23-42; 43-57; 1-20; 3-22; 23-42; 43-57; 1-20; 12-31; 32-51; 52-57; 1-20; 6-25; 26-45; 46-57 | 1 |
-| IncT3x_3 | 3 | 629 | 1-20; 8-27; 28-47; 48-57; 1-20; 19-38; 39-57; 1-20; 18-37; 38-57; 1-20; 5-24; 25-44; 45-57; 1-20; 12-31; 32-51; 52-57; 1-20; 20-39 | 1 |
+| IncT3x_3 | 2 | 646 | 1-20; 2-21; 22-41; 42-57; 1-20; 3-22; 23-42; 43-57; 1-20; 3-22; 23-42; 43-57; 1-20; 12-31; 32-51; 52-57; 1-20; 6-25; 26-45; 46-57 | true |
+| IncT3x_3 | 3 | 629 | 1-20; 8-27; 28-47; 48-57; 1-20; 19-38; 39-57; 1-20; 18-37; 38-57; 1-20; 5-24; 25-44; 45-57; 1-20; 12-31; 32-51; 52-57; 1-20; 20-39 | true |
 
 ## Scope and limitations
 
-The 10800s frontier cells use the available CPLEX 3h baseline where present; 8X/10X have no 10800s cold MIP runs in this sprint and are marked as no data in that budget column. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.
+The 10800s frontier cells use the available CPLEX 3h baseline where present. For 8X/10X, 10800s cells now contain cold MIP only from `results_scale_8x10x_mip10800/`; decompositions were not executed at 10800s and this asymmetry is disclosed in the frontier figure and Q5 table. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.
 
 ## Reproducibility outputs
 
 - `analysis/output/comparison_table.csv`
 - `analysis/output/sprint3_bks_audit.csv`
 - `analysis/output/sprint3_frontier_counts.csv`
+- `analysis/output/sprint3_q5_cross_budget.csv`
+- `analysis/output/sprint3_q5_verdict.csv`
+- `analysis/output/sprint3_mip10800_8x10x.csv`
+- `analysis/output/sprint3_bks_changes_after_mip10800.csv`
 - `analysis/output/sprint3_cell_sources.csv`
 - `analysis/output/sprint3_canonical_3600_cells.csv`
 - `analysis/output/sprint3_scale_8x10x_canonical_v2.csv`

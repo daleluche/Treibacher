@@ -49,13 +49,13 @@ Real,Ale_9,15627.917,MAT_mip_600s | 600s | experiments\matheuristics\results_pro
 5X,IncT5x_7,22166.183,CPLEX22_3h | 10800s
 5X,IncT5x_8,177536.272,CPLEX22_3h | 10800s
 5X,IncT5x_9,28381.253,MAT_rf_fo_600s | 600s | experiments\matheuristics\results_production\b600\IncT5x_9_rf_fo_seed1_b600.json
-8X,IncT8x_2,131246.445,MAT_rf_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x_v2\IncT8x_2_rf_mip_seed1_b3600.json
-8X,IncT8x_3,68783.65,MAT_rf_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x\IncT8x_3_rf_mip_seed1_b3600.json
+8X,IncT8x_2,128054.148,MAT_mip_10800s | 10800s | experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_2_mip_seed1_b10800.json
+8X,IncT8x_3,67597.088,MAT_mip_10800s | 10800s | experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_3_mip_seed1_b10800.json
 8X,IncT8x_4,158113.714,MAT_rf_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x\IncT8x_4_rf_mip_seed1_b3600.json
 8X,IncT8x_5,58152.349,MAT_rf_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x_v2\IncT8x_5_rf_mip_seed1_b3600.json
-8X,IncT8x_6,96576.714,MAT_rf_fo_3600s | 3600s | experiments\matheuristics\results_production\c_seeds\IncT8x_6_rf_fo_seed2_b3600.json
+8X,IncT8x_6,95679.146,MAT_mip_10800s | 10800s | experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_6_mip_seed1_b10800.json
 10X,IncT10x_2,142834.183,MAT_rf_fo_3600s | 3600s | experiments\matheuristics\results_scale_8x10x_v2\IncT10x_2_rf_fo_seed1_b3600.json
-10X,IncT10x_3,87275.452,MAT_rf_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x_v2\IncT10x_3_rf_mip_seed1_b3600.json
-10X,IncT10x_4,172982.609,MAT_rf_fo_3600s | 3600s | experiments\matheuristics\results_scale_8x10x_v2\IncT10x_4_rf_fo_seed1_b3600.json
-10X,IncT10x_5,68914.12,MAT_mip_3600s | 3600s | experiments\matheuristics\results_scale_8x10x\IncT10x_5_mip_seed1_b3600.json
+10X,IncT10x_3,80690.614,MAT_mip_10800s | 10800s | experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_3_mip_seed1_b10800.json
+10X,IncT10x_4,168985.52,MAT_mip_10800s | 10800s | experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_4_mip_seed1_b10800.json
+10X,IncT10x_5,66696.973,MAT_mip_10800s | 10800s | experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_5_mip_seed1_b10800.json
 10X,IncT10x_6,109047.046,MAT_rf_fo_3600s | 3600s | experiments\matheuristics\results_scale_8x10x_v2\IncT10x_6_rf_fo_seed1_b3600.json

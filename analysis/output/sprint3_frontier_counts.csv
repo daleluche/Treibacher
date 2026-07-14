@@ -16,7 +16,7 @@ Real,10800,mip,10,registered CPLEX22_3h where available,10,0,0
 5X,10800,mip,10,registered CPLEX22_3h where available,10,0,0
 8X,600,rf+mip,5,production Grade B @600s,1,3,1
 8X,3600,rf+mip,5,post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2,1,3,1
-8X,10800,no data,0,registered CPLEX22_3h where available,0,0,0
+8X,10800,mip,5,post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s,5,0,0
 10X,600,rf+fo,5,production Grade B @600s,1,0,4
 10X,3600,rf+fo,5,post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2,1,1,3
-10X,10800,no data,0,registered CPLEX22_3h where available,0,0,0
+10X,10800,mip,5,post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s,5,0,0

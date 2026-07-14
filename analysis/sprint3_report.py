@@ -45,7 +45,13 @@ def markdown_table(rows: Iterable[dict], columns: list[str], digits: int = 3) ->
         cells = []
         for col in columns:
             value = row.get(col, "")
-            cells.append(fmt(value, digits) if isinstance(value, (int, float, np.floating)) else str(value))
+            if isinstance(value, (int, float, np.floating)) and not isinstance(value, bool):
+                cell = fmt(value, digits)
+            elif isinstance(value, bool):
+                cell = str(value).lower()
+            else:
+                cell = str(value)
+            cells.append(cell.replace("|", "\\|").replace("\n", " "))
         lines.append("| " + " | ".join(cells) + " |")
     return "\n".join(lines)
 
@@ -64,6 +70,7 @@ def load_result_jsons() -> pd.DataFrame:
         MAT / "results_short_budget_v2",
         MAT / "results_scale_8x10x",
         MAT / "results_scale_8x10x_v2",
+        MAT / "results_scale_8x10x_mip10800",
         MAT / "results_production" / "b600",
         MAT / "results_production" / "a3600",
         MAT / "results_production" / "c_seeds",
@@ -85,6 +92,10 @@ def load_result_jsons() -> pd.DataFrame:
                     "seed": data.get("seed"),
                     "budget_s": float(params.get("budget", np.nan)),
                     "Z_final": float(data.get("Z_final", np.nan)),
+                    "best_bound": data.get("best_bound") or data.get("dual_bound"),
+                    "gap_solver_pct": data.get("gap_solver_pct") or data.get("gap_pct"),
+                    "model_status": data.get("model_status"),
+                    "solve_status": data.get("solve_status"),
                     "Z_rf": data.get("Z_rf"),
                     "Z_greedy": data.get("Z_greedy"),
                     "construction_used": data.get("construction_used"),
@@ -160,6 +171,54 @@ def canonical_scale_v2_table(mat_runs: pd.DataFrame) -> pd.DataFrame:
     table = mip.merge(wide, on=["dataset", "instance"], how="left").merge(sources, on=["dataset", "instance"], how="left")
     table["source_mip"] = "experiments/matheuristics/results_scale_8x10x (registered cold MIP)"
     return table.sort_values(["dataset", "instance"])
+
+
+def mip10800_table(mat_runs: pd.DataFrame) -> pd.DataFrame:
+    """Return cold MIP @10800s rows for 8X/10X."""
+    mip = mat_runs[
+        (mat_runs["source_folder"].str.contains("results_scale_8x10x_mip10800", na=False))
+        & (mat_runs["method"] == "mip")
+        & (mat_runs["budget_s"] == 10800)
+        & (mat_runs["seed"] == 1)
+    ].copy()
+    return mip[
+        [
+            "dataset",
+            "instance",
+            "Z_final",
+            "best_bound",
+            "gap_solver_pct",
+            "model_status",
+            "solve_status",
+            "source_path",
+        ]
+    ].rename(columns={"Z_final": "mip_10800_Z", "source_path": "source_mip_10800"}).sort_values(["dataset", "instance"])
+
+
+def q5_cross_budget_table(scale_v2: pd.DataFrame, mip10800: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Compare cold MIP @10800s with best canonical decomposition @3600s for Q5."""
+    decomp = scale_v2[["dataset", "instance", "rf+fo", "rf+mip"]].copy()
+    decomp["best_decomp_3600_Z"] = decomp[["rf+fo", "rf+mip"]].min(axis=1)
+    decomp["best_decomp_3600_method"] = decomp[["rf+fo", "rf+mip"]].idxmin(axis=1)
+    table = mip10800.merge(
+        decomp[["dataset", "instance", "best_decomp_3600_Z", "best_decomp_3600_method"]],
+        on=["dataset", "instance"],
+        how="left",
+    )
+    table["delta_rel_pct"] = (
+        (table["mip_10800_Z"] - table["best_decomp_3600_Z"])
+        / np.maximum(np.abs(table["best_decomp_3600_Z"]), 1.0)
+        * 100.0
+    )
+    table["winner"] = np.where(table["mip_10800_Z"] < table["best_decomp_3600_Z"] - 1e-9, "mip@10800", "decomp@3600")
+    table["mip10800_strictly_better"] = table["winner"] == "mip@10800"
+    verdict = (
+        table.groupby("dataset", as_index=False)
+        .agg(mip10800_wins=("mip10800_strictly_better", "sum"), n=("instance", "count"))
+    )
+    verdict["Q5_true"] = verdict["mip10800_wins"] >= 3
+    verdict["Q5_true"] = verdict["Q5_true"].map(lambda value: str(bool(value)).lower())
+    return table.sort_values(["dataset", "instance"]), verdict.sort_values("dataset")
 
 
 def canonical_3600_table(comp: pd.DataFrame, prod3600: pd.DataFrame, scale_v2: pd.DataFrame) -> pd.DataFrame:
@@ -251,7 +310,11 @@ def frontier_table(comp: pd.DataFrame, canonical_600: pd.DataFrame, canonical_36
                 source_cell = "; ".join(sorted(set(source["source_cell"].dropna()))) if not source.empty else ""
             else:
                 source = group.copy()
-                source_cell = "registered CPLEX22_3h where available"
+                source_cell = (
+                    "post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s"
+                    if dataset in {"8X", "10X"}
+                    else "registered CPLEX22_3h where available"
+                )
             for _, row in source.iterrows():
                 if budget == 10800:
                     candidates = {"mip": row.get("cplex_Z")}
@@ -279,7 +342,7 @@ def frontier_heatmap(frontier: pd.DataFrame) -> None:
     ax.imshow(values, cmap=cmap, vmin=0, vmax=3)
     ax.set_xticks(range(len(grid.columns)), [str(int(c)) for c in grid.columns])
     ax.set_yticks(range(len(grid.index)), grid.index)
-    ax.set_xlabel("Budget (s)")
+    ax.set_xlabel("Budget (s)\nNote: 8X/10X @10800s contains cold MIP only; decompositions were not run at 10800s.")
     ax.set_ylabel("Dataset")
     ax.set_title("Method frontier by scale and budget")
     for i, dataset in enumerate(grid.index):
@@ -388,6 +451,11 @@ def main() -> int:
     OUT.mkdir(parents=True, exist_ok=True)
     FIG.mkdir(parents=True, exist_ok=True)
 
+    previous_bks = None
+    previous_bks_path = OUT / "sprint3_bks_audit.csv"
+    if previous_bks_path.exists():
+        previous_bks = pd.read_csv(previous_bks_path)
+
     comp = pd.read_csv(OUT / "comparison_table.csv")
     mat_runs = load_result_jsons()
     prod600 = pd.read_csv(MAT / "results_production" / "b600" / "grade_b_summary.csv")
@@ -396,20 +464,43 @@ def main() -> int:
     short = pd.read_csv(MAT / "results_short_budget" / "short_budget_summary.csv")
     scale = pd.read_csv(MAT / "results_scale_8x10x" / "scale_8x10x_summary.csv")
     scale_v2 = canonical_scale_v2_table(mat_runs)
+    mip10800 = mip10800_table(mat_runs)
+    q5_table, q5_verdict = q5_cross_budget_table(scale_v2, mip10800)
     canonical_600 = canonical_600_table(prod600)
     canonical_3600 = canonical_3600_table(comp, prod3600, scale_v2)
 
     bks_audit = comp[["dataset", "instance", "BKS", "bks_source"]].copy()
     bks_audit.to_csv(OUT / "sprint3_bks_audit.csv", index=False)
+    if previous_bks is not None:
+        bks_changes = previous_bks.merge(bks_audit, on=["dataset", "instance"], how="outer", suffixes=("_previous", "_current"))
+        bks_changes = bks_changes[
+            (bks_changes["BKS_previous"].round(6) != bks_changes["BKS_current"].round(6))
+            | (bks_changes["bks_source_previous"].fillna("") != bks_changes["bks_source_current"].fillna(""))
+        ].copy()
+    else:
+        bks_changes = pd.DataFrame(columns=["dataset", "instance", "BKS_previous", "BKS_current", "bks_source_previous", "bks_source_current"])
+    bks_changes.to_csv(OUT / "sprint3_bks_changes_after_mip10800.csv", index=False)
     v2_table = v2_explanation(mat_runs)
     v2_table.to_csv(OUT / "sprint3_scale_v2_construction.csv", index=False)
     scale_v2.to_csv(OUT / "sprint3_scale_8x10x_canonical_v2.csv", index=False)
+    mip10800.to_csv(OUT / "sprint3_mip10800_8x10x.csv", index=False)
+    q5_table.to_csv(OUT / "sprint3_q5_cross_budget.csv", index=False)
+    q5_verdict.to_csv(OUT / "sprint3_q5_verdict.csv", index=False)
     canonical_3600.to_csv(OUT / "sprint3_canonical_3600_cells.csv", index=False)
     source_cells = pd.concat(
         [
             canonical_600[["dataset", "source_cell"]].drop_duplicates().assign(budget_s=600),
             canonical_3600[["dataset", "source_cell"]].drop_duplicates().assign(budget_s=3600),
-            comp[["dataset"]].drop_duplicates().assign(budget_s=10800, source_cell="registered CPLEX22_3h where available"),
+            comp[["dataset"]]
+            .drop_duplicates()
+            .assign(
+                budget_s=10800,
+                source_cell=lambda frame: np.where(
+                    frame["dataset"].isin(["8X", "10X"]),
+                    "post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s",
+                    "registered CPLEX22_3h where available",
+                ),
+            ),
         ],
         ignore_index=True,
     ).sort_values(["dataset", "budget_s"])
@@ -461,7 +552,7 @@ def main() -> int:
         "",
         "## Technical summary",
         "",
-        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.",
+        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, MIP@10800s scale, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.",
         "",
         f"The IncT8x_4 BKS audit passes the registered check: BKS = {bks_8x4['BKS']:.3f}, source = `{bks_8x4['bks_source']}`.",
         "",
@@ -475,7 +566,7 @@ def main() -> int:
         "",
         "## Cell source map",
         "",
-        "Each frontier/statistical cell is tied to a single declared source. In particular, 8X/10X @3600s uses cold MIP from `results_scale_8x10x/` and matheuristics from `results_scale_8x10x_v2/`, labelled post-hoc.",
+        "Each frontier/statistical cell is tied to a single declared source. In particular, 8X/10X @3600s uses cold MIP from `results_scale_8x10x/` and matheuristics from `results_scale_8x10x_v2/`, labelled post-hoc. The 8X/10X @10800s cells use cold MIP from `results_scale_8x10x_mip10800/` only; decompositions were not run at 10800s.",
         "",
         markdown_table(source_cells.to_dict("records"), ["dataset", "budget_s", "source_cell"], digits=0),
         "",
@@ -492,6 +583,20 @@ def main() -> int:
         "The method frontier is summarized by majority winner per dataset-budget cell. Counts are exact counts of available instances in the cell.",
         "",
         markdown_table(frontier.to_dict("records"), ["dataset", "budget_s", "winner", "n", "mip", "rf+mip", "rf+fo", "source_cell"], digits=0),
+        "",
+        "## Q5 -- cross-budget check",
+        "",
+        "Q5 is adjudicated literally: is cold MIP @10800s strictly better than the best canonical decomposed method @3600s (source `results_scale_8x10x_v2/`) in at least 3 of 5 instances, separately for 8X and 10X?",
+        "",
+        markdown_table(q5_verdict.to_dict("records"), ["dataset", "mip10800_wins", "n", "Q5_true"], digits=0),
+        "",
+        markdown_table(q5_table.to_dict("records"), ["dataset", "instance", "mip_10800_Z", "best_decomp_3600_Z", "best_decomp_3600_method", "delta_rel_pct", "winner"], digits=3),
+        "",
+        "A negative delta means MIP@10800s is better; a positive delta means the 3600s decomposed run is better despite the shorter budget.",
+        "",
+        "## BKS changes after MIP@10800s",
+        "",
+        markdown_table(bks_changes.to_dict("records"), ["dataset", "instance", "BKS_previous", "BKS_current", "bks_source_previous", "bks_source_current"], digits=3),
         "",
         "Figures: `analysis/figures/performance_profile_600s.*`, `performance_profile_3600s.*`, `frontier_heatmap.*`, and convergence curves for IncT3x_7, IncT5x_10, and IncT10x_2.",
         "",
@@ -519,13 +624,17 @@ def main() -> int:
         "",
         "## Scope and limitations",
         "",
-        "The 10800s frontier cells use the available CPLEX 3h baseline where present; 8X/10X have no 10800s cold MIP runs in this sprint and are marked as no data in that budget column. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.",
+        "The 10800s frontier cells use the available CPLEX 3h baseline where present. For 8X/10X, 10800s cells now contain cold MIP only from `results_scale_8x10x_mip10800/`; decompositions were not executed at 10800s and this asymmetry is disclosed in the frontier figure and Q5 table. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.",
         "",
         "## Reproducibility outputs",
         "",
         "- `analysis/output/comparison_table.csv`",
         "- `analysis/output/sprint3_bks_audit.csv`",
         "- `analysis/output/sprint3_frontier_counts.csv`",
+        "- `analysis/output/sprint3_q5_cross_budget.csv`",
+        "- `analysis/output/sprint3_q5_verdict.csv`",
+        "- `analysis/output/sprint3_mip10800_8x10x.csv`",
+        "- `analysis/output/sprint3_bks_changes_after_mip10800.csv`",
         "- `analysis/output/sprint3_cell_sources.csv`",
         "- `analysis/output/sprint3_canonical_3600_cells.csv`",
         "- `analysis/output/sprint3_scale_8x10x_canonical_v2.csv`",

@@ -101,6 +101,10 @@ def main() -> int:
         bound_1h = get_value(wide, "CPLEX22_1h", name, "bound")
         status_3h = get_value(wide, "CPLEX22_3h", name, "model_status")
         gap_3h = get_value(wide, "CPLEX22_3h", name, "gap_solver_pct")
+        mat_10800_mip = get_value(wide, "MAT_mip_10800s", name, "Z_best")
+        mat_10800_bound = get_value(wide, "MAT_mip_10800s", name, "bound")
+        mat_10800_gap = get_value(wide, "MAT_mip_10800s", name, "gap_solver_pct")
+        mat_10800_status = get_value(wide, "MAT_mip_10800s", name, "model_status")
 
         cplex_budget = None
         cplex_Z = np.nan
@@ -118,6 +122,12 @@ def main() -> int:
             cplex_Z = cplex_1h
             bound = bound_1h
             cplex_status = get_value(wide, "CPLEX22_1h", name, "model_status")
+        elif pd.notna(mat_10800_mip):
+            cplex_budget = "mip_10800s"
+            cplex_Z = mat_10800_mip
+            bound = mat_10800_bound
+            cplex_gap = mat_10800_gap
+            cplex_status = mat_10800_status
 
         ils2_best = get_value(wide, "ILS_v2", name, "Z_best")
         ils2_mean = get_value(wide, "ILS_v2", name, "Z_mean")
@@ -147,6 +157,9 @@ def main() -> int:
             "cplex_status": cplex_status,
             "cplex_mip_600_Z": mat_600_mip,
             "cplex_mip_3600_Z": mat_3600_mip,
+            "cplex_mip_10800_Z": mat_10800_mip,
+            "cplex_mip_10800_bound": mat_10800_bound,
+            "cplex_mip_10800_gap_pct": mat_10800_gap,
             "rf_fo_600_Z": mat_600_rf_fo,
             "rf_mip_600_Z": mat_600_rf_mip,
             "rf_fo_3600_Z": mat_3600_rf_fo,
