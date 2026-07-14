@@ -77,6 +77,11 @@ class MatheuristicResult:
     instrumentation_wall_time: float
     early_stop_reason: str | None
     solver_version: str | None
+    model_status: str | None
+    solve_status: str | None
+    best_bound: float | None
+    gap_solver_pct: float | None
+    solver_objective: float | None
     hardware: dict
 
 
@@ -423,6 +428,42 @@ def parse_cplex_progress(log_text: str) -> dict:
     return {
         "cplex_nodes": int(node_matches[-1]) if node_matches else None,
         "cplex_gap_percent": float(gap_matches[-1]) if gap_matches else None,
+    }
+
+
+def finite_or_none(value: object) -> float | None:
+    """Return a finite float or None for missing/non-finite solver values."""
+    try:
+        numeric = float(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return None
+    return numeric if math.isfinite(numeric) else None
+
+
+def enum_label(value: object) -> str | None:
+    """Return a compact string label for GAMSPy enum-like values."""
+    if value is None:
+        return None
+    name = getattr(value, "name", None)
+    if name:
+        return str(name)
+    text = str(value)
+    return text.split(".")[-1] if "." in text else text
+
+
+def solve_metadata(model: PSPGamspyModel) -> dict[str, float | str | None]:
+    """Extract auditable status, bound, and gap fields from the current GAMSPy model."""
+    objective = finite_or_none(getattr(model.model, "objective_value", None))
+    bound = finite_or_none(getattr(model.model, "objective_estimation", None))
+    gap_pct = None
+    if objective is not None and bound is not None:
+        gap_pct = 100.0 * max(0.0, objective - bound) / max(abs(objective), 1.0)
+    return {
+        "model_status": enum_label(getattr(model.model, "status", None)),
+        "solve_status": enum_label(getattr(model.model, "solve_status", None)),
+        "best_bound": bound,
+        "gap_solver_pct": gap_pct,
+        "solver_objective": objective,
     }
 
 
@@ -940,22 +981,23 @@ def solve_monolithic_mip(
     start_time: float,
     incumbent: np.ndarray,
     improvements: list[dict],
-) -> tuple[np.ndarray, float, bool, bool, str | None, list[str]]:
+) -> tuple[np.ndarray, float, bool, bool, str | None, list[str], dict[str, float | str | None] | None]:
     """Solve the full MIP using the RF incumbent as a MIP start."""
     z_inc, _, _ = evaluate(incumbent, inst)
     if time_left(start_time, params.budget) <= 0:
-        return incumbent, z_inc, False, False, None, []
+        return incumbent, z_inc, False, False, None, [], None
 
     model.set_monolithic_mip_regime(incumbent)
     model.set_mip_start(incumbent)
     solved, log_text, _ = model.solve(time_left(start_time, params.budget), mipstart=True, optcr=0.0)
+    metadata = solve_metadata(model)
     normalized_log = log_text.lower()
     warm_has_mipstart = "mip start" in normalized_log or "mipstart" in normalized_log
     warm_log_excerpt = extract_mipstart_excerpt(log_text)
     warm_evidence_lines = extract_mipstart_evidence(log_text)
 
     if not solved:
-        return incumbent, z_inc, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+        return incumbent, z_inc, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines, metadata
 
     candidate = model.extract_schedule()
     z_new, _, _ = evaluate(candidate, inst)
@@ -965,11 +1007,15 @@ def solve_monolithic_mip(
             "Z": round(z_new, 6),
             "phase": "MIP",
             "window_start": None,
+            "model_status": metadata.get("model_status"),
+            "solve_status": metadata.get("solve_status"),
+            "best_bound": metadata.get("best_bound"),
+            "gap_solver_pct": metadata.get("gap_solver_pct"),
         }
     )
     if z_new < z_inc - EPS:
-        return candidate, z_new, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
-    return incumbent, z_inc, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines
+        return candidate, z_new, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines, metadata
+    return incumbent, z_inc, True, warm_has_mipstart, warm_log_excerpt, warm_evidence_lines, metadata
 
 
 def solve_cold_monolithic_mip(
@@ -978,17 +1024,18 @@ def solve_cold_monolithic_mip(
     params: RunParams,
     start_time: float,
     improvements: list[dict],
-) -> tuple[np.ndarray, float]:
+) -> tuple[np.ndarray, float, dict[str, float | str | None] | None]:
     """Solve the full MIP without a warm start."""
     incumbent = np.zeros(inst.T, dtype=np.int64)
     z_inc, _, _ = evaluate(incumbent, inst)
     if time_left(start_time, params.budget) <= 0:
-        return incumbent, z_inc
+        return incumbent, z_inc, None
 
     model.set_monolithic_mip_regime(incumbent)
     solved, _, _ = model.solve(time_left(start_time, params.budget), mipstart=False, optcr=0.0)
+    metadata = solve_metadata(model)
     if not solved:
-        return incumbent, z_inc
+        return incumbent, z_inc, metadata
 
     candidate = model.extract_schedule()
     z_new, _, _ = evaluate(candidate, inst)
@@ -998,9 +1045,13 @@ def solve_cold_monolithic_mip(
             "Z": round(z_new, 6),
             "phase": "MIP",
             "window_start": None,
+            "model_status": metadata.get("model_status"),
+            "solve_status": metadata.get("solve_status"),
+            "best_bound": metadata.get("best_bound"),
+            "gap_solver_pct": metadata.get("gap_solver_pct"),
         }
     )
-    return candidate, z_new
+    return candidate, z_new, metadata
 
 
 def extract_mipstart_excerpt(log_text: str) -> str | None:
@@ -1091,9 +1142,10 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
     construction = "rf"
     z_greedy: float | None = None
     greedy_wall_time = 0.0
+    monolithic_metadata: dict[str, float | str | None] | None = None
 
     if params.method == "mip":
-        incumbent, z_rf = solve_cold_monolithic_mip(model, inst, params, start_time, improvements)
+        incumbent, z_rf, monolithic_metadata = solve_cold_monolithic_mip(model, inst, params, start_time, improvements)
         rf_windows = 0
         construction = "mip"
     elif params.start_from:
@@ -1169,6 +1221,7 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
             warm_has_mipstart,
             warm_log_excerpt,
             warm_evidence_lines,
+            monolithic_metadata,
         ) = solve_monolithic_mip(model, inst, params, start_time, incumbent, improvements)
         if z_final < z_best_overall - EPS:
             best_schedule = incumbent.copy()
@@ -1204,6 +1257,11 @@ def run_matheuristic(instance_path: Path, params: RunParams, seed: int) -> Mathe
         instrumentation_wall_time=instrumentation_wall_time,
         early_stop_reason=early_stop_reason,
         solver_version=model.solver_version,
+        model_status=None if monolithic_metadata is None else monolithic_metadata.get("model_status"),  # type: ignore[arg-type]
+        solve_status=None if monolithic_metadata is None else monolithic_metadata.get("solve_status"),  # type: ignore[arg-type]
+        best_bound=None if monolithic_metadata is None else monolithic_metadata.get("best_bound"),  # type: ignore[arg-type]
+        gap_solver_pct=None if monolithic_metadata is None else monolithic_metadata.get("gap_solver_pct"),  # type: ignore[arg-type]
+        solver_objective=None if monolithic_metadata is None else monolithic_metadata.get("solver_objective"),  # type: ignore[arg-type]
         hardware=hardware_provenance(),
     )
 
@@ -1242,6 +1300,13 @@ def write_result(
             "solver": "CPLEX",
             "solver_version": result.solver_version,
         },
+        "model_status": result.model_status,
+        "solve_status": result.solve_status,
+        "best_bound": None if result.best_bound is None else round(float(result.best_bound), 6),
+        "dual_bound": None if result.best_bound is None else round(float(result.best_bound), 6),
+        "gap_solver_pct": None if result.gap_solver_pct is None else round(float(result.gap_solver_pct), 6),
+        "gap_pct": None if result.gap_solver_pct is None else round(float(result.gap_solver_pct), 6),
+        "solver_objective": None if result.solver_objective is None else round(float(result.solver_objective), 6),
         "hardware": result.hardware,
         "rf_windows": result.rf_windows,
         "rf_wall_time": round(result.rf_wall_time, 3),
