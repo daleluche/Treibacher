@@ -1,0 +1,450 @@
+\begin{thebibliography}{48}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\href}[2]{#2}
+\providecommand{\path}[1]{#1}
+\providecommand{\DOIprefix}{doi:}
+\providecommand{\ArXivprefix}{arXiv:}
+\providecommand{\URLprefix}{URL: }
+\providecommand{\Pubmedprefix}{pmid:}
+\providecommand{\doi}[1]{\href{http://dx.doi.org/#1}{\path{#1}}}
+\providecommand{\Pubmed}[1]{\href{pmid:#1}{\path{#1}}}
+\providecommand{\bibinfo}[2]{#2}
+\ifx\xfnm\relax \def\xfnm[#1]{\unskip,\space#1}\fi
+%Type = Article
+\bibitem[{Achterberg et~al.(2020)Achterberg, Bixby, Gu, Rothberg and
+  Weninger}]{achterberg2020presolve}
+\bibinfo{author}{Achterberg, T.}, \bibinfo{author}{Bixby, R.E.},
+  \bibinfo{author}{Gu, Z.}, \bibinfo{author}{Rothberg, E.},
+  \bibinfo{author}{Weninger, D.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Presolve reductions in mixed integer programming}.
+\newblock \bibinfo{journal}{INFORMS Journal on Computing} \bibinfo{volume}{32},
+  \bibinfo{pages}{473--506}.
+%Type = Incollection
+\bibitem[{Achterberg and Wunderling(2013)}]{achterberg2013analyzing}
+\bibinfo{author}{Achterberg, T.}, \bibinfo{author}{Wunderling, R.},
+  \bibinfo{year}{2013}.
+\newblock \bibinfo{title}{Mixed integer programming: analyzing 12 years of
+  progress}, in: \bibinfo{booktitle}{Facets of Combinatorial Optimization:
+  Festschrift for Martin Gr{\"o}tschel}. \bibinfo{publisher}{Springer}, pp.
+  \bibinfo{pages}{449--481}.
+%Type = Article
+\bibitem[{Aiex et~al.(2007)Aiex, Resende and Ribeiro}]{aiex2007ttt}
+\bibinfo{author}{Aiex, R.M.}, \bibinfo{author}{Resende, M.G.C.},
+  \bibinfo{author}{Ribeiro, C.C.}, \bibinfo{year}{2007}.
+\newblock \bibinfo{title}{{TTT} plots: a perl program to create time-to-target
+  plots}.
+\newblock \bibinfo{journal}{Optimization Letters} \bibinfo{volume}{1},
+  \bibinfo{pages}{355--366}.
+\newblock \DOIprefix\doi{10.1007/s11590-006-0031-4}.
+%Type = Article
+\bibitem[{de~Araujo et~al.(2008)de~Araujo, Arenales and
+  Clark}]{araujo2008foundry}
+\bibinfo{author}{de~Araujo, S.A.}, \bibinfo{author}{Arenales, M.N.},
+  \bibinfo{author}{Clark, A.R.}, \bibinfo{year}{2008}.
+\newblock \bibinfo{title}{Lot sizing and furnace scheduling in small
+  foundries}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{35}, \bibinfo{pages}{916--932}.
+\newblock \DOIprefix\doi{10.1016/j.cor.2006.05.010}.
+%Type = Article
+\bibitem[{Baker(1977)}]{baker1977experimental}
+\bibinfo{author}{Baker, K.R.}, \bibinfo{year}{1977}.
+\newblock \bibinfo{title}{An experimental study of the effectiveness of rolling
+  schedules in production planning}.
+\newblock \bibinfo{journal}{Decision Sciences} \bibinfo{volume}{8},
+  \bibinfo{pages}{19--27}.
+\newblock \DOIprefix\doi{10.1111/j.1540-5915.1977.tb01065.x}.
+%Type = Article
+\bibitem[{Bixby(2012)}]{bixby2012brief}
+\bibinfo{author}{Bixby, R.E.}, \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{A brief history of linear and mixed-integer
+  programming computation}.
+\newblock \bibinfo{journal}{Documenta Mathematica} \bibinfo{volume}{Extra
+  Volume: Optimization Stories}, \bibinfo{pages}{107--121}.
+\newblock \DOIprefix\doi{10.4171/DMS/6/16}.
+%Type = Article
+\bibitem[{Buschk{\"u}hl et~al.(2010)Buschk{\"u}hl, Sahling, Helber and
+  Tempelmeier}]{buschkuhl2010dynamic}
+\bibinfo{author}{Buschk{\"u}hl, L.}, \bibinfo{author}{Sahling, F.},
+  \bibinfo{author}{Helber, S.}, \bibinfo{author}{Tempelmeier, H.},
+  \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Dynamic capacitated lot-sizing problems: a
+  classification and review of solution approaches}.
+\newblock \bibinfo{journal}{OR Spectrum} \bibinfo{volume}{32},
+  \bibinfo{pages}{231--261}.
+\newblock \DOIprefix\doi{10.1007/s00291-008-0150-7}.
+%Type = Article
+\bibitem[{Clark et~al.(2010)Clark, Morabito and Toso}]{clark2010production}
+\bibinfo{author}{Clark, A.R.}, \bibinfo{author}{Morabito, R.},
+  \bibinfo{author}{Toso, E.A.V.}, \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Production setup-sequencing and lot-sizing at an
+  animal nutrition plant through {ATSP} subtour elimination and patching}.
+\newblock \bibinfo{journal}{Journal of Scheduling} \bibinfo{volume}{13},
+  \bibinfo{pages}{111--121}.
+%Type = Article
+\bibitem[{Copil et~al.(2017)Copil, W{\"o}rbelauer, Meyr and
+  Tempelmeier}]{copil2017simultaneous}
+\bibinfo{author}{Copil, K.}, \bibinfo{author}{W{\"o}rbelauer, M.},
+  \bibinfo{author}{Meyr, H.}, \bibinfo{author}{Tempelmeier, H.},
+  \bibinfo{year}{2017}.
+\newblock \bibinfo{title}{Simultaneous lotsizing and scheduling problems: a
+  classification and review of models}.
+\newblock \bibinfo{journal}{OR Spectrum} \bibinfo{volume}{39},
+  \bibinfo{pages}{1--64}.
+\newblock \DOIprefix\doi{10.1007/s00291-015-0429-4}.
+%Type = Article
+\bibitem[{Cunha and Santos(2017)}]{villasboas2021chemical}
+\bibinfo{author}{Cunha, A.L.}, \bibinfo{author}{Santos, M.O.},
+  \bibinfo{year}{2017}.
+\newblock \bibinfo{title}{Mathematical modelling and solution approaches for
+  production planning in a chemical industry}.
+\newblock \bibinfo{journal}{Pesquisa Operacional} \bibinfo{volume}{37},
+  \bibinfo{pages}{311--331}.
+\newblock \DOIprefix\doi{10.1590/0101-7438.2017.037.02.0311}.
+%Type = Article
+\bibitem[{Dillenberger et~al.(1994)Dillenberger, Escudero, Wollensak and
+  Zhang}]{dillenberger1994practical}
+\bibinfo{author}{Dillenberger, C.}, \bibinfo{author}{Escudero, L.F.},
+  \bibinfo{author}{Wollensak, A.}, \bibinfo{author}{Zhang, W.},
+  \bibinfo{year}{1994}.
+\newblock \bibinfo{title}{On practical resource allocation for production
+  planning and scheduling with period overlapping setups}.
+\newblock \bibinfo{journal}{European Journal of Operational Research}
+  \bibinfo{volume}{75}, \bibinfo{pages}{275--286}.
+\newblock \DOIprefix\doi{10.1016/0377-2217(94)90074-4}.
+%Type = Article
+\bibitem[{Dolan and Mor{\'e}(2002)}]{dolan2002benchmarking}
+\bibinfo{author}{Dolan, E.D.}, \bibinfo{author}{Mor{\'e}, J.J.},
+  \bibinfo{year}{2002}.
+\newblock \bibinfo{title}{Benchmarking optimization software with performance
+  profiles}.
+\newblock \bibinfo{journal}{Mathematical Programming} \bibinfo{volume}{91},
+  \bibinfo{pages}{201--213}.
+\newblock \DOIprefix\doi{10.1007/s101070100263}.
+%Type = Article
+\bibitem[{Drexl and Haase(1995)}]{drexl1995proportional}
+\bibinfo{author}{Drexl, A.}, \bibinfo{author}{Haase, K.}, \bibinfo{year}{1995}.
+\newblock \bibinfo{title}{Proportional lotsizing and scheduling}.
+\newblock \bibinfo{journal}{International Journal of Production Economics}
+  \bibinfo{volume}{40}, \bibinfo{pages}{73--87}.
+%Type = Article
+\bibitem[{Drexl and Kimms(1997)}]{drexl1997lotsizing}
+\bibinfo{author}{Drexl, A.}, \bibinfo{author}{Kimms, A.}, \bibinfo{year}{1997}.
+\newblock \bibinfo{title}{Lot sizing and scheduling --- survey and extensions}.
+\newblock \bibinfo{journal}{European Journal of Operational Research}
+  \bibinfo{volume}{99}, \bibinfo{pages}{221--235}.
+\newblock \DOIprefix\doi{10.1016/S0377-2217(97)00030-1}.
+%Type = Article
+\bibitem[{Feo and Resende(1995)}]{feo1995greedy}
+\bibinfo{author}{Feo, T.A.}, \bibinfo{author}{Resende, M.G.C.},
+  \bibinfo{year}{1995}.
+\newblock \bibinfo{title}{Greedy randomized adaptive search procedures}.
+\newblock \bibinfo{journal}{Journal of Global Optimization}
+  \bibinfo{volume}{6}, \bibinfo{pages}{109--133}.
+\newblock \DOIprefix\doi{10.1007/BF01096763}.
+%Type = Article
+\bibitem[{Ferreira et~al.(2009)Ferreira, Morabito and
+  Rangel}]{ferreira2009solution}
+\bibinfo{author}{Ferreira, D.}, \bibinfo{author}{Morabito, R.},
+  \bibinfo{author}{Rangel, S.}, \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{Solution approaches for the soft drink integrated
+  production lot sizing and scheduling problem}.
+\newblock \bibinfo{journal}{European Journal of Operational Research}
+  \bibinfo{volume}{196}, \bibinfo{pages}{697--706}.
+%Type = Article
+\bibitem[{Figueira et~al.(2013)Figueira, Santos and
+  Almada-Lobo}]{figueira2013hybrid}
+\bibinfo{author}{Figueira, G.}, \bibinfo{author}{Santos, M.O.},
+  \bibinfo{author}{Almada-Lobo, B.}, \bibinfo{year}{2013}.
+\newblock \bibinfo{title}{A hybrid {VNS} approach for the short-term production
+  planning and scheduling: a case study in the pulp and paper industry}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{40}, \bibinfo{pages}{1804--1818}.
+%Type = Incollection
+\bibitem[{Fischetti and Fischetti(2018)}]{fischetti2018matheuristics}
+\bibinfo{author}{Fischetti, M.}, \bibinfo{author}{Fischetti, M.},
+  \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{Matheuristics}, in: \bibinfo{editor}{Mart{\'i}, R.},
+  \bibinfo{editor}{Pardalos, P.M.}, \bibinfo{editor}{Resende, M.G.C.} (Eds.),
+  \bibinfo{booktitle}{Handbook of Heuristics}. \bibinfo{publisher}{Springer},
+  pp. \bibinfo{pages}{121--153}.
+\newblock \DOIprefix\doi{10.1007/978-3-319-07124-4_14}.
+%Type = Article
+\bibitem[{Fleischmann(1990)}]{fleischmann1990dlsp}
+\bibinfo{author}{Fleischmann, B.}, \bibinfo{year}{1990}.
+\newblock \bibinfo{title}{The discrete lot-sizing and scheduling problem}.
+\newblock \bibinfo{journal}{European Journal of Operational Research}
+  \bibinfo{volume}{44}, \bibinfo{pages}{337--348}.
+\newblock \DOIprefix\doi{10.1016/0377-2217(90)90245-7}.
+%Type = Article
+\bibitem[{Fleischmann and Meyr(1997)}]{fleischmann1997general}
+\bibinfo{author}{Fleischmann, B.}, \bibinfo{author}{Meyr, H.},
+  \bibinfo{year}{1997}.
+\newblock \bibinfo{title}{The general lotsizing and scheduling problem}.
+\newblock \bibinfo{journal}{OR Spektrum} \bibinfo{volume}{19},
+  \bibinfo{pages}{11--21}.
+%Type = Article
+\bibitem[{Furlan et~al.(2024)Furlan, Almada-Lobo, Santos and
+  Morabito}]{furlan2024matheuristic}
+\bibinfo{author}{Furlan, M.}, \bibinfo{author}{Almada-Lobo, B.},
+  \bibinfo{author}{Santos, M.}, \bibinfo{author}{Morabito, R.},
+  \bibinfo{year}{2024}.
+\newblock \bibinfo{title}{Matheuristic for the lot-sizing and scheduling
+  problem in integrated pulp and paper production}.
+\newblock \bibinfo{journal}{Computers \& Industrial Engineering}
+  \bibinfo{volume}{192}, \bibinfo{pages}{110183}.
+\newblock \DOIprefix\doi{10.1016/j.cie.2024.110183}.
+%Type = Article
+\bibitem[{Gleixner et~al.(2021)Gleixner, Hendel, Gamrath, Achterberg, Bastubbe,
+  Berthold, Christophel, Jarck, Koch, Linderoth, L{\"u}bbecke, Mittelmann,
+  Ozyurt, Ralphs, Salvagnin and Shinano}]{gleixner2021miplib}
+\bibinfo{author}{Gleixner, A.}, \bibinfo{author}{Hendel, G.},
+  \bibinfo{author}{Gamrath, G.}, \bibinfo{author}{Achterberg, T.},
+  \bibinfo{author}{Bastubbe, M.}, \bibinfo{author}{Berthold, T.},
+  \bibinfo{author}{Christophel, P.}, \bibinfo{author}{Jarck, K.},
+  \bibinfo{author}{Koch, T.}, \bibinfo{author}{Linderoth, J.},
+  \bibinfo{author}{L{\"u}bbecke, M.}, \bibinfo{author}{Mittelmann, H.D.},
+  \bibinfo{author}{Ozyurt, D.}, \bibinfo{author}{Ralphs, T.K.},
+  \bibinfo{author}{Salvagnin, D.}, \bibinfo{author}{Shinano, Y.},
+  \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{{MIPLIB} 2017: data-driven compilation of the 6th
+  mixed-integer programming library}.
+\newblock \bibinfo{journal}{Mathematical Programming Computation}
+  \bibinfo{volume}{13}, \bibinfo{pages}{443--490}.
+\newblock \DOIprefix\doi{10.1007/s12532-020-00194-3}.
+%Type = Article
+\bibitem[{Glock et~al.(2014)Glock, Grosse and Ries}]{glock2014tertiary}
+\bibinfo{author}{Glock, C.H.}, \bibinfo{author}{Grosse, E.H.},
+  \bibinfo{author}{Ries, J.M.}, \bibinfo{year}{2014}.
+\newblock \bibinfo{title}{The lot sizing problem: a tertiary study}.
+\newblock \bibinfo{journal}{International Journal of Production Economics}
+  \bibinfo{volume}{155}, \bibinfo{pages}{39--51}.
+\newblock \DOIprefix\doi{10.1016/j.ijpe.2013.12.009}.
+%Type = Article
+\bibitem[{Haase(1996)}]{haase1996clsd}
+\bibinfo{author}{Haase, K.}, \bibinfo{year}{1996}.
+\newblock \bibinfo{title}{Capacitated lot-sizing with sequence dependent setup
+  costs}.
+\newblock \bibinfo{journal}{OR Spektrum} \bibinfo{volume}{18},
+  \bibinfo{pages}{51--59}.
+\newblock \DOIprefix\doi{10.1007/BF01539882}.
+%Type = Article
+\bibitem[{Helber and Sahling(2010)}]{helber2010fix}
+\bibinfo{author}{Helber, S.}, \bibinfo{author}{Sahling, F.},
+  \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{A fix-and-optimize approach for the multi-level
+  capacitated lot sizing problem}.
+\newblock \bibinfo{journal}{International Journal of Production Economics}
+  \bibinfo{volume}{123}, \bibinfo{pages}{247--256}.
+%Type = Article
+\bibitem[{James and Almada-Lobo(2011)}]{james2011single}
+\bibinfo{author}{James, R.J.W.}, \bibinfo{author}{Almada-Lobo, B.},
+  \bibinfo{year}{2011}.
+\newblock \bibinfo{title}{Single and parallel machine capacitated lotsizing and
+  scheduling: new iterative {MIP}-based neighborhood search heuristics}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{38}, \bibinfo{pages}{1816--1825}.
+\newblock \DOIprefix\doi{10.1016/j.cor.2011.02.005}.
+%Type = Article
+\bibitem[{Jans and Degraeve(2008)}]{jans2008modeling}
+\bibinfo{author}{Jans, R.}, \bibinfo{author}{Degraeve, Z.},
+  \bibinfo{year}{2008}.
+\newblock \bibinfo{title}{Modeling industrial lot sizing problems: a review}.
+\newblock \bibinfo{journal}{International Journal of Production Research}
+  \bibinfo{volume}{46}, \bibinfo{pages}{1619--1643}.
+\newblock \DOIprefix\doi{10.1080/00207540600902262}.
+%Type = Article
+\bibitem[{Karimi et~al.(2003)Karimi, Fatemi~Ghomi and
+  Wilson}]{karimi2003capacitated}
+\bibinfo{author}{Karimi, B.}, \bibinfo{author}{Fatemi~Ghomi, S.M.T.},
+  \bibinfo{author}{Wilson, J.M.}, \bibinfo{year}{2003}.
+\newblock \bibinfo{title}{The capacitated lot sizing problem: a review of
+  models and algorithms}.
+\newblock \bibinfo{journal}{Omega} \bibinfo{volume}{31},
+  \bibinfo{pages}{365--378}.
+\newblock \DOIprefix\doi{10.1016/S0305-0483(03)00059-8}.
+%Type = Article
+\bibitem[{Karmarkar and Schrage(1985)}]{karmarkar1985deterministic}
+\bibinfo{author}{Karmarkar, U.S.}, \bibinfo{author}{Schrage, L.},
+  \bibinfo{year}{1985}.
+\newblock \bibinfo{title}{The deterministic dynamic product cycling problem}.
+\newblock \bibinfo{journal}{Operations Research} \bibinfo{volume}{33},
+  \bibinfo{pages}{326--345}.
+\newblock \DOIprefix\doi{10.1287/opre.33.2.326}.
+%Type = Article
+\bibitem[{Koch et~al.(2022)Koch, Berthold, Pedersen and
+  Vanaret}]{koch2022progress}
+\bibinfo{author}{Koch, T.}, \bibinfo{author}{Berthold, T.},
+  \bibinfo{author}{Pedersen, J.}, \bibinfo{author}{Vanaret, C.},
+  \bibinfo{year}{2022}.
+\newblock \bibinfo{title}{Progress in mathematical programming solvers from
+  2001 to 2020}.
+\newblock \bibinfo{journal}{EURO Journal on Computational Optimization}
+  \bibinfo{volume}{10}, \bibinfo{pages}{100031}.
+\newblock \DOIprefix\doi{10.1016/j.ejco.2022.100031}.
+%Type = Article
+\bibitem[{Laguna and Mart{\'i}(1999)}]{laguna1999grasp}
+\bibinfo{author}{Laguna, M.}, \bibinfo{author}{Mart{\'i}, R.},
+  \bibinfo{year}{1999}.
+\newblock \bibinfo{title}{{GRASP} and path relinking for 2-layer straight line
+  crossing minimization}.
+\newblock \bibinfo{journal}{INFORMS Journal on Computing} \bibinfo{volume}{11},
+  \bibinfo{pages}{44--52}.
+\newblock \DOIprefix\doi{10.1287/ijoc.11.1.44}.
+%Type = Incollection
+\bibitem[{Leachman(2002)}]{leachman2002semiconductor}
+\bibinfo{author}{Leachman, R.C.}, \bibinfo{year}{2002}.
+\newblock \bibinfo{title}{Semiconductor production planning}, in:
+  \bibinfo{editor}{Pardalos, P.M.}, \bibinfo{editor}{Resende, M.G.C.} (Eds.),
+  \bibinfo{booktitle}{Handbook of Applied Optimization}.
+  \bibinfo{publisher}{Oxford University Press}, pp. \bibinfo{pages}{746--763}.
+%Type = Incollection
+\bibitem[{Louren{\c{c}}o et~al.(2010)Louren{\c{c}}o, Martin and
+  St{\"u}tzle}]{lourenco2010iterated}
+\bibinfo{author}{Louren{\c{c}}o, H.R.}, \bibinfo{author}{Martin, O.C.},
+  \bibinfo{author}{St{\"u}tzle, T.}, \bibinfo{year}{2010}.
+\newblock \bibinfo{title}{Iterated local search: framework and applications},
+  in: \bibinfo{booktitle}{Handbook of Metaheuristics}. \bibinfo{edition}{2nd}
+  ed.. \bibinfo{publisher}{Springer}, pp. \bibinfo{pages}{363--397}.
+%Type = Article
+\bibitem[{Luche et~al.(2009)Luche, Morabito and Pureza}]{luche2009combining}
+\bibinfo{author}{Luche, J.R.D.}, \bibinfo{author}{Morabito, R.},
+  \bibinfo{author}{Pureza, V.}, \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{Combining process selection and lot sizing models for
+  production scheduling of electrofused grains}.
+\newblock \bibinfo{journal}{Asia-Pacific Journal of Operational Research}
+  \bibinfo{volume}{26}, \bibinfo{pages}{421--443}.
+\newblock \DOIprefix\doi{10.1142/S0217595909002286}.
+%Type = Article
+\bibitem[{Mart{\'i}nez et~al.(2018)Mart{\'i}nez, Morabito and
+  Toso}]{martinez2018coupled}
+\bibinfo{author}{Mart{\'i}nez, K.P.}, \bibinfo{author}{Morabito, R.},
+  \bibinfo{author}{Toso, E.A.V.}, \bibinfo{year}{2018}.
+\newblock \bibinfo{title}{A coupled process configuration, lot-sizing and
+  scheduling model for production planning in the molded pulp industry}.
+\newblock \bibinfo{journal}{International Journal of Production Economics}
+  \bibinfo{volume}{204}, \bibinfo{pages}{227--243}.
+%Type = Inproceedings
+\bibitem[{Ng and Fowler(2007)}]{ng2007robust}
+\bibinfo{author}{Ng, T.S.}, \bibinfo{author}{Fowler, J.}, \bibinfo{year}{2007}.
+\newblock \bibinfo{title}{Semiconductor production planning using robust
+  optimization}, in: \bibinfo{booktitle}{Proceedings of the IEEE International
+  Conference on Industrial Engineering and Engineering Management (IEEM)}, pp.
+  \bibinfo{pages}{1073--1077}.
+\newblock \DOIprefix\doi{10.1109/IEEM.2007.4419357}.
+%Type = Book
+\bibitem[{Pochet and Wolsey(2006)}]{pochet2006production}
+\bibinfo{author}{Pochet, Y.}, \bibinfo{author}{Wolsey, L.A.},
+  \bibinfo{year}{2006}.
+\newblock \bibinfo{title}{Production Planning by Mixed Integer Programming}.
+\newblock \bibinfo{publisher}{Springer}, \bibinfo{address}{New York}.
+\newblock \DOIprefix\doi{10.1007/0-387-33477-7}.
+%Type = Article
+\bibitem[{Prais and Ribeiro(2000)}]{prais2000reactive}
+\bibinfo{author}{Prais, M.}, \bibinfo{author}{Ribeiro, C.C.},
+  \bibinfo{year}{2000}.
+\newblock \bibinfo{title}{Reactive {GRASP}: an application to a matrix
+  decomposition problem in {TDMA} traffic assignment}.
+\newblock \bibinfo{journal}{INFORMS Journal on Computing} \bibinfo{volume}{12},
+  \bibinfo{pages}{164--176}.
+\newblock \DOIprefix\doi{10.1287/ijoc.12.3.164.12639}.
+%Type = Book
+\bibitem[{Resende and Ribeiro(2016)}]{resende2016optimization}
+\bibinfo{author}{Resende, M.G.C.}, \bibinfo{author}{Ribeiro, C.C.},
+  \bibinfo{year}{2016}.
+\newblock \bibinfo{title}{Optimization by GRASP: Greedy Randomized Adaptive
+  Search Procedures}.
+\newblock \bibinfo{publisher}{Springer}, \bibinfo{address}{New York}.
+\newblock \DOIprefix\doi{10.1007/978-1-4939-6530-4}.
+%Type = Article
+\bibitem[{Sahling et~al.(2009)Sahling, Buschk{\"u}hl, Tempelmeier and
+  Helber}]{sahling2009solving}
+\bibinfo{author}{Sahling, F.}, \bibinfo{author}{Buschk{\"u}hl, L.},
+  \bibinfo{author}{Tempelmeier, H.}, \bibinfo{author}{Helber, S.},
+  \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{Solving a multi-level capacitated lot sizing problem
+  with multi-period setup carry-over via a fix-and-optimize heuristic}.
+\newblock \bibinfo{journal}{Computers \& Operations Research}
+  \bibinfo{volume}{36}, \bibinfo{pages}{2546--2553}.
+%Type = Article
+\bibitem[{Santos and Almada-Lobo(2012)}]{santos2012integrated}
+\bibinfo{author}{Santos, M.O.}, \bibinfo{author}{Almada-Lobo, B.},
+  \bibinfo{year}{2012}.
+\newblock \bibinfo{title}{Integrated pulp and paper mill planning and
+  scheduling}.
+\newblock \bibinfo{journal}{Computers \& Industrial Engineering}
+  \bibinfo{volume}{63}, \bibinfo{pages}{1--12}.
+%Type = Article
+\bibitem[{Silva et~al.(2023)Silva, Melega, Akartunal{\i} and
+  de~Araujo}]{silva2023formulations}
+\bibinfo{author}{Silva, E.M.}, \bibinfo{author}{Melega, G.M.},
+  \bibinfo{author}{Akartunal{\i}, K.}, \bibinfo{author}{de~Araujo, S.A.},
+  \bibinfo{year}{2023}.
+\newblock \bibinfo{title}{Formulations and theoretical analysis of the
+  one-dimensional multi-period cutting stock problem with setup cost}.
+\newblock \bibinfo{journal}{European Journal of Operational Research}
+  \bibinfo{note}{TODO volume/pages}.
+%Type = Article
+\bibitem[{Soler et~al.(2021)Soler, Santos and
+  Akartunal{\i}}]{jors2021perishable}
+\bibinfo{author}{Soler, W.A.O.}, \bibinfo{author}{Santos, M.O.},
+  \bibinfo{author}{Akartunal{\i}, K.}, \bibinfo{year}{2021}.
+\newblock \bibinfo{title}{{MIP} approaches for a lot sizing and scheduling
+  problem on multiple production lines with scarce resources, temporary
+  workstations, and perishable products}.
+\newblock \bibinfo{journal}{Journal of the Operational Research Society}
+  \bibinfo{volume}{72}, \bibinfo{pages}{1691--1706}.
+\newblock \DOIprefix\doi{10.1080/01605682.2019.1640588}.
+%Type = Article
+\bibitem[{Toledo et~al.(2015a)Toledo, Kimms, Fran{\c{c}}a and
+  Morabito}]{toledo2015sitlsp}
+\bibinfo{author}{Toledo, C.F.M.}, \bibinfo{author}{Kimms, A.},
+  \bibinfo{author}{Fran{\c{c}}a, P.M.}, \bibinfo{author}{Morabito, R.},
+  \bibinfo{year}{2015}a.
+\newblock \bibinfo{title}{The synchronized and integrated two-level lot sizing
+  and scheduling problem: evaluating the generalized mathematical model}.
+\newblock \bibinfo{journal}{Mathematical Problems in Engineering}
+  \bibinfo{volume}{2015}, \bibinfo{pages}{1--18}.
+\newblock \DOIprefix\doi{10.1155/2015/182781}.
+%Type = Article
+\bibitem[{Toledo et~al.(2015b)Toledo, da~Silva~Arantes, Hossomi, Fran{\c{c}}a
+  and Akartunal{\i}}]{toledo2015relax}
+\bibinfo{author}{Toledo, C.F.M.}, \bibinfo{author}{da~Silva~Arantes, M.},
+  \bibinfo{author}{Hossomi, M.Y.B.}, \bibinfo{author}{Fran{\c{c}}a, P.M.},
+  \bibinfo{author}{Akartunal{\i}, K.}, \bibinfo{year}{2015}b.
+\newblock \bibinfo{title}{A relax-and-fix with fix-and-optimize heuristic
+  applied to multi-level lot-sizing problems}.
+\newblock \bibinfo{journal}{Journal of Heuristics} \bibinfo{volume}{21},
+  \bibinfo{pages}{687--717}.
+\newblock \DOIprefix\doi{10.1007/s10732-015-9295-0}.
+%Type = Article
+\bibitem[{Toscano et~al.(2020)Toscano, Ferreira and
+  Morabito}]{toscano2020formulation}
+\bibinfo{author}{Toscano, A.}, \bibinfo{author}{Ferreira, D.},
+  \bibinfo{author}{Morabito, R.}, \bibinfo{year}{2020}.
+\newblock \bibinfo{title}{Formulation and {MIP}-heuristics for the lot sizing
+  and scheduling problem with temporal cleanings}.
+\newblock \bibinfo{journal}{Computers \& Chemical Engineering}
+  \bibinfo{volume}{142}, \bibinfo{pages}{107038}.
+\newblock \DOIprefix\doi{10.1016/j.compchemeng.2020.107038}.
+%Type = Article
+\bibitem[{Toso et~al.(2009)Toso, Morabito and Clark}]{toso2009lot}
+\bibinfo{author}{Toso, E.A.V.}, \bibinfo{author}{Morabito, R.},
+  \bibinfo{author}{Clark, A.R.}, \bibinfo{year}{2009}.
+\newblock \bibinfo{title}{Lot sizing and sequencing optimisation at an
+  animal-feed plant}.
+\newblock \bibinfo{journal}{Computers \& Industrial Engineering}
+  \bibinfo{volume}{57}, \bibinfo{pages}{813--821}.
+%Type = Article
+\bibitem[{W{\"o}rbelauer et~al.(2019)W{\"o}rbelauer, Meyr and
+  Almada-Lobo}]{worbelauer2019secondary}
+\bibinfo{author}{W{\"o}rbelauer, M.}, \bibinfo{author}{Meyr, H.},
+  \bibinfo{author}{Almada-Lobo, B.}, \bibinfo{year}{2019}.
+\newblock \bibinfo{title}{Simultaneous lotsizing and scheduling considering
+  secondary resources: a general model, literature review and classification}.
+\newblock \bibinfo{journal}{OR Spectrum} \bibinfo{volume}{41},
+  \bibinfo{pages}{1--43}.
+\newblock \DOIprefix\doi{10.1007/s00291-018-0536-0}.
+
+\end{thebibliography}
