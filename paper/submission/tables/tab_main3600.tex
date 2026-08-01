@@ -1,0 +1,42 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Method comparison at a 3600-second budget.}
+\label{tab:main3600}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrr}
+\toprule
+Set & Method & Inst. & Mean gap to BKS (\%) & Wins & Proven opt. \\
+\midrule
+Real & mip & 10 & 0.00 & 10 & 10 \\
+Real & rf+fo & 10 & 0.05 & 5 & 0 \\
+Real & rf+mip & 0 & -- & 0 & 0 \\
+Real & ILS v2 & 10 & 1.33 & 1 & 0 \\
+2X & mip & 10 & 0.00 & 10 & 10 \\
+2X & rf+fo & 10 & 0.45 & 0 & 0 \\
+2X & rf+mip & 0 & -- & 0 & 0 \\
+2X & ILS v2 & 10 & 2.87 & 0 & 0 \\
+3X & mip & 10 & 0.11 & 9 & 0 \\
+3X & rf+fo & 10 & 1.03 & 1 & 0 \\
+3X & rf+mip & 0 & -- & 0 & 0 \\
+3X & ILS v2 & 10 & 12.38 & 0 & 0 \\
+4X & mip & 10 & 0.54 & 9 & 0 \\
+4X & rf+fo & 10 & 1.65 & 1 & 0 \\
+4X & rf+mip & 0 & -- & 0 & 0 \\
+4X & ILS v2 & 10 & 18.13 & 0 & 0 \\
+5X & mip & 10 & 2.13 & 6 & 0 \\
+5X & rf+fo & 10 & 1.54 & 4 & 0 \\
+5X & rf+mip & 0 & -- & 0 & 0 \\
+5X & ILS v2 & 10 & 26.88 & 0 & 0 \\
+8X & mip & 5 & 5.17 & 0 & 0 \\
+8X & rf+fo & 5 & 5.18 & 1 & 0 \\
+8X & rf+mip & 5 & 1.49 & 4 & 0 \\
+8X & ILS v2 & 0 & -- & 0 & 0 \\
+10X & mip & 5 & 18.02 & 1 & 0 \\
+10X & rf+fo & 5 & 5.87 & 3 & 0 \\
+10X & rf+mip & 5 & 15.19 & 1 & 0 \\
+10X & ILS v2 & 0 & -- & 0 & 0 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

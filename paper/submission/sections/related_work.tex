@@ -1,0 +1,141 @@
+\section{Related work}
+\label{sec:related}
+
+We review four streams: the lot-sizing and scheduling taxonomy in
+which the PSP is embedded (\S\ref{sec:rw-taxonomy}); applications
+featuring process selection and co-production in fixed proportions
+(\S\ref{sec:rw-coproduction}); MIP-based matheuristics of the
+relax-and-fix and fix-and-optimize families
+(\S\ref{sec:rw-matheuristics}); and the solver-progress and
+experimental-methodology literature that underpins our protocol
+(\S\ref{sec:rw-methodology}).
+
+\subsection{Lot sizing and scheduling: taxonomy and reviews}
+\label{sec:rw-taxonomy}
+
+Dynamic lot-sizing models that integrate sequencing decisions are
+classically organized by their time structure. Small-bucket models
+allow at most one (or a few) setups per period: the discrete
+lot-sizing and scheduling problem \citep[DLSP;][]{fleischmann1990dlsp}
+imposes all-or-nothing production, the continuous setup lot-sizing
+problem \citep[CSLP;][]{karmarkar1985deterministic} relaxes full
+capacity usage, and the proportional lot-sizing and scheduling problem
+\citep[PLSP;][]{drexl1995proportional} allows the setup state to
+change once within a period. The general lot-sizing and scheduling
+problem \citep[GLSP;][]{fleischmann1997general} subsumes these
+structures through micro-periods, and the capacitated lot-sizing
+problem with sequence-dependent setups \citep{haase1996clsd} extends
+the big-bucket tradition. Comprehensive surveys trace the evolution of
+this family: \citet{drexl1997lotsizing} and
+\citet{karimi2003capacitated} for the foundations,
+\citet{jans2008modeling} for industrial extensions,
+\citet{buschkuhl2010dynamic} for solution approaches,
+\citet{glock2014tertiary} at the tertiary level, and, most relevant to
+our positioning, the classification of simultaneous lot-sizing and
+scheduling models by \citet{copil2017simultaneous}, recently extended
+to secondary resources by \citet{worbelauer2019secondary}. Within this
+taxonomy the PSP is a single-stage, single-machine, big-bucket model
+with at most one ``product'' -- in fact, one \emph{process} -- per
+period; its distinctive trait, absent from the standard classes, is
+that the assignment decision releases a technologically fixed
+\emph{vector} of products rather than a single item. Demand is met
+against cumulative order-book quantities with shortage minimization,
+which relates the model to service-level-oriented variants rather than
+to the cost-minimization mainstream \citep{pochet2006production}.
+
+\subsection{Process selection and co-production in fixed proportions}
+\label{sec:rw-coproduction}
+
+The PSP was introduced in the electrofused grains context by
+\citet{luche2009combining}, who combined process selection with
+single-stage lot sizing, proposed a constructive heuristic, and
+reported that instances of practical size defeated the MIP technology
+of the time. A structurally similar coupling of process configuration,
+lot sizing, and scheduling arises in the molded pulp industry
+\citep{martinez2018coupled}, where each mold configuration also
+determines a mix of items, and in small foundries, where each furnace
+alloy enables a set of castable parts \citep{araujo2008foundry}.
+Related recipe- or process-based settings include animal nutrition
+plants \citep{toso2009lot,clark2010production}, chemical plants in
+which one item may be produced by alternative processes
+\citep{villasboas2021chemical}, and integrated soft-drink production
+where tank lots feed bottling lines
+\citep{ferreira2009solution,toledo2015sitlsp}. Co-production in fixed
+(or stochastic) proportions is also the defining feature of
+semiconductor planning, where each wafer lot ``bins'' into multiple
+performance grades \citep{leachman2002semiconductor,ng2007robust},
+and connects to multi-period cutting-stock models in which a cutting
+pattern plays the role of a process \citep{silva2023formulations}.
+Across this literature, exact approaches are typically abandoned at
+realistic scales in favor of tailored heuristics; none of these works,
+however, revisits the abandoned monoliths with current solver
+technology, and public benchmarks for fixed-proportion co-production
+are, to the best of our knowledge, unavailable.
+
+\subsection{Relax-and-fix and fix-and-optimize matheuristics}
+\label{sec:rw-matheuristics}
+
+Relax-and-fix constructs solutions by partitioning the integer
+variables -- most naturally along the time axis -- and solving a
+sequence of MIPs in which one window is kept integral, earlier windows
+are fixed, and later windows are relaxed
+\citep{dillenberger1994practical,pochet2006production}.
+Fix-and-optimize (also called exchange or MIP-based improvement)
+iteratively re-optimizes subsets of integer variables while fixing the
+remainder at incumbent values; it was popularized for multi-level
+capacitated lot sizing by \citet{sahling2009solving} and
+\citet{helber2010fix}. The combination of the two -- \RF{} for
+construction, \FO{} for improvement -- was systematized by
+\citet{toledo2015relax} on multi-level lot-sizing and glass-container
+problems, and industrial variants have since accumulated: integrated
+pulp and paper planning \citep{santos2012integrated}, later improved
+by variable neighborhood search \citep{figueira2013hybrid} and by
+structure-exploiting matheuristics \citep{furlan2024matheuristic};
+beverage plants with temporal cleanings \citep{toscano2020formulation};
+and perishable-product lines, where relax-and-fix also supplies
+competitive dual bounds \citep{jors2021perishable}. Iterative
+MIP-based neighborhood searches for lot sizing and scheduling were
+explored by \citet{james2011single}, and the genre is surveyed under
+the ``matheuristics'' label by \citet{fischetti2018matheuristics}.
+Our \RFFO{} follows the time-window template of
+\citet{toledo2015relax}; the differentiating elements are the
+co-production structure (windows re-optimize the process schedule,
+with all product balances linked through cumulative demand), a fully
+specified budget-control policy whose implementation details we report
+for reproducibility, and the \RFMIP{} variant in which the \RF{}
+solution warm-starts the \emph{monolithic} model -- a hybrid whose
+value, as our experiments show, depends on whether the incumbent it
+buys is worth the branch-and-bound time it costs.
+
+\subsection{Solver progress and experimental methodology}
+\label{sec:rw-methodology}
+
+Machine-independent measurements document speedups of several orders
+of magnitude in MIP solving between the early 2000s and 2020, driven
+by presolve, cutting planes, primal heuristics, and parallel search
+\citep{koch2022progress,achterberg2013analyzing,achterberg2020presolve,bixby2012brief}.
+This progress reframes older intractability findings: conclusions
+drawn against CPLEX~11--12 -- as in the original PSP studies -- need
+not hold against CPLEX~22, and revisiting them yields calibrated
+evidence of practical value. On the methodology side, our experimental
+protocol adopts community standards for heuristic--exact comparisons:
+performance profiles \citep{dolan2002benchmarking}, time-to-target
+plots for randomized methods \citep{aiex2007ttt}, and public release
+of instances and solutions in the spirit of MIPLIB
+\citep{gleixner2021miplib}. The metaheuristic baseline itself follows
+established components: GRASP \citep{feo1995greedy} with reactive
+parameter control \citep{prais2000reactive}, iterated local search
+\citep{lourenco2010iterated}, and path relinking
+\citep{laguna1999grasp,resende2016optimization}. Finally, the
+managerial framing of short re-planning budgets draws on the
+rolling-horizon tradition initiated by \citet{baker1977experimental}.
+
+\medskip
+\noindent\textbf{Gap.} In summary: (i) the PSP with co-production in
+fixed proportions has not been revisited since 2011, despite solver
+progress that plausibly changes its practical status; (ii) matheuristic
+studies seldom report primal--primal comparisons against a modern
+solver under strictly equal wall-clock and thread budgets, leaving the
+``method of choice'' question anecdotal; and (iii) no public benchmark
+exists for this problem class. This paper addresses all three gaps,
+with hypotheses registered before experimentation.

@@ -1,0 +1,47 @@
+\section{Hybrid metaheuristic baseline}
+\label{sec:metaheuristic}
+
+To situate the matheuristics against the strongest \emph{pure}
+metaheuristic we could build -- one that never calls a MIP solver --
+we developed a hybrid procedure (\ILS) combining components with
+strong track records in the GRASP literature. We summarize it here
+and refer to the released source code for full detail.
+\todo{Cross-check every component description against
+docs/metaheuristicas.docx and grasp\_ils\_psp.py before submission;
+confirm elite-pool size, tabu tenure rule, and perturbation-strength
+schedule.}
+
+Solutions are schedules $s\in(\{0\}\cup J)^{|T|}$ evaluated by the
+same exact evaluator used by the matheuristics
+(Section~\ref{sec:matheuristics}), so all methods optimize literally
+the same objective. Construction is a reactive GRASP
+\citep{feo1995greedy,prais2000reactive}: candidate processes for each
+period are ranked by myopic shortage reduction, the restricted
+candidate list parameter $\alpha$ being drawn from a pool whose
+probabilities adapt to observed solution quality. Local search is a
+variable neighborhood descent over process-exchange and Or-opt-style
+relocation moves on the schedule; for long horizons, moves are
+restricted by a sliding time window with a tabu mechanism to keep
+iteration costs bounded. The improvement loop is an iterated local
+search \citep{lourenco2010iterated} whose perturbation applies
+multi-bridge reinsertions of schedule segments, with adaptive
+strength. Ten workers run in parallel from different seeds and share
+an elite pool through cross-run path relinking
+\citep{laguna1999grasp,resende2016optimization}, and the incumbent
+trajectory of every worker is logged.
+
+Under the equal-resources protocol of
+Section~\ref{sec:experiments}, \ILS{} occupies a deliberately
+generous position: its ten workers exploit the full machine for the
+whole wall-clock budget, and its per-instance result is the best of
+ten runs. This makes the comparison against the matheuristics and
+the solver \emph{a fortiori}: any deficit observed for \ILS{} cannot
+be attributed to a resource handicap. Historically, this procedure
+is the modernized descendant of the heuristics proposed for the PSP
+in the original studies \citep{luche2009combining}
+\citep{daleluche2011tese}, and it improves substantially upon them:
+relative to its own previous version, median best-objective
+improvements are 20.3\% on 2X, 33.4\% on 3X, 41.2\% on 4X,
+43.9\% on 5X, and 6.5\% on Real; across the large 3X--5X sets the
+median improvement is 39.0\%. Its role in this paper, however, is that of a
+calibrated baseline representing the pure-metaheuristic paradigm.

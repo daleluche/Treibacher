@@ -1,0 +1,102 @@
+% =====================================================================
+% Exact and matheuristic approaches for a real-world process selection
+% and lot-sizing problem in the electrofused grains industry
+% Target: Computers & Operations Research (Elsevier)
+% Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% =====================================================================
+\documentclass[review,authoryear]{elsarticle}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% ---- Working commands (remove before submission) --------------------
+\newcommand{\todo}[1]{}
+\newcommand{\sprintii}[1]{}
+
+% ---- Notation shortcuts ---------------------------------------------
+\newcommand{\RF}{\textsc{rf}}
+\newcommand{\FO}{\textsc{fo}}
+\newcommand{\RFFO}{\textsc{rf+fo}}
+\newcommand{\RFMIP}{\textsc{rf+mip}}
+\newcommand{\ILS}{\textsc{grasp-ils-pr}}
+
+\journal{Computers \& Operations Research}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Exact and matheuristic approaches for a real-world process
+selection and lot-sizing problem in the electrofused grains industry}
+
+\author[unesp]{Jos\'e Roberto Dale Luche\corref{cor1}}
+\ead{...} % TODO
+\author[ufscar]{Vit\'oria Pureza}
+\author[ufscar]{Reinaldo Morabito}
+\cortext[cor1]{Corresponding author.}
+\address[unesp]{S\~ao Paulo State University (UNESP), Guaratinguet\'a, SP, Brazil} % TODO confirm affiliation text
+\address[ufscar]{Department of Production Engineering, Federal University of S\~ao Carlos (UFSCar), S\~ao Carlos, SP, Brazil}
+
+\begin{abstract}
+We revisit a real-world process selection and lot-sizing problem
+from the electrofused grains industry, in which each production
+process yields multiple products in fixed proportions and at most
+one process runs per period, fifteen years after it was reported
+intractable for exact methods. Under an equal-resources protocol
+with pre-registered hypotheses, we compare a modern MIP solver on
+the monolithic model, temporal-decomposition matheuristics
+(relax-and-fix construction with fix-and-optimize improvement, and
+a warm-started monolith), and a state-of-the-art hybrid GRASP-ILS
+metaheuristic with path relinking, on a new public benchmark of 60
+instances spanning horizons from 19 to 190 periods. The verdict of the original
+study is reversed at the plant's own scale: instances derived from
+its order book now solve to proven optimality in seconds. We also
+isolate a modeling effect that governs difficulty -- penalizing
+accumulated excess production at a thousandth of the weight of
+shortage moves four instance sets from routinely closed to largely
+open, holding everything else fixed. The pure metaheuristic,
+even with tenfold parallel resources, is dominated throughout by
+MIP-based methods. The resulting method-choice map has two axes:
+at equal budgets, decomposition wins the majority of instances from
+about 150 periods upward, while granting the monolith triple time
+restores its lead on most, though not all, of the largest
+instances -- decomposition effectively buys one tier of computing
+budget, the currency of rolling re-planning. We release all
+instances, solutions, trajectories, and per-window logs, including
+dual signals, to support reproduction and learning-based extensions.
+\end{abstract}
+
+\begin{keyword}
+Lot sizing \sep Process selection \sep Co-production \sep
+Matheuristics \sep Relax-and-fix \sep Fix-and-optimize \sep GRASP
+\end{keyword}
+
+\end{frontmatter}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/problem_model}
+\input{sections/matheuristics}
+\input{sections/metaheuristic}
+\input{sections/experiments}
+\input{sections/conclusions}
+
+\section*{Acknowledgements}
+\todo{Funding agencies (CNPq/FAPESP/CAPES?); company acknowledgement
+(anonymized); thank GAMS academic license if applicable.}
+
+\section*{Data availability}
+The complete benchmark (60 instances in open format), all solution
+files, and the source code of the matheuristics and analysis pipeline
+are available at \todo{Zenodo DOI + GitHub URL after anonymization
+decision}.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{references}
+
+\end{document}

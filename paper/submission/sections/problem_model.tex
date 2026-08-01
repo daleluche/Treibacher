@@ -1,0 +1,127 @@
+\section{The process selection and lot-sizing problem}
+\label{sec:problem}
+
+\subsection{Industrial setting}
+\label{sec:setting}
+
+We study the grain-finishing stage of a manufacturer of electrofused
+grains (silicon carbide and fused aluminum oxide). Upstream, raw
+materials are fused in electric furnaces and cooled into blocks of
+roughly twenty tonnes; the finishing stage crushes, mills, and screens
+this material into final products defined by granulometric ranges and
+physical--chemical specifications. The finishing equipment can be
+arranged in a number of alternative configurations -- the
+\emph{production processes}. Two features of these processes drive the
+planning problem. First, \emph{co-production in fixed proportions}:
+operating process $j$ for one period yields a technologically
+determined quantity $a_{ij}$ of every product $i$ simultaneously; the
+planner selects processes, not product quantities. Second,
+\emph{setup magnitude}: reconfiguring and cleaning the equipment
+between processes consumes a substantial fraction of a planning
+period, which motivates a big-bucket representation in which at most
+one process is operated per period. Demand stems from an order book
+with due dates; the commercial priority is meeting the order book, so
+the objective minimizes total shortage, with a small penalty
+discouraging gratuitous excess production (excess is held as
+inventory and may serve future orders, but ties up capital and
+storage). \todo{One paragraph with anonymized company facts: number
+of products/processes in the order-book instances, period length,
+planning horizon -- from thesis Ch.~2, updated.}
+
+\subsection{Mathematical model}
+\label{sec:model}
+
+Let $I$ denote the set of products, $J$ the set of processes, and
+$T=\{1,\dots,|T|\}$ the set of periods. Parameter $a_{ij}\ge 0$ gives
+the output of product $i$ when process $j$ is operated for one
+period, and $d_{it}\ge 0$ the demand of product $i$ due at period
+$t$. The decision variables are $x_{jt}\in\{0,1\}$, equal to 1 if
+process $j$ is operated in period $t$, and the nonnegative continuous
+variables $f_{it}$ and $e_{it}$, measuring the shortage and the
+excess, respectively, of product $i$ with regard to its
+\emph{cumulative} demand up to period $t$. The model, referred to as
+MFP (minimization of shortage of production, after
+\citealp{luche2009combining}), reads:
+%
+\begin{align}
+\min \quad & \sum_{i\in I}\sum_{t\in T}\bigl(f_{it} + \gamma\, e_{it}\bigr)
+  \label{eq:obj}\\
+\text{s.t.} \quad
+& \sum_{j\in J}\sum_{\tau\le t} a_{ij}\, x_{j\tau} + f_{it} - e_{it}
+  \;=\; \sum_{\tau\le t} d_{i\tau},
+  && i\in I,\; t\in T, \label{eq:dem}\\
+& \sum_{j\in J} x_{jt} \;\le\; 1, && t\in T, \label{eq:prop}\\
+& x_{jt}\in\{0,1\},\quad f_{it},\,e_{it}\ge 0, && i\in I,\; j\in J,\;
+  t\in T. \label{eq:dom}
+\end{align}
+%
+Constraints~\eqref{eq:dem} balance cumulative production against
+cumulative demand for every product and period, so that $f_{it}$
+captures lateness with respect to due dates (not only end-of-horizon
+shortage), and constraints~\eqref{eq:prop} allow at most one process
+-- possibly none -- per period. The weight $\gamma=0.001$ makes
+excess lexicographically subordinate to shortage in practice. This
+term is a deliberate refinement of the original formulation
+\citep{luche2009combining}, which minimized shortage alone under an
+inequality balance: because $e_{it}$ measures \emph{cumulative}
+excess, every unit produced ahead of demand is charged in each
+subsequent period, so $\gamma$ acts as a proxy for the capital and
+storage tied up by early production. The refinement is not
+computationally innocuous, and Section~\ref{sec:gamma} quantifies its
+cost. The
+model has $|J|\,|T|$ binary and $2|I|\,|T|$ continuous variables; for
+the largest instances considered here ($|J|=159$, $|T|=190$) this
+amounts to 30{,}210 binaries. Table~\ref{tab:instances} summarizes
+the dimensions of the full benchmark family.
+
+\input{tables/tab_instances}
+
+Model MFP is a single-stage, big-bucket member of the simultaneous
+lot-sizing and scheduling family \citep{copil2017simultaneous}, with
+an assignment-type setup structure per period; its distinctive
+element is that each period's assignment releases the fixed output
+vector $(a_{ij})_{i\in I}$, coupling all products through
+constraints~\eqref{eq:dem}.
+
+\subsection{Instances and empirical difficulty}
+\label{sec:difficulty}
+
+Our benchmark derives from a single real order book of the plant
+($|J|=159$ processes, 50 items, 19 daily periods). From it, the
+original study generated ten instances by redistributing each item's
+total demand at random over the horizon, preserving aggregate volumes;
+we inherit this set (denoted Real, $|T|\in\{19,25\}$, one instance
+using a longer reserved horizon) and the horizon-replicated
+sets obtained by the rule documented in the original study
+\citep[Section~6.2.2]{daleluche2011tese}: the number of periods is multiplied by
+$k$ and the demand of the original horizon is repeated exactly in
+each 19-period block, yielding sets 2X--5X ($k\in\{2,\dots,5\}$,
+inherited) and the new sets 8X and 10X introduced in this paper
+($k\in\{8,10\}$, $|T|$ up to 190). Section~\ref{sec:benchmark}
+details the generation and its validation against the inherited
+sets. Demand is therefore periodic by construction across the whole
+family -- a property we state explicitly because it keeps the
+generation rule constant along the scale axis, avoiding confounds;
+empirically, periodicity does not make the instances easy for the
+solver (Section~\ref{sec:experiments}).
+
+Two empirical observations shape the experimental design. First,
+difficulty is heterogeneous within sets: the subclass
+%
+\begin{quote}\footnotesize
+3X: IncT3x\_1, IncT3x\_3, IncT3x\_7, IncT3x\_9, IncT3x\_10;\\
+4X: IncT4x\_1, IncT4x\_3, IncT4x\_7, IncT4x\_9, IncT4x\_10;\\
+5X: IncT5x\_1, IncT5x\_3, IncT5x\_7, IncT5x\_9, IncT5x\_10
+\end{quote}
+%
+exhibits both above-median solver gaps and above-median BKS-to-bound
+gaps within its set -- on
+IncT5x\_10, the best known solution still lies about 17\% above the
+three-hour dual bound, so the true optimality gap is unknown.
+Second, the solver's parallel search, although deterministic for a
+fixed budget, is budget-nonmonotone in the primal sense: on three
+instances the one-hour run returned a better incumbent than the
+independent three-hour run. Both observations motivate reporting
+gaps against best-known solutions (BKS), defined as the minimum
+objective over \emph{all} methods, budgets, and seeds considered in
+this study, rather than against dual bounds alone.
