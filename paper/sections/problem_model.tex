@@ -71,8 +71,10 @@ computationally innocuous, and Section~\ref{sec:gamma} quantifies its
 cost. The
 model has $|J|\,|T|$ binary and $2|I|\,|T|$ continuous variables; for
 the largest instances considered here ($|J|=159$, $|T|=190$) this
-amounts to 30{,}210 binaries. \todo{Dimensions table Real--10X
-(binaries, continuous, constraints) -- generate from instance files.}
+amounts to 30{,}210 binaries. Table~\ref{tab:instances} summarizes
+the dimensions of the full benchmark family.
+
+\input{tables/tab_instances}
 
 Model MFP is a single-stage, big-bucket member of the simultaneous
 lot-sizing and scheduling family \citep{copil2017simultaneous}, with
@@ -91,7 +93,7 @@ total demand at random over the horizon, preserving aggregate volumes;
 we inherit this set (denoted Real, $|T|\in\{19,25\}$, one instance
 using a longer reserved horizon) and the horizon-replicated
 sets obtained by the rule documented in the original study
-\todo{cite thesis \S6.2.2}: the number of periods is multiplied by
+\citep[Section~6.2.2]{daleluche2011tese}: the number of periods is multiplied by
 $k$ and the demand of the original horizon is repeated exactly in
 each 19-period block, yielding sets 2X--5X ($k\in\{2,\dots,5\}$,
 inherited) and the new sets 8X and 10X introduced in this paper
@@ -104,10 +106,16 @@ empirically, periodicity does not make the instances easy for the
 solver (Section~\ref{sec:experiments}).
 
 Two empirical observations shape the experimental design. First,
-difficulty is heterogeneous within sets: a subclass of instances
-(e.g., \todo{confirm final list from comparison\_table.csv:
-IncT3x\_7, IncT4x\_7, IncT5x\_10})
-exhibits both large solver gaps and weak dual bounds -- on
+difficulty is heterogeneous within sets: the subclass
+%
+\begin{quote}\footnotesize
+3X: IncT3x\_1, IncT3x\_3, IncT3x\_7, IncT3x\_9, IncT3x\_10;\\
+4X: IncT4x\_1, IncT4x\_3, IncT4x\_7, IncT4x\_9, IncT4x\_10;\\
+5X: IncT5x\_1, IncT5x\_3, IncT5x\_7, IncT5x\_9, IncT5x\_10
+\end{quote}
+%
+exhibits both above-median solver gaps and above-median BKS-to-bound
+gaps within its set -- on
 IncT5x\_10, the best known solution still lies about 17\% above the
 three-hour dual bound, so the true optimality gap is unknown.
 Second, the solver's parallel search, although deterministic for a

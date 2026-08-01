@@ -109,12 +109,12 @@ instances of sets 2X--5X at the three-hour budget.
 
 \input{tables/tab_gamma}
 
-\sprintii{Insert results from gamma\_effect.csv: number of proven
-optima, mean gap and mean time per set for $\gamma=0$ and
-$\gamma=0.001$; state the headline contrast (e.g., ``$x$ of 40
-instances closed under $\gamma=0$ against $y$ of 40 under
-$\gamma=0.001$'') and report the sanity relation $Z(\gamma=0)\le
-Z(\gamma=0.001)$.}
+The contrast is sharp: all 40 $\gamma=0$ runs close to proven
+optimality, with mean wall times from 24.9~s (2X) to 178.2~s (5X),
+whereas the $\gamma=0.001$ model closes only the ten 2X instances
+within the same three-hour limit and reaches mean residual gaps of
+1.69\%, 3.91\%, and 7.21\% on 3X, 4X, and 5X. The controlled sanity
+relation $Z(\gamma=0)\le Z(\gamma=0.001)$ holds on every instance.
 
 The mechanism is structural rather than numerical. Under
 $\gamma=0$, once cumulative demand is covered any additional output is
@@ -150,8 +150,8 @@ robustness: across seeds (grade~C), \RFFO{} shows zero variance on
 five of twelve replicated instances and coefficients of variation
 below 4\% elsewhere, with window-log audits confirming that
 different seeds explore different window sequences.
-\sprintii{insert Wilcoxon table (statistical tests) formatted for
-the paper.}
+Table~\ref{tab:stats} reports the paired Wilcoxon tests behind the
+pooled comparisons.
 
 \input{tables/tab_main3600}
 \input{tables/tab_stats}
