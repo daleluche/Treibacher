@@ -3,6 +3,7 @@
 \footnotesize
 \caption{Method comparison at a 600-second budget.}
 \label{tab:short600}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrr}
 \toprule
 Set & Method & Inst. & Mean gap to BKS (\%) & Wins & Proven opt. \\
@@ -36,5 +37,6 @@ Real & ILS v2 & 10 & 3.86 & 0 & 0 \\
 10X & rf+mip & 5 & 108.28 & 0 & 0 \\
 10X & ILS v2 & 0 & -- & 0 & 0 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}

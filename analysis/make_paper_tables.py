@@ -83,6 +83,7 @@ def write_table(path: Path, caption: str, label: str, headers: list[str], rows: 
         r"\footnotesize",
         rf"\caption{{{caption}}}",
         rf"\label{{{label}}}",
+        r"\resizebox{\linewidth}{!}{%",
         rf"\begin{{tabular}}{{{align}}}",
         r"\toprule",
         " & ".join(headers) + r" \\",
@@ -90,7 +91,7 @@ def write_table(path: Path, caption: str, label: str, headers: list[str], rows: 
     ]
     for row in rows:
         lines.append(" & ".join(str(cell) for cell in row) + r" \\")
-    lines.extend([r"\bottomrule", r"\end{tabular}", r"\end{table}", ""])
+    lines.extend([r"\bottomrule", r"\end{tabular}%", r"}", r"\end{table}", ""])
     path.write_text("\n".join(lines), encoding="utf-8")
 
 

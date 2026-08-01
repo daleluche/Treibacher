@@ -3,6 +3,7 @@
 \footnotesize
 \caption{Cross-budget check: cold MIP at 10800 seconds versus the best decomposition at 3600 seconds.}
 \label{tab:q5}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrrr}
 \toprule
 Set & Instance & mip@10800 & Best decomp.@3600 & Decomp. method & $\Delta$ (\%) & Winner \\
@@ -18,5 +19,6 @@ Set & Instance & mip@10800 & Best decomp.@3600 & Decomp. method & $\Delta$ (\%) 
 10X & IncT10x\_5 & 66\,697.0 & 83\,018.4 & rf+fo & -19.66 & mip@10800 \\
 10X & IncT10x\_6 & 111\,304.3 & 109\,047.0 & rf+fo & 2.07 & decomp@3600 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}

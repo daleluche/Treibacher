@@ -3,6 +3,7 @@
 \footnotesize
 \caption{Construction diagnostics for post-fix 8X/10X runs.}
 \label{tab:scale-construction}
+\resizebox{\linewidth}{!}{%
 \begin{tabular}{lrrrrrrr}
 \toprule
 Set & Instance & Method & Construction & $Z$ after constr. & RF wall (s) & Improve left (s) & Final $Z$ \\
@@ -28,5 +29,6 @@ Set & Instance & Method & Construction & $Z$ after constr. & RF wall (s) & Impro
 10X & IncT10x\_6 & rf+fo & greedy\_floor & 53\,309\,346.3 & 798.0 & 2\,802.0 & 109\,047.0 \\
 10X & IncT10x\_6 & rf+mip & greedy\_floor & 63\,132\,592.9 & 844.5 & 2\,755.5 & 187\,103.0 \\
 \bottomrule
-\end{tabular}
+\end{tabular}%
+}
 \end{table}
