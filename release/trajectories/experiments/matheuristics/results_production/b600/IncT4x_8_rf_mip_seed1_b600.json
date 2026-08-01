@@ -1,0 +1,426 @@
+{
+  "instance": "IncT4x_8",
+  "dataset": "4X",
+  "method": "rf+mip",
+  "construction": "greedy_floor",
+  "construction_used": "greedy_floor",
+  "params": {
+    "budget": 600.0,
+    "sigma": 10,
+    "step": 5,
+    "omega": 20,
+    "step_fo": 10,
+    "tl_rf": 120.0,
+    "tl_fo": 30.0,
+    "method": "rf+mip",
+    "start_from": null,
+    "threads": 0,
+    "output_suffix": "_b600",
+    "log_windows": true
+  },
+  "seed": 1,
+  "Z_final": 176793.359,
+  "Z_best_overall": 176793.359,
+  "Z_greedy": 427870.242,
+  "shortage": 164926.0,
+  "excess": 11867359.0,
+  "schedule": [
+    151,
+    148,
+    148,
+    150,
+    152,
+    141,
+    143,
+    150,
+    142,
+    146,
+    120,
+    139,
+    145,
+    137,
+    147,
+    146,
+    145,
+    143,
+    148,
+    148,
+    148,
+    153,
+    142,
+    141,
+    147,
+    141,
+    155,
+    140,
+    142,
+    157,
+    157,
+    153,
+    150,
+    138,
+    146,
+    150,
+    145,
+    152,
+    11,
+    151,
+    152,
+    0,
+    156,
+    157,
+    143,
+    155,
+    152,
+    0,
+    0,
+    0,
+    0,
+    0,
+    146,
+    145,
+    150,
+    150,
+    142,
+    148,
+    151,
+    153,
+    156,
+    157,
+    141,
+    143,
+    159,
+    155,
+    0,
+    146,
+    0,
+    0,
+    0,
+    1,
+    147,
+    149,
+    2,
+    108
+  ],
+  "improvements": [
+    {
+      "time_s": 5.478,
+      "Z": 427870.242,
+      "phase": "greedy_construction",
+      "window_start": 1
+    },
+    {
+      "time_s": 24.32,
+      "Z": 41269492.0,
+      "phase": "RF",
+      "window_start": 1
+    },
+    {
+      "time_s": 58.555,
+      "Z": 26088793.633,
+      "phase": "RF",
+      "window_start": 11
+    },
+    {
+      "time_s": 73.892,
+      "Z": 19962014.475,
+      "phase": "RF",
+      "window_start": 16
+    },
+    {
+      "time_s": 87.562,
+      "Z": 15610665.572,
+      "phase": "RF",
+      "window_start": 21
+    },
+    {
+      "time_s": 96.856,
+      "Z": 11421551.363,
+      "phase": "RF",
+      "window_start": 26
+    },
+    {
+      "time_s": 105.303,
+      "Z": 7907996.174,
+      "phase": "RF",
+      "window_start": 31
+    },
+    {
+      "time_s": 114.202,
+      "Z": 6016663.601,
+      "phase": "RF",
+      "window_start": 36
+    },
+    {
+      "time_s": 123.058,
+      "Z": 4827418.523,
+      "phase": "RF",
+      "window_start": 41
+    },
+    {
+      "time_s": 129.939,
+      "Z": 3716185.136,
+      "phase": "RF",
+      "window_start": 46
+    },
+    {
+      "time_s": 136.542,
+      "Z": 2738506.467,
+      "phase": "RF",
+      "window_start": 51
+    },
+    {
+      "time_s": 608.165,
+      "Z": 176793.359,
+      "phase": "MIP",
+      "window_start": null
+    }
+  ],
+  "Z_rf": 2235401.232,
+  "wall_time_total": 609.656,
+  "versions": {
+    "gamspy": "1.23.0",
+    "solver": "CPLEX",
+    "solver_version": "22.1.2.0"
+  },
+  "hardware": {
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "processor_model": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_bytes": 33667739648,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "rf_windows": 11,
+  "rf_wall_time": 133.638,
+  "rf_wall_time_s": 133.638,
+  "greedy_wall_time_s": 5.052,
+  "instrumentation_wall_time_s": 0.298055,
+  "early_stop_reason": null,
+  "rf_validation_checks": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "has_relaxed_tail": true,
+      "Z_model": 1806561.045359,
+      "Z_evaluate": 41269492.0,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "has_relaxed_tail": true,
+      "Z_model": 3820885.509344,
+      "Z_evaluate": 41269492.0,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 11,
+      "window_end": 20,
+      "has_relaxed_tail": true,
+      "Z_model": 1971362.082521,
+      "Z_evaluate": 26088793.633,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 16,
+      "window_end": 25,
+      "has_relaxed_tail": true,
+      "Z_model": 2053445.305876,
+      "Z_evaluate": 19962014.475,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 21,
+      "window_end": 30,
+      "has_relaxed_tail": true,
+      "Z_model": 2111991.2564,
+      "Z_evaluate": 15610665.572,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 26,
+      "window_end": 35,
+      "has_relaxed_tail": true,
+      "Z_model": 2137313.373657,
+      "Z_evaluate": 11421551.363,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 31,
+      "window_end": 40,
+      "has_relaxed_tail": true,
+      "Z_model": 2179869.289678,
+      "Z_evaluate": 7907996.174,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 36,
+      "window_end": 45,
+      "has_relaxed_tail": true,
+      "Z_model": 2200803.985232,
+      "Z_evaluate": 6016663.601,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 41,
+      "window_end": 50,
+      "has_relaxed_tail": true,
+      "Z_model": 2210644.913928,
+      "Z_evaluate": 4827418.523,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 46,
+      "window_end": 55,
+      "has_relaxed_tail": true,
+      "Z_model": 2212408.432652,
+      "Z_evaluate": 3716185.136,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 51,
+      "window_end": 60,
+      "has_relaxed_tail": true,
+      "Z_model": 2214124.799718,
+      "Z_evaluate": 2738506.467,
+      "abs_diff": null,
+      "passed": false,
+      "completed_with_solver": false
+    }
+  ],
+  "rf_window_diag": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "status": "interrupted",
+      "reslim_used": 10.0,
+      "wall_time_s": 18.729,
+      "fixed_until": 0,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "status": "interrupted",
+      "reslim_used": 9.368,
+      "wall_time_s": 17.737,
+      "fixed_until": 5,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 11,
+      "window_end": 20,
+      "status": "interrupted",
+      "reslim_used": 8.716,
+      "wall_time_s": 16.263,
+      "fixed_until": 10,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 16,
+      "window_end": 25,
+      "status": "interrupted",
+      "reslim_used": 8.077,
+      "wall_time_s": 15.215,
+      "fixed_until": 15,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 21,
+      "window_end": 30,
+      "status": "solved",
+      "reslim_used": 7.417,
+      "wall_time_s": 13.556,
+      "fixed_until": 20,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 26,
+      "window_end": 35,
+      "status": "solved",
+      "reslim_used": 6.792,
+      "wall_time_s": 9.105,
+      "fixed_until": 25,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 31,
+      "window_end": 40,
+      "status": "solved",
+      "reslim_used": 6.514,
+      "wall_time_s": 8.354,
+      "fixed_until": 30,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 36,
+      "window_end": 45,
+      "status": "solved",
+      "reslim_used": 6.272,
+      "wall_time_s": 8.799,
+      "fixed_until": 35,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 41,
+      "window_end": 50,
+      "status": "solved",
+      "reslim_used": 5.897,
+      "wall_time_s": 8.742,
+      "fixed_until": 40,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 46,
+      "window_end": 55,
+      "status": "solved",
+      "reslim_used": 5.403,
+      "wall_time_s": 6.776,
+      "fixed_until": 45,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 51,
+      "window_end": 60,
+      "status": "solved",
+      "reslim_used": 5.108,
+      "wall_time_s": 6.484,
+      "fixed_until": 50,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 56,
+      "window_end": 65,
+      "status": "budget_guard_greedy_tail",
+      "reslim_used": 0.0,
+      "wall_time_s": 0.0
+    }
+  ],
+  "window_log_rows": 11,
+  "fo_accepts": 0,
+  "fo_sweeps_completed": 0,
+  "warm_start_checked": true,
+  "warm_start_log_has_mipstart": true,
+  "warm_start_log_excerpt": ">>  mipstart 1",
+  "warm_start_log_evidence_lines": [
+    ">>  mipstart 1",
+    "Processing 1 MIP starts.",
+    "MIP start 'm1' defined solution with objective 427870.2420.",
+    "1 of 1 MIP starts provided solutions.",
+    "MIP start 'm1' defined initial solution with objective 427870.2420."
+  ],
+  "run_timestamp": "2026-07-10T04:37:29",
+  "window_log_path": "<REPO_ROOT>\\experiments\\matheuristics\\results_production\\b600\\window_logs\\IncT4x_8_rf_mip_seed1_b600_windows.parquet",
+  "instrumentation_overhead_percent": 0.048889
+}

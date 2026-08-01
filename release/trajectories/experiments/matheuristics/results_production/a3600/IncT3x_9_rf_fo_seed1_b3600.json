@@ -1,0 +1,490 @@
+{
+  "instance": "IncT3x_9",
+  "dataset": "3X",
+  "method": "rf+fo",
+  "construction": "rf",
+  "construction_used": "rf",
+  "params": {
+    "budget": 3600.0,
+    "sigma": 10,
+    "step": 5,
+    "omega": 20,
+    "step_fo": 10,
+    "tl_rf": 120.0,
+    "tl_fo": 30.0,
+    "method": "rf+fo",
+    "start_from": null,
+    "threads": 0,
+    "output_suffix": "_b3600",
+    "log_windows": true
+  },
+  "seed": 1,
+  "Z_final": 21782.345,
+  "Z_best_overall": 21782.345,
+  "Z_greedy": 188219.145,
+  "shortage": 13148.0,
+  "excess": 8634345.0,
+  "schedule": [
+    145,
+    133,
+    146,
+    42,
+    126,
+    148,
+    148,
+    151,
+    147,
+    143,
+    150,
+    159,
+    142,
+    141,
+    145,
+    150,
+    154,
+    156,
+    154,
+    152,
+    144,
+    146,
+    144,
+    148,
+    0,
+    155,
+    151,
+    157,
+    157,
+    159,
+    157,
+    149,
+    86,
+    150,
+    140,
+    138,
+    147,
+    0,
+    144,
+    152,
+    146,
+    145,
+    148,
+    155,
+    0,
+    151,
+    159,
+    141,
+    142,
+    156,
+    149,
+    157,
+    144,
+    143,
+    149,
+    153,
+    147
+  ],
+  "improvements": [
+    {
+      "time_s": 3.118,
+      "Z": 188219.145,
+      "phase": "greedy_construction",
+      "window_start": 1
+    },
+    {
+      "time_s": 21.199,
+      "Z": 12051515.678,
+      "phase": "RF",
+      "window_start": 1
+    },
+    {
+      "time_s": 37.594,
+      "Z": 8241815.279,
+      "phase": "RF",
+      "window_start": 6
+    },
+    {
+      "time_s": 48.743,
+      "Z": 6019053.278,
+      "phase": "RF",
+      "window_start": 11
+    },
+    {
+      "time_s": 56.952,
+      "Z": 4407115.111,
+      "phase": "RF",
+      "window_start": 16
+    },
+    {
+      "time_s": 63.387,
+      "Z": 2667517.685,
+      "phase": "RF",
+      "window_start": 21
+    },
+    {
+      "time_s": 68.208,
+      "Z": 1889300.232,
+      "phase": "RF",
+      "window_start": 26
+    },
+    {
+      "time_s": 73.46,
+      "Z": 1110930.054,
+      "phase": "RF",
+      "window_start": 31
+    },
+    {
+      "time_s": 78.445,
+      "Z": 359879.82,
+      "phase": "RF",
+      "window_start": 36
+    },
+    {
+      "time_s": 82.486,
+      "Z": 198485.644,
+      "phase": "RF",
+      "window_start": 41
+    },
+    {
+      "time_s": 86.055,
+      "Z": 27982.051,
+      "phase": "RF",
+      "window_start": 46
+    },
+    {
+      "time_s": 89.755,
+      "Z": 24250.824,
+      "phase": "RF",
+      "window_start": 48
+    },
+    {
+      "time_s": 114.318,
+      "Z": 22771.62,
+      "phase": "FO_sweep",
+      "window_start": 1
+    },
+    {
+      "time_s": 148.382,
+      "Z": 22469.234,
+      "phase": "FO_sweep",
+      "window_start": 11
+    },
+    {
+      "time_s": 172.084,
+      "Z": 22181.951,
+      "phase": "FO_sweep",
+      "window_start": 21
+    },
+    {
+      "time_s": 182.802,
+      "Z": 21946.976,
+      "phase": "FO_sweep",
+      "window_start": 31
+    },
+    {
+      "time_s": 187.388,
+      "Z": 21880.351,
+      "phase": "FO_sweep",
+      "window_start": 38
+    },
+    {
+      "time_s": 215.201,
+      "Z": 21859.351,
+      "phase": "FO_sweep",
+      "window_start": 38
+    },
+    {
+      "time_s": 267.585,
+      "Z": 21853.676,
+      "phase": "FO_random",
+      "window_start": 45
+    },
+    {
+      "time_s": 390.573,
+      "Z": 21823.677,
+      "phase": "FO_random",
+      "window_start": 15
+    },
+    {
+      "time_s": 406.547,
+      "Z": 21821.802,
+      "phase": "FO_random",
+      "window_start": 1
+    },
+    {
+      "time_s": 411.841,
+      "Z": 21809.052,
+      "phase": "FO_random",
+      "window_start": 16
+    },
+    {
+      "time_s": 462.648,
+      "Z": 21804.027,
+      "phase": "FO_random",
+      "window_start": 47
+    },
+    {
+      "time_s": 484.9,
+      "Z": 21799.577,
+      "phase": "FO_random",
+      "window_start": 44
+    },
+    {
+      "time_s": 609.611,
+      "Z": 21796.495,
+      "phase": "FO_random",
+      "window_start": 15
+    },
+    {
+      "time_s": 625.41,
+      "Z": 21794.62,
+      "phase": "FO_random",
+      "window_start": 1
+    },
+    {
+      "time_s": 909.646,
+      "Z": 21782.345,
+      "phase": "FO_random",
+      "window_start": 57
+    }
+  ],
+  "Z_rf": 24250.824,
+  "wall_time_total": 3595.849,
+  "versions": {
+    "gamspy": "1.23.0",
+    "solver": "CPLEX",
+    "solver_version": "22.1.2.0"
+  },
+  "hardware": {
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "processor_model": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_bytes": 33667739648,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "rf_windows": 11,
+  "rf_wall_time": 86.637,
+  "rf_wall_time_s": 86.637,
+  "greedy_wall_time_s": 2.701,
+  "instrumentation_wall_time_s": 11.764045,
+  "early_stop_reason": null,
+  "rf_validation_checks": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "has_relaxed_tail": true,
+      "Z_model": 16884.96939,
+      "Z_evaluate": 12051515.678,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "has_relaxed_tail": true,
+      "Z_model": 21159.190102,
+      "Z_evaluate": 8241815.279,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 11,
+      "window_end": 20,
+      "has_relaxed_tail": true,
+      "Z_model": 22460.35702,
+      "Z_evaluate": 6019053.278,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 16,
+      "window_end": 25,
+      "has_relaxed_tail": true,
+      "Z_model": 22667.116075,
+      "Z_evaluate": 4407115.111,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 21,
+      "window_end": 30,
+      "has_relaxed_tail": true,
+      "Z_model": 23027.91362,
+      "Z_evaluate": 2667517.685,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 26,
+      "window_end": 35,
+      "has_relaxed_tail": true,
+      "Z_model": 23083.767839,
+      "Z_evaluate": 1889300.232,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 31,
+      "window_end": 40,
+      "has_relaxed_tail": true,
+      "Z_model": 23594.723097,
+      "Z_evaluate": 1110930.054,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 36,
+      "window_end": 45,
+      "has_relaxed_tail": true,
+      "Z_model": 23917.767147,
+      "Z_evaluate": 359879.82,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 41,
+      "window_end": 50,
+      "has_relaxed_tail": true,
+      "Z_model": 24109.935887,
+      "Z_evaluate": 198485.644,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 46,
+      "window_end": 55,
+      "has_relaxed_tail": true,
+      "Z_model": 24241.41863,
+      "Z_evaluate": 27982.051,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 48,
+      "window_end": 57,
+      "has_relaxed_tail": false,
+      "Z_model": 24250.824,
+      "Z_evaluate": 24250.824,
+      "abs_diff": 0.0,
+      "passed": true,
+      "completed_with_solver": true
+    }
+  ],
+  "rf_window_diag": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "status": "solved",
+      "reslim_used": 81.818,
+      "wall_time_s": 17.991,
+      "fixed_until": 0,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "status": "solved",
+      "reslim_used": 88.192,
+      "wall_time_s": 16.299,
+      "fixed_until": 5,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 11,
+      "window_end": 20,
+      "status": "solved",
+      "reslim_used": 96.169,
+      "wall_time_s": 11.07,
+      "fixed_until": 10,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 16,
+      "window_end": 25,
+      "status": "solved",
+      "reslim_used": 106.797,
+      "wall_time_s": 8.127,
+      "fixed_until": 15,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 21,
+      "window_end": 30,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 6.352,
+      "fixed_until": 20,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 26,
+      "window_end": 35,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 4.668,
+      "fixed_until": 25,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 31,
+      "window_end": 40,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 5.162,
+      "fixed_until": 30,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 36,
+      "window_end": 45,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 4.898,
+      "fixed_until": 35,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 41,
+      "window_end": 50,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 3.952,
+      "fixed_until": 40,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 46,
+      "window_end": 55,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 3.482,
+      "fixed_until": 45,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 48,
+      "window_end": 57,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 3.613,
+      "fixed_until": 47,
+      "relaxed_tail": false
+    }
+  ],
+  "window_log_rows": 621,
+  "fo_accepts": 15,
+  "fo_sweeps_completed": 162,
+  "warm_start_checked": true,
+  "warm_start_log_has_mipstart": true,
+  "warm_start_log_excerpt": ">>  mipstart 1",
+  "warm_start_log_evidence_lines": [
+    ">>  mipstart 1",
+    "Processing 1 MIP starts.",
+    "MIP start 'm1' defined solution with objective 24250.8240.",
+    "1 of 1 MIP starts provided solutions.",
+    "MIP start 'm1' defined initial solution with objective 24250.8240."
+  ],
+  "run_timestamp": "2026-07-11T12:25:40",
+  "window_log_path": "<REPO_ROOT>\\experiments\\matheuristics\\results_production\\a3600\\window_logs\\IncT3x_9_rf_fo_seed1_b3600_windows.parquet",
+  "instrumentation_overhead_percent": 0.327156
+}

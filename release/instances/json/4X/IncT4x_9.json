@@ -1,0 +1,7833 @@
+{
+  "name": "IncT4x_9",
+  "dataset": "4X",
+  "T": 76,
+  "J": 159,
+  "I": 50,
+  "products": [
+    "EK8A_16",
+    "EK8A_20",
+    "EK8A_24",
+    "EK8A_30",
+    "EK8A_36",
+    "EK8A_46",
+    "EK8A_54",
+    "EK8A_60",
+    "EK8A_80",
+    "EK8A_100",
+    "EK8A_120",
+    "EK8A_150",
+    "EK8A_180",
+    "EK8A_220",
+    "EK8A_FFF",
+    "EK8R_3_5_7",
+    "EK8R_3_6",
+    "EK8R_4_10",
+    "EK8R_6_10",
+    "EK8R_6_10C",
+    "EK8R_6_10N",
+    "EK8R_6_10CN",
+    "EK8R_10_20",
+    "EK8R_12_16",
+    "EK8R_10_36",
+    "EK8R_20_40",
+    "EK8R_08_20",
+    "EK8R_30_50",
+    "EK8R_35_70",
+    "EK8R_40_F",
+    "EK8R_60_F",
+    "EK8R_70_F",
+    "EK8R_70_140",
+    "EK8R_070_325",
+    "EK8R_16_F",
+    "EK8R_18_F",
+    "EK8RM_05_16_4",
+    "EK8RM_01_4_4",
+    "EK8RM_4_6",
+    "EK8RM_6_8",
+    "EK8RM_8_12",
+    "EK8RM_8_20",
+    "EK8RM_12_16",
+    "EK8RM_12_30",
+    "EK8RM_18_30",
+    "EK8RM_28_48",
+    "EK8RM_30_50",
+    "EK8RM_28_F",
+    "EK8RM_48_F",
+    "EK8RM_50_F"
+  ],
+  "A_records": [
+    {
+      "product": "EK8A_16",
+      "process": 139,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_16",
+      "process": 151,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_20",
+      "process": 139,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 51,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 54,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 67,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 69,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 70,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 83,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 85,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 86,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 99,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 101,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 102,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 115,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 117,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 118,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 133,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 134,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 139,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 141,
+      "value": 625.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 142,
+      "value": 375.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 143,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 150,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_24",
+      "process": 156,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 51,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 54,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 67,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 69,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 70,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 83,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 85,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 86,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 99,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 101,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 102,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 115,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 117,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 118,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 133,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 134,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 139,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 143,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_30",
+      "process": 156,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 31,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 32,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 33,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 34,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 35,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 39,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 40,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 43,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 46,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 48,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 50,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 52,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 119,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 120,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 121,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 122,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 123,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 124,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 125,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 126,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 127,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 128,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 129,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 130,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 131,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 132,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 133,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 134,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 139,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 140,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 141,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 142,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 143,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 151,
+      "value": 1300.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 152,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_36",
+      "process": 155,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 119,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 120,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 121,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 122,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 123,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 124,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 125,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 126,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 127,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 128,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 129,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 130,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 131,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 132,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 133,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 134,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 139,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 140,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 141,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 142,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 145,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 146,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 151,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 155,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 156,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_46",
+      "process": 157,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 119,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 120,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 121,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 122,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 123,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 124,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 125,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 126,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 127,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 128,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 129,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 130,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 131,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 132,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 133,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 134,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 139,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 140,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 143,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 156,
+      "value": 825.0
+    },
+    {
+      "product": "EK8A_54",
+      "process": 157,
+      "value": 175.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 1,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 2,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 3,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 4,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 5,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 6,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 7,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 18,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 19,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 20,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 21,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 22,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 23,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 24,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 25,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 26,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 27,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 28,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 29,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 30,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 119,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 120,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 121,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 122,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 123,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 124,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 125,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 126,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 127,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 128,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 129,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 130,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 131,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 132,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 133,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 134,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 139,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 140,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 141,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 144,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 146,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 148,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 151,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 155,
+      "value": 1900.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 156,
+      "value": 1100.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 157,
+      "value": 1050.0
+    },
+    {
+      "product": "EK8A_60",
+      "process": 158,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 1,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 2,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 3,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 4,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 5,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 6,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 7,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 18,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 19,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 20,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 21,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 22,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 23,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 24,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 25,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 26,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 27,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 28,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 29,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 30,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 119,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 120,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 121,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 122,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 123,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 124,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 125,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 126,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 127,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 128,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 129,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 130,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 131,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 132,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 133,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 134,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 139,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 140,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 142,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 143,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 144,
+      "value": 600.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 145,
+      "value": 1400.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 146,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 148,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 149,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 151,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 153,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_80",
+      "process": 155,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 1,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 2,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 3,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 4,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 5,
+      "value": 600.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 6,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 7,
+      "value": 800.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 119,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 120,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 121,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 122,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 123,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 124,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 125,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 126,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 127,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 128,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 129,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 130,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 131,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 132,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 133,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 134,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 139,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 140,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 142,
+      "value": 475.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 143,
+      "value": 750.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 144,
+      "value": 525.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 145,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_100",
+      "process": 150,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 1,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 2,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 3,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 4,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 5,
+      "value": 600.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 6,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 7,
+      "value": 800.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 119,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 120,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 121,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 122,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 123,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 124,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 125,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 126,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 127,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 128,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 129,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 130,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 131,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 132,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 133,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 134,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 139,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 140,
+      "value": 800.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 143,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 144,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 145,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 146,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 150,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 151,
+      "value": 450.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 152,
+      "value": 50.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 155,
+      "value": 1850.0
+    },
+    {
+      "product": "EK8A_120",
+      "process": 156,
+      "value": 150.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 1,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 2,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 3,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 4,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 5,
+      "value": 400.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 6,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 7,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 119,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 120,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 121,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 122,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 123,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 124,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 125,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 126,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 127,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 128,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 129,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 130,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 131,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 132,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 133,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 134,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 139,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 140,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 144,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 145,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 146,
+      "value": 275.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 148,
+      "value": 1025.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 149,
+      "value": 200.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 150,
+      "value": 275.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 151,
+      "value": 225.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 152,
+      "value": 800.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 153,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_150",
+      "process": 154,
+      "value": 200.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 1,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 2,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 3,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 4,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 5,
+      "value": 400.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 6,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 7,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 119,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 120,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 121,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 122,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 123,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 124,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 125,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 126,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 127,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 128,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 129,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 130,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 131,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 132,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 133,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 134,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 139,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_180",
+      "process": 140,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 1,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 2,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 3,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 4,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 5,
+      "value": 400.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 6,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 7,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 119,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 120,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 121,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 122,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 123,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 124,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 125,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 126,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 127,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 128,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 129,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 130,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 131,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 132,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 133,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 134,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 139,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_220",
+      "process": 140,
+      "value": 700.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 1,
+      "value": 200.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 2,
+      "value": 200.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 3,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 4,
+      "value": 400.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 5,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 6,
+      "value": 600.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 7,
+      "value": 600.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 119,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 120,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 121,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 122,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 123,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 124,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 125,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 126,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 127,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 128,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 129,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 130,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 131,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 132,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 133,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 134,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 139,
+      "value": 400.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 140,
+      "value": 500.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 143,
+      "value": 250.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 146,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 148,
+      "value": 750.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 151,
+      "value": 300.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "process": 152,
+      "value": 700.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 40,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 42,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 56,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 58,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 72,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 74,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 88,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 90,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 104,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 106,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 120,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "process": 122,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 39,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 41,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 55,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 57,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 71,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 73,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 87,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 89,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 103,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 105,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 119,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_3_6",
+      "process": 121,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 43,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 44,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 59,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 60,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 75,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 76,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 91,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 92,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 107,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 108,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 123,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 124,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 145,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "process": 151,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 39,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 41,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 45,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 46,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 55,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 57,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 61,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 62,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 71,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 73,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 77,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 78,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 87,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 89,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 93,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 94,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 103,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 105,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 109,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 110,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 119,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 121,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 125,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 126,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 142,
+      "value": 3500.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "process": 143,
+      "value": 500.0
+    },
+    {
+      "product": "EK8R_6_10C",
+      "process": 113,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10C",
+      "process": 114,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 47,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 48,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 63,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 64,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 79,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 80,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 95,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 96,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 111,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 112,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 127,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10N",
+      "process": 128,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 49,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 50,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 65,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 66,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 81,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 82,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 97,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 98,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 129,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_6_10CN",
+      "process": 130,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 41,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 42,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 44,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 45,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 47,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 49,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 51,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 57,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 58,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 60,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 61,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 63,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 65,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 67,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 73,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 74,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 76,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 77,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 79,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 81,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 83,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 89,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 90,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 92,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 93,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 95,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 97,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 99,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 105,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 106,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 108,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 109,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 111,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 113,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 115,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 121,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 122,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 124,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 125,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 127,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 129,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 131,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 141,
+      "value": 400.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "process": 152,
+      "value": 500.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "process": 53,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "process": 69,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "process": 85,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "process": 101,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "process": 117,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "process": 133,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "process": 143,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 39,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 40,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 43,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 46,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 48,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 50,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 52,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 55,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 56,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 59,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 62,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 64,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 66,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 68,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 71,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 72,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 75,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 78,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 80,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 82,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 84,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 87,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 88,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 91,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 94,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 96,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 98,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 100,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 103,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 104,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 107,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 110,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 112,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 114,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 116,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 119,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 120,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 123,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 126,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 128,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 130,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 132,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "process": 144,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 41,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 42,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 44,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 45,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 47,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 49,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 51,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 53,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 141,
+      "value": 1650.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "process": 152,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 54,
+      "value": 11000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 70,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 86,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 102,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 118,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 134,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 143,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "process": 150,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 55,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 56,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 57,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 58,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 59,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 60,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 61,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 62,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 63,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 64,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 65,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 66,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 67,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 68,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 69,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_30_50",
+      "process": 70,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 71,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 72,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 73,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 74,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 75,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 76,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 77,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 78,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 79,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 80,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 81,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 82,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 83,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 84,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 85,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 86,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 87,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 88,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 89,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 90,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 91,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 92,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 93,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 94,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 95,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 96,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 97,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 98,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 99,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 100,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 101,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 102,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 103,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 104,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 105,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 106,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 107,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 108,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 109,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 110,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 111,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 112,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 113,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 114,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 115,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 116,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 117,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_35_70",
+      "process": 118,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 31,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 32,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 33,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 34,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 35,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 39,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 40,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 41,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 42,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 43,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 44,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 45,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 46,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 47,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 48,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 49,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 50,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 51,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 52,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 53,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 54,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 135,
+      "value": 20000.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "process": 142,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 11,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 12,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 13,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 14,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 15,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 16,
+      "value": 7500.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 17,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 55,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 56,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 57,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 58,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 59,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 60,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 61,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 62,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 63,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 64,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 65,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 66,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 67,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 68,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 69,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 70,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8R_60_F",
+      "process": 136,
+      "value": 15000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 18,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 19,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 20,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 21,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 22,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 23,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 24,
+      "value": 4300.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 25,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 26,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 27,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 28,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 29,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 30,
+      "value": 4300.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 71,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 72,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 73,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 74,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 75,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 76,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 77,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 78,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 79,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 80,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 81,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 82,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 83,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 84,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 85,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 86,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 141,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "process": 142,
+      "value": 1000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 103,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 104,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 105,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 106,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 107,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 108,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 109,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 110,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 111,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 112,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 113,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 114,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 115,
+      "value": 3500.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 116,
+      "value": 3500.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 117,
+      "value": 3500.0
+    },
+    {
+      "product": "EK8R_70_140",
+      "process": 118,
+      "value": 3500.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 87,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 88,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 89,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 90,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 91,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 92,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 93,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 94,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 95,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 96,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 97,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 98,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 99,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 100,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 101,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8R_070_325",
+      "process": 102,
+      "value": 7000.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "process": 137,
+      "value": 25000.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "process": 159,
+      "value": 8000.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "process": 138,
+      "value": 25000.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "process": 143,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "process": 154,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "process": 1,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "process": 11,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "process": 18,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "process": 144,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "process": 145,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "process": 146,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "process": 147,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "process": 2,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "process": 12,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "process": 19,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "process": 25,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "process": 31,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "process": 149,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "process": 150,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 1,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 2,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 3,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 11,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 12,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 13,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 18,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 19,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 20,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 25,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 26,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 31,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 32,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 150,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "process": 151,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 1,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 2,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 3,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 4,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 11,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 12,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 13,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 14,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 18,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 19,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 20,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 21,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 25,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 26,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 27,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 31,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 32,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 33,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 148,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "process": 149,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 1,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 2,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 3,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 4,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 5,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 11,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 12,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 13,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 14,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 15,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 18,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 19,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 20,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 21,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 22,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 25,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 26,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 27,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 28,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 31,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 32,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 33,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 34,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 39,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 40,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 41,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 42,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 43,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 44,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 45,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 46,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 47,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 48,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 49,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 50,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 55,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 56,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 57,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 58,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 59,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 60,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 61,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 62,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 63,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 64,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 65,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 66,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 71,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 72,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 73,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 74,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 75,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 76,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 77,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 78,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 79,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 80,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 81,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 82,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 87,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 88,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 89,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 90,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 91,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 92,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 93,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 94,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 95,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 96,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 97,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 98,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 103,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 104,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 105,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 106,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 107,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 108,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 109,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 110,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 111,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 112,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 113,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 114,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 119,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 120,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 121,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 122,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 123,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 124,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 125,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 126,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 127,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 128,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 129,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 130,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 145,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 148,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 150,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 151,
+      "value": 7500.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "process": 155,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "process": 149,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "process": 150,
+      "value": 9000.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "process": 146,
+      "value": 5000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 1,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 2,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 3,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 4,
+      "value": 14000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 5,
+      "value": 14000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 6,
+      "value": 15000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 11,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 12,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 13,
+      "value": 10000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 14,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 15,
+      "value": 14000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 16,
+      "value": 16000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 18,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 19,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 20,
+      "value": 11000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 21,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 22,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 23,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 25,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 26,
+      "value": 11000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 27,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 28,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 29,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 31,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 32,
+      "value": 11000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 33,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 34,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 35,
+      "value": 13000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 144,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 145,
+      "value": 12000.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 149,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 150,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "process": 151,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "process": 147,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "process": 150,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_28_48",
+      "process": 25,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_28_48",
+      "process": 26,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_28_48",
+      "process": 27,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_28_48",
+      "process": 28,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_28_48",
+      "process": 29,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_28_48",
+      "process": 30,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 1,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 2,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 3,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 4,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 5,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 6,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 7,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 11,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 12,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 13,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 14,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 15,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 16,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 17,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 18,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 19,
+      "value": 2000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 20,
+      "value": 2500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 21,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 22,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 23,
+      "value": 4000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 24,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 144,
+      "value": 4100.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 145,
+      "value": 4900.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 147,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 148,
+      "value": 5500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 149,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 150,
+      "value": 4500.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 151,
+      "value": 850.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 152,
+      "value": 5650.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 153,
+      "value": 6000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 154,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "process": 155,
+      "value": 1500.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "process": 8,
+      "value": 28000.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "process": 36,
+      "value": 28000.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "process": 147,
+      "value": 13500.0
+    },
+    {
+      "product": "EK8RM_48_F",
+      "process": 9,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8RM_48_F",
+      "process": 37,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "process": 10,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "process": 38,
+      "value": 18000.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "process": 146,
+      "value": 3000.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "process": 151,
+      "value": 3000.0
+    }
+  ],
+  "D_records": [
+    {
+      "product": "EK8A_16",
+      "period": 14,
+      "value": 196.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 19,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 33,
+      "value": 196.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 38,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 52,
+      "value": 196.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 57,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 71,
+      "value": 196.0
+    },
+    {
+      "product": "EK8A_16",
+      "period": 76,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 4,
+      "value": 407.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 8,
+      "value": 1438.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 19,
+      "value": 155.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 23,
+      "value": 407.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 27,
+      "value": 1438.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 38,
+      "value": 155.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 42,
+      "value": 407.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 46,
+      "value": 1438.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 57,
+      "value": 155.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 61,
+      "value": 407.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 65,
+      "value": 1438.0
+    },
+    {
+      "product": "EK8A_24",
+      "period": 76,
+      "value": 155.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 2,
+      "value": 283.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 13,
+      "value": 405.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 14,
+      "value": 538.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 19,
+      "value": 24.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 21,
+      "value": 283.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 32,
+      "value": 405.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 33,
+      "value": 538.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 38,
+      "value": 24.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 40,
+      "value": 283.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 51,
+      "value": 405.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 52,
+      "value": 538.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 57,
+      "value": 24.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 59,
+      "value": 283.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 70,
+      "value": 405.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 71,
+      "value": 538.0
+    },
+    {
+      "product": "EK8A_30",
+      "period": 76,
+      "value": 24.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 4,
+      "value": 1798.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 15,
+      "value": 371.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 16,
+      "value": 269.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 17,
+      "value": 1754.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 19,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 23,
+      "value": 1798.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 34,
+      "value": 371.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 35,
+      "value": 269.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 36,
+      "value": 1754.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 38,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 42,
+      "value": 1798.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 53,
+      "value": 371.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 54,
+      "value": 269.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 55,
+      "value": 1754.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 57,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 61,
+      "value": 1798.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 72,
+      "value": 371.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 73,
+      "value": 269.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 74,
+      "value": 1754.0
+    },
+    {
+      "product": "EK8A_36",
+      "period": 76,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 16,
+      "value": 8200.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 18,
+      "value": 673.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 19,
+      "value": 627.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 35,
+      "value": 8200.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 37,
+      "value": 673.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 38,
+      "value": 627.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 54,
+      "value": 8200.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 56,
+      "value": 673.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 57,
+      "value": 627.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 73,
+      "value": 8200.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 75,
+      "value": 673.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 76,
+      "value": 627.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 18,
+      "value": 1902.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 19,
+      "value": 98.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 37,
+      "value": 1902.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 38,
+      "value": 98.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 56,
+      "value": 1902.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 57,
+      "value": 98.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 75,
+      "value": 1902.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 76,
+      "value": 98.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 5,
+      "value": 1561.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 10,
+      "value": 2723.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 15,
+      "value": 589.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 17,
+      "value": 361.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 18,
+      "value": 1897.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 19,
+      "value": 3419.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 24,
+      "value": 1561.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 29,
+      "value": 2723.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 34,
+      "value": 589.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 36,
+      "value": 361.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 37,
+      "value": 1897.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 38,
+      "value": 3419.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 43,
+      "value": 1561.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 48,
+      "value": 2723.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 53,
+      "value": 589.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 55,
+      "value": 361.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 56,
+      "value": 1897.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 57,
+      "value": 3419.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 62,
+      "value": 1561.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 67,
+      "value": 2723.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 72,
+      "value": 589.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 74,
+      "value": 361.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 75,
+      "value": 1897.0
+    },
+    {
+      "product": "EK8A_60",
+      "period": 76,
+      "value": 3419.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 10,
+      "value": 316.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 17,
+      "value": 9630.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 19,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 29,
+      "value": 316.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 36,
+      "value": 9630.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 38,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 48,
+      "value": 316.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 55,
+      "value": 9630.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 57,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 67,
+      "value": 316.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 74,
+      "value": 9630.0
+    },
+    {
+      "product": "EK8A_80",
+      "period": 76,
+      "value": 54.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 7,
+      "value": 175.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 9,
+      "value": 2960.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 10,
+      "value": 213.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 19,
+      "value": 102.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 26,
+      "value": 175.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 28,
+      "value": 2960.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 29,
+      "value": 213.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 38,
+      "value": 102.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 45,
+      "value": 175.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 47,
+      "value": 2960.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 48,
+      "value": 213.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 57,
+      "value": 102.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 64,
+      "value": 175.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 66,
+      "value": 2960.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 67,
+      "value": 213.0
+    },
+    {
+      "product": "EK8A_100",
+      "period": 76,
+      "value": 102.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 16,
+      "value": 4382.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 19,
+      "value": 218.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 35,
+      "value": 4382.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 38,
+      "value": 218.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 54,
+      "value": 4382.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 57,
+      "value": 218.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 73,
+      "value": 4382.0
+    },
+    {
+      "product": "EK8A_120",
+      "period": 76,
+      "value": 218.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 5,
+      "value": 4442.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 19,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 24,
+      "value": 4442.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 38,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 43,
+      "value": 4442.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 57,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 62,
+      "value": 4442.0
+    },
+    {
+      "product": "EK8A_150",
+      "period": 76,
+      "value": 58.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 10,
+      "value": 642.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 17,
+      "value": 2173.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 19,
+      "value": 185.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 29,
+      "value": 642.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 36,
+      "value": 2173.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 38,
+      "value": 185.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 48,
+      "value": 642.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 55,
+      "value": 2173.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 57,
+      "value": 185.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 67,
+      "value": 642.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 74,
+      "value": 2173.0
+    },
+    {
+      "product": "EK8A_FFF",
+      "period": 76,
+      "value": 185.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 7,
+      "value": 524.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 16,
+      "value": 225.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 18,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 19,
+      "value": 73.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 26,
+      "value": 524.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 35,
+      "value": 225.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 37,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 38,
+      "value": 73.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 45,
+      "value": 524.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 54,
+      "value": 225.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 56,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 57,
+      "value": 73.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 64,
+      "value": 524.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 73,
+      "value": 225.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 75,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 76,
+      "value": 73.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 4,
+      "value": 1136.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 12,
+      "value": 724.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 14,
+      "value": 2943.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 15,
+      "value": 4088.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 19,
+      "value": 109.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 23,
+      "value": 1136.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 31,
+      "value": 724.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 33,
+      "value": 2943.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 34,
+      "value": 4088.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 38,
+      "value": 109.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 42,
+      "value": 1136.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 50,
+      "value": 724.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 52,
+      "value": 2943.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 53,
+      "value": 4088.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 57,
+      "value": 109.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 61,
+      "value": 1136.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 69,
+      "value": 724.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 71,
+      "value": 2943.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 72,
+      "value": 4088.0
+    },
+    {
+      "product": "EK8R_4_10",
+      "period": 76,
+      "value": 109.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 11,
+      "value": 814.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 19,
+      "value": 3186.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 30,
+      "value": 814.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 38,
+      "value": 3186.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 49,
+      "value": 814.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 57,
+      "value": 3186.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 68,
+      "value": 814.0
+    },
+    {
+      "product": "EK8R_6_10",
+      "period": 76,
+      "value": 3186.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 2,
+      "value": 393.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 8,
+      "value": 235.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 9,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 19,
+      "value": 94.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 21,
+      "value": 393.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 27,
+      "value": 235.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 28,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 38,
+      "value": 94.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 40,
+      "value": 393.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 46,
+      "value": 235.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 47,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 57,
+      "value": 94.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 59,
+      "value": 393.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 65,
+      "value": 235.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 66,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_10_20",
+      "period": 76,
+      "value": 94.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 1,
+      "value": 474.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 17,
+      "value": 5910.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 18,
+      "value": 5533.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 19,
+      "value": 83.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 20,
+      "value": 474.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 36,
+      "value": 5910.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 37,
+      "value": 5533.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 38,
+      "value": 83.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 39,
+      "value": 474.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 55,
+      "value": 5910.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 56,
+      "value": 5533.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 57,
+      "value": 83.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 58,
+      "value": 474.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 74,
+      "value": 5910.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 75,
+      "value": 5533.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 76,
+      "value": 83.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 5,
+      "value": 1086.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 9,
+      "value": 567.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 11,
+      "value": 291.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 19,
+      "value": 56.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 24,
+      "value": 1086.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 28,
+      "value": 567.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 30,
+      "value": 291.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 38,
+      "value": 56.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 43,
+      "value": 1086.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 47,
+      "value": 567.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 49,
+      "value": 291.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 57,
+      "value": 56.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 62,
+      "value": 1086.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 66,
+      "value": 567.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 68,
+      "value": 291.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 76,
+      "value": 56.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 5,
+      "value": 1411.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 10,
+      "value": 1702.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 19,
+      "value": 37.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 24,
+      "value": 1411.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 29,
+      "value": 1702.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 38,
+      "value": 37.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 43,
+      "value": 1411.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 48,
+      "value": 1702.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 57,
+      "value": 37.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 62,
+      "value": 1411.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 67,
+      "value": 1702.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 76,
+      "value": 37.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 10,
+      "value": 404.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 15,
+      "value": 2285.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 18,
+      "value": 298.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 19,
+      "value": 13.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 29,
+      "value": 404.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 34,
+      "value": 2285.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 37,
+      "value": 298.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 38,
+      "value": 13.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 48,
+      "value": 404.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 53,
+      "value": 2285.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 56,
+      "value": 298.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 57,
+      "value": 13.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 67,
+      "value": 404.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 72,
+      "value": 2285.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 75,
+      "value": 298.0
+    },
+    {
+      "product": "EK8R_08_20",
+      "period": 76,
+      "value": 13.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 13,
+      "value": 218.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 16,
+      "value": 905.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 17,
+      "value": 2682.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 19,
+      "value": 195.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 32,
+      "value": 218.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 35,
+      "value": 905.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 36,
+      "value": 2682.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 38,
+      "value": 195.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 51,
+      "value": 218.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 54,
+      "value": 905.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 55,
+      "value": 2682.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 57,
+      "value": 195.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 70,
+      "value": 218.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 73,
+      "value": 905.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 74,
+      "value": 2682.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 76,
+      "value": 195.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 14,
+      "value": 6913.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 19,
+      "value": 87.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 33,
+      "value": 6913.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 38,
+      "value": 87.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 52,
+      "value": 6913.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 57,
+      "value": 87.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 71,
+      "value": 6913.0
+    },
+    {
+      "product": "EK8R_70_F",
+      "period": 76,
+      "value": 87.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 11,
+      "value": 922.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 17,
+      "value": 6573.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 19,
+      "value": 505.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 30,
+      "value": 922.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 36,
+      "value": 6573.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 38,
+      "value": 505.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 49,
+      "value": 922.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 55,
+      "value": 6573.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 57,
+      "value": 505.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 68,
+      "value": 922.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 74,
+      "value": 6573.0
+    },
+    {
+      "product": "EK8R_16_F",
+      "period": 76,
+      "value": 505.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 7,
+      "value": 672.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 17,
+      "value": 12150.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 19,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 26,
+      "value": 672.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 36,
+      "value": 12150.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 38,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 45,
+      "value": 672.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 55,
+      "value": 12150.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 57,
+      "value": 178.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 64,
+      "value": 672.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 74,
+      "value": 12150.0
+    },
+    {
+      "product": "EK8R_18_F",
+      "period": 76,
+      "value": 178.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 3,
+      "value": 3311.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 4,
+      "value": 243.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 15,
+      "value": 648.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 16,
+      "value": 427.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 19,
+      "value": 2871.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 22,
+      "value": 3311.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 23,
+      "value": 243.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 34,
+      "value": 648.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 35,
+      "value": 427.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 38,
+      "value": 2871.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 41,
+      "value": 3311.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 42,
+      "value": 243.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 53,
+      "value": 648.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 54,
+      "value": 427.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 57,
+      "value": 2871.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 60,
+      "value": 3311.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 61,
+      "value": 243.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 72,
+      "value": 648.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 73,
+      "value": 427.0
+    },
+    {
+      "product": "EK8RM_05_16_4",
+      "period": 76,
+      "value": 2871.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 13,
+      "value": 577.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 18,
+      "value": 8296.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 19,
+      "value": 127.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 32,
+      "value": 577.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 37,
+      "value": 8296.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 38,
+      "value": 127.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 51,
+      "value": 577.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 56,
+      "value": 8296.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 57,
+      "value": 127.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 70,
+      "value": 577.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 75,
+      "value": 8296.0
+    },
+    {
+      "product": "EK8RM_01_4_4",
+      "period": 76,
+      "value": 127.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 9,
+      "value": 3367.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 16,
+      "value": 199.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 17,
+      "value": 189.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 18,
+      "value": 372.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 19,
+      "value": 1873.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 28,
+      "value": 3367.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 35,
+      "value": 199.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 36,
+      "value": 189.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 37,
+      "value": 372.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 38,
+      "value": 1873.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 47,
+      "value": 3367.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 54,
+      "value": 199.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 55,
+      "value": 189.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 56,
+      "value": 372.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 57,
+      "value": 1873.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 66,
+      "value": 3367.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 73,
+      "value": 199.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 74,
+      "value": 189.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 75,
+      "value": 372.0
+    },
+    {
+      "product": "EK8RM_4_6",
+      "period": 76,
+      "value": 1873.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 14,
+      "value": 6014.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 17,
+      "value": 169.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 19,
+      "value": 1317.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 33,
+      "value": 6014.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 36,
+      "value": 169.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 38,
+      "value": 1317.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 52,
+      "value": 6014.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 55,
+      "value": 169.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 57,
+      "value": 1317.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 71,
+      "value": 6014.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 74,
+      "value": 169.0
+    },
+    {
+      "product": "EK8RM_6_8",
+      "period": 76,
+      "value": 1317.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 1,
+      "value": 562.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 6,
+      "value": 13518.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 8,
+      "value": 9357.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 13,
+      "value": 355.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 19,
+      "value": 208.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 20,
+      "value": 562.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 25,
+      "value": 13518.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 27,
+      "value": 9357.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 32,
+      "value": 355.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 38,
+      "value": 208.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 39,
+      "value": 562.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 44,
+      "value": 13518.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 46,
+      "value": 9357.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 51,
+      "value": 355.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 57,
+      "value": 208.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 58,
+      "value": 562.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 63,
+      "value": 13518.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 65,
+      "value": 9357.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 70,
+      "value": 355.0
+    },
+    {
+      "product": "EK8RM_8_12",
+      "period": 76,
+      "value": 208.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 11,
+      "value": 1605.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 16,
+      "value": 561.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 17,
+      "value": 12801.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 19,
+      "value": 33.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 30,
+      "value": 1605.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 35,
+      "value": 561.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 36,
+      "value": 12801.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 38,
+      "value": 33.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 49,
+      "value": 1605.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 54,
+      "value": 561.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 55,
+      "value": 12801.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 57,
+      "value": 33.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 68,
+      "value": 1605.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 73,
+      "value": 561.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 74,
+      "value": 12801.0
+    },
+    {
+      "product": "EK8RM_8_20",
+      "period": 76,
+      "value": 33.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 13,
+      "value": 217.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 15,
+      "value": 4435.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 18,
+      "value": 269.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 19,
+      "value": 79.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 32,
+      "value": 217.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 34,
+      "value": 4435.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 37,
+      "value": 269.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 38,
+      "value": 79.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 51,
+      "value": 217.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 53,
+      "value": 4435.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 56,
+      "value": 269.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 57,
+      "value": 79.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 70,
+      "value": 217.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 72,
+      "value": 4435.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 75,
+      "value": 269.0
+    },
+    {
+      "product": "EK8RM_12_16",
+      "period": 76,
+      "value": 79.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 1,
+      "value": 3895.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 2,
+      "value": 508.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 6,
+      "value": 616.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 12,
+      "value": 568.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 13,
+      "value": 2071.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 15,
+      "value": 20333.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 18,
+      "value": 474.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 19,
+      "value": 35.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 20,
+      "value": 3895.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 21,
+      "value": 508.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 25,
+      "value": 616.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 31,
+      "value": 568.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 32,
+      "value": 2071.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 34,
+      "value": 20333.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 37,
+      "value": 474.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 38,
+      "value": 35.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 39,
+      "value": 3895.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 40,
+      "value": 508.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 44,
+      "value": 616.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 50,
+      "value": 568.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 51,
+      "value": 2071.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 53,
+      "value": 20333.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 56,
+      "value": 474.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 57,
+      "value": 35.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 58,
+      "value": 3895.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 59,
+      "value": 508.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 63,
+      "value": 616.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 69,
+      "value": 568.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 70,
+      "value": 2071.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 72,
+      "value": 20333.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 75,
+      "value": 474.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 76,
+      "value": 35.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 15,
+      "value": 1286.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 19,
+      "value": 4714.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 34,
+      "value": 1286.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 38,
+      "value": 4714.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 53,
+      "value": 1286.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 57,
+      "value": 4714.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 72,
+      "value": 1286.0
+    },
+    {
+      "product": "EK8RM_18_30",
+      "period": 76,
+      "value": 4714.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 7,
+      "value": 480.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 8,
+      "value": 8789.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 13,
+      "value": 9811.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 15,
+      "value": 1389.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 16,
+      "value": 774.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 18,
+      "value": 13652.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 19,
+      "value": 105.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 26,
+      "value": 480.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 27,
+      "value": 8789.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 32,
+      "value": 9811.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 34,
+      "value": 1389.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 35,
+      "value": 774.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 37,
+      "value": 13652.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 38,
+      "value": 105.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 45,
+      "value": 480.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 46,
+      "value": 8789.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 51,
+      "value": 9811.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 53,
+      "value": 1389.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 54,
+      "value": 774.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 56,
+      "value": 13652.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 57,
+      "value": 105.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 64,
+      "value": 480.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 65,
+      "value": 8789.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 70,
+      "value": 9811.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 72,
+      "value": 1389.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 73,
+      "value": 774.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 75,
+      "value": 13652.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 76,
+      "value": 105.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 8,
+      "value": 2877.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 11,
+      "value": 542.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 17,
+      "value": 326.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 18,
+      "value": 3714.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 19,
+      "value": 41.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 27,
+      "value": 2877.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 30,
+      "value": 542.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 36,
+      "value": 326.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 37,
+      "value": 3714.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 38,
+      "value": 41.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 46,
+      "value": 2877.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 49,
+      "value": 542.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 55,
+      "value": 326.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 56,
+      "value": 3714.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 57,
+      "value": 41.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 65,
+      "value": 2877.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 68,
+      "value": 542.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 74,
+      "value": 326.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 75,
+      "value": 3714.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 76,
+      "value": 41.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 8,
+      "value": 5446.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 16,
+      "value": 249.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 19,
+      "value": 305.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 27,
+      "value": 5446.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 35,
+      "value": 249.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 38,
+      "value": 305.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 46,
+      "value": 5446.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 54,
+      "value": 249.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 57,
+      "value": 305.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 65,
+      "value": 5446.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 73,
+      "value": 249.0
+    },
+    {
+      "product": "EK8RM_50_F",
+      "period": 76,
+      "value": 305.0
+    }
+  ]
+}

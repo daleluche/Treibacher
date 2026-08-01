@@ -1,0 +1,124 @@
+{
+  "instance": "IncT2X_7",
+  "dataset": "2X",
+  "run_id": 2,
+  "seed": 2,
+  "algo_version": "v2.0",
+  "objective": 15255.32,
+  "shortage": 9281.0,
+  "excess": 5974320.0,
+  "gap_vs_mip": 12.9448,
+  "time_to_best": 1760.644,
+  "total_time": 3605.263,
+  "iterations": 280,
+  "grasp_iters": 90,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.678,
+      "Z": 32790.463,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 6,
+      "time_s": 14.227,
+      "Z": 20104.931,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 39,
+      "time_s": 340.0,
+      "Z": 16260.167,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 4,
+      "grasp_iter": 79,
+      "time_s": 775.575,
+      "Z": 15490.54,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 6,
+      "grasp_iter": 79,
+      "time_s": 785.963,
+      "Z": 15374.94,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 17,
+      "grasp_iter": 79,
+      "time_s": 902.933,
+      "Z": 15288.14,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 45,
+      "grasp_iter": 80,
+      "time_s": 1169.561,
+      "Z": 15263.44,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 45,
+      "grasp_iter": 80,
+      "time_s": 1170.266,
+      "Z": 15261.595,
+      "tag": "PR"
+    },
+    {
+      "iteration": 105,
+      "grasp_iter": 82,
+      "time_s": 1760.644,
+      "Z": 15255.32,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    151,
+    143,
+    152,
+    78,
+    150,
+    145,
+    147,
+    148,
+    152,
+    146,
+    33,
+    150,
+    122,
+    139,
+    18,
+    159,
+    140,
+    143,
+    141,
+    0,
+    152,
+    151,
+    153,
+    150,
+    145,
+    152,
+    142,
+    146,
+    147,
+    149,
+    148,
+    159,
+    0,
+    145,
+    140,
+    141,
+    143,
+    0
+  ],
+  "T": 38,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 13506.887
+}

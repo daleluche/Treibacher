@@ -1,0 +1,252 @@
+{
+  "instance": "IncT4x_9",
+  "dataset": "4X",
+  "run_id": 5,
+  "seed": 5,
+  "objective": 66775.282,
+  "shortage": 41211.0,
+  "excess": 25564282.0,
+  "gap_vs_mip": 185.4674,
+  "time_to_best": 1766.852,
+  "total_time": 1801.136,
+  "iterations": 473,
+  "grasp_iters": 124,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.028,
+      "Z": 349014.104,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 1.207,
+      "Z": 121958.872,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 6,
+      "time_s": 12.57,
+      "Z": 100424.544,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 31,
+      "time_s": 89.701,
+      "Z": 97991.507,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 71,
+      "time_s": 227.625,
+      "Z": 97586.465,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 5,
+      "grasp_iter": 109,
+      "time_s": 373.858,
+      "Z": 93924.007,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 44,
+      "grasp_iter": 110,
+      "time_s": 492.905,
+      "Z": 91770.126,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 60,
+      "grasp_iter": 110,
+      "time_s": 541.262,
+      "Z": 91545.83,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 101,
+      "grasp_iter": 112,
+      "time_s": 675.759,
+      "Z": 91510.23,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 101,
+      "grasp_iter": 112,
+      "time_s": 677.879,
+      "Z": 89368.023,
+      "tag": "PR"
+    },
+    {
+      "iteration": 113,
+      "grasp_iter": 112,
+      "time_s": 705.38,
+      "Z": 89332.673,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 115,
+      "grasp_iter": 112,
+      "time_s": 711.269,
+      "Z": 85872.822,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 141,
+      "grasp_iter": 113,
+      "time_s": 789.671,
+      "Z": 85664.168,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 158,
+      "grasp_iter": 113,
+      "time_s": 842.57,
+      "Z": 72061.538,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 158,
+      "grasp_iter": 113,
+      "time_s": 845.18,
+      "Z": 70594.713,
+      "tag": "PR"
+    },
+    {
+      "iteration": 175,
+      "grasp_iter": 113,
+      "time_s": 894.01,
+      "Z": 69582.141,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 194,
+      "grasp_iter": 113,
+      "time_s": 945.151,
+      "Z": 69306.652,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 374,
+      "grasp_iter": 121,
+      "time_s": 1504.69,
+      "Z": 68586.6,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 416,
+      "grasp_iter": 123,
+      "time_s": 1635.545,
+      "Z": 68264.846,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 416,
+      "grasp_iter": 123,
+      "time_s": 1637.973,
+      "Z": 66873.782,
+      "tag": "PR"
+    },
+    {
+      "iteration": 452,
+      "grasp_iter": 124,
+      "time_s": 1739.481,
+      "Z": 66846.282,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 463,
+      "grasp_iter": 124,
+      "time_s": 1766.852,
+      "Z": 66775.282,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    145,
+    145,
+    148,
+    120,
+    147,
+    146,
+    151,
+    133,
+    45,
+    150,
+    140,
+    150,
+    24,
+    137,
+    20,
+    143,
+    143,
+    1,
+    148,
+    145,
+    10,
+    148,
+    141,
+    31,
+    125,
+    125,
+    141,
+    146,
+    138,
+    133,
+    150,
+    150,
+    147,
+    145,
+    134,
+    151,
+    144,
+    154,
+    157,
+    45,
+    133,
+    151,
+    157,
+    74,
+    149,
+    146,
+    148,
+    154,
+    154,
+    154,
+    153,
+    149,
+    159,
+    140,
+    11,
+    153,
+    157,
+    146,
+    151,
+    11,
+    139,
+    147,
+    155,
+    158,
+    155,
+    158,
+    153,
+    21,
+    154,
+    150,
+    79,
+    150,
+    151,
+    151,
+    8,
+    125
+  ],
+  "T": 76,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 23391.565
+}

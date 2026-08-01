@@ -1,0 +1,118 @@
+{
+  "instance": "Ale_1",
+  "dataset": "Real",
+  "run_id": 3,
+  "seed": 3,
+  "algo_version": "v2.0",
+  "objective": 87509.733,
+  "shortage": 83728.0,
+  "excess": 3781733.0,
+  "gap_vs_mip": 1.4433,
+  "time_to_best": 1510.295,
+  "total_time": 3600.071,
+  "iterations": 1132,
+  "grasp_iters": 285,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.196,
+      "Z": 130041.591,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 4.273,
+      "Z": 115191.931,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 13,
+      "time_s": 19.851,
+      "Z": 93602.721,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 19,
+      "time_s": 35.515,
+      "Z": 93019.931,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 62,
+      "time_s": 185.995,
+      "Z": 92240.768,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 5,
+      "grasp_iter": 230,
+      "time_s": 737.172,
+      "Z": 92069.996,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 15,
+      "grasp_iter": 230,
+      "time_s": 765.966,
+      "Z": 91318.343,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 18,
+      "grasp_iter": 230,
+      "time_s": 777.63,
+      "Z": 89624.058,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 310,
+      "grasp_iter": 244,
+      "time_s": 1509.965,
+      "Z": 88398.883,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 310,
+      "grasp_iter": 244,
+      "time_s": 1510.295,
+      "Z": 87509.733,
+      "tag": "PR"
+    }
+  ],
+  "scheduling": [
+    120,
+    150,
+    137,
+    145,
+    148,
+    147,
+    148,
+    45,
+    146,
+    143,
+    150,
+    23,
+    145,
+    150,
+    139,
+    146,
+    23,
+    143,
+    151,
+    155,
+    143,
+    18,
+    145,
+    0,
+    21
+  ],
+  "T": 25,
+  "J": 161,
+  "I": 50,
+  "mip_bound": 86264.683
+}

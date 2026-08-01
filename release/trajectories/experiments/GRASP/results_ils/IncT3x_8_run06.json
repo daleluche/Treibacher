@@ -1,0 +1,240 @@
+{
+  "instance": "IncT3x_8",
+  "dataset": "3X",
+  "run_id": 6,
+  "seed": 6,
+  "objective": 231990.402,
+  "shortage": 218471.0,
+  "excess": 13519402.0,
+  "gap_vs_mip": null,
+  "time_to_best": 1783.641,
+  "total_time": 1801.107,
+  "iterations": 888,
+  "grasp_iters": 240,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.043,
+      "Z": 522538.996,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 1.05,
+      "Z": 445752.584,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 3,
+      "time_s": 2.28,
+      "Z": 276026.944,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 14,
+      "grasp_iter": 202,
+      "time_s": 381.181,
+      "Z": 275152.738,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 32,
+      "grasp_iter": 202,
+      "time_s": 407.647,
+      "Z": 262960.336,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 35,
+      "grasp_iter": 202,
+      "time_s": 412.091,
+      "Z": 262916.311,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 97,
+      "grasp_iter": 205,
+      "time_s": 512.012,
+      "Z": 259538.596,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 97,
+      "grasp_iter": 205,
+      "time_s": 513.31,
+      "Z": 259138.508,
+      "tag": "PR"
+    },
+    {
+      "iteration": 278,
+      "grasp_iter": 214,
+      "time_s": 805.475,
+      "Z": 257567.605,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 411,
+      "grasp_iter": 220,
+      "time_s": 1014.019,
+      "Z": 257452.205,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 422,
+      "grasp_iter": 220,
+      "time_s": 1029.3,
+      "Z": 256542.478,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 428,
+      "grasp_iter": 220,
+      "time_s": 1037.097,
+      "Z": 250268.478,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 428,
+      "grasp_iter": 220,
+      "time_s": 1038.439,
+      "Z": 250225.728,
+      "tag": "PR"
+    },
+    {
+      "iteration": 430,
+      "grasp_iter": 220,
+      "time_s": 1039.767,
+      "Z": 250061.737,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 578,
+      "grasp_iter": 227,
+      "time_s": 1293.636,
+      "Z": 249877.862,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 580,
+      "grasp_iter": 227,
+      "time_s": 1296.43,
+      "Z": 249334.389,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 810,
+      "grasp_iter": 238,
+      "time_s": 1670.227,
+      "Z": 246602.357,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 810,
+      "grasp_iter": 238,
+      "time_s": 1671.604,
+      "Z": 245465.573,
+      "tag": "PR"
+    },
+    {
+      "iteration": 851,
+      "grasp_iter": 240,
+      "time_s": 1743.633,
+      "Z": 239456.609,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 855,
+      "grasp_iter": 240,
+      "time_s": 1749.402,
+      "Z": 236943.738,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 859,
+      "grasp_iter": 240,
+      "time_s": 1755.135,
+      "Z": 236176.263,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 877,
+      "grasp_iter": 240,
+      "time_s": 1782.194,
+      "Z": 236171.913,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 877,
+      "grasp_iter": 240,
+      "time_s": 1783.641,
+      "Z": 231990.402,
+      "tag": "PR"
+    }
+  ],
+  "scheduling": [
+    148,
+    148,
+    150,
+    148,
+    126,
+    150,
+    85,
+    151,
+    146,
+    42,
+    21,
+    143,
+    137,
+    140,
+    145,
+    147,
+    145,
+    145,
+    146,
+    143,
+    24,
+    152,
+    150,
+    125,
+    139,
+    141,
+    140,
+    149,
+    157,
+    151,
+    146,
+    153,
+    142,
+    153,
+    141,
+    148,
+    138,
+    18,
+    150,
+    145,
+    147,
+    147,
+    53,
+    155,
+    143,
+    157,
+    157,
+    157,
+    144,
+    157,
+    0,
+    154,
+    149,
+    151,
+    157,
+    0,
+    0
+  ],
+  "T": 57,
+  "J": 160,
+  "I": 50,
+  "mip_bound": null
+}

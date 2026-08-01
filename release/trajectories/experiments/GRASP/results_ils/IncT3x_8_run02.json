@@ -1,0 +1,261 @@
+{
+  "instance": "IncT3x_8",
+  "dataset": "3X",
+  "run_id": 2,
+  "seed": 2,
+  "objective": 259022.247,
+  "shortage": 244391.0,
+  "excess": 14631247.0,
+  "gap_vs_mip": null,
+  "time_to_best": 1677.973,
+  "total_time": 1800.975,
+  "iterations": 855,
+  "grasp_iters": 229,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.065,
+      "Z": 549359.972,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 1.078,
+      "Z": 494256.933,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 3,
+      "time_s": 2.282,
+      "Z": 397885.53,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 3.823,
+      "Z": 395047.629,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 6,
+      "time_s": 6.935,
+      "Z": 377309.705,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 7,
+      "time_s": 9.064,
+      "Z": 372342.019,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 8,
+      "time_s": 11.003,
+      "Z": 306822.451,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 13,
+      "time_s": 20.655,
+      "Z": 275398.998,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 29,
+      "grasp_iter": 196,
+      "time_s": 406.903,
+      "Z": 275251.993,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 60,
+      "grasp_iter": 197,
+      "time_s": 455.415,
+      "Z": 272656.191,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 78,
+      "grasp_iter": 197,
+      "time_s": 485.367,
+      "Z": 269372.39,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 88,
+      "grasp_iter": 197,
+      "time_s": 502.208,
+      "Z": 268724.211,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 88,
+      "grasp_iter": 197,
+      "time_s": 503.589,
+      "Z": 268674.731,
+      "tag": "PR"
+    },
+    {
+      "iteration": 135,
+      "grasp_iter": 199,
+      "time_s": 584.965,
+      "Z": 268674.481,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 155,
+      "grasp_iter": 199,
+      "time_s": 614.405,
+      "Z": 268472.167,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 225,
+      "grasp_iter": 202,
+      "time_s": 729.172,
+      "Z": 268469.842,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 255,
+      "grasp_iter": 203,
+      "time_s": 777.649,
+      "Z": 266393.766,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 255,
+      "grasp_iter": 203,
+      "time_s": 778.904,
+      "Z": 265947.766,
+      "tag": "PR"
+    },
+    {
+      "iteration": 356,
+      "grasp_iter": 208,
+      "time_s": 946.073,
+      "Z": 261410.887,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 386,
+      "grasp_iter": 209,
+      "time_s": 993.881,
+      "Z": 261263.387,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 546,
+      "grasp_iter": 216,
+      "time_s": 1262.806,
+      "Z": 261249.762,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 593,
+      "grasp_iter": 218,
+      "time_s": 1349.815,
+      "Z": 261192.212,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 593,
+      "grasp_iter": 218,
+      "time_s": 1351.13,
+      "Z": 260614.912,
+      "tag": "PR"
+    },
+    {
+      "iteration": 677,
+      "grasp_iter": 222,
+      "time_s": 1500.543,
+      "Z": 260598.387,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 703,
+      "grasp_iter": 223,
+      "time_s": 1543.261,
+      "Z": 259084.297,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 782,
+      "grasp_iter": 226,
+      "time_s": 1677.973,
+      "Z": 259022.247,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    46,
+    145,
+    148,
+    148,
+    150,
+    150,
+    146,
+    143,
+    141,
+    150,
+    147,
+    141,
+    120,
+    151,
+    146,
+    137,
+    148,
+    145,
+    143,
+    148,
+    148,
+    109,
+    23,
+    139,
+    134,
+    45,
+    152,
+    140,
+    151,
+    145,
+    155,
+    150,
+    153,
+    146,
+    149,
+    153,
+    147,
+    138,
+    151,
+    152,
+    141,
+    133,
+    133,
+    150,
+    125,
+    140,
+    145,
+    158,
+    0,
+    158,
+    158,
+    147,
+    146,
+    158,
+    158,
+    158,
+    158
+  ],
+  "T": 57,
+  "J": 160,
+  "I": 50,
+  "mip_bound": null
+}

@@ -1,0 +1,22 @@
+dataset,source_cell,budget_s
+10X,production Grade B @600s,600
+10X,post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2,3600
+10X,post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s,10800
+2X,production Grade B @600s,600
+2X,registered/production: CPLEX22_1h and Grade A rf+fo,3600
+2X,registered CPLEX22_3h where available,10800
+3X,production Grade B @600s,600
+3X,registered/production: CPLEX22_1h and Grade A rf+fo,3600
+3X,registered CPLEX22_3h where available,10800
+4X,production Grade B @600s,600
+4X,registered/production: CPLEX22_1h and Grade A rf+fo,3600
+4X,registered CPLEX22_3h where available,10800
+5X,production Grade B @600s,600
+5X,registered/production: CPLEX22_1h and Grade A rf+fo,3600
+5X,registered CPLEX22_3h where available,10800
+8X,production Grade B @600s,600
+8X,post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2,3600
+8X,post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s,10800
+Real,production Grade B @600s,600
+Real,registered/production: CPLEX22_1h and Grade A rf+fo,3600
+Real,registered CPLEX22_3h where available,10800

@@ -1,0 +1,152 @@
+{
+  "instance": "IncT2X_7",
+  "dataset": "2X",
+  "run_id": 7,
+  "seed": 7,
+  "algo_version": "v2.0",
+  "objective": 15244.87,
+  "shortage": 9281.0,
+  "excess": 5963870.0,
+  "gap_vs_mip": 12.8674,
+  "time_to_best": 2146.918,
+  "total_time": 3613.279,
+  "iterations": 296,
+  "grasp_iters": 87,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 3.531,
+      "Z": 41025.633,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 6.683,
+      "Z": 36877.6,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 3,
+      "time_s": 12.273,
+      "Z": 19395.322,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 10,
+      "time_s": 81.59,
+      "Z": 17123.543,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 14,
+      "grasp_iter": 78,
+      "time_s": 868.786,
+      "Z": 16749.135,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 17,
+      "grasp_iter": 78,
+      "time_s": 897.665,
+      "Z": 16738.043,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 26,
+      "grasp_iter": 78,
+      "time_s": 985.639,
+      "Z": 16165.735,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 41,
+      "grasp_iter": 78,
+      "time_s": 1128.399,
+      "Z": 15471.87,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 57,
+      "grasp_iter": 78,
+      "time_s": 1290.644,
+      "Z": 15421.12,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 63,
+      "grasp_iter": 78,
+      "time_s": 1363.879,
+      "Z": 15401.845,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 71,
+      "grasp_iter": 78,
+      "time_s": 1427.2,
+      "Z": 15401.595,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 88,
+      "grasp_iter": 78,
+      "time_s": 1589.871,
+      "Z": 15323.37,
+      "tag": "ILS"
+    },
+    {
+      "iteration": 142,
+      "grasp_iter": 80,
+      "time_s": 2146.918,
+      "Z": 15244.87,
+      "tag": "ILS"
+    }
+  ],
+  "scheduling": [
+    151,
+    143,
+    152,
+    78,
+    150,
+    145,
+    147,
+    148,
+    152,
+    146,
+    31,
+    150,
+    122,
+    139,
+    18,
+    159,
+    140,
+    143,
+    141,
+    0,
+    153,
+    146,
+    152,
+    151,
+    145,
+    153,
+    142,
+    150,
+    147,
+    159,
+    150,
+    141,
+    144,
+    140,
+    148,
+    18,
+    138,
+    125
+  ],
+  "T": 38,
+  "J": 160,
+  "I": 50,
+  "mip_bound": 13506.887
+}
