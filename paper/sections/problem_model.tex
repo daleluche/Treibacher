@@ -60,7 +60,15 @@ cumulative demand for every product and period, so that $f_{it}$
 captures lateness with respect to due dates (not only end-of-horizon
 shortage), and constraints~\eqref{eq:prop} allow at most one process
 -- possibly none -- per period. The weight $\gamma=0.001$ makes
-excess lexicographically subordinate to shortage in practice. The
+excess lexicographically subordinate to shortage in practice. This
+term is a deliberate refinement of the original formulation
+\citep{luche2009combining}, which minimized shortage alone under an
+inequality balance: because $e_{it}$ measures \emph{cumulative}
+excess, every unit produced ahead of demand is charged in each
+subsequent period, so $\gamma$ acts as a proxy for the capital and
+storage tied up by early production. The refinement is not
+computationally innocuous, and Section~\ref{sec:gamma} quantifies its
+cost. The
 model has $|J|\,|T|$ binary and $2|I|\,|T|$ continuous variables; for
 the largest instances considered here ($|J|=159$, $|T|=190$) this
 amounts to 30{,}210 binaries. \todo{Dimensions table Real--10X
@@ -76,8 +84,12 @@ constraints~\eqref{eq:dem}.
 \subsection{Instances and empirical difficulty}
 \label{sec:difficulty}
 
-Our benchmark comprises ten order-book instances built on real
-company data (set Real, $|T|\in\{19,25\}$) and horizon-replicated
+Our benchmark derives from a single real order book of the plant
+($|J|=159$ processes, 50 items, 19 daily periods). From it, the
+original study generated ten instances by redistributing each item's
+total demand at random over the horizon, preserving aggregate volumes;
+we inherit this set (denoted Real, $|T|\in\{19,25\}$, one instance
+using a longer reserved horizon) and the horizon-replicated
 sets obtained by the rule documented in the original study
 \todo{cite thesis \S6.2.2}: the number of periods is multiplied by
 $k$ and the demand of the original horizon is repeated exactly in
@@ -93,7 +105,8 @@ solver (Section~\ref{sec:experiments}).
 
 Two empirical observations shape the experimental design. First,
 difficulty is heterogeneous within sets: a subclass of instances
-(e.g., \todo{confirm final list: IncT3x\_7, IncT4x\_7, IncT5x\_10})
+(e.g., \todo{confirm final list from comparison\_table.csv:
+IncT3x\_7, IncT4x\_7, IncT5x\_10})
 exhibits both large solver gaps and weak dual bounds -- on
 IncT5x\_10, the best known solution still lies about 17\% above the
 three-hour dual bound, so the true optimality gap is unknown.

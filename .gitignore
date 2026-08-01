@@ -13,3 +13,20 @@ env/
 
 *.log
 
+
+ # LaTeX build artifacts
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.lot
+*.out
+*.spl
+*.synctex.gz
+*.toc
+*.run.xml
+*.bcf
+paper/*.pdf
+paper/*.docx

@@ -29,13 +29,15 @@ optimality within acceptable times for instances of practical size by
 the then state-of-the-art solver, which motivated constructive
 heuristics, local search, and later a GRASP procedure
 \todo{cite thesis}. Two developments justify revisiting the problem
-fifteen years later. First, MIP solvers have improved by orders of
-magnitude in this period through advances in presolve, cut separation,
-primal heuristics, and parallel tree search
-\citep{koch2022progress,achterberg2013analyzing,achterberg2020presolve};
-whether such progress has effectively closed a practical problem that
-was intractable in 2011 is an empirical question of direct managerial
-relevance. Second, MIP-based construction and improvement heuristics
+fifteen years later. First, the computational landscape has changed on
+every axis at once: MIP solvers have improved by orders of magnitude
+through presolve, cut separation, primal heuristics, and parallel tree
+search \citep{koch2022progress,achterberg2013analyzing,achterberg2020presolve},
+while commodity hardware has gained cores and clock speed. Whether a
+problem abandoned to heuristics in 2011 is still hard \emph{today}, on
+a laptop, is a question of direct managerial relevance -- independently
+of how the gain divides among its causes. Second, MIP-based
+construction and improvement heuristics
 -- \emph{relax-and-fix} (\RF) and \emph{fix-and-optimize} (\FO), now
 standard components of the matheuristics toolbox
 \citep{sahling2009solving,helber2010fix,toledo2015relax} -- have
@@ -58,28 +60,36 @@ we map \emph{when} each method is the tool of choice as a function of
 instance scale (planning horizons from $T\!=\!19$ to $T\!\approx\!190$
 periods) and available computing time (from operational re-planning
 budgets of 5--10 minutes to tactical budgets of 1--3 hours).
-\sprintii{one-sentence preview of the frontier result once Sprint~2
-hypotheses H1--H2 are adjudicated.}
+The resulting map shows the monolith dominant up to twice the
+industrial horizon, decomposition winning the majority of instances
+from roughly 150 periods upward at equal budgets, and the monolith
+recovering most -- not all -- of that ground when granted triple
+time.
 
-The contributions are fourfold. First, we quantify fifteen years of
-MIP solver progress on a documented real-world problem: instances that
-exhibited large optimality gaps in 2011 are now solved in seconds
-\sprintii{exact figures}, while a hard subclass remains open at the
-largest scales -- a data point for the solver-progress literature
-\citep{koch2022progress} grounded in an industrial application.
-Second, we develop and specify, at a reproducibility level rarely
+The contributions are fourfold. First, we isolate a modeling effect
+that governs the problem's difficulty: penalizing accumulated excess
+production -- an inventory-cost proxy worth a thousandth of a unit of
+shortage -- turns a formulation that a modern solver closes routinely
+into one that it leaves open on most instances of the same size. The
+comparison is controlled (same solver, machine, threads, budget, and
+instances; only the objective changes), and it qualifies a broader
+practice: secondary objective terms that look innocuous in a model can
+dominate its computational character. Second, we develop and specify, at a reproducibility level rarely
 reported (bound-update mechanics, per-window time-limit policies, and
 budget guards included), \RF{} and \FO{} matheuristics tailored to the
 co-production structure of the PSP, together with an \RFMIP{} hybrid
-that dominates the cold-started solver by construction. Third, we
+that trades a modest construction budget for a strong initial
+incumbent of the monolithic solve. Third, we
 provide what is, to the best of our knowledge, the first publicly
 available benchmark for lot sizing with co-production in fixed
 proportions: 60 instances spanning ten problem scales, with best-known
 solutions, dual bounds, and full per-run trajectories, released in
 open formats. Fourth, we derive managerial insights for the
-electrofused grains mill, including the practical consequence that
-order-book scheduling can now be re-optimized within the minutes-scale
-budgets of daily re-planning \sprintii{support with H1 outcome}.
+electrofused grains mill, including the practical consequence that,
+at the scale of the plant's order book, scheduling can now be
+re-optimized \emph{exactly} within any daily re-planning deadline --
+by the solver itself -- while decomposition becomes the operational
+tool only at horizons several times longer.
 
 The remainder of the paper is organized as follows.
 Section~\ref{sec:related} reviews the related literature and positions

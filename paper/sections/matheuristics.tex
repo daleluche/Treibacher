@@ -60,8 +60,12 @@ construction never returns an incomplete schedule. Under very short
 budgets, where the per-window allowance drops below a threshold
 ($B_{\mathrm{RF}}/w<10$~s), windowed construction is skipped
 altogether in favor of the greedy rule, and the entire budget is
-transferred to the improvement phase. \sprintii{confirm final
-adaptive-construction threshold and greedy details after Task 3.2.}
+transferred to the improvement phase. In addition, a wall-clock guard charges all per-window overhead to
+the construction budget (early implementations that charged only
+solver time silently overran it by a factor above two on the longest
+horizons), and every run computes the greedy solution regardless, the
+improvement phase starting from the better of the two constructions
+(\emph{greedy floor}).
 
 \subsection{Fix-and-optimize improvement}
 \label{sec:fo}
@@ -118,9 +122,14 @@ zero gap tolerance, and the \RF{} solution as a MIP start. Relative
 to the cold-started solver under the same wall-clock budget, \RFMIP{}
 sacrifices a fraction of branch-and-bound time in exchange for a
 strong initial incumbent; unlike \RFFO{}, it retains the solver's
-global view and dual bound. \sprintii{summarize when each variant
-wins, from the frontier map; discuss the IncT10x\_5 anomaly with the
-Task 3.1 post-mortem evidence.}
+global view and dual bound. Because the construction consumes budget, \RFMIP{} is not
+dominant by construction: a post-mortem on one 10X instance showed a
+poor construction consuming over half the budget and an accepted --
+but unhelpful -- MIP start, motivating the wall-clock guard and
+greedy floor above. Empirically, \RFMIP{} is the best variant at 8X,
+where the solver's global view still pays, while at 10X the
+monolithic model itself becomes the bottleneck and window-based
+\FO{} improvement scales better (Section~\ref{sec:frontier}).
 
 \subsection{Parameter summary}
 \label{sec:params}

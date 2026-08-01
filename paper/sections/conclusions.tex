@@ -1,8 +1,62 @@
 \section{Conclusions}
 \label{sec:conclusions}
 
-\todo{Draft last. Content plan:}
-% Answers to RQ1-RQ3; frontier statement; limitations (single case
-% sector; deterministic demand; MFP without explicit setup costs);
-% future work: FES extensions (thesis ch. 7) with matheuristics;
-% stochastic demand; integration with furnace-stage planning.
+We revisited a real-world process selection and lot-sizing problem
+fifteen years after it was reported intractable, confronting a
+modern MIP solver, temporal-decomposition matheuristics, and a
+state-of-the-art pure metaheuristic under an equal-resources,
+pre-registered protocol, on a public benchmark extended to ten
+problem scales.
+
+Three answers emerge. First, on the practical status of the
+problem: at the scale of the plant's order book it is simply solved
+-- proven optima in seconds -- and this holds up to horizons twice
+the original, so the first-line recommendation for practitioners is
+unambiguous: try the monolith with a modern solver before building
+heuristics. What decides difficulty at a given size, however, is not
+only the size: holding instances, solver, machine, and budget fixed,
+adding a thousandth-weight penalty on accumulated excess production
+moves sets 2X--5X from routinely closed to largely open. Modeling
+choices made for realism deserve the same computational scrutiny as
+algorithmic ones. Second, on the question
+of paradigms: when the monolith does falter, what replaces it is
+not the pure metaheuristic -- our strongest GRASP-ILS hybrid, with
+tenfold parallel resources, is dominated everywhere by MIP-based
+methods -- but decomposition that keeps the solver in the loop.
+Third, on the question of \emph{when}: the method-choice map has
+two genuine axes. At equal budgets, decomposition wins the majority
+of instances from $|T|\approx 150$ upward; granting the monolith
+triple time restores its lead on most, though not all, of the
+largest instances. Decomposition thus buys roughly one tier of
+computing budget -- decisive under rolling re-planning deadlines,
+dispensable when overnight runs are acceptable.
+
+Beyond the verdicts, the study contributes methodological assets:
+a fully specified, reproducible implementation of relax-and-fix and
+fix-and-optimize in an algebraic modeling environment, including
+the budget-guard and construction-floor policies whose absence we
+showed can silently invalidate comparisons; a 60-instance public
+benchmark with best-known solutions, dual bounds, trajectories, and
+per-window logs; and a worked example of pre-registered hypotheses
+in computational OR, including two registered failures whose
+diagnoses improved the methods.
+
+Limitations bound the claims. Our comparison with the original
+study is a statement about practice, not a controlled measurement of
+solver progress: solver version, hardware, parallelism, and objective
+all differ, and disentangling them would require machine-independent
+protocols we did not attempt. The study covers one industrial sector
+and deterministic demand; the MFP model prices setups
+implicitly through the one-process-per-period structure rather than
+explicitly; horizon replication, while faithful to the inherited
+benchmark, yields periodic demand; matheuristic construction at
+extreme scale fell back on a greedy floor, leaving the
+relax-and-fix window policy suboptimal precisely where
+decomposition matters most; and decompositions were not run at the
+largest budget. Future work follows directly: the shortage- and
+setup-cost extensions of the original study under modern solvers;
+stochastic order books; and, most immediately, replacing fixed
+window policies with learned, state-dependent ones -- the released
+per-window logs, containing dual signals, incumbent profiles, and
+realized improvements for every solve of this campaign, were
+designed as training data for exactly that line of research.
