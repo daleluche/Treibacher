@@ -141,6 +141,8 @@ def main() -> int:
             delta_pct_median=("delta_pct_vs_gamma0001", "median"),
             gamma0_gap_mean_pct=("gap_gamma0_pct", "mean"),
             gamma0001_gap_mean_pct=("gap_gamma0001_pct", "mean"),
+            gamma0_time_mean_s=("time_gamma0_s", "mean"),
+            gamma0001_time_mean_s=("time_gamma0001_s", "mean"),
         )
         .sort_values("dataset")
     )
