@@ -12,7 +12,7 @@ import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = ROOT / "release"
-ZIP_PATH = RELEASE / "treibacher_psp_benchmark_v1.zip"
+ZIP_PATH = RELEASE / "psp_electrofused_benchmark_v1.zip"
 DATASETS = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
 
 import sys
