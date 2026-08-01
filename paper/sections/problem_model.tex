@@ -37,9 +37,14 @@ the output of product $i$ when process $j$ is operated for one
 period, and $d_{it}\ge 0$ the demand of product $i$ due at period
 $t$. The decision variables are $x_{jt}\in\{0,1\}$, equal to 1 if
 process $j$ is operated in period $t$, and the nonnegative continuous
-variables $f_{it}$ and $e_{it}$, measuring the shortage and the
-excess, respectively, of product $i$ with regard to its
-\emph{cumulative} demand up to period $t$. The model, referred to as
+variables $f_{it}$ and $e_{it}$, which measure the deviation of
+cumulative production from cumulative demand of product $i$ up to
+period $t$: $f_{it}$ is the backlog and $e_{it}$ the physical
+inventory at the end of that period. Summed over periods, the two
+terms of \eqref{eq:obj} are therefore the classical backlog-periods
+and inventory-periods of dynamic lot sizing
+\citep{pochet2006production}, and $\gamma$ is a holding cost expressed
+as a fraction of the unit backlog cost. The model, referred to as
 MFP (minimization of shortage of production, after
 \citealp{luche2009combining}), reads:
 %
@@ -60,15 +65,14 @@ cumulative demand for every product and period, so that $f_{it}$
 captures lateness with respect to due dates (not only end-of-horizon
 shortage), and constraints~\eqref{eq:prop} allow at most one process
 -- possibly none -- per period. The weight $\gamma=0.001$ makes
-excess lexicographically subordinate to shortage in practice. This
-term is a deliberate refinement of the original formulation
-\citep{luche2009combining}, which minimized shortage alone under an
-inequality balance: because $e_{it}$ measures \emph{cumulative}
-excess, every unit produced ahead of demand is charged in each
-subsequent period, so $\gamma$ acts as a proxy for the capital and
-storage tied up by early production. The refinement is not
-computationally innocuous, and Section~\ref{sec:gamma} quantifies its
-cost. The
+excess lexicographically subordinate to shortage in practice. The
+holding term is a deliberate refinement of the original formulation
+\citep{luche2009combining}, which minimized backlog alone under an
+inequality balance and therefore priced early production at zero.
+Charging it, even lightly, matters industrially -- grain inventories
+tie up capital and covered storage -- and, as
+Section~\ref{sec:gamma} shows, it is what governs the computational
+character of the model. The
 model has $|J|\,|T|$ binary and $2|I|\,|T|$ continuous variables; for
 the largest instances considered here ($|J|=159$, $|T|=190$) this
 amounts to 30{,}210 binaries. Table~\ref{tab:instances} summarizes
