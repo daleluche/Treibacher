@@ -333,23 +333,63 @@ def frontier_table(comp: pd.DataFrame, canonical_600: pd.DataFrame, canonical_36
 
 def frontier_heatmap(frontier: pd.DataFrame) -> None:
     """Render the categorical method-frontier heatmap."""
-    colors = {"mip": 0, "rf+mip": 1, "rf+fo": 2, "no data": 3}
-    palette = ["#1f4e79", "#3f7f3f", "#b05a00", "#cfcfcf"]
+    palette = {
+        "mip": "#2f5f8f",
+        "rf+mip": "#3c8f6c",
+        "rf+fo": "#c7772b",
+        "no data": "#d6d6d6",
+    }
+    text_color = {"mip": "white", "rf+mip": "white", "rf+fo": "white", "no data": "#333333"}
     grid = frontier.pivot(index="dataset", columns="budget_s", values="winner").reindex(DATASET_ORDER)
-    values = grid.apply(lambda series: series.map(colors)).astype(float).to_numpy()
-    fig, ax = plt.subplots(figsize=(6.6, 4.2))
-    cmap = plt.matplotlib.colors.ListedColormap(palette)
-    ax.imshow(values, cmap=cmap, vmin=0, vmax=3)
-    ax.set_xticks(range(len(grid.columns)), [str(int(c)) for c in grid.columns])
-    ax.set_yticks(range(len(grid.index)), grid.index)
-    ax.set_xlabel("Budget (s)\nNote: 8X/10X @10800s contains cold MIP only; decompositions were not run at 10800s.")
-    ax.set_ylabel("Dataset")
-    ax.set_title("Method frontier by scale and budget")
+    budgets = list(grid.columns)
+    dataset_labels = {"Real": "Real", "2X": "2X\nT=38", "3X": "3X\nT=57", "4X": "4X\nT=76", "5X": "5X\nT=95", "8X": "8X\nT=152", "10X": "10X\nT=190"}
+    budget_labels = {600: "10 min\n(600 s)", 3600: "1 h\n(3,600 s)", 10800: "3 h\n(10,800 s)"}
+
+    fig, ax = plt.subplots(figsize=(7.8, 5.0))
+    ax.set_xlim(-0.5, len(budgets) - 0.5)
+    ax.set_ylim(len(grid.index) - 0.5, -0.5)
+    ax.set_facecolor("#f7f7f4")
+
     for i, dataset in enumerate(grid.index):
-        for j, budget in enumerate(grid.columns):
+        for j, budget in enumerate(budgets):
             row = frontier[(frontier.dataset == dataset) & (frontier.budget_s == budget)].iloc[0]
-            text = f"{row['winner']}\n{int(row['n'])} cases"
-            ax.text(j, i, text, ha="center", va="center", color="white" if row["winner"] != "no data" else "#333333", fontsize=8)
+            winner = row["winner"]
+            post_hoc_10800 = dataset in {"8X", "10X"} and int(budget) == 10800
+            rect = plt.Rectangle(
+                (j - 0.5, i - 0.5),
+                1,
+                1,
+                facecolor=palette.get(winner, palette["no data"]),
+                edgecolor="white",
+                linewidth=1.5,
+                hatch="///" if post_hoc_10800 else None,
+            )
+            ax.add_patch(rect)
+            label = f"{winner.upper()}{'†' if post_hoc_10800 else ''}"
+            counts = f"{int(row['mip'])} / {int(row['rf+mip'])} / {int(row['rf+fo'])}"
+            ax.text(j, i - 0.10, label, ha="center", va="center", color=text_color.get(winner, "#333333"), fontsize=9, fontweight="bold")
+            ax.text(j, i + 0.18, counts, ha="center", va="center", color=text_color.get(winner, "#333333"), fontsize=7.5)
+
+    ax.set_xticks(range(len(budgets)), [budget_labels.get(int(c), str(int(c))) for c in budgets])
+    ax.set_yticks(range(len(grid.index)), [dataset_labels.get(d, d) for d in grid.index])
+    ax.tick_params(axis="both", length=0, labelsize=9)
+    ax.set_xlabel("Wall-clock budget", fontsize=10, labelpad=10)
+    ax.set_ylabel("Instance family", fontsize=10, labelpad=10)
+    ax.set_title("Method-choice frontier by scale and time budget", fontsize=13, pad=12, fontweight="bold")
+    ax.set_xticks(np.arange(-0.5, len(budgets), 1), minor=True)
+    ax.set_yticks(np.arange(-0.5, len(grid.index), 1), minor=True)
+    ax.grid(which="minor", color="white", linewidth=1.5)
+    ax.tick_params(which="minor", bottom=False, left=False)
+    for spine in ax.spines.values():
+        spine.set_visible(False)
+
+    handles = [
+        plt.Line2D([0], [0], marker="s", linestyle="", markersize=10, markerfacecolor=palette["mip"], markeredgecolor="none", label="Cold MIP"),
+        plt.Line2D([0], [0], marker="s", linestyle="", markersize=10, markerfacecolor=palette["rf+mip"], markeredgecolor="none", label="RF+MIP"),
+        plt.Line2D([0], [0], marker="s", linestyle="", markersize=10, markerfacecolor=palette["rf+fo"], markeredgecolor="none", label="RF+FO"),
+    ]
+    ax.legend(handles=handles, loc="upper center", bbox_to_anchor=(0.5, -0.13), ncol=3, frameon=False, fontsize=9)
+    fig.text(0.5, 0.025, "Cell score: MIP / RF+MIP / RF+FO wins. † 8X/10X @10,800s contains cold MIP only; decompositions were not run at that budget.", ha="center", fontsize=8, color="#4a4a4a")
     save_figure(fig, "frontier_heatmap")
 
 
