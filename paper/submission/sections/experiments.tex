@@ -109,12 +109,37 @@ instances of sets 2X--5X at the three-hour budget.
 
 \input{tables/tab_gamma}
 
-The contrast is sharp: all 40 $\gamma=0$ runs close to proven
-optimality, with mean wall times from 24.9~s (2X) to 178.2~s (5X),
-whereas the $\gamma=0.001$ model closes only the ten 2X instances
-within the same three-hour limit and reaches mean residual gaps of
-1.69\%, 3.91\%, and 7.21\% on 3X, 4X, and 5X. The controlled sanity
-relation $Z(\gamma=0)\le Z(\gamma=0.001)$ holds on every instance.
+The contrast is categorical (Table~\ref{tab:gamma}). Without the
+holding term, the solver closes \emph{all forty} instances to proven
+optimality, in mean times of 25, 48, 114, and 178~s for 2X, 3X, 4X,
+and 5X respectively. With it, only the ten instances of 2X are closed
+(mean 666~s); none of the thirty instances of 3X--5X is solved within
+three hours, terminating with mean gaps of 1.7\%, 3.9\%, and 7.2\%.
+A model that a laptop disposes of in under three minutes on the
+longest set becomes, by the addition of a term weighted at one
+thousandth, a model that three hours of the same solver on the same
+machine leaves open. As required by construction,
+$Z(\gamma=0)\le Z(\gamma=0.001)$ on every instance; the holding term
+accounts for a median 13\% to 29\% of the objective, growing with the
+horizon.
+
+A second pattern in the same data explains why. Under $\gamma=0$ the
+optimal value is \emph{invariant} to horizon replication: each base
+order book yields the same total backlog whether it is repeated twice
+or five times (mean 58{,}200.5 in all four sets). Backlog is incurred
+only while production catches up at the beginning of the horizon; once
+cumulative output overtakes cumulative demand it stays ahead, and
+every additional block is free. Replication, therefore, adds periods
+but no difficulty. Under $\gamma>0$ the same replication is not free:
+the stock built up to avoid backlog is charged in every subsequent
+period, the optimal value grows steadily with the horizon (63{,}780,
+66{,}812, 69{,}842, and 73{,}403 on average for 2X--5X), and the
+search must trade backlog against holding across the entire horizon
+rather than resolving it once at the start. The scale axis of this
+benchmark, in other words, is created by the holding term; we state
+this explicitly because it delimits our results, which characterize
+the difficulty of the backlog-plus-holding model rather than of
+horizon length as such.
 
 The mechanism is structural rather than numerical. Under
 $\gamma=0$, once cumulative demand is covered any additional output is
