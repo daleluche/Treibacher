@@ -107,31 +107,44 @@ def make_tab_instances() -> None:
     rows = []
     for dataset in DATASET_ORDER:
         paths = sorted((ROOT / "experiments" / "GAMSPy" / dataset).glob("*.py"))
-        dims = []
-        for path in paths:
-            inst = load_instance(path)
-            binaries = inst.J * inst.T
-            continuous = 2 * inst.I * inst.T + 1
-            constraints = inst.I * inst.T + inst.T + 1
-            dims.append((inst.T, inst.J, inst.I, binaries, continuous, constraints))
-        if not dims:
+        if not paths:
             continue
-        frame = pd.DataFrame(dims, columns=["T", "J", "I", "binary", "continuous", "constraints"])
-        rows.append(
-            [
-                esc(dataset),
-                fmt_int(len(dims)),
-                value_range(frame["T"]),
-                value_range(frame["J"]),
-                value_range(frame["I"]),
-                value_range(frame["binary"]),
-                value_range(frame["continuous"]),
-                value_range(frame["constraints"]),
+
+        groups = [(esc(dataset), paths)]
+        if dataset == "Real":
+            ale_1 = [path for path in paths if path.stem == "Ale_1"]
+            ale_rest = [path for path in paths if path.stem != "Ale_1"]
+            groups = [
+                (r"Real ($\mathrm{Ale}_2$--$\mathrm{Ale}_{10}$)", ale_rest),
+                (r"Real ($\mathrm{Ale}_1$)", ale_1),
             ]
-        )
+
+        for label, group_paths in groups:
+            dims = []
+            for path in group_paths:
+                inst = load_instance(path)
+                binaries = inst.J * inst.T
+                continuous = 2 * inst.I * inst.T + 1
+                constraints = inst.I * inst.T + inst.T + 1
+                dims.append((inst.T, inst.J, inst.I, binaries, continuous, constraints))
+            if not dims:
+                continue
+            frame = pd.DataFrame(dims, columns=["T", "J", "I", "binary", "continuous", "constraints"])
+            rows.append(
+                [
+                    label,
+                    fmt_int(len(dims)),
+                    value_range(frame["T"]),
+                    value_range(frame["J"]),
+                    value_range(frame["I"]),
+                    value_range(frame["binary"]),
+                    value_range(frame["continuous"]),
+                    value_range(frame["constraints"]),
+                ]
+            )
     write_table(
         PAPER_TABLES / "tab_instances.tex",
-        "Benchmark dimensions by instance family.",
+        r"Benchmark dimensions by instance family. Instance Ale$_1$ has a longer horizon and one additional process; see Section~\ref{sec:difficulty}.",
         "tab:instances",
         ["Set", "Inst.", "$T$", "$J$", "$I$", "Binary vars.", "Continuous vars.", "Constraints"],
         rows,

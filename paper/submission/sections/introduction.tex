@@ -15,7 +15,7 @@ specific mix of final products in technologically determined
 proportions. Planners therefore do not decide production quantities
 product by product; they decide \emph{which process to operate in each
 period}, and the product mix follows. Combined with lengthy setups
-(equipment reconfiguration and cleaning may consume an entire shift),
+(equipment reconfiguration and cleaning may take several hours),
 a portfolio of dozens of products, and tight order-book due dates,
 this makes production scheduling a genuinely hard combinatorial task.
 
@@ -26,10 +26,9 @@ period and the objective is to minimize the total shortage of the
 order book (with a small penalty on excess production). At the time,
 the mixed-integer programming (MIP) model could not be solved to
 optimality within acceptable times for instances of practical size by
-the then state-of-the-art solver, which motivated constructive
-heuristics, local search, and later a GRASP procedure
-\citep{daleluche2011tese}. Two developments justify revisiting the problem
-fifteen years later. First, the computational landscape has changed on
+the then state-of-the-art solver, which motivated the development of
+heuristic approaches. Two developments justify revisiting the problem
+today. First, the computational landscape has changed on
 every axis at once: MIP solvers have improved by orders of magnitude
 through presolve, cut separation, primal heuristics, and parallel tree
 search \citep{koch2022progress,achterberg2013analyzing,achterberg2020presolve},

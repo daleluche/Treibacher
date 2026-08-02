@@ -118,14 +118,15 @@ difficulty is heterogeneous within sets: the subclass
 5X: IncT5x\_1, IncT5x\_3, IncT5x\_7, IncT5x\_9, IncT5x\_10
 \end{quote}
 %
-exhibits both above-median solver gaps and above-median BKS-to-bound
-gaps within its set -- on
+exhibits both above-median solver gaps and above-median gaps between
+the best known solution and the dual bound
+within its set -- on
 IncT5x\_10, the best known solution still lies about 17\% above the
 three-hour dual bound, so the true optimality gap is unknown.
 Second, the solver's parallel search, although deterministic for a
 fixed budget, is budget-nonmonotone in the primal sense: on three
 instances the one-hour run returned a better incumbent than the
 independent three-hour run. Both observations motivate reporting
-gaps against best-known solutions (BKS), defined as the minimum
+gaps against best-known solutions (BKS), that is, the minimum
 objective over \emph{all} methods, budgets, and seeds considered in
 this study, rather than against dual bounds alone.
