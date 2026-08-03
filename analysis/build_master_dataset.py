@@ -121,6 +121,7 @@ def collect_exact() -> list[dict]:
                     "I": d.get("num_products"),
                     "source_path": os.path.relpath(f, ROOT),
                     "paper_note": note,
+                    "summary_record": False,
                 })
     return rows
 
@@ -150,11 +151,34 @@ def collect_heuristics() -> tuple[list[dict], dict]:
     for method, run_pat, sum_pat in HEURISTIC_SOURCES:
         # explicit budget from summaries when available
         budget = None
+        summary_rows = []
         for f in glob.glob(os.path.join(ROOT, sum_pat)):
             d = _load(f)
             if d.get("time_limit_s"):
                 budget = float(d["time_limit_s"])
-                break
+            if method == "ILS_v2" and d.get("Z_best") is not None:
+                dataset, instance, note = canonical_instance(d.get("dataset"), d.get("instance"))
+                summary_rows.append({
+                    "method": method,
+                    "dataset": dataset,
+                    "instance": instance,
+                    "run_id": "summary_pr",
+                    "seed": None,
+                    "Z": d.get("Z_best"),
+                    "bound": None,
+                    "gap_solver_pct": d.get("gap_best_vs_mip"),
+                    "time_to_best_s": d.get("t2best_best"),
+                    "total_time_s": d.get("time_limit_s"),
+                    "time_budget_s": d.get("time_limit_s"),
+                    "model_status": None,
+                    "iterations": None,
+                    "T": d.get("T"),
+                    "J": d.get("J"),
+                    "I": d.get("I"),
+                    "source_path": os.path.relpath(f, ROOT),
+                    "paper_note": note,
+                    "summary_record": True,
+                })
 
         observed_max = 0.0
         for f in sorted(glob.glob(os.path.join(ROOT, run_pat))):
@@ -180,7 +204,9 @@ def collect_heuristics() -> tuple[list[dict], dict]:
                 "I": d.get("I"),
                 "source_path": os.path.relpath(f, ROOT),
                 "paper_note": note,
+                "summary_record": False,
             })
+        rows.extend(summary_rows)
         if budget is None:
             # infer: round observed max up to nearest 100 s
             budget = math.ceil(observed_max / 100.0) * 100.0
@@ -257,6 +283,7 @@ def collect_matheuristics(meta: dict[str, dict]) -> list[dict]:
                 else data.get("Z_rf"),
                 "rf_wall_time_s": data.get("rf_wall_time_s"),
                 "paper_note": note,
+                "summary_record": False,
             })
     return rows
 
@@ -276,22 +303,27 @@ def main() -> int:
 
     # instance-level aggregation
     def agg(g: pd.DataFrame) -> pd.Series:
+        summary_mask = g.get("summary_record", pd.Series(False, index=g.index)).fillna(False).astype(bool)
+        distribution = g.loc[~summary_mask]
+        if distribution.empty:
+            distribution = g
+        best = g.loc[g["Z"].idxmin()] if g["Z"].notna().any() else None
         return pd.Series({
-            "n_runs": len(g),
+            "n_runs": len(distribution),
             "Z_best": g["Z"].min(),
-            "Z_mean": g["Z"].mean(),
-            "Z_std": g["Z"].std(ddof=1) if len(g) > 1 else 0.0,
-            "Z_worst": g["Z"].max(),
-            "t2b_mean": g["time_to_best_s"].mean(),
-            "total_time_mean": g["total_time_s"].mean(),
+            "Z_mean": distribution["Z"].mean(),
+            "Z_std": distribution["Z"].std(ddof=1) if len(distribution) > 1 else 0.0,
+            "Z_worst": distribution["Z"].max(),
+            "t2b_mean": distribution["time_to_best_s"].mean(),
+            "total_time_mean": distribution["total_time_s"].mean(),
             "time_budget_s": g["time_budget_s"].max(),
             "bound": g["bound"].max(),
             "gap_solver_pct": g["gap_solver_pct"].max(),
             "model_status": g["model_status"].dropna().iloc[0] if g["model_status"].notna().any() else None,
-            "T": g["T"].dropna().max(),
-            "J": g["J"].dropna().max(),
-            "I": g["I"].dropna().max(),
-            "source_path": g["source_path"].dropna().iloc[0] if "source_path" in g and g["source_path"].notna().any() else None,
+            "T": distribution["T"].dropna().max(),
+            "J": distribution["J"].dropna().max(),
+            "I": distribution["I"].dropna().max(),
+            "source_path": best["source_path"] if best is not None and pd.notna(best.get("source_path")) else None,
             "raw_method": g["raw_method"].dropna().iloc[0] if "raw_method" in g and g["raw_method"].notna().any() else None,
         })
 
@@ -315,7 +347,8 @@ def main() -> int:
             ok = False
         print(f"[{flag}] {method}: {n} distinct instances (expected {expected})")
 
-    n_v2 = len(runs[runs.method == "ILS_v2"])
+    summary_record = runs.get("summary_record", pd.Series(False, index=runs.index)).fillna(False).astype(bool)
+    n_v2 = len(runs[(runs.method == "ILS_v2") & (~summary_record)])
     flag = "OK" if n_v2 == 520 else "FAIL"
     ok &= (n_v2 == 520)
     print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 520)")
