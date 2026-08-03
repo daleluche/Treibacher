@@ -62,6 +62,8 @@ def canonical_instance(dataset: str | None, instance: str | None) -> tuple[str |
     """Return the paper-facing dataset/instance and an optional provenance note."""
     if instance is None:
         return dataset, instance, None
+    if instance == "REAL_1":
+        return "Real order book", instance, None
     if dataset == "Real" and instance.startswith("Ale_"):
         suffix = instance.rsplit("_", 1)[1]
         if suffix == "1":
@@ -136,6 +138,8 @@ HEURISTIC_SOURCES = [
      "experiments/GRASP/results_ils_v2/*_summary.json"),
     ("ILS_v2", "experiments/matheuristics/results_production/s1/S_1_run*.json",
      "experiments/matheuristics/results_production/s1/S_1_summary.json"),
+    ("ILS_v2", "experiments/matheuristics/results_production/real/REAL_1_run*.json",
+     "experiments/matheuristics/results_production/real/REAL_1_summary.json"),
 ]
 
 
@@ -202,6 +206,7 @@ MATHEURISTIC_RESULT_DIRS = [
     os.path.join("results_production", "a3600"),
     os.path.join("results_production", "c_seeds"),
     os.path.join("results_production", "s1"),
+    os.path.join("results_production", "real"),
 ]
 
 
@@ -304,16 +309,21 @@ def main() -> int:
 
     for method in ["CPLEX22_3h", "ILS_v2"]:
         n = inst.loc[inst.method == method, "instance"].nunique()
-        expected = 51 if method == "ILS_v2" else 50
+        expected = 52 if method == "ILS_v2" else 50
         flag = "OK" if n == expected else "FAIL"
         if flag == "FAIL":
             ok = False
         print(f"[{flag}] {method}: {n} distinct instances (expected {expected})")
 
     n_v2 = len(runs[runs.method == "ILS_v2"])
-    flag = "OK" if n_v2 == 510 else "FAIL"
-    ok &= (n_v2 == 510)
-    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 510)")
+    flag = "OK" if n_v2 == 520 else "FAIL"
+    ok &= (n_v2 == 520)
+    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 520)")
+
+    real_rows = runs[(runs.dataset == "Real order book") & (runs.instance == "REAL_1")]
+    flag = "OK" if not real_rows.empty else "FAIL"
+    ok &= flag == "OK"
+    print(f"[{flag}] REAL_1 real order-book rows: {len(real_rows)}")
 
     ale1_rows = runs[(runs.dataset == "Real") & (runs.instance == "Ale_1")]
     flag = "OK" if not ale1_rows.empty and ale1_rows["paper_note"].notna().any() else "FAIL"

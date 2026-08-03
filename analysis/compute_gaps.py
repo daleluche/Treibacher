@@ -3,8 +3,8 @@ compute_gaps.py
 ===============
 Builds the master comparison table from analysis/output/master_runs.csv.
 
-The Sprint 3 table has one row per instance across S, 2X, 3X, 4X, 5X,
-8X, and 10X. Best-known solutions (BKS) are computed from CPLEX, ILS, and
+The Sprint 3 table has one row per instance across the real order book, S,
+2X, 3X, 4X, 5X, 8X, and 10X. Best-known solutions (BKS) are computed from CPLEX, ILS, and
 matheuristic runs collected in master_runs.csv. GRASP_v1 remains in the raw
 master dataset but is excluded from comparison tables because the BKS
 safeguard detected legacy evaluator inconsistencies. The legacy Ale_1 record
@@ -26,7 +26,7 @@ import pandas as pd
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "analysis", "output")
 EPS = 1e-6
-DATASET_ORDER = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
+DATASET_ORDER = ["Real order book", "S", "2X", "3X", "4X", "5X", "8X", "10X"]
 warnings.filterwarnings("ignore", message="Mean of empty slice", category=RuntimeWarning)
 
 
@@ -197,8 +197,8 @@ def main() -> int:
         print(viol[["instance", "BKS", "bks_source", "cplex_bound"]].to_string(index=False))
         return 1
 
-    if len(comp) != 60:
-        print(f"FATAL: comparison_table has {len(comp)} rows, expected 60.")
+    if len(comp) != 61:
+        print(f"FATAL: comparison_table has {len(comp)} rows, expected 61.")
         return 1
 
     comp.to_csv(os.path.join(OUT, "comparison_table.csv"), index=False)

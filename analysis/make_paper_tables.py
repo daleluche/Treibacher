@@ -13,7 +13,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "analysis" / "output"
 PAPER_TABLES = ROOT / "paper" / "tables"
-DATASET_ORDER = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
+DATASET_ORDER = ["Real order book", "S", "2X", "3X", "4X", "5X", "8X", "10X"]
 EPS = 1e-6
 
 if str(ROOT) not in sys.path:
@@ -106,7 +106,16 @@ def make_tab_instances() -> None:
     """Generate the instance-dimension table."""
     rows = []
     for dataset in DATASET_ORDER:
-        paths = sorted((ROOT / "experiments" / "GAMSPy" / dataset).glob("*.py"))
+        if dataset == "Real order book":
+            paths = [ROOT / "experiments" / "GAMSPy" / "S" / "REAL_1.py"]
+        elif dataset == "S":
+            paths = sorted(
+                path
+                for path in (ROOT / "experiments" / "GAMSPy" / "S").glob("*.py")
+                if path.stem.startswith("S_")
+            )
+        else:
+            paths = sorted((ROOT / "experiments" / "GAMSPy" / dataset).glob("*.py"))
         if not paths:
             continue
 
@@ -237,12 +246,18 @@ def method_summary(comp: pd.DataFrame, z_columns: dict[str, str], status_map: di
 def make_tab_main3600() -> None:
     """Generate the 3600-second comparison table."""
     comp = pd.read_csv(OUT / "comparison_table.csv")
-    comp["mip_3600_Z"] = np.where(comp["dataset"].isin(["8X", "10X"]), comp["cplex_mip_3600_Z"], comp["cplex_Z_1h"])
+    comp["mip_3600_Z"] = np.where(
+        comp["dataset"].isin(["8X", "10X"]) | comp["cplex_Z_1h"].isna(),
+        comp["cplex_mip_3600_Z"],
+        comp["cplex_Z_1h"],
+    )
     inst = pd.read_csv(OUT / "master_instances.csv")
     cplex_1h = inst[inst["method"] == "CPLEX22_1h"].set_index("instance")["model_status"]
     mat_mip = inst[inst["method"] == "MAT_mip_3600s"].set_index("instance")["model_status"]
     comp["mip_3600_status"] = [
-        mat_mip.get(row["instance"], np.nan) if row["dataset"] in ["8X", "10X"] else cplex_1h.get(row["instance"], np.nan)
+        mat_mip.get(row["instance"], np.nan)
+        if row["dataset"] in ["8X", "10X"] or pd.isna(row["cplex_Z_1h"])
+        else cplex_1h.get(row["instance"], np.nan)
         for _, row in comp.iterrows()
     ]
     rows = method_summary(

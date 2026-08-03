@@ -1,0 +1,112 @@
+{
+  "instance": "REAL_1",
+  "dataset": "Real order book",
+  "run_id": 8,
+  "seed": 8,
+  "algo_version": "v2.0",
+  "objective": 11493.95,
+  "shortage": 10475.0,
+  "excess": 1018950.0,
+  "gap_vs_mip": null,
+  "time_to_best": 403.325,
+  "total_time": 3600.59,
+  "iterations": 4069,
+  "grasp_iters": 1491,
+  "improvements": [
+    {
+      "iteration": 0,
+      "grasp_iter": 1,
+      "time_s": 0.12,
+      "Z": 60377.775,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 2,
+      "time_s": 0.335,
+      "Z": 24620.45,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 4,
+      "time_s": 0.829,
+      "Z": 22373.525,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 17,
+      "time_s": 6.802,
+      "Z": 18709.425,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 19,
+      "time_s": 7.662,
+      "Z": 15850.75,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 148,
+      "time_s": 79.724,
+      "Z": 12980.25,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 292,
+      "time_s": 161.321,
+      "Z": 11771.875,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 440,
+      "time_s": 242.719,
+      "Z": 11735.0,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 566,
+      "time_s": 313.785,
+      "Z": 11508.05,
+      "tag": "GRASP_warmup"
+    },
+    {
+      "iteration": 0,
+      "grasp_iter": 727,
+      "time_s": 403.325,
+      "Z": 11493.95,
+      "tag": "GRASP_warmup"
+    }
+  ],
+  "scheduling": [
+    141,
+    142,
+    120,
+    143,
+    159,
+    145,
+    146,
+    147,
+    149,
+    148,
+    145,
+    150,
+    151,
+    152,
+    154,
+    155,
+    0,
+    139,
+    0
+  ],
+  "T": 19,
+  "J": 160,
+  "I": 50,
+  "mip_bound": null
+}
