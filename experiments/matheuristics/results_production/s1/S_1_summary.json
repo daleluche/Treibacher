@@ -1,0 +1,22 @@
+{
+  "instance": "S_1",
+  "dataset": "S",
+  "algo_version": "v2.0",
+  "T": 19,
+  "J": 160,
+  "I": 50,
+  "n_runs": 10,
+  "n_workers": 1,
+  "time_limit_s": 3600.0,
+  "Z_best": 37064.611,
+  "Z_mean": 37741.531,
+  "Z_std": 376.359637,
+  "Z_worst": 38368.118,
+  "t2best_best": 725.669,
+  "t2best_mean": 1278.6,
+  "ils_iters_mean": 3906.1,
+  "mip_bound": null,
+  "gap_best_vs_mip": null,
+  "gap_mean_vs_mip": null,
+  "cross_run_pr_z": 37064.611
+}

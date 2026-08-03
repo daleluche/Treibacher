@@ -1,0 +1,183 @@
+{
+  "instance": "S_1",
+  "dataset": "S",
+  "method": "rf+fo",
+  "construction": "rf",
+  "construction_used": "rf",
+  "params": {
+    "budget": 3600.0,
+    "sigma": 10,
+    "step": 5,
+    "omega": 20,
+    "step_fo": 10,
+    "tl_rf": 120.0,
+    "tl_fo": 30.0,
+    "method": "rf+fo",
+    "start_from": null,
+    "threads": 0,
+    "output_suffix": "_b3600",
+    "log_windows": true
+  },
+  "seed": 1,
+  "Z_final": 36975.311,
+  "Z_best_overall": 36975.311,
+  "Z_greedy": 173124.025,
+  "shortage": 34840.0,
+  "excess": 2135311.0,
+  "schedule": [
+    159,
+    120,
+    145,
+    148,
+    148,
+    147,
+    150,
+    45,
+    146,
+    143,
+    20,
+    145,
+    139,
+    149,
+    141,
+    151,
+    154,
+    156,
+    146
+  ],
+  "improvements": [
+    {
+      "time_s": 0.744,
+      "Z": 173124.025,
+      "phase": "greedy_construction",
+      "window_start": 1
+    },
+    {
+      "time_s": 2.099,
+      "Z": 378078.383,
+      "phase": "RF",
+      "window_start": 1
+    },
+    {
+      "time_s": 3.291,
+      "Z": 80909.117,
+      "phase": "RF",
+      "window_start": 6
+    },
+    {
+      "time_s": 4.038,
+      "Z": 36983.061,
+      "phase": "RF",
+      "window_start": 10
+    },
+    {
+      "time_s": 6.297,
+      "Z": 36975.311,
+      "phase": "FO_sweep",
+      "window_start": 1
+    }
+  ],
+  "Z_rf": 36983.061,
+  "wall_time_total": 7.586,
+  "versions": {
+    "gamspy": "1.23.0",
+    "solver": "CPLEX",
+    "solver_version": "22.1.2.0"
+  },
+  "model_status": null,
+  "solve_status": null,
+  "best_bound": null,
+  "dual_bound": null,
+  "gap_solver_pct": null,
+  "gap_pct": null,
+  "solver_objective": null,
+  "hardware": {
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "processor_model": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_bytes": 33667739648,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "rf_windows": 3,
+  "rf_wall_time": 3.294,
+  "rf_wall_time_s": 3.294,
+  "greedy_wall_time_s": 0.347,
+  "instrumentation_wall_time_s": 0.042692,
+  "early_stop_reason": "fo_window_covers_horizon",
+  "rf_validation_checks": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "has_relaxed_tail": true,
+      "Z_model": 31535.057822,
+      "Z_evaluate": 378078.383,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "has_relaxed_tail": true,
+      "Z_model": 36885.855436,
+      "Z_evaluate": 80909.117,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 10,
+      "window_end": 19,
+      "has_relaxed_tail": false,
+      "Z_model": 36983.061,
+      "Z_evaluate": 36983.061,
+      "abs_diff": 0.0,
+      "passed": true,
+      "completed_with_solver": true
+    }
+  ],
+  "rf_window_diag": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 1.293,
+      "fixed_until": 0,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 1.131,
+      "fixed_until": 5,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 10,
+      "window_end": 19,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 0.691,
+      "fixed_until": 9,
+      "relaxed_tail": false
+    }
+  ],
+  "window_log_rows": 4,
+  "fo_accepts": 1,
+  "fo_sweeps_completed": 0,
+  "warm_start_checked": true,
+  "warm_start_log_has_mipstart": true,
+  "warm_start_log_excerpt": ">>  mipstart 1",
+  "warm_start_log_evidence_lines": [
+    ">>  mipstart 1",
+    "Processing 1 MIP starts.",
+    "MIP start 'm1' defined solution with objective 36983.0610.",
+    "1 of 1 MIP starts provided solutions.",
+    "MIP start 'm1' defined initial solution with objective 36983.0610."
+  ],
+  "run_timestamp": "2026-08-02T23:03:46",
+  "window_log_path": "D:\\GitHub\\Treibacher\\experiments\\matheuristics\\results_production\\s1\\window_logs\\S_1_rf_fo_seed1_b3600_windows.parquet",
+  "instrumentation_overhead_percent": 0.56277
+}
