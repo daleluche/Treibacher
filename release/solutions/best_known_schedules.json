@@ -1,24 +1,24 @@
 {
-  "Ale_1": {
-    "dataset": "Real",
-    "BKS": 86264.683,
-    "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_1_mip_seed1_b600.json",
+  "S_1": {
+    "dataset": "S",
+    "BKS": 36964.861,
+    "source_path": "experiments\\matheuristics\\results_production\\s1\\S_1_mip_seed1_b600.json",
     "schedule": [
       {
         "period": 1,
-        "process": 120
+        "process": 159
       },
       {
         "period": 2,
-        "process": 150
+        "process": 120
       },
       {
         "period": 3,
-        "process": 137
+        "process": 145
       },
       {
         "period": 4,
-        "process": 145
+        "process": 148
       },
       {
         "period": 5,
@@ -30,7 +30,7 @@
       },
       {
         "period": 7,
-        "process": 148
+        "process": 150
       },
       {
         "period": 8,
@@ -46,60 +46,44 @@
       },
       {
         "period": 11,
-        "process": 150
+        "process": 20
       },
       {
         "period": 12,
-        "process": 23
-      },
-      {
-        "period": 13,
         "process": 145
       },
       {
-        "period": 14,
-        "process": 150
-      },
-      {
-        "period": 15,
+        "period": 13,
         "process": 139
       },
       {
+        "period": 14,
+        "process": 149
+      },
+      {
+        "period": 15,
+        "process": 141
+      },
+      {
         "period": 16,
-        "process": 146
-      },
-      {
-        "period": 17,
-        "process": 24
-      },
-      {
-        "period": 18,
-        "process": 143
-      },
-      {
-        "period": 19,
         "process": 151
       },
       {
-        "period": 20,
-        "process": 155
+        "period": 17,
+        "process": 154
       },
       {
-        "period": 21,
-        "process": 125
+        "period": 18,
+        "process": 156
       },
       {
-        "period": 22,
-        "process": 18
-      },
-      {
-        "period": 25,
-        "process": 158
+        "period": 19,
+        "process": 156
       }
     ]
   },
-  "Ale_10": {
-    "dataset": "Real",
+  "S_10": {
+    "dataset": "S",
     "BKS": 5639.568,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_10_mip_seed1_b600.json",
     "schedule": [
@@ -181,8 +165,8 @@
       }
     ]
   },
-  "Ale_2": {
-    "dataset": "Real",
+  "S_2": {
+    "dataset": "S",
     "BKS": 99950.709,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_2_mip_seed1_b600.json",
     "schedule": [
@@ -264,8 +248,8 @@
       }
     ]
   },
-  "Ale_3": {
-    "dataset": "Real",
+  "S_3": {
+    "dataset": "S",
     "BKS": 39695.173,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_3_mip_seed1_b600.json",
     "schedule": [
@@ -343,8 +327,8 @@
       }
     ]
   },
-  "Ale_4": {
-    "dataset": "Real",
+  "S_4": {
+    "dataset": "S",
     "BKS": 127725.976,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_4_mip_seed1_b600.json",
     "schedule": [
@@ -426,8 +410,8 @@
       }
     ]
   },
-  "Ale_5": {
-    "dataset": "Real",
+  "S_5": {
+    "dataset": "S",
     "BKS": 35426.141,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_5_mip_seed1_b600.json",
     "schedule": [
@@ -509,8 +493,8 @@
       }
     ]
   },
-  "Ale_6": {
-    "dataset": "Real",
+  "S_6": {
+    "dataset": "S",
     "BKS": 66677.463,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_6_mip_seed1_b600.json",
     "schedule": [
@@ -592,8 +576,8 @@
       }
     ]
   },
-  "Ale_7": {
-    "dataset": "Real",
+  "S_7": {
+    "dataset": "S",
     "BKS": 10568.618,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_7_mip_seed1_b600.json",
     "schedule": [
@@ -675,8 +659,8 @@
       }
     ]
   },
-  "Ale_8": {
-    "dataset": "Real",
+  "S_8": {
+    "dataset": "S",
     "BKS": 160911.938,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_8_mip_seed1_b600.json",
     "schedule": [
@@ -758,8 +742,8 @@
       }
     ]
   },
-  "Ale_9": {
-    "dataset": "Real",
+  "S_9": {
+    "dataset": "S",
     "BKS": 15627.917,
     "source_path": "experiments\\matheuristics\\results_production\\b600\\Ale_9_mip_seed1_b600.json",
     "schedule": [
@@ -1913,8 +1897,149 @@
   "IncT2X_7": {
     "dataset": "2X",
     "BKS": 13506.887,
-    "source_path": "3600s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\2X\\results\\IncT2X_7.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 151
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 152
+      },
+      {
+        "period": 4,
+        "process": 78
+      },
+      {
+        "period": 5,
+        "process": 150
+      },
+      {
+        "period": 6,
+        "process": 145
+      },
+      {
+        "period": 7,
+        "process": 147
+      },
+      {
+        "period": 8,
+        "process": 148
+      },
+      {
+        "period": 9,
+        "process": 148
+      },
+      {
+        "period": 10,
+        "process": 42
+      },
+      {
+        "period": 11,
+        "process": 146
+      },
+      {
+        "period": 12,
+        "process": 150
+      },
+      {
+        "period": 13,
+        "process": 139
+      },
+      {
+        "period": 14,
+        "process": 144
+      },
+      {
+        "period": 15,
+        "process": 159
+      },
+      {
+        "period": 16,
+        "process": 141
+      },
+      {
+        "period": 17,
+        "process": 140
+      },
+      {
+        "period": 18,
+        "process": 154
+      },
+      {
+        "period": 20,
+        "process": 143
+      },
+      {
+        "period": 21,
+        "process": 153
+      },
+      {
+        "period": 22,
+        "process": 151
+      },
+      {
+        "period": 23,
+        "process": 153
+      },
+      {
+        "period": 24,
+        "process": 149
+      },
+      {
+        "period": 25,
+        "process": 145
+      },
+      {
+        "period": 26,
+        "process": 146
+      },
+      {
+        "period": 27,
+        "process": 142
+      },
+      {
+        "period": 29,
+        "process": 147
+      },
+      {
+        "period": 30,
+        "process": 144
+      },
+      {
+        "period": 31,
+        "process": 149
+      },
+      {
+        "period": 32,
+        "process": 156
+      },
+      {
+        "period": 33,
+        "process": 159
+      },
+      {
+        "period": 34,
+        "process": 141
+      },
+      {
+        "period": 35,
+        "process": 155
+      },
+      {
+        "period": 36,
+        "process": 155
+      },
+      {
+        "period": 37,
+        "process": 154
+      }
+    ]
   },
   "IncT2X_8": {
     "dataset": "2X",
@@ -2209,14 +2334,448 @@
   "IncT3x_1": {
     "dataset": "3X",
     "BKS": 43424.391,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\3X\\results_3horas\\IncT3x_1.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 159
+      },
+      {
+        "period": 2,
+        "process": 120
+      },
+      {
+        "period": 3,
+        "process": 145
+      },
+      {
+        "period": 4,
+        "process": 148
+      },
+      {
+        "period": 5,
+        "process": 148
+      },
+      {
+        "period": 6,
+        "process": 147
+      },
+      {
+        "period": 7,
+        "process": 150
+      },
+      {
+        "period": 8,
+        "process": 45
+      },
+      {
+        "period": 9,
+        "process": 146
+      },
+      {
+        "period": 10,
+        "process": 143
+      },
+      {
+        "period": 11,
+        "process": 20
+      },
+      {
+        "period": 12,
+        "process": 145
+      },
+      {
+        "period": 13,
+        "process": 139
+      },
+      {
+        "period": 14,
+        "process": 149
+      },
+      {
+        "period": 15,
+        "process": 141
+      },
+      {
+        "period": 16,
+        "process": 151
+      },
+      {
+        "period": 17,
+        "process": 154
+      },
+      {
+        "period": 18,
+        "process": 146
+      },
+      {
+        "period": 19,
+        "process": 159
+      },
+      {
+        "period": 20,
+        "process": 149
+      },
+      {
+        "period": 21,
+        "process": 148
+      },
+      {
+        "period": 22,
+        "process": 148
+      },
+      {
+        "period": 23,
+        "process": 143
+      },
+      {
+        "period": 24,
+        "process": 147
+      },
+      {
+        "period": 25,
+        "process": 157
+      },
+      {
+        "period": 26,
+        "process": 150
+      },
+      {
+        "period": 27,
+        "process": 142
+      },
+      {
+        "period": 28,
+        "process": 156
+      },
+      {
+        "period": 29,
+        "process": 146
+      },
+      {
+        "period": 30,
+        "process": 153
+      },
+      {
+        "period": 31,
+        "process": 154
+      },
+      {
+        "period": 32,
+        "process": 157
+      },
+      {
+        "period": 33,
+        "process": 141
+      },
+      {
+        "period": 34,
+        "process": 155
+      },
+      {
+        "period": 35,
+        "process": 155
+      },
+      {
+        "period": 36,
+        "process": 153
+      },
+      {
+        "period": 37,
+        "process": 159
+      },
+      {
+        "period": 38,
+        "process": 145
+      },
+      {
+        "period": 39,
+        "process": 152
+      },
+      {
+        "period": 40,
+        "process": 150
+      },
+      {
+        "period": 41,
+        "process": 146
+      },
+      {
+        "period": 42,
+        "process": 133
+      },
+      {
+        "period": 43,
+        "process": 155
+      },
+      {
+        "period": 44,
+        "process": 155
+      },
+      {
+        "period": 45,
+        "process": 150
+      },
+      {
+        "period": 46,
+        "process": 142
+      },
+      {
+        "period": 47,
+        "process": 156
+      },
+      {
+        "period": 48,
+        "process": 146
+      },
+      {
+        "period": 50,
+        "process": 154
+      },
+      {
+        "period": 51,
+        "process": 157
+      },
+      {
+        "period": 52,
+        "process": 143
+      },
+      {
+        "period": 53,
+        "process": 153
+      },
+      {
+        "period": 54,
+        "process": 157
+      },
+      {
+        "period": 55,
+        "process": 76
+      },
+      {
+        "period": 57,
+        "process": 11
+      }
+    ]
   },
   "IncT3x_10": {
     "dataset": "3X",
     "BKS": 10914.378,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\3X\\results_3horas\\IncT3x_10.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 151
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 150
+      },
+      {
+        "period": 4,
+        "process": 144
+      },
+      {
+        "period": 5,
+        "process": 139
+      },
+      {
+        "period": 6,
+        "process": 141
+      },
+      {
+        "period": 7,
+        "process": 151
+      },
+      {
+        "period": 8,
+        "process": 145
+      },
+      {
+        "period": 9,
+        "process": 146
+      },
+      {
+        "period": 10,
+        "process": 148
+      },
+      {
+        "period": 11,
+        "process": 159
+      },
+      {
+        "period": 12,
+        "process": 147
+      },
+      {
+        "period": 13,
+        "process": 122
+      },
+      {
+        "period": 14,
+        "process": 142
+      },
+      {
+        "period": 15,
+        "process": 149
+      },
+      {
+        "period": 16,
+        "process": 154
+      },
+      {
+        "period": 17,
+        "process": 141
+      },
+      {
+        "period": 18,
+        "process": 144
+      },
+      {
+        "period": 19,
+        "process": 150
+      },
+      {
+        "period": 21,
+        "process": 143
+      },
+      {
+        "period": 22,
+        "process": 157
+      },
+      {
+        "period": 23,
+        "process": 157
+      },
+      {
+        "period": 24,
+        "process": 155
+      },
+      {
+        "period": 25,
+        "process": 155
+      },
+      {
+        "period": 26,
+        "process": 145
+      },
+      {
+        "period": 27,
+        "process": 159
+      },
+      {
+        "period": 28,
+        "process": 146
+      },
+      {
+        "period": 29,
+        "process": 148
+      },
+      {
+        "period": 30,
+        "process": 154
+      },
+      {
+        "period": 31,
+        "process": 152
+      },
+      {
+        "period": 33,
+        "process": 142
+      },
+      {
+        "period": 34,
+        "process": 150
+      },
+      {
+        "period": 35,
+        "process": 156
+      },
+      {
+        "period": 36,
+        "process": 148
+      },
+      {
+        "period": 37,
+        "process": 147
+      },
+      {
+        "period": 38,
+        "process": 141
+      },
+      {
+        "period": 39,
+        "process": 144
+      },
+      {
+        "period": 40,
+        "process": 143
+      },
+      {
+        "period": 41,
+        "process": 151
+      },
+      {
+        "period": 42,
+        "process": 157
+      },
+      {
+        "period": 43,
+        "process": 157
+      },
+      {
+        "period": 44,
+        "process": 159
+      },
+      {
+        "period": 45,
+        "process": 145
+      },
+      {
+        "period": 46,
+        "process": 149
+      },
+      {
+        "period": 47,
+        "process": 146
+      },
+      {
+        "period": 48,
+        "process": 148
+      },
+      {
+        "period": 50,
+        "process": 152
+      },
+      {
+        "period": 52,
+        "process": 142
+      },
+      {
+        "period": 53,
+        "process": 150
+      },
+      {
+        "period": 54,
+        "process": 154
+      },
+      {
+        "period": 55,
+        "process": 156
+      },
+      {
+        "period": 56,
+        "process": 152
+      },
+      {
+        "period": 57,
+        "process": 144
+      }
+    ]
   },
   "IncT3x_2": {
     "dataset": "3X",
@@ -3085,8 +3644,221 @@
   "IncT3x_6": {
     "dataset": "3X",
     "BKS": 73458.775,
-    "source_path": "3600s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\3X\\results\\IncT3x_6.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 19
+      },
+      {
+        "period": 2,
+        "process": 145
+      },
+      {
+        "period": 3,
+        "process": 150
+      },
+      {
+        "period": 4,
+        "process": 148
+      },
+      {
+        "period": 5,
+        "process": 151
+      },
+      {
+        "period": 6,
+        "process": 140
+      },
+      {
+        "period": 7,
+        "process": 53
+      },
+      {
+        "period": 8,
+        "process": 77
+      },
+      {
+        "period": 9,
+        "process": 139
+      },
+      {
+        "period": 10,
+        "process": 150
+      },
+      {
+        "period": 11,
+        "process": 146
+      },
+      {
+        "period": 12,
+        "process": 137
+      },
+      {
+        "period": 13,
+        "process": 120
+      },
+      {
+        "period": 14,
+        "process": 143
+      },
+      {
+        "period": 15,
+        "process": 147
+      },
+      {
+        "period": 16,
+        "process": 141
+      },
+      {
+        "period": 17,
+        "process": 143
+      },
+      {
+        "period": 18,
+        "process": 148
+      },
+      {
+        "period": 19,
+        "process": 145
+      },
+      {
+        "period": 20,
+        "process": 149
+      },
+      {
+        "period": 21,
+        "process": 151
+      },
+      {
+        "period": 22,
+        "process": 157
+      },
+      {
+        "period": 23,
+        "process": 157
+      },
+      {
+        "period": 24,
+        "process": 157
+      },
+      {
+        "period": 25,
+        "process": 147
+      },
+      {
+        "period": 26,
+        "process": 152
+      },
+      {
+        "period": 27,
+        "process": 142
+      },
+      {
+        "period": 28,
+        "process": 154
+      },
+      {
+        "period": 29,
+        "process": 157
+      },
+      {
+        "period": 30,
+        "process": 146
+      },
+      {
+        "period": 31,
+        "process": 149
+      },
+      {
+        "period": 32,
+        "process": 148
+      },
+      {
+        "period": 33,
+        "process": 156
+      },
+      {
+        "period": 34,
+        "process": 144
+      },
+      {
+        "period": 35,
+        "process": 154
+      },
+      {
+        "period": 36,
+        "process": 141
+      },
+      {
+        "period": 37,
+        "process": 155
+      },
+      {
+        "period": 38,
+        "process": 145
+      },
+      {
+        "period": 39,
+        "process": 150
+      },
+      {
+        "period": 40,
+        "process": 146
+      },
+      {
+        "period": 41,
+        "process": 157
+      },
+      {
+        "period": 42,
+        "process": 157
+      },
+      {
+        "period": 43,
+        "process": 154
+      },
+      {
+        "period": 44,
+        "process": 150
+      },
+      {
+        "period": 45,
+        "process": 142
+      },
+      {
+        "period": 46,
+        "process": 148
+      },
+      {
+        "period": 49,
+        "process": 146
+      },
+      {
+        "period": 50,
+        "process": 148
+      },
+      {
+        "period": 53,
+        "process": 156
+      },
+      {
+        "period": 54,
+        "process": 24
+      },
+      {
+        "period": 55,
+        "process": 143
+      },
+      {
+        "period": 56,
+        "process": 145
+      },
+      {
+        "period": 57,
+        "process": 7
+      }
+    ]
   },
   "IncT3x_7": {
     "dataset": "3X",
@@ -3314,56 +4086,2437 @@
   "IncT3x_8": {
     "dataset": "3X",
     "BKS": 171942.718,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\3X\\results_3horas\\IncT3x_8.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 151
+      },
+      {
+        "period": 2,
+        "process": 148
+      },
+      {
+        "period": 3,
+        "process": 148
+      },
+      {
+        "period": 4,
+        "process": 150
+      },
+      {
+        "period": 5,
+        "process": 152
+      },
+      {
+        "period": 6,
+        "process": 141
+      },
+      {
+        "period": 7,
+        "process": 143
+      },
+      {
+        "period": 8,
+        "process": 150
+      },
+      {
+        "period": 9,
+        "process": 146
+      },
+      {
+        "period": 10,
+        "process": 142
+      },
+      {
+        "period": 11,
+        "process": 120
+      },
+      {
+        "period": 12,
+        "process": 139
+      },
+      {
+        "period": 13,
+        "process": 145
+      },
+      {
+        "period": 14,
+        "process": 159
+      },
+      {
+        "period": 15,
+        "process": 147
+      },
+      {
+        "period": 16,
+        "process": 146
+      },
+      {
+        "period": 17,
+        "process": 148
+      },
+      {
+        "period": 18,
+        "process": 145
+      },
+      {
+        "period": 19,
+        "process": 143
+      },
+      {
+        "period": 20,
+        "process": 148
+      },
+      {
+        "period": 21,
+        "process": 145
+      },
+      {
+        "period": 22,
+        "process": 152
+      },
+      {
+        "period": 23,
+        "process": 142
+      },
+      {
+        "period": 24,
+        "process": 141
+      },
+      {
+        "period": 25,
+        "process": 147
+      },
+      {
+        "period": 26,
+        "process": 159
+      },
+      {
+        "period": 27,
+        "process": 140
+      },
+      {
+        "period": 28,
+        "process": 151
+      },
+      {
+        "period": 29,
+        "process": 157
+      },
+      {
+        "period": 30,
+        "process": 157
+      },
+      {
+        "period": 31,
+        "process": 154
+      },
+      {
+        "period": 32,
+        "process": 154
+      },
+      {
+        "period": 33,
+        "process": 154
+      },
+      {
+        "period": 34,
+        "process": 150
+      },
+      {
+        "period": 35,
+        "process": 146
+      },
+      {
+        "period": 36,
+        "process": 142
+      },
+      {
+        "period": 37,
+        "process": 150
+      },
+      {
+        "period": 38,
+        "process": 155
+      },
+      {
+        "period": 39,
+        "process": 155
+      },
+      {
+        "period": 40,
+        "process": 148
+      },
+      {
+        "period": 41,
+        "process": 144
+      },
+      {
+        "period": 42,
+        "process": 152
+      },
+      {
+        "period": 43,
+        "process": 156
+      },
+      {
+        "period": 44,
+        "process": 141
+      },
+      {
+        "period": 45,
+        "process": 143
+      },
+      {
+        "period": 46,
+        "process": 159
+      },
+      {
+        "period": 47,
+        "process": 157
+      },
+      {
+        "period": 52,
+        "process": 145
+      },
+      {
+        "period": 54,
+        "process": 146
+      },
+      {
+        "period": 55,
+        "process": 149
+      },
+      {
+        "period": 56,
+        "process": 149
+      }
+    ]
   },
   "IncT3x_9": {
     "dataset": "3X",
     "BKS": 21779.42,
-    "source_path": "3600s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\3X\\results\\IncT3x_9.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 145
+      },
+      {
+        "period": 2,
+        "process": 133
+      },
+      {
+        "period": 3,
+        "process": 146
+      },
+      {
+        "period": 4,
+        "process": 42
+      },
+      {
+        "period": 5,
+        "process": 126
+      },
+      {
+        "period": 6,
+        "process": 148
+      },
+      {
+        "period": 7,
+        "process": 148
+      },
+      {
+        "period": 8,
+        "process": 151
+      },
+      {
+        "period": 9,
+        "process": 147
+      },
+      {
+        "period": 10,
+        "process": 143
+      },
+      {
+        "period": 11,
+        "process": 150
+      },
+      {
+        "period": 12,
+        "process": 159
+      },
+      {
+        "period": 13,
+        "process": 142
+      },
+      {
+        "period": 14,
+        "process": 141
+      },
+      {
+        "period": 15,
+        "process": 145
+      },
+      {
+        "period": 16,
+        "process": 150
+      },
+      {
+        "period": 17,
+        "process": 154
+      },
+      {
+        "period": 19,
+        "process": 156
+      },
+      {
+        "period": 20,
+        "process": 152
+      },
+      {
+        "period": 21,
+        "process": 144
+      },
+      {
+        "period": 22,
+        "process": 146
+      },
+      {
+        "period": 23,
+        "process": 140
+      },
+      {
+        "period": 24,
+        "process": 148
+      },
+      {
+        "period": 25,
+        "process": 154
+      },
+      {
+        "period": 26,
+        "process": 155
+      },
+      {
+        "period": 27,
+        "process": 151
+      },
+      {
+        "period": 30,
+        "process": 159
+      },
+      {
+        "period": 31,
+        "process": 156
+      },
+      {
+        "period": 32,
+        "process": 149
+      },
+      {
+        "period": 33,
+        "process": 86
+      },
+      {
+        "period": 34,
+        "process": 145
+      },
+      {
+        "period": 35,
+        "process": 138
+      },
+      {
+        "period": 36,
+        "process": 150
+      },
+      {
+        "period": 37,
+        "process": 147
+      },
+      {
+        "period": 38,
+        "process": 146
+      },
+      {
+        "period": 40,
+        "process": 153
+      },
+      {
+        "period": 41,
+        "process": 144
+      },
+      {
+        "period": 42,
+        "process": 152
+      },
+      {
+        "period": 43,
+        "process": 148
+      },
+      {
+        "period": 44,
+        "process": 155
+      },
+      {
+        "period": 46,
+        "process": 151
+      },
+      {
+        "period": 47,
+        "process": 142
+      },
+      {
+        "period": 48,
+        "process": 141
+      },
+      {
+        "period": 49,
+        "process": 159
+      },
+      {
+        "period": 50,
+        "process": 157
+      },
+      {
+        "period": 51,
+        "process": 149
+      },
+      {
+        "period": 52,
+        "process": 144
+      },
+      {
+        "period": 53,
+        "process": 149
+      },
+      {
+        "period": 54,
+        "process": 140
+      },
+      {
+        "period": 55,
+        "process": 143
+      },
+      {
+        "period": 56,
+        "process": 153
+      },
+      {
+        "period": 57,
+        "process": 147
+      }
+    ]
   },
   "IncT4x_1": {
     "dataset": "4X",
     "BKS": 46880.699,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_1.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 159
+      },
+      {
+        "period": 2,
+        "process": 120
+      },
+      {
+        "period": 3,
+        "process": 145
+      },
+      {
+        "period": 4,
+        "process": 148
+      },
+      {
+        "period": 5,
+        "process": 148
+      },
+      {
+        "period": 6,
+        "process": 147
+      },
+      {
+        "period": 7,
+        "process": 150
+      },
+      {
+        "period": 8,
+        "process": 45
+      },
+      {
+        "period": 9,
+        "process": 146
+      },
+      {
+        "period": 10,
+        "process": 143
+      },
+      {
+        "period": 11,
+        "process": 20
+      },
+      {
+        "period": 12,
+        "process": 145
+      },
+      {
+        "period": 13,
+        "process": 139
+      },
+      {
+        "period": 14,
+        "process": 149
+      },
+      {
+        "period": 15,
+        "process": 141
+      },
+      {
+        "period": 16,
+        "process": 151
+      },
+      {
+        "period": 17,
+        "process": 154
+      },
+      {
+        "period": 18,
+        "process": 146
+      },
+      {
+        "period": 19,
+        "process": 159
+      },
+      {
+        "period": 20,
+        "process": 152
+      },
+      {
+        "period": 21,
+        "process": 150
+      },
+      {
+        "period": 22,
+        "process": 148
+      },
+      {
+        "period": 23,
+        "process": 143
+      },
+      {
+        "period": 24,
+        "process": 155
+      },
+      {
+        "period": 25,
+        "process": 147
+      },
+      {
+        "period": 26,
+        "process": 150
+      },
+      {
+        "period": 27,
+        "process": 142
+      },
+      {
+        "period": 28,
+        "process": 156
+      },
+      {
+        "period": 29,
+        "process": 146
+      },
+      {
+        "period": 30,
+        "process": 157
+      },
+      {
+        "period": 31,
+        "process": 152
+      },
+      {
+        "period": 32,
+        "process": 157
+      },
+      {
+        "period": 33,
+        "process": 154
+      },
+      {
+        "period": 34,
+        "process": 141
+      },
+      {
+        "period": 35,
+        "process": 155
+      },
+      {
+        "period": 36,
+        "process": 154
+      },
+      {
+        "period": 37,
+        "process": 143
+      },
+      {
+        "period": 38,
+        "process": 145
+      },
+      {
+        "period": 39,
+        "process": 159
+      },
+      {
+        "period": 40,
+        "process": 149
+      },
+      {
+        "period": 41,
+        "process": 148
+      },
+      {
+        "period": 42,
+        "process": 148
+      },
+      {
+        "period": 43,
+        "process": 155
+      },
+      {
+        "period": 44,
+        "process": 146
+      },
+      {
+        "period": 45,
+        "process": 150
+      },
+      {
+        "period": 46,
+        "process": 142
+      },
+      {
+        "period": 47,
+        "process": 156
+      },
+      {
+        "period": 48,
+        "process": 146
+      },
+      {
+        "period": 49,
+        "process": 152
+      },
+      {
+        "period": 52,
+        "process": 157
+      },
+      {
+        "period": 53,
+        "process": 141
+      },
+      {
+        "period": 54,
+        "process": 155
+      },
+      {
+        "period": 55,
+        "process": 145
+      },
+      {
+        "period": 57,
+        "process": 159
+      },
+      {
+        "period": 58,
+        "process": 144
+      },
+      {
+        "period": 59,
+        "process": 149
+      },
+      {
+        "period": 60,
+        "process": 148
+      },
+      {
+        "period": 61,
+        "process": 133
+      },
+      {
+        "period": 62,
+        "process": 147
+      },
+      {
+        "period": 63,
+        "process": 151
+      },
+      {
+        "period": 64,
+        "process": 150
+      },
+      {
+        "period": 65,
+        "process": 142
+      },
+      {
+        "period": 66,
+        "process": 156
+      },
+      {
+        "period": 67,
+        "process": 146
+      },
+      {
+        "period": 68,
+        "process": 154
+      },
+      {
+        "period": 69,
+        "process": 153
+      },
+      {
+        "period": 70,
+        "process": 157
+      },
+      {
+        "period": 71,
+        "process": 143
+      },
+      {
+        "period": 72,
+        "process": 157
+      },
+      {
+        "period": 73,
+        "process": 141
+      },
+      {
+        "period": 74,
+        "process": 145
+      }
+    ]
   },
   "IncT4x_10": {
     "dataset": "4X",
     "BKS": 13375.333,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_10.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 151
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 150
+      },
+      {
+        "period": 4,
+        "process": 120
+      },
+      {
+        "period": 5,
+        "process": 139
+      },
+      {
+        "period": 6,
+        "process": 145
+      },
+      {
+        "period": 7,
+        "process": 145
+      },
+      {
+        "period": 8,
+        "process": 141
+      },
+      {
+        "period": 9,
+        "process": 146
+      },
+      {
+        "period": 10,
+        "process": 148
+      },
+      {
+        "period": 11,
+        "process": 159
+      },
+      {
+        "period": 12,
+        "process": 147
+      },
+      {
+        "period": 13,
+        "process": 152
+      },
+      {
+        "period": 14,
+        "process": 142
+      },
+      {
+        "period": 15,
+        "process": 150
+      },
+      {
+        "period": 16,
+        "process": 154
+      },
+      {
+        "period": 17,
+        "process": 149
+      },
+      {
+        "period": 18,
+        "process": 157
+      },
+      {
+        "period": 20,
+        "process": 157
+      },
+      {
+        "period": 21,
+        "process": 143
+      },
+      {
+        "period": 22,
+        "process": 151
+      },
+      {
+        "period": 23,
+        "process": 157
+      },
+      {
+        "period": 24,
+        "process": 141
+      },
+      {
+        "period": 25,
+        "process": 155
+      },
+      {
+        "period": 26,
+        "process": 148
+      },
+      {
+        "period": 27,
+        "process": 159
+      },
+      {
+        "period": 28,
+        "process": 146
+      },
+      {
+        "period": 29,
+        "process": 148
+      },
+      {
+        "period": 30,
+        "process": 154
+      },
+      {
+        "period": 31,
+        "process": 152
+      },
+      {
+        "period": 32,
+        "process": 142
+      },
+      {
+        "period": 33,
+        "process": 146
+      },
+      {
+        "period": 34,
+        "process": 150
+      },
+      {
+        "period": 35,
+        "process": 156
+      },
+      {
+        "period": 36,
+        "process": 147
+      },
+      {
+        "period": 37,
+        "process": 145
+      },
+      {
+        "period": 40,
+        "process": 143
+      },
+      {
+        "period": 41,
+        "process": 151
+      },
+      {
+        "period": 43,
+        "process": 157
+      },
+      {
+        "period": 44,
+        "process": 141
+      },
+      {
+        "period": 45,
+        "process": 155
+      },
+      {
+        "period": 46,
+        "process": 150
+      },
+      {
+        "period": 47,
+        "process": 159
+      },
+      {
+        "period": 48,
+        "process": 148
+      },
+      {
+        "period": 49,
+        "process": 154
+      },
+      {
+        "period": 50,
+        "process": 152
+      },
+      {
+        "period": 51,
+        "process": 142
+      },
+      {
+        "period": 52,
+        "process": 146
+      },
+      {
+        "period": 53,
+        "process": 149
+      },
+      {
+        "period": 54,
+        "process": 144
+      },
+      {
+        "period": 55,
+        "process": 156
+      },
+      {
+        "period": 56,
+        "process": 145
+      },
+      {
+        "period": 57,
+        "process": 147
+      },
+      {
+        "period": 59,
+        "process": 143
+      },
+      {
+        "period": 60,
+        "process": 151
+      },
+      {
+        "period": 61,
+        "process": 157
+      },
+      {
+        "period": 62,
+        "process": 154
+      },
+      {
+        "period": 63,
+        "process": 141
+      },
+      {
+        "period": 64,
+        "process": 155
+      },
+      {
+        "period": 65,
+        "process": 149
+      },
+      {
+        "period": 66,
+        "process": 159
+      },
+      {
+        "period": 67,
+        "process": 148
+      },
+      {
+        "period": 68,
+        "process": 153
+      },
+      {
+        "period": 69,
+        "process": 152
+      },
+      {
+        "period": 70,
+        "process": 142
+      },
+      {
+        "period": 71,
+        "process": 146
+      },
+      {
+        "period": 72,
+        "process": 150
+      },
+      {
+        "period": 73,
+        "process": 1
+      },
+      {
+        "period": 74,
+        "process": 156
+      },
+      {
+        "period": 75,
+        "process": 144
+      }
+    ]
   },
   "IncT4x_2": {
     "dataset": "4X",
     "BKS": 111902.298,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_2.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 150
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 152
+      },
+      {
+        "period": 4,
+        "process": 146
+      },
+      {
+        "period": 5,
+        "process": 150
+      },
+      {
+        "period": 6,
+        "process": 145
+      },
+      {
+        "period": 7,
+        "process": 126
+      },
+      {
+        "period": 8,
+        "process": 148
+      },
+      {
+        "period": 9,
+        "process": 147
+      },
+      {
+        "period": 10,
+        "process": 148
+      },
+      {
+        "period": 11,
+        "process": 145
+      },
+      {
+        "period": 12,
+        "process": 137
+      },
+      {
+        "period": 13,
+        "process": 140
+      },
+      {
+        "period": 14,
+        "process": 141
+      },
+      {
+        "period": 15,
+        "process": 139
+      },
+      {
+        "period": 16,
+        "process": 42
+      },
+      {
+        "period": 17,
+        "process": 24
+      },
+      {
+        "period": 18,
+        "process": 146
+      },
+      {
+        "period": 19,
+        "process": 143
+      },
+      {
+        "period": 20,
+        "process": 150
+      },
+      {
+        "period": 21,
+        "process": 155
+      },
+      {
+        "period": 22,
+        "process": 151
+      },
+      {
+        "period": 23,
+        "process": 153
+      },
+      {
+        "period": 24,
+        "process": 150
+      },
+      {
+        "period": 25,
+        "process": 142
+      },
+      {
+        "period": 26,
+        "process": 1
+      },
+      {
+        "period": 27,
+        "process": 147
+      },
+      {
+        "period": 28,
+        "process": 148
+      },
+      {
+        "period": 29,
+        "process": 154
+      },
+      {
+        "period": 30,
+        "process": 145
+      },
+      {
+        "period": 31,
+        "process": 140
+      },
+      {
+        "period": 32,
+        "process": 156
+      },
+      {
+        "period": 34,
+        "process": 154
+      },
+      {
+        "period": 35,
+        "process": 153
+      },
+      {
+        "period": 36,
+        "process": 141
+      },
+      {
+        "period": 37,
+        "process": 146
+      },
+      {
+        "period": 38,
+        "process": 149
+      },
+      {
+        "period": 39,
+        "process": 143
+      },
+      {
+        "period": 40,
+        "process": 155
+      },
+      {
+        "period": 41,
+        "process": 153
+      },
+      {
+        "period": 42,
+        "process": 146
+      },
+      {
+        "period": 43,
+        "process": 149
+      },
+      {
+        "period": 44,
+        "process": 153
+      },
+      {
+        "period": 45,
+        "process": 142
+      },
+      {
+        "period": 46,
+        "process": 141
+      },
+      {
+        "period": 47,
+        "process": 1
+      },
+      {
+        "period": 49,
+        "process": 157
+      },
+      {
+        "period": 50,
+        "process": 151
+      },
+      {
+        "period": 53,
+        "process": 151
+      },
+      {
+        "period": 54,
+        "process": 156
+      },
+      {
+        "period": 55,
+        "process": 153
+      },
+      {
+        "period": 56,
+        "process": 152
+      },
+      {
+        "period": 57,
+        "process": 143
+      },
+      {
+        "period": 58,
+        "process": 149
+      },
+      {
+        "period": 59,
+        "process": 155
+      },
+      {
+        "period": 60,
+        "process": 152
+      },
+      {
+        "period": 61,
+        "process": 144
+      },
+      {
+        "period": 62,
+        "process": 149
+      },
+      {
+        "period": 63,
+        "process": 142
+      },
+      {
+        "period": 64,
+        "process": 147
+      },
+      {
+        "period": 65,
+        "process": 154
+      },
+      {
+        "period": 66,
+        "process": 1
+      },
+      {
+        "period": 67,
+        "process": 159
+      },
+      {
+        "period": 68,
+        "process": 151
+      },
+      {
+        "period": 69,
+        "process": 151
+      },
+      {
+        "period": 72,
+        "process": 76
+      },
+      {
+        "period": 74,
+        "process": 147
+      },
+      {
+        "period": 76,
+        "process": 154
+      }
+    ]
   },
   "IncT4x_3": {
     "dataset": "4X",
     "BKS": 49468.889,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_3.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 150
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 148
+      },
+      {
+        "period": 4,
+        "process": 42
+      },
+      {
+        "period": 5,
+        "process": 140
+      },
+      {
+        "period": 6,
+        "process": 86
+      },
+      {
+        "period": 7,
+        "process": 146
+      },
+      {
+        "period": 8,
+        "process": 5
+      },
+      {
+        "period": 9,
+        "process": 149
+      },
+      {
+        "period": 10,
+        "process": 145
+      },
+      {
+        "period": 11,
+        "process": 159
+      },
+      {
+        "period": 12,
+        "process": 147
+      },
+      {
+        "period": 13,
+        "process": 140
+      },
+      {
+        "period": 14,
+        "process": 151
+      },
+      {
+        "period": 15,
+        "process": 126
+      },
+      {
+        "period": 16,
+        "process": 154
+      },
+      {
+        "period": 17,
+        "process": 153
+      },
+      {
+        "period": 18,
+        "process": 145
+      },
+      {
+        "period": 19,
+        "process": 154
+      },
+      {
+        "period": 20,
+        "process": 150
+      },
+      {
+        "period": 21,
+        "process": 133
+      },
+      {
+        "period": 22,
+        "process": 151
+      },
+      {
+        "period": 23,
+        "process": 159
+      },
+      {
+        "period": 24,
+        "process": 142
+      },
+      {
+        "period": 25,
+        "process": 141
+      },
+      {
+        "period": 26,
+        "process": 146
+      },
+      {
+        "period": 27,
+        "process": 149
+      },
+      {
+        "period": 29,
+        "process": 152
+      },
+      {
+        "period": 30,
+        "process": 156
+      },
+      {
+        "period": 31,
+        "process": 154
+      },
+      {
+        "period": 32,
+        "process": 155
+      },
+      {
+        "period": 33,
+        "process": 147
+      },
+      {
+        "period": 34,
+        "process": 153
+      },
+      {
+        "period": 35,
+        "process": 148
+      },
+      {
+        "period": 36,
+        "process": 143
+      },
+      {
+        "period": 37,
+        "process": 146
+      },
+      {
+        "period": 39,
+        "process": 150
+      },
+      {
+        "period": 40,
+        "process": 152
+      },
+      {
+        "period": 41,
+        "process": 151
+      },
+      {
+        "period": 42,
+        "process": 159
+      },
+      {
+        "period": 43,
+        "process": 142
+      },
+      {
+        "period": 44,
+        "process": 141
+      },
+      {
+        "period": 46,
+        "process": 149
+      },
+      {
+        "period": 47,
+        "process": 144
+      },
+      {
+        "period": 48,
+        "process": 145
+      },
+      {
+        "period": 49,
+        "process": 157
+      },
+      {
+        "period": 50,
+        "process": 156
+      },
+      {
+        "period": 51,
+        "process": 154
+      },
+      {
+        "period": 52,
+        "process": 151
+      },
+      {
+        "period": 53,
+        "process": 146
+      },
+      {
+        "period": 54,
+        "process": 148
+      },
+      {
+        "period": 55,
+        "process": 143
+      },
+      {
+        "period": 56,
+        "process": 147
+      },
+      {
+        "period": 58,
+        "process": 150
+      },
+      {
+        "period": 59,
+        "process": 153
+      },
+      {
+        "period": 60,
+        "process": 152
+      },
+      {
+        "period": 61,
+        "process": 159
+      },
+      {
+        "period": 62,
+        "process": 142
+      },
+      {
+        "period": 63,
+        "process": 141
+      },
+      {
+        "period": 65,
+        "process": 149
+      },
+      {
+        "period": 66,
+        "process": 148
+      },
+      {
+        "period": 67,
+        "process": 145
+      },
+      {
+        "period": 68,
+        "process": 157
+      },
+      {
+        "period": 69,
+        "process": 156
+      },
+      {
+        "period": 70,
+        "process": 155
+      },
+      {
+        "period": 71,
+        "process": 155
+      },
+      {
+        "period": 72,
+        "process": 146
+      },
+      {
+        "period": 73,
+        "process": 138
+      },
+      {
+        "period": 74,
+        "process": 147
+      },
+      {
+        "period": 75,
+        "process": 144
+      },
+      {
+        "period": 76,
+        "process": 155
+      }
+    ]
   },
   "IncT4x_4": {
     "dataset": "4X",
     "BKS": 137435.102,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_4.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 145
+      },
+      {
+        "period": 2,
+        "process": 150
+      },
+      {
+        "period": 3,
+        "process": 148
+      },
+      {
+        "period": 4,
+        "process": 145
+      },
+      {
+        "period": 5,
+        "process": 145
+      },
+      {
+        "period": 6,
+        "process": 143
+      },
+      {
+        "period": 7,
+        "process": 141
+      },
+      {
+        "period": 8,
+        "process": 137
+      },
+      {
+        "period": 9,
+        "process": 150
+      },
+      {
+        "period": 10,
+        "process": 146
+      },
+      {
+        "period": 11,
+        "process": 139
+      },
+      {
+        "period": 12,
+        "process": 120
+      },
+      {
+        "period": 13,
+        "process": 147
+      },
+      {
+        "period": 14,
+        "process": 142
+      },
+      {
+        "period": 15,
+        "process": 152
+      },
+      {
+        "period": 16,
+        "process": 148
+      },
+      {
+        "period": 17,
+        "process": 146
+      },
+      {
+        "period": 18,
+        "process": 153
+      },
+      {
+        "period": 19,
+        "process": 143
+      },
+      {
+        "period": 20,
+        "process": 152
+      },
+      {
+        "period": 21,
+        "process": 152
+      },
+      {
+        "period": 22,
+        "process": 150
+      },
+      {
+        "period": 23,
+        "process": 142
+      },
+      {
+        "period": 24,
+        "process": 146
+      },
+      {
+        "period": 25,
+        "process": 157
+      },
+      {
+        "period": 26,
+        "process": 141
+      },
+      {
+        "period": 27,
+        "process": 151
+      },
+      {
+        "period": 28,
+        "process": 155
+      },
+      {
+        "period": 30,
+        "process": 149
+      },
+      {
+        "period": 31,
+        "process": 157
+      },
+      {
+        "period": 32,
+        "process": 156
+      },
+      {
+        "period": 33,
+        "process": 153
+      },
+      {
+        "period": 34,
+        "process": 155
+      },
+      {
+        "period": 35,
+        "process": 148
+      },
+      {
+        "period": 36,
+        "process": 147
+      },
+      {
+        "period": 37,
+        "process": 1
+      },
+      {
+        "period": 38,
+        "process": 143
+      },
+      {
+        "period": 39,
+        "process": 1
+      },
+      {
+        "period": 40,
+        "process": 153
+      },
+      {
+        "period": 41,
+        "process": 150
+      },
+      {
+        "period": 42,
+        "process": 142
+      },
+      {
+        "period": 43,
+        "process": 141
+      },
+      {
+        "period": 44,
+        "process": 157
+      },
+      {
+        "period": 45,
+        "process": 146
+      },
+      {
+        "period": 46,
+        "process": 157
+      },
+      {
+        "period": 47,
+        "process": 157
+      },
+      {
+        "period": 49,
+        "process": 149
+      },
+      {
+        "period": 50,
+        "process": 157
+      },
+      {
+        "period": 51,
+        "process": 154
+      },
+      {
+        "period": 52,
+        "process": 148
+      },
+      {
+        "period": 53,
+        "process": 145
+      },
+      {
+        "period": 54,
+        "process": 151
+      },
+      {
+        "period": 55,
+        "process": 154
+      },
+      {
+        "period": 56,
+        "process": 159
+      },
+      {
+        "period": 57,
+        "process": 143
+      },
+      {
+        "period": 58,
+        "process": 152
+      },
+      {
+        "period": 59,
+        "process": 152
+      },
+      {
+        "period": 60,
+        "process": 150
+      },
+      {
+        "period": 61,
+        "process": 142
+      },
+      {
+        "period": 62,
+        "process": 146
+      },
+      {
+        "period": 63,
+        "process": 156
+      },
+      {
+        "period": 64,
+        "process": 141
+      },
+      {
+        "period": 65,
+        "process": 147
+      },
+      {
+        "period": 66,
+        "process": 155
+      },
+      {
+        "period": 68,
+        "process": 149
+      },
+      {
+        "period": 69,
+        "process": 155
+      },
+      {
+        "period": 71,
+        "process": 151
+      },
+      {
+        "period": 72,
+        "process": 151
+      },
+      {
+        "period": 74,
+        "process": 156
+      },
+      {
+        "period": 75,
+        "process": 154
+      },
+      {
+        "period": 76,
+        "process": 154
+      }
+    ]
   },
   "IncT4x_5": {
     "dataset": "4X",
     "BKS": 43396.022,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_5.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 6
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 147
+      },
+      {
+        "period": 4,
+        "process": 144
+      },
+      {
+        "period": 5,
+        "process": 42
+      },
+      {
+        "period": 6,
+        "process": 151
+      },
+      {
+        "period": 7,
+        "process": 151
+      },
+      {
+        "period": 8,
+        "process": 86
+      },
+      {
+        "period": 9,
+        "process": 159
+      },
+      {
+        "period": 10,
+        "process": 148
+      },
+      {
+        "period": 11,
+        "process": 148
+      },
+      {
+        "period": 12,
+        "process": 150
+      },
+      {
+        "period": 13,
+        "process": 143
+      },
+      {
+        "period": 14,
+        "process": 140
+      },
+      {
+        "period": 15,
+        "process": 145
+      },
+      {
+        "period": 16,
+        "process": 146
+      },
+      {
+        "period": 17,
+        "process": 142
+      },
+      {
+        "period": 18,
+        "process": 150
+      },
+      {
+        "period": 19,
+        "process": 156
+      },
+      {
+        "period": 20,
+        "process": 156
+      },
+      {
+        "period": 21,
+        "process": 147
+      },
+      {
+        "period": 22,
+        "process": 144
+      },
+      {
+        "period": 23,
+        "process": 154
+      },
+      {
+        "period": 24,
+        "process": 159
+      },
+      {
+        "period": 25,
+        "process": 152
+      },
+      {
+        "period": 26,
+        "process": 155
+      },
+      {
+        "period": 27,
+        "process": 141
+      },
+      {
+        "period": 28,
+        "process": 146
+      },
+      {
+        "period": 29,
+        "process": 148
+      },
+      {
+        "period": 30,
+        "process": 149
+      },
+      {
+        "period": 31,
+        "process": 157
+      },
+      {
+        "period": 32,
+        "process": 145
+      },
+      {
+        "period": 33,
+        "process": 154
+      },
+      {
+        "period": 34,
+        "process": 157
+      },
+      {
+        "period": 35,
+        "process": 156
+      },
+      {
+        "period": 36,
+        "process": 142
+      },
+      {
+        "period": 37,
+        "process": 149
+      },
+      {
+        "period": 39,
+        "process": 143
+      },
+      {
+        "period": 40,
+        "process": 144
+      },
+      {
+        "period": 41,
+        "process": 154
+      },
+      {
+        "period": 42,
+        "process": 153
+      },
+      {
+        "period": 43,
+        "process": 159
+      },
+      {
+        "period": 44,
+        "process": 151
+      },
+      {
+        "period": 45,
+        "process": 151
+      },
+      {
+        "period": 46,
+        "process": 141
+      },
+      {
+        "period": 47,
+        "process": 152
+      },
+      {
+        "period": 48,
+        "process": 148
+      },
+      {
+        "period": 49,
+        "process": 155
+      },
+      {
+        "period": 50,
+        "process": 147
+      },
+      {
+        "period": 51,
+        "process": 150
+      },
+      {
+        "period": 52,
+        "process": 146
+      },
+      {
+        "period": 54,
+        "process": 145
+      },
+      {
+        "period": 55,
+        "process": 142
+      },
+      {
+        "period": 56,
+        "process": 149
+      },
+      {
+        "period": 58,
+        "process": 143
+      },
+      {
+        "period": 60,
+        "process": 144
+      },
+      {
+        "period": 61,
+        "process": 156
+      },
+      {
+        "period": 62,
+        "process": 154
+      },
+      {
+        "period": 63,
+        "process": 159
+      },
+      {
+        "period": 64,
+        "process": 151
+      },
+      {
+        "period": 65,
+        "process": 141
+      },
+      {
+        "period": 66,
+        "process": 152
+      },
+      {
+        "period": 67,
+        "process": 148
+      },
+      {
+        "period": 68,
+        "process": 155
+      },
+      {
+        "period": 69,
+        "process": 150
+      },
+      {
+        "period": 70,
+        "process": 150
+      },
+      {
+        "period": 71,
+        "process": 146
+      },
+      {
+        "period": 72,
+        "process": 146
+      },
+      {
+        "period": 73,
+        "process": 157
+      },
+      {
+        "period": 74,
+        "process": 142
+      },
+      {
+        "period": 75,
+        "process": 108
+      }
+    ]
   },
   "IncT4x_6": {
     "dataset": "4X",
     "BKS": 76811.29,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_6.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 19
+      },
+      {
+        "period": 2,
+        "process": 145
+      },
+      {
+        "period": 3,
+        "process": 150
+      },
+      {
+        "period": 4,
+        "process": 148
+      },
+      {
+        "period": 5,
+        "process": 151
+      },
+      {
+        "period": 6,
+        "process": 140
+      },
+      {
+        "period": 7,
+        "process": 53
+      },
+      {
+        "period": 8,
+        "process": 77
+      },
+      {
+        "period": 9,
+        "process": 139
+      },
+      {
+        "period": 10,
+        "process": 150
+      },
+      {
+        "period": 11,
+        "process": 146
+      },
+      {
+        "period": 12,
+        "process": 137
+      },
+      {
+        "period": 13,
+        "process": 120
+      },
+      {
+        "period": 14,
+        "process": 154
+      },
+      {
+        "period": 15,
+        "process": 147
+      },
+      {
+        "period": 16,
+        "process": 141
+      },
+      {
+        "period": 17,
+        "process": 143
+      },
+      {
+        "period": 18,
+        "process": 148
+      },
+      {
+        "period": 19,
+        "process": 145
+      },
+      {
+        "period": 20,
+        "process": 149
+      },
+      {
+        "period": 21,
+        "process": 151
+      },
+      {
+        "period": 22,
+        "process": 156
+      },
+      {
+        "period": 23,
+        "process": 154
+      },
+      {
+        "period": 24,
+        "process": 140
+      },
+      {
+        "period": 25,
+        "process": 147
+      },
+      {
+        "period": 27,
+        "process": 142
+      },
+      {
+        "period": 30,
+        "process": 146
+      },
+      {
+        "period": 31,
+        "process": 150
+      },
+      {
+        "period": 32,
+        "process": 148
+      },
+      {
+        "period": 33,
+        "process": 154
+      },
+      {
+        "period": 34,
+        "process": 146
+      },
+      {
+        "period": 35,
+        "process": 141
+      },
+      {
+        "period": 36,
+        "process": 143
+      },
+      {
+        "period": 37,
+        "process": 153
+      },
+      {
+        "period": 38,
+        "process": 145
+      },
+      {
+        "period": 39,
+        "process": 2
+      },
+      {
+        "period": 40,
+        "process": 155
+      },
+      {
+        "period": 41,
+        "process": 157
+      },
+      {
+        "period": 42,
+        "process": 157
+      },
+      {
+        "period": 43,
+        "process": 156
+      },
+      {
+        "period": 44,
+        "process": 150
+      },
+      {
+        "period": 45,
+        "process": 142
+      },
+      {
+        "period": 46,
+        "process": 148
+      },
+      {
+        "period": 49,
+        "process": 146
+      },
+      {
+        "period": 50,
+        "process": 152
+      },
+      {
+        "period": 51,
+        "process": 141
+      },
+      {
+        "period": 52,
+        "process": 155
+      },
+      {
+        "period": 53,
+        "process": 144
+      },
+      {
+        "period": 54,
+        "process": 150
+      },
+      {
+        "period": 55,
+        "process": 143
+      },
+      {
+        "period": 56,
+        "process": 145
+      },
+      {
+        "period": 57,
+        "process": 154
+      },
+      {
+        "period": 58,
+        "process": 159
+      },
+      {
+        "period": 59,
+        "process": 151
+      },
+      {
+        "period": 60,
+        "process": 148
+      },
+      {
+        "period": 61,
+        "process": 156
+      },
+      {
+        "period": 62,
+        "process": 142
+      },
+      {
+        "period": 63,
+        "process": 150
+      },
+      {
+        "period": 65,
+        "process": 146
+      },
+      {
+        "period": 68,
+        "process": 154
+      },
+      {
+        "period": 69,
+        "process": 146
+      },
+      {
+        "period": 70,
+        "process": 152
+      },
+      {
+        "period": 71,
+        "process": 155
+      },
+      {
+        "period": 72,
+        "process": 154
+      },
+      {
+        "period": 73,
+        "process": 154
+      },
+      {
+        "period": 74,
+        "process": 76
+      },
+      {
+        "period": 75,
+        "process": 154
+      },
+      {
+        "period": 76,
+        "process": 147
+      }
+    ]
   },
   "IncT4x_7": {
     "dataset": "4X",
@@ -3667,14 +6820,576 @@
   "IncT4x_8": {
     "dataset": "4X",
     "BKS": 174700.915,
-    "source_path": "3600s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results\\IncT4x_8.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 151
+      },
+      {
+        "period": 2,
+        "process": 148
+      },
+      {
+        "period": 3,
+        "process": 148
+      },
+      {
+        "period": 4,
+        "process": 150
+      },
+      {
+        "period": 5,
+        "process": 152
+      },
+      {
+        "period": 6,
+        "process": 141
+      },
+      {
+        "period": 7,
+        "process": 143
+      },
+      {
+        "period": 8,
+        "process": 150
+      },
+      {
+        "period": 9,
+        "process": 146
+      },
+      {
+        "period": 10,
+        "process": 142
+      },
+      {
+        "period": 11,
+        "process": 120
+      },
+      {
+        "period": 12,
+        "process": 139
+      },
+      {
+        "period": 13,
+        "process": 145
+      },
+      {
+        "period": 14,
+        "process": 137
+      },
+      {
+        "period": 15,
+        "process": 147
+      },
+      {
+        "period": 16,
+        "process": 146
+      },
+      {
+        "period": 17,
+        "process": 148
+      },
+      {
+        "period": 18,
+        "process": 145
+      },
+      {
+        "period": 19,
+        "process": 143
+      },
+      {
+        "period": 20,
+        "process": 148
+      },
+      {
+        "period": 21,
+        "process": 145
+      },
+      {
+        "period": 22,
+        "process": 152
+      },
+      {
+        "period": 23,
+        "process": 142
+      },
+      {
+        "period": 24,
+        "process": 141
+      },
+      {
+        "period": 25,
+        "process": 147
+      },
+      {
+        "period": 26,
+        "process": 157
+      },
+      {
+        "period": 27,
+        "process": 155
+      },
+      {
+        "period": 28,
+        "process": 151
+      },
+      {
+        "period": 29,
+        "process": 157
+      },
+      {
+        "period": 30,
+        "process": 157
+      },
+      {
+        "period": 31,
+        "process": 156
+      },
+      {
+        "period": 32,
+        "process": 154
+      },
+      {
+        "period": 33,
+        "process": 154
+      },
+      {
+        "period": 34,
+        "process": 150
+      },
+      {
+        "period": 35,
+        "process": 146
+      },
+      {
+        "period": 36,
+        "process": 154
+      },
+      {
+        "period": 37,
+        "process": 150
+      },
+      {
+        "period": 38,
+        "process": 142
+      },
+      {
+        "period": 39,
+        "process": 148
+      },
+      {
+        "period": 40,
+        "process": 11
+      },
+      {
+        "period": 41,
+        "process": 152
+      },
+      {
+        "period": 42,
+        "process": 157
+      },
+      {
+        "period": 43,
+        "process": 157
+      },
+      {
+        "period": 44,
+        "process": 141
+      },
+      {
+        "period": 45,
+        "process": 143
+      },
+      {
+        "period": 46,
+        "process": 157
+      },
+      {
+        "period": 47,
+        "process": 157
+      },
+      {
+        "period": 48,
+        "process": 154
+      },
+      {
+        "period": 51,
+        "process": 153
+      },
+      {
+        "period": 52,
+        "process": 155
+      },
+      {
+        "period": 53,
+        "process": 146
+      },
+      {
+        "period": 54,
+        "process": 145
+      },
+      {
+        "period": 55,
+        "process": 150
+      },
+      {
+        "period": 56,
+        "process": 150
+      },
+      {
+        "period": 57,
+        "process": 142
+      },
+      {
+        "period": 58,
+        "process": 151
+      },
+      {
+        "period": 59,
+        "process": 148
+      },
+      {
+        "period": 60,
+        "process": 152
+      },
+      {
+        "period": 62,
+        "process": 156
+      },
+      {
+        "period": 63,
+        "process": 141
+      },
+      {
+        "period": 64,
+        "process": 143
+      },
+      {
+        "period": 65,
+        "process": 159
+      },
+      {
+        "period": 66,
+        "process": 157
+      },
+      {
+        "period": 68,
+        "process": 146
+      },
+      {
+        "period": 70,
+        "process": 155
+      },
+      {
+        "period": 72,
+        "process": 147
+      },
+      {
+        "period": 73,
+        "process": 1
+      },
+      {
+        "period": 74,
+        "process": 149
+      },
+      {
+        "period": 75,
+        "process": 2
+      },
+      {
+        "period": 76,
+        "process": 151
+      }
+    ]
   },
   "IncT4x_9": {
     "dataset": "4X",
     "BKS": 24689.228,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\4X\\results_3horas\\IncT4x_9.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 145
+      },
+      {
+        "period": 2,
+        "process": 133
+      },
+      {
+        "period": 3,
+        "process": 146
+      },
+      {
+        "period": 4,
+        "process": 42
+      },
+      {
+        "period": 5,
+        "process": 126
+      },
+      {
+        "period": 6,
+        "process": 148
+      },
+      {
+        "period": 7,
+        "process": 148
+      },
+      {
+        "period": 8,
+        "process": 151
+      },
+      {
+        "period": 9,
+        "process": 147
+      },
+      {
+        "period": 10,
+        "process": 143
+      },
+      {
+        "period": 11,
+        "process": 150
+      },
+      {
+        "period": 12,
+        "process": 159
+      },
+      {
+        "period": 13,
+        "process": 142
+      },
+      {
+        "period": 14,
+        "process": 141
+      },
+      {
+        "period": 15,
+        "process": 145
+      },
+      {
+        "period": 16,
+        "process": 150
+      },
+      {
+        "period": 17,
+        "process": 154
+      },
+      {
+        "period": 18,
+        "process": 156
+      },
+      {
+        "period": 19,
+        "process": 154
+      },
+      {
+        "period": 20,
+        "process": 153
+      },
+      {
+        "period": 21,
+        "process": 144
+      },
+      {
+        "period": 22,
+        "process": 146
+      },
+      {
+        "period": 23,
+        "process": 152
+      },
+      {
+        "period": 24,
+        "process": 148
+      },
+      {
+        "period": 26,
+        "process": 155
+      },
+      {
+        "period": 27,
+        "process": 151
+      },
+      {
+        "period": 28,
+        "process": 142
+      },
+      {
+        "period": 30,
+        "process": 159
+      },
+      {
+        "period": 31,
+        "process": 141
+      },
+      {
+        "period": 32,
+        "process": 149
+      },
+      {
+        "period": 33,
+        "process": 143
+      },
+      {
+        "period": 34,
+        "process": 145
+      },
+      {
+        "period": 35,
+        "process": 156
+      },
+      {
+        "period": 36,
+        "process": 149
+      },
+      {
+        "period": 37,
+        "process": 147
+      },
+      {
+        "period": 38,
+        "process": 140
+      },
+      {
+        "period": 40,
+        "process": 144
+      },
+      {
+        "period": 41,
+        "process": 146
+      },
+      {
+        "period": 42,
+        "process": 152
+      },
+      {
+        "period": 43,
+        "process": 148
+      },
+      {
+        "period": 44,
+        "process": 155
+      },
+      {
+        "period": 45,
+        "process": 154
+      },
+      {
+        "period": 46,
+        "process": 151
+      },
+      {
+        "period": 47,
+        "process": 150
+      },
+      {
+        "period": 49,
+        "process": 159
+      },
+      {
+        "period": 50,
+        "process": 156
+      },
+      {
+        "period": 51,
+        "process": 141
+      },
+      {
+        "period": 52,
+        "process": 18
+      },
+      {
+        "period": 53,
+        "process": 143
+      },
+      {
+        "period": 55,
+        "process": 150
+      },
+      {
+        "period": 56,
+        "process": 157
+      },
+      {
+        "period": 57,
+        "process": 146
+      },
+      {
+        "period": 58,
+        "process": 154
+      },
+      {
+        "period": 59,
+        "process": 152
+      },
+      {
+        "period": 60,
+        "process": 145
+      },
+      {
+        "period": 61,
+        "process": 152
+      },
+      {
+        "period": 62,
+        "process": 148
+      },
+      {
+        "period": 64,
+        "process": 155
+      },
+      {
+        "period": 65,
+        "process": 151
+      },
+      {
+        "period": 66,
+        "process": 142
+      },
+      {
+        "period": 67,
+        "process": 156
+      },
+      {
+        "period": 68,
+        "process": 159
+      },
+      {
+        "period": 69,
+        "process": 141
+      },
+      {
+        "period": 70,
+        "process": 150
+      },
+      {
+        "period": 71,
+        "process": 144
+      },
+      {
+        "period": 72,
+        "process": 143
+      },
+      {
+        "period": 73,
+        "process": 157
+      },
+      {
+        "period": 74,
+        "process": 149
+      },
+      {
+        "period": 75,
+        "process": 147
+      },
+      {
+        "period": 76,
+        "process": 144
+      }
+    ]
   },
   "IncT5x_1": {
     "dataset": "5X",
@@ -4760,38 +8475,2112 @@
   "IncT5x_3": {
     "dataset": "5X",
     "BKS": 53570.461,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\5X\\results_3horas\\IncT5x_3.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 150
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 148
+      },
+      {
+        "period": 4,
+        "process": 42
+      },
+      {
+        "period": 5,
+        "process": 140
+      },
+      {
+        "period": 6,
+        "process": 86
+      },
+      {
+        "period": 7,
+        "process": 146
+      },
+      {
+        "period": 8,
+        "process": 5
+      },
+      {
+        "period": 9,
+        "process": 149
+      },
+      {
+        "period": 10,
+        "process": 145
+      },
+      {
+        "period": 11,
+        "process": 159
+      },
+      {
+        "period": 12,
+        "process": 147
+      },
+      {
+        "period": 13,
+        "process": 140
+      },
+      {
+        "period": 14,
+        "process": 151
+      },
+      {
+        "period": 15,
+        "process": 126
+      },
+      {
+        "period": 16,
+        "process": 154
+      },
+      {
+        "period": 17,
+        "process": 144
+      },
+      {
+        "period": 18,
+        "process": 152
+      },
+      {
+        "period": 19,
+        "process": 150
+      },
+      {
+        "period": 20,
+        "process": 133
+      },
+      {
+        "period": 21,
+        "process": 154
+      },
+      {
+        "period": 22,
+        "process": 159
+      },
+      {
+        "period": 23,
+        "process": 151
+      },
+      {
+        "period": 24,
+        "process": 142
+      },
+      {
+        "period": 25,
+        "process": 141
+      },
+      {
+        "period": 26,
+        "process": 146
+      },
+      {
+        "period": 27,
+        "process": 149
+      },
+      {
+        "period": 28,
+        "process": 153
+      },
+      {
+        "period": 29,
+        "process": 145
+      },
+      {
+        "period": 30,
+        "process": 153
+      },
+      {
+        "period": 31,
+        "process": 156
+      },
+      {
+        "period": 32,
+        "process": 155
+      },
+      {
+        "period": 33,
+        "process": 147
+      },
+      {
+        "period": 34,
+        "process": 154
+      },
+      {
+        "period": 35,
+        "process": 148
+      },
+      {
+        "period": 36,
+        "process": 143
+      },
+      {
+        "period": 37,
+        "process": 146
+      },
+      {
+        "period": 39,
+        "process": 150
+      },
+      {
+        "period": 40,
+        "process": 152
+      },
+      {
+        "period": 41,
+        "process": 142
+      },
+      {
+        "period": 42,
+        "process": 159
+      },
+      {
+        "period": 43,
+        "process": 151
+      },
+      {
+        "period": 44,
+        "process": 141
+      },
+      {
+        "period": 46,
+        "process": 149
+      },
+      {
+        "period": 48,
+        "process": 145
+      },
+      {
+        "period": 49,
+        "process": 157
+      },
+      {
+        "period": 50,
+        "process": 156
+      },
+      {
+        "period": 51,
+        "process": 155
+      },
+      {
+        "period": 52,
+        "process": 152
+      },
+      {
+        "period": 53,
+        "process": 146
+      },
+      {
+        "period": 54,
+        "process": 138
+      },
+      {
+        "period": 55,
+        "process": 148
+      },
+      {
+        "period": 56,
+        "process": 147
+      },
+      {
+        "period": 57,
+        "process": 142
+      },
+      {
+        "period": 58,
+        "process": 150
+      },
+      {
+        "period": 59,
+        "process": 133
+      },
+      {
+        "period": 60,
+        "process": 153
+      },
+      {
+        "period": 61,
+        "process": 159
+      },
+      {
+        "period": 62,
+        "process": 151
+      },
+      {
+        "period": 63,
+        "process": 141
+      },
+      {
+        "period": 65,
+        "process": 148
+      },
+      {
+        "period": 66,
+        "process": 150
+      },
+      {
+        "period": 67,
+        "process": 145
+      },
+      {
+        "period": 69,
+        "process": 156
+      },
+      {
+        "period": 70,
+        "process": 156
+      },
+      {
+        "period": 72,
+        "process": 142
+      },
+      {
+        "period": 73,
+        "process": 146
+      },
+      {
+        "period": 74,
+        "process": 148
+      },
+      {
+        "period": 75,
+        "process": 146
+      },
+      {
+        "period": 76,
+        "process": 151
+      },
+      {
+        "period": 77,
+        "process": 150
+      },
+      {
+        "period": 78,
+        "process": 143
+      },
+      {
+        "period": 79,
+        "process": 152
+      },
+      {
+        "period": 80,
+        "process": 159
+      },
+      {
+        "period": 82,
+        "process": 141
+      },
+      {
+        "period": 83,
+        "process": 155
+      },
+      {
+        "period": 84,
+        "process": 144
+      },
+      {
+        "period": 85,
+        "process": 149
+      },
+      {
+        "period": 86,
+        "process": 145
+      },
+      {
+        "period": 89,
+        "process": 156
+      },
+      {
+        "period": 90,
+        "process": 142
+      },
+      {
+        "period": 91,
+        "process": 154
+      },
+      {
+        "period": 92,
+        "process": 146
+      },
+      {
+        "period": 93,
+        "process": 148
+      },
+      {
+        "period": 94,
+        "process": 147
+      }
+    ]
   },
   "IncT5x_4": {
     "dataset": "5X",
     "BKS": 141043.753,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\5X\\results_3horas\\IncT5x_4.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 145
+      },
+      {
+        "period": 2,
+        "process": 150
+      },
+      {
+        "period": 3,
+        "process": 148
+      },
+      {
+        "period": 4,
+        "process": 145
+      },
+      {
+        "period": 5,
+        "process": 145
+      },
+      {
+        "period": 6,
+        "process": 143
+      },
+      {
+        "period": 7,
+        "process": 141
+      },
+      {
+        "period": 8,
+        "process": 137
+      },
+      {
+        "period": 9,
+        "process": 150
+      },
+      {
+        "period": 10,
+        "process": 146
+      },
+      {
+        "period": 11,
+        "process": 139
+      },
+      {
+        "period": 12,
+        "process": 120
+      },
+      {
+        "period": 13,
+        "process": 147
+      },
+      {
+        "period": 14,
+        "process": 142
+      },
+      {
+        "period": 15,
+        "process": 152
+      },
+      {
+        "period": 16,
+        "process": 148
+      },
+      {
+        "period": 17,
+        "process": 146
+      },
+      {
+        "period": 18,
+        "process": 153
+      },
+      {
+        "period": 19,
+        "process": 143
+      },
+      {
+        "period": 20,
+        "process": 152
+      },
+      {
+        "period": 21,
+        "process": 152
+      },
+      {
+        "period": 22,
+        "process": 150
+      },
+      {
+        "period": 23,
+        "process": 142
+      },
+      {
+        "period": 24,
+        "process": 146
+      },
+      {
+        "period": 25,
+        "process": 157
+      },
+      {
+        "period": 26,
+        "process": 141
+      },
+      {
+        "period": 27,
+        "process": 151
+      },
+      {
+        "period": 28,
+        "process": 155
+      },
+      {
+        "period": 30,
+        "process": 149
+      },
+      {
+        "period": 31,
+        "process": 157
+      },
+      {
+        "period": 32,
+        "process": 156
+      },
+      {
+        "period": 33,
+        "process": 155
+      },
+      {
+        "period": 34,
+        "process": 11
+      },
+      {
+        "period": 35,
+        "process": 19
+      },
+      {
+        "period": 36,
+        "process": 147
+      },
+      {
+        "period": 37,
+        "process": 153
+      },
+      {
+        "period": 38,
+        "process": 143
+      },
+      {
+        "period": 39,
+        "process": 153
+      },
+      {
+        "period": 40,
+        "process": 152
+      },
+      {
+        "period": 41,
+        "process": 144
+      },
+      {
+        "period": 42,
+        "process": 142
+      },
+      {
+        "period": 43,
+        "process": 146
+      },
+      {
+        "period": 44,
+        "process": 157
+      },
+      {
+        "period": 45,
+        "process": 141
+      },
+      {
+        "period": 46,
+        "process": 151
+      },
+      {
+        "period": 47,
+        "process": 150
+      },
+      {
+        "period": 50,
+        "process": 156
+      },
+      {
+        "period": 51,
+        "process": 154
+      },
+      {
+        "period": 52,
+        "process": 148
+      },
+      {
+        "period": 53,
+        "process": 145
+      },
+      {
+        "period": 54,
+        "process": 148
+      },
+      {
+        "period": 55,
+        "process": 150
+      },
+      {
+        "period": 56,
+        "process": 153
+      },
+      {
+        "period": 57,
+        "process": 143
+      },
+      {
+        "period": 58,
+        "process": 159
+      },
+      {
+        "period": 59,
+        "process": 142
+      },
+      {
+        "period": 60,
+        "process": 141
+      },
+      {
+        "period": 61,
+        "process": 146
+      },
+      {
+        "period": 62,
+        "process": 146
+      },
+      {
+        "period": 63,
+        "process": 157
+      },
+      {
+        "period": 64,
+        "process": 155
+      },
+      {
+        "period": 65,
+        "process": 155
+      },
+      {
+        "period": 66,
+        "process": 147
+      },
+      {
+        "period": 68,
+        "process": 149
+      },
+      {
+        "period": 69,
+        "process": 156
+      },
+      {
+        "period": 70,
+        "process": 154
+      },
+      {
+        "period": 71,
+        "process": 155
+      },
+      {
+        "period": 72,
+        "process": 145
+      },
+      {
+        "period": 73,
+        "process": 148
+      },
+      {
+        "period": 74,
+        "process": 149
+      },
+      {
+        "period": 75,
+        "process": 152
+      },
+      {
+        "period": 76,
+        "process": 143
+      },
+      {
+        "period": 77,
+        "process": 159
+      },
+      {
+        "period": 78,
+        "process": 152
+      },
+      {
+        "period": 79,
+        "process": 142
+      },
+      {
+        "period": 80,
+        "process": 151
+      },
+      {
+        "period": 81,
+        "process": 146
+      },
+      {
+        "period": 82,
+        "process": 156
+      },
+      {
+        "period": 83,
+        "process": 141
+      },
+      {
+        "period": 84,
+        "process": 147
+      },
+      {
+        "period": 85,
+        "process": 150
+      },
+      {
+        "period": 89,
+        "process": 155
+      },
+      {
+        "period": 90,
+        "process": 149
+      },
+      {
+        "period": 91,
+        "process": 145
+      },
+      {
+        "period": 92,
+        "process": 151
+      },
+      {
+        "period": 93,
+        "process": 154
+      },
+      {
+        "period": 94,
+        "process": 158
+      },
+      {
+        "period": 95,
+        "process": 138
+      }
+    ]
   },
   "IncT5x_5": {
     "dataset": "5X",
     "BKS": 46138.191,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\5X\\results_3horas\\IncT5x_5.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 6
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 147
+      },
+      {
+        "period": 4,
+        "process": 144
+      },
+      {
+        "period": 5,
+        "process": 42
+      },
+      {
+        "period": 6,
+        "process": 151
+      },
+      {
+        "period": 7,
+        "process": 151
+      },
+      {
+        "period": 8,
+        "process": 86
+      },
+      {
+        "period": 9,
+        "process": 159
+      },
+      {
+        "period": 10,
+        "process": 148
+      },
+      {
+        "period": 11,
+        "process": 148
+      },
+      {
+        "period": 12,
+        "process": 150
+      },
+      {
+        "period": 13,
+        "process": 143
+      },
+      {
+        "period": 14,
+        "process": 140
+      },
+      {
+        "period": 15,
+        "process": 145
+      },
+      {
+        "period": 16,
+        "process": 146
+      },
+      {
+        "period": 17,
+        "process": 142
+      },
+      {
+        "period": 18,
+        "process": 150
+      },
+      {
+        "period": 19,
+        "process": 156
+      },
+      {
+        "period": 20,
+        "process": 156
+      },
+      {
+        "period": 21,
+        "process": 147
+      },
+      {
+        "period": 22,
+        "process": 144
+      },
+      {
+        "period": 23,
+        "process": 154
+      },
+      {
+        "period": 24,
+        "process": 159
+      },
+      {
+        "period": 25,
+        "process": 152
+      },
+      {
+        "period": 26,
+        "process": 155
+      },
+      {
+        "period": 27,
+        "process": 141
+      },
+      {
+        "period": 28,
+        "process": 146
+      },
+      {
+        "period": 29,
+        "process": 148
+      },
+      {
+        "period": 30,
+        "process": 149
+      },
+      {
+        "period": 31,
+        "process": 157
+      },
+      {
+        "period": 32,
+        "process": 145
+      },
+      {
+        "period": 33,
+        "process": 154
+      },
+      {
+        "period": 34,
+        "process": 157
+      },
+      {
+        "period": 35,
+        "process": 156
+      },
+      {
+        "period": 36,
+        "process": 142
+      },
+      {
+        "period": 37,
+        "process": 149
+      },
+      {
+        "period": 39,
+        "process": 143
+      },
+      {
+        "period": 40,
+        "process": 144
+      },
+      {
+        "period": 41,
+        "process": 154
+      },
+      {
+        "period": 42,
+        "process": 153
+      },
+      {
+        "period": 43,
+        "process": 159
+      },
+      {
+        "period": 44,
+        "process": 151
+      },
+      {
+        "period": 45,
+        "process": 151
+      },
+      {
+        "period": 46,
+        "process": 141
+      },
+      {
+        "period": 47,
+        "process": 152
+      },
+      {
+        "period": 48,
+        "process": 148
+      },
+      {
+        "period": 49,
+        "process": 155
+      },
+      {
+        "period": 50,
+        "process": 147
+      },
+      {
+        "period": 51,
+        "process": 150
+      },
+      {
+        "period": 52,
+        "process": 146
+      },
+      {
+        "period": 54,
+        "process": 145
+      },
+      {
+        "period": 55,
+        "process": 142
+      },
+      {
+        "period": 56,
+        "process": 149
+      },
+      {
+        "period": 58,
+        "process": 143
+      },
+      {
+        "period": 60,
+        "process": 144
+      },
+      {
+        "period": 61,
+        "process": 156
+      },
+      {
+        "period": 62,
+        "process": 154
+      },
+      {
+        "period": 63,
+        "process": 159
+      },
+      {
+        "period": 64,
+        "process": 151
+      },
+      {
+        "period": 65,
+        "process": 141
+      },
+      {
+        "period": 66,
+        "process": 152
+      },
+      {
+        "period": 67,
+        "process": 148
+      },
+      {
+        "period": 68,
+        "process": 155
+      },
+      {
+        "period": 69,
+        "process": 147
+      },
+      {
+        "period": 70,
+        "process": 150
+      },
+      {
+        "period": 71,
+        "process": 146
+      },
+      {
+        "period": 72,
+        "process": 145
+      },
+      {
+        "period": 73,
+        "process": 156
+      },
+      {
+        "period": 74,
+        "process": 142
+      },
+      {
+        "period": 75,
+        "process": 149
+      },
+      {
+        "period": 77,
+        "process": 143
+      },
+      {
+        "period": 79,
+        "process": 144
+      },
+      {
+        "period": 81,
+        "process": 154
+      },
+      {
+        "period": 82,
+        "process": 159
+      },
+      {
+        "period": 83,
+        "process": 151
+      },
+      {
+        "period": 84,
+        "process": 141
+      },
+      {
+        "period": 85,
+        "process": 148
+      },
+      {
+        "period": 86,
+        "process": 152
+      },
+      {
+        "period": 87,
+        "process": 140
+      },
+      {
+        "period": 88,
+        "process": 150
+      },
+      {
+        "period": 89,
+        "process": 150
+      },
+      {
+        "period": 90,
+        "process": 146
+      },
+      {
+        "period": 91,
+        "process": 146
+      },
+      {
+        "period": 92,
+        "process": 157
+      },
+      {
+        "period": 93,
+        "process": 142
+      },
+      {
+        "period": 94,
+        "process": 108
+      }
+    ]
   },
   "IncT5x_6": {
     "dataset": "5X",
     "BKS": 80612.087,
-    "source_path": "3600s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\5X\\results\\IncT5x_6.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 19
+      },
+      {
+        "period": 2,
+        "process": 145
+      },
+      {
+        "period": 3,
+        "process": 150
+      },
+      {
+        "period": 4,
+        "process": 148
+      },
+      {
+        "period": 5,
+        "process": 151
+      },
+      {
+        "period": 6,
+        "process": 140
+      },
+      {
+        "period": 7,
+        "process": 53
+      },
+      {
+        "period": 8,
+        "process": 77
+      },
+      {
+        "period": 9,
+        "process": 139
+      },
+      {
+        "period": 10,
+        "process": 150
+      },
+      {
+        "period": 11,
+        "process": 146
+      },
+      {
+        "period": 12,
+        "process": 137
+      },
+      {
+        "period": 13,
+        "process": 120
+      },
+      {
+        "period": 14,
+        "process": 143
+      },
+      {
+        "period": 15,
+        "process": 147
+      },
+      {
+        "period": 16,
+        "process": 143
+      },
+      {
+        "period": 17,
+        "process": 141
+      },
+      {
+        "period": 18,
+        "process": 148
+      },
+      {
+        "period": 19,
+        "process": 145
+      },
+      {
+        "period": 20,
+        "process": 149
+      },
+      {
+        "period": 21,
+        "process": 151
+      },
+      {
+        "period": 22,
+        "process": 157
+      },
+      {
+        "period": 23,
+        "process": 157
+      },
+      {
+        "period": 24,
+        "process": 157
+      },
+      {
+        "period": 25,
+        "process": 150
+      },
+      {
+        "period": 26,
+        "process": 146
+      },
+      {
+        "period": 27,
+        "process": 142
+      },
+      {
+        "period": 28,
+        "process": 153
+      },
+      {
+        "period": 30,
+        "process": 153
+      },
+      {
+        "period": 31,
+        "process": 146
+      },
+      {
+        "period": 32,
+        "process": 148
+      },
+      {
+        "period": 33,
+        "process": 156
+      },
+      {
+        "period": 34,
+        "process": 141
+      },
+      {
+        "period": 35,
+        "process": 138
+      },
+      {
+        "period": 36,
+        "process": 150
+      },
+      {
+        "period": 37,
+        "process": 147
+      },
+      {
+        "period": 38,
+        "process": 145
+      },
+      {
+        "period": 39,
+        "process": 155
+      },
+      {
+        "period": 40,
+        "process": 18
+      },
+      {
+        "period": 41,
+        "process": 157
+      },
+      {
+        "period": 42,
+        "process": 157
+      },
+      {
+        "period": 43,
+        "process": 142
+      },
+      {
+        "period": 45,
+        "process": 152
+      },
+      {
+        "period": 46,
+        "process": 148
+      },
+      {
+        "period": 49,
+        "process": 146
+      },
+      {
+        "period": 50,
+        "process": 152
+      },
+      {
+        "period": 51,
+        "process": 150
+      },
+      {
+        "period": 52,
+        "process": 155
+      },
+      {
+        "period": 53,
+        "process": 156
+      },
+      {
+        "period": 54,
+        "process": 156
+      },
+      {
+        "period": 55,
+        "process": 144
+      },
+      {
+        "period": 56,
+        "process": 145
+      },
+      {
+        "period": 57,
+        "process": 159
+      },
+      {
+        "period": 58,
+        "process": 149
+      },
+      {
+        "period": 59,
+        "process": 151
+      },
+      {
+        "period": 61,
+        "process": 142
+      },
+      {
+        "period": 62,
+        "process": 141
+      },
+      {
+        "period": 63,
+        "process": 150
+      },
+      {
+        "period": 64,
+        "process": 143
+      },
+      {
+        "period": 65,
+        "process": 148
+      },
+      {
+        "period": 66,
+        "process": 152
+      },
+      {
+        "period": 68,
+        "process": 146
+      },
+      {
+        "period": 70,
+        "process": 148
+      },
+      {
+        "period": 71,
+        "process": 157
+      },
+      {
+        "period": 72,
+        "process": 156
+      },
+      {
+        "period": 73,
+        "process": 159
+      },
+      {
+        "period": 74,
+        "process": 155
+      },
+      {
+        "period": 75,
+        "process": 145
+      },
+      {
+        "period": 76,
+        "process": 147
+      },
+      {
+        "period": 77,
+        "process": 150
+      },
+      {
+        "period": 78,
+        "process": 146
+      },
+      {
+        "period": 79,
+        "process": 157
+      },
+      {
+        "period": 80,
+        "process": 157
+      },
+      {
+        "period": 81,
+        "process": 141
+      },
+      {
+        "period": 82,
+        "process": 142
+      },
+      {
+        "period": 83,
+        "process": 143
+      },
+      {
+        "period": 84,
+        "process": 148
+      },
+      {
+        "period": 85,
+        "process": 148
+      },
+      {
+        "period": 87,
+        "process": 146
+      },
+      {
+        "period": 88,
+        "process": 148
+      },
+      {
+        "period": 89,
+        "process": 149
+      },
+      {
+        "period": 93,
+        "process": 155
+      },
+      {
+        "period": 94,
+        "process": 145
+      },
+      {
+        "period": 95,
+        "process": 153
+      }
+    ]
   },
   "IncT5x_7": {
     "dataset": "5X",
     "BKS": 22166.183,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\5X\\results_3horas\\IncT5x_7.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 151
+      },
+      {
+        "period": 2,
+        "process": 143
+      },
+      {
+        "period": 3,
+        "process": 152
+      },
+      {
+        "period": 4,
+        "process": 78
+      },
+      {
+        "period": 5,
+        "process": 150
+      },
+      {
+        "period": 6,
+        "process": 145
+      },
+      {
+        "period": 7,
+        "process": 147
+      },
+      {
+        "period": 8,
+        "process": 148
+      },
+      {
+        "period": 9,
+        "process": 148
+      },
+      {
+        "period": 10,
+        "process": 42
+      },
+      {
+        "period": 11,
+        "process": 146
+      },
+      {
+        "period": 12,
+        "process": 150
+      },
+      {
+        "period": 13,
+        "process": 139
+      },
+      {
+        "period": 14,
+        "process": 144
+      },
+      {
+        "period": 15,
+        "process": 159
+      },
+      {
+        "period": 16,
+        "process": 141
+      },
+      {
+        "period": 17,
+        "process": 140
+      },
+      {
+        "period": 18,
+        "process": 154
+      },
+      {
+        "period": 20,
+        "process": 143
+      },
+      {
+        "period": 21,
+        "process": 158
+      },
+      {
+        "period": 22,
+        "process": 151
+      },
+      {
+        "period": 23,
+        "process": 153
+      },
+      {
+        "period": 24,
+        "process": 149
+      },
+      {
+        "period": 25,
+        "process": 145
+      },
+      {
+        "period": 26,
+        "process": 152
+      },
+      {
+        "period": 27,
+        "process": 142
+      },
+      {
+        "period": 28,
+        "process": 146
+      },
+      {
+        "period": 29,
+        "process": 147
+      },
+      {
+        "period": 30,
+        "process": 149
+      },
+      {
+        "period": 31,
+        "process": 145
+      },
+      {
+        "period": 32,
+        "process": 157
+      },
+      {
+        "period": 33,
+        "process": 156
+      },
+      {
+        "period": 34,
+        "process": 159
+      },
+      {
+        "period": 35,
+        "process": 141
+      },
+      {
+        "period": 36,
+        "process": 155
+      },
+      {
+        "period": 37,
+        "process": 143
+      },
+      {
+        "period": 40,
+        "process": 152
+      },
+      {
+        "period": 41,
+        "process": 146
+      },
+      {
+        "period": 42,
+        "process": 152
+      },
+      {
+        "period": 43,
+        "process": 150
+      },
+      {
+        "period": 44,
+        "process": 145
+      },
+      {
+        "period": 45,
+        "process": 148
+      },
+      {
+        "period": 46,
+        "process": 142
+      },
+      {
+        "period": 48,
+        "process": 156
+      },
+      {
+        "period": 49,
+        "process": 148
+      },
+      {
+        "period": 50,
+        "process": 150
+      },
+      {
+        "period": 51,
+        "process": 146
+      },
+      {
+        "period": 52,
+        "process": 159
+      },
+      {
+        "period": 53,
+        "process": 141
+      },
+      {
+        "period": 54,
+        "process": 155
+      },
+      {
+        "period": 55,
+        "process": 155
+      },
+      {
+        "period": 56,
+        "process": 143
+      },
+      {
+        "period": 59,
+        "process": 152
+      },
+      {
+        "period": 60,
+        "process": 146
+      },
+      {
+        "period": 61,
+        "process": 142
+      },
+      {
+        "period": 62,
+        "process": 150
+      },
+      {
+        "period": 63,
+        "process": 145
+      },
+      {
+        "period": 64,
+        "process": 148
+      },
+      {
+        "period": 65,
+        "process": 147
+      },
+      {
+        "period": 66,
+        "process": 157
+      },
+      {
+        "period": 67,
+        "process": 156
+      },
+      {
+        "period": 68,
+        "process": 144
+      },
+      {
+        "period": 69,
+        "process": 149
+      },
+      {
+        "period": 70,
+        "process": 159
+      },
+      {
+        "period": 71,
+        "process": 146
+      },
+      {
+        "period": 72,
+        "process": 141
+      },
+      {
+        "period": 73,
+        "process": 151
+      },
+      {
+        "period": 74,
+        "process": 155
+      },
+      {
+        "period": 75,
+        "process": 143
+      },
+      {
+        "period": 78,
+        "process": 157
+      },
+      {
+        "period": 79,
+        "process": 153
+      },
+      {
+        "period": 80,
+        "process": 152
+      },
+      {
+        "period": 81,
+        "process": 150
+      },
+      {
+        "period": 82,
+        "process": 145
+      },
+      {
+        "period": 83,
+        "process": 148
+      },
+      {
+        "period": 84,
+        "process": 142
+      },
+      {
+        "period": 85,
+        "process": 154
+      },
+      {
+        "period": 86,
+        "process": 156
+      },
+      {
+        "period": 87,
+        "process": 150
+      },
+      {
+        "period": 88,
+        "process": 159
+      },
+      {
+        "period": 89,
+        "process": 146
+      },
+      {
+        "period": 90,
+        "process": 141
+      },
+      {
+        "period": 91,
+        "process": 155
+      },
+      {
+        "period": 92,
+        "process": 11
+      },
+      {
+        "period": 93,
+        "process": 155
+      },
+      {
+        "period": 94,
+        "process": 138
+      }
+    ]
   },
   "IncT5x_8": {
     "dataset": "5X",
     "BKS": 177536.272,
-    "source_path": "10800s",
-    "schedule": []
+    "source_path": "experiments\\GAMSPy\\5X\\results_3horas\\IncT5x_8.json",
+    "schedule": [
+      {
+        "period": 1,
+        "process": 151
+      },
+      {
+        "period": 2,
+        "process": 148
+      },
+      {
+        "period": 3,
+        "process": 148
+      },
+      {
+        "period": 4,
+        "process": 150
+      },
+      {
+        "period": 5,
+        "process": 152
+      },
+      {
+        "period": 6,
+        "process": 141
+      },
+      {
+        "period": 7,
+        "process": 143
+      },
+      {
+        "period": 8,
+        "process": 150
+      },
+      {
+        "period": 9,
+        "process": 146
+      },
+      {
+        "period": 10,
+        "process": 142
+      },
+      {
+        "period": 11,
+        "process": 120
+      },
+      {
+        "period": 12,
+        "process": 139
+      },
+      {
+        "period": 13,
+        "process": 145
+      },
+      {
+        "period": 14,
+        "process": 137
+      },
+      {
+        "period": 15,
+        "process": 147
+      },
+      {
+        "period": 16,
+        "process": 146
+      },
+      {
+        "period": 17,
+        "process": 148
+      },
+      {
+        "period": 18,
+        "process": 145
+      },
+      {
+        "period": 19,
+        "process": 143
+      },
+      {
+        "period": 20,
+        "process": 148
+      },
+      {
+        "period": 21,
+        "process": 145
+      },
+      {
+        "period": 22,
+        "process": 152
+      },
+      {
+        "period": 23,
+        "process": 142
+      },
+      {
+        "period": 24,
+        "process": 141
+      },
+      {
+        "period": 25,
+        "process": 147
+      },
+      {
+        "period": 26,
+        "process": 157
+      },
+      {
+        "period": 27,
+        "process": 155
+      },
+      {
+        "period": 28,
+        "process": 151
+      },
+      {
+        "period": 29,
+        "process": 157
+      },
+      {
+        "period": 31,
+        "process": 156
+      },
+      {
+        "period": 32,
+        "process": 154
+      },
+      {
+        "period": 33,
+        "process": 154
+      },
+      {
+        "period": 34,
+        "process": 150
+      },
+      {
+        "period": 35,
+        "process": 146
+      },
+      {
+        "period": 36,
+        "process": 154
+      },
+      {
+        "period": 37,
+        "process": 150
+      },
+      {
+        "period": 38,
+        "process": 142
+      },
+      {
+        "period": 39,
+        "process": 148
+      },
+      {
+        "period": 40,
+        "process": 145
+      },
+      {
+        "period": 41,
+        "process": 152
+      },
+      {
+        "period": 42,
+        "process": 157
+      },
+      {
+        "period": 43,
+        "process": 157
+      },
+      {
+        "period": 44,
+        "process": 141
+      },
+      {
+        "period": 45,
+        "process": 143
+      },
+      {
+        "period": 46,
+        "process": 157
+      },
+      {
+        "period": 47,
+        "process": 157
+      },
+      {
+        "period": 49,
+        "process": 157
+      },
+      {
+        "period": 50,
+        "process": 154
+      },
+      {
+        "period": 51,
+        "process": 153
+      },
+      {
+        "period": 52,
+        "process": 155
+      },
+      {
+        "period": 53,
+        "process": 146
+      },
+      {
+        "period": 54,
+        "process": 11
+      },
+      {
+        "period": 55,
+        "process": 150
+      },
+      {
+        "period": 56,
+        "process": 150
+      },
+      {
+        "period": 57,
+        "process": 142
+      },
+      {
+        "period": 58,
+        "process": 151
+      },
+      {
+        "period": 59,
+        "process": 148
+      },
+      {
+        "period": 60,
+        "process": 152
+      },
+      {
+        "period": 62,
+        "process": 156
+      },
+      {
+        "period": 63,
+        "process": 141
+      },
+      {
+        "period": 64,
+        "process": 143
+      },
+      {
+        "period": 65,
+        "process": 159
+      },
+      {
+        "period": 66,
+        "process": 157
+      },
+      {
+        "period": 68,
+        "process": 146
+      },
+      {
+        "period": 69,
+        "process": 154
+      },
+      {
+        "period": 70,
+        "process": 155
+      },
+      {
+        "period": 71,
+        "process": 144
+      },
+      {
+        "period": 72,
+        "process": 147
+      },
+      {
+        "period": 73,
+        "process": 145
+      },
+      {
+        "period": 74,
+        "process": 2
+      },
+      {
+        "period": 75,
+        "process": 150
+      },
+      {
+        "period": 76,
+        "process": 142
+      },
+      {
+        "period": 77,
+        "process": 151
+      },
+      {
+        "period": 78,
+        "process": 148
+      },
+      {
+        "period": 79,
+        "process": 152
+      },
+      {
+        "period": 81,
+        "process": 156
+      },
+      {
+        "period": 82,
+        "process": 141
+      },
+      {
+        "period": 83,
+        "process": 143
+      },
+      {
+        "period": 84,
+        "process": 159
+      },
+      {
+        "period": 85,
+        "process": 157
+      },
+      {
+        "period": 87,
+        "process": 144
+      },
+      {
+        "period": 88,
+        "process": 149
+      },
+      {
+        "period": 90,
+        "process": 155
+      },
+      {
+        "period": 91,
+        "process": 146
+      },
+      {
+        "period": 92,
+        "process": 1
+      },
+      {
+        "period": 94,
+        "process": 149
+      },
+      {
+        "period": 95,
+        "process": 151
+      }
+    ]
   },
   "IncT5x_9": {
     "dataset": "5X",

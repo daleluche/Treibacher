@@ -6,4 +6,4 @@ International License (CC BY 4.0).
 Code files included for reproducibility are provided under the MIT License.
 
 This release contains anonymized benchmark instances derived from randomized demand
-profiles. It does not reproduce the plant's real order book.
+profiles. It does not include the plant's real order book.

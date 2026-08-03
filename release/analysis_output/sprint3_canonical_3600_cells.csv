@@ -49,13 +49,13 @@ dataset,instance,mip,rf+fo,rf+mip,source_cell
 8X,IncT8x_4,166073.216,160989.844,160602.997,post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2
 8X,IncT8x_5,59924.391,60653.804,58152.349,post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2
 8X,IncT8x_6,103833.803,97667.582,99419.134,post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2
-Real,Ale_1,86264.683,86317.983,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_10,5639.568,5658.468,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_2,99950.709,99950.709,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_3,39695.173,39695.173,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_4,127725.976,127800.463,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_5,35426.141,35439.916,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_6,66677.463,66677.463,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_7,10568.618,10568.618,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_8,160911.938,160911.938,,registered/production: CPLEX22_1h and Grade A rf+fo
-Real,Ale_9,15627.917,15635.217,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_1,36964.861,36975.311,,reconstructed S_1 supplement: mip/rf+fo from results_production/s1
+S,S_10,5639.568,5658.468,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_2,99950.709,99950.709,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_3,39695.173,39695.173,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_4,127725.976,127800.463,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_5,35426.141,35439.916,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_6,66677.463,66677.463,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_7,10568.618,10568.618,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_8,160911.938,160911.938,,registered/production: CPLEX22_1h and Grade A rf+fo
+S,S_9,15627.917,15635.217,,registered/production: CPLEX22_1h and Grade A rf+fo

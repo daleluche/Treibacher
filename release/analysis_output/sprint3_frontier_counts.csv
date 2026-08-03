@@ -1,7 +1,7 @@
 dataset,budget_s,winner,n,source_cell,mip,rf+mip,rf+fo
-Real,600,mip,10,production Grade B @600s,10,0,0
-Real,3600,mip,10,registered/production: CPLEX22_1h and Grade A rf+fo,10,0,0
-Real,10800,mip,10,registered CPLEX22_3h where available,10,0,0
+S,600,mip,10,production Grade B @600s,10,0,0
+S,3600,mip,10,reconstructed S_1 supplement: mip/rf+fo from results_production/s1; registered/production: CPLEX22_1h and Grade A rf+fo,10,0,0
+S,10800,mip,10,registered CPLEX22_3h where available,10,0,0
 2X,600,mip,10,production Grade B @600s,8,2,0
 2X,3600,mip,10,registered/production: CPLEX22_1h and Grade A rf+fo,10,0,0
 2X,10800,mip,10,registered CPLEX22_3h where available,10,0,0

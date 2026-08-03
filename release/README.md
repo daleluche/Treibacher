@@ -41,9 +41,12 @@ wall-clock budgets, and source paths where available. The production campaign us
 
 ## Anonymization
 
-The instances are derived from randomized and horizon-replicated demand profiles. No
-released instance reproduces the real commercial order book. Product names are technical
-item labels retained to preserve benchmark structure.
+The base family `S` contains ten randomized 19-period instances generated from a real
+order book that is not included in this release, following the anonymized benchmark
+construction of Luche et al. (2009). Larger families are horizon replications of `S`
+under the documented IncT construction. No released instance reproduces the real
+commercial order book. Product names are technical item labels retained to preserve
+benchmark structure.
 
 ## Licensing
 

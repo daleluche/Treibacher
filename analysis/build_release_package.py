@@ -13,7 +13,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 RELEASE = ROOT / "release"
 ZIP_PATH = RELEASE / "psp_electrofused_benchmark_v1.zip"
-DATASETS = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+DATASETS = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
 
 import sys
 
@@ -41,6 +41,25 @@ def copy_file(src: Path, dst: Path) -> None:
     shutil.copy2(src, dst)
 
 
+def copy_instance_script(src: Path, dst: Path, dataset: str) -> None:
+    """Copy a GAMSPy instance script, using the public dataset family label."""
+    copy_file(src, dst)
+    if dataset != "S":
+        return
+    text = dst.read_text(encoding="utf-8")
+    text = text.replace("DATASET    = 'Real'", "DATASET    = 'S'")
+    text = text.replace('DATASET    = "Real"', 'DATASET    = "S"')
+    dst.write_text(text, encoding="utf-8")
+
+
+def drop_retired_real_rows(frame: pd.DataFrame) -> pd.DataFrame:
+    """Remove the retired Ale_1 provenance rows from release-facing analysis CSVs."""
+    if {"dataset", "instance"}.issubset(frame.columns):
+        mask = (frame["dataset"].astype(str) == "Real") & (frame["instance"].astype(str) == "Ale_1")
+        return frame.loc[~mask].copy()
+    return frame
+
+
 def write_instances() -> None:
     """Write instance data in open JSON/CSV form and copy GAMSPy scripts."""
     rows_meta = []
@@ -49,10 +68,10 @@ def write_instances() -> None:
     for dataset in DATASETS:
         for path in sorted((ROOT / "experiments" / "GAMSPy" / dataset).glob("*.py")):
             inst = load_instance(path)
-            copy_file(path, RELEASE / "instances" / "gamspy_py" / dataset / path.name)
+            copy_instance_script(path, RELEASE / "instances" / "gamspy_py" / dataset / path.name, dataset)
             json_data = {
                 "name": inst.name,
-                "dataset": inst.dataset,
+                "dataset": dataset,
                 "T": inst.T,
                 "J": inst.J,
                 "I": inst.I,
@@ -75,7 +94,7 @@ def write_instances() -> None:
             out_json.write_text(json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8")
             rows_meta.append(
                 {
-                    "dataset": inst.dataset,
+                    "dataset": dataset,
                     "instance": inst.name,
                     "T": inst.T,
                     "J": inst.J,
@@ -166,7 +185,12 @@ def copy_analysis_outputs() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     for path in sorted((ROOT / "analysis" / "output").glob("*")):
         if path.is_file() and path.suffix.lower() in {".csv", ".md"}:
-            copy_file(path, out_dir / path.name)
+            dst = out_dir / path.name
+            if path.suffix.lower() == ".csv":
+                frame = drop_retired_real_rows(pd.read_csv(path))
+                frame.to_csv(dst, index=False)
+            else:
+                copy_file(path, dst)
 
 
 def copy_gamma_variant() -> None:
@@ -195,6 +219,8 @@ def copy_trajectories() -> None:
         "experiments/matheuristics/results_production/c_seeds/*.json",
     ]:
         for path in sorted(ROOT.glob(rel_glob)):
+            if path.stem == "Ale_1" or path.stem.startswith("Ale_1_"):
+                continue
             copy_file(path, traj_dir / rel(path))
 
 
@@ -204,6 +230,8 @@ def copy_window_logs() -> None:
     for directory in (ROOT / "experiments" / "matheuristics").rglob("window_logs"):
         for path in sorted(directory.glob("*")):
             if path.is_file() and path.suffix.lower() in {".parquet", ".csv"}:
+                if path.stem == "Ale_1" or path.stem.startswith("Ale_1_"):
+                    continue
                 copy_file(path, dst_root / rel(path))
 
 
@@ -217,7 +245,7 @@ International License (CC BY 4.0).
 Code files included for reproducibility are provided under the MIT License.
 
 This release contains anonymized benchmark instances derived from randomized demand
-profiles. It does not reproduce the plant's real order book.
+profiles. It does not include the plant's real order book.
 """
     (RELEASE / "LICENSE").write_text(text, encoding="utf-8")
 
@@ -267,9 +295,12 @@ wall-clock budgets, and source paths where available. The production campaign us
 
 ## Anonymization
 
-The instances are derived from randomized and horizon-replicated demand profiles. No
-released instance reproduces the real commercial order book. Product names are technical
-item labels retained to preserve benchmark structure.
+The base family `S` contains ten randomized 19-period instances generated from a real
+order book that is not included in this release, following the anonymized benchmark
+construction of Luche et al. (2009). Larger families are horizon replications of `S`
+under the documented IncT construction. No released instance reproduces the real
+commercial order book. Product names are technical item labels retained to preserve
+benchmark structure.
 
 ## Licensing
 
