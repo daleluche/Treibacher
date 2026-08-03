@@ -1,7 +1,7 @@
 # IncT instance generator
 
-This folder contains the deterministic generator used to extend the PSP real
-instances into larger IncT horizons.
+This folder contains the deterministic generator used to extend the homogeneous
+PSP set `S` into larger IncT horizons.
 
 ## Thesis rule
 
@@ -22,18 +22,18 @@ positive demand quantities are not split or resampled.
 ## Independent confirmation
 
 The implementation was independently checked against the existing generated
-GAMSPy datasets. Regenerating `2X`, `3X`, `4X`, and `5X` for `j = 2..10`
-reproduces all 36 available instances exactly:
+GAMSPy datasets. After reconstructing `S_1` from the first 19-period block of
+`IncT2X_1`, regenerating `2X`, `3X`, `4X`, and `5X` for `j = 1..10`
+reproduces all 40 available instances exactly:
 
 - `NUM_PERIODS`
 - `PRODUCTS`
 - `A_RECORDS`
 - `D_RECORDS`
 
-The suffix `_1` family is excluded from this exact correspondence because it is
-a legacy thesis instance with an external base that is not represented by the
-repository's `Ale_1` file. This is why the exact validation scope is
-`Ale_2..Ale_10`.
+The repository's legacy `Ale_1` file is not part of this homogeneous set:
+its horizon and process matrix differ from the `S` family. It is retained in
+the repository for provenance but is not used as an IncT base.
 
 ## Determinism
 
@@ -59,13 +59,13 @@ python experiments\instance_generator\generate_inct.py
 
 The Sprint 2.5 generation uses these base instances:
 
-- `Ale_2`
-- `Ale_3`
-- `Ale_4`
-- `Ale_5`
-- `Ale_6`
+- `S_2`
+- `S_3`
+- `S_4`
+- `S_5`
+- `S_6`
 
-This preserves the existing convention `IncTkX_j <-> Ale_j`, so the generated
+This preserves the existing convention `IncTkX_j <-> S_j`, so the generated
 files are:
 
 - `experiments/GAMSPy/8X/IncT8x_2.py` ... `IncT8x_6.py`

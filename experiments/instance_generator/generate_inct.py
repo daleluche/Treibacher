@@ -18,9 +18,9 @@ from experiments.matheuristics.psp_instance import PSPInstance, load_instance
 
 ROOT = Path(__file__).resolve().parents[2]
 GAMSPY_DIR = ROOT / "experiments" / "GAMSPy"
-REAL_DIR = GAMSPY_DIR / "Real"
-DEFAULT_BASES = ("Ale_2", "Ale_3", "Ale_4", "Ale_5", "Ale_6")
-VALIDATION_BASES = tuple(f"Ale_{idx}" for idx in range(2, 11))
+BASE_DIR = GAMSPY_DIR / "S"
+DEFAULT_BASES = ("S_2", "S_3", "S_4", "S_5", "S_6")
+VALIDATION_BASES = tuple(f"S_{idx}" for idx in range(1, 11))
 DEFAULT_PROVENANCE_SEED = 20260706
 
 
@@ -66,7 +66,7 @@ def replace_num_periods(text: str, periods: int) -> str:
 
 
 def base_suffix(base_name: str) -> int:
-    """Return the numeric suffix from an Ale_j instance name."""
+    """Return the numeric suffix from a base instance name."""
     return int(base_name.rsplit("_", 1)[1])
 
 
@@ -144,7 +144,7 @@ def generate_set(
     for base_name in selected_bases:
         suffix = base_suffix(base_name)
         instance = inct_instance_name(factor, suffix)
-        template_path = REAL_DIR / f"{base_name}.py"
+        template_path = BASE_DIR / f"{base_name}.py"
         text = render_instance(template_path, dataset=dataset, instance=instance, factor=factor)
         output_path = output_dir / f"{instance}.py"
         if not dry_run:
@@ -183,7 +183,7 @@ def products_literal(text: str) -> list[str]:
 
 
 def validate_exact_existing_families() -> dict[str, object]:
-    """Validate exact regeneration of IncT2X--IncT5x for Ale_2..Ale_10."""
+    """Validate exact regeneration of IncT2X--IncT5x for S_1..S_10."""
     temp_root = ROOT / "experiments" / "instance_generator" / "_tmp_validation"
     if temp_root.exists():
         for path in sorted(temp_root.rglob("*"), reverse=True):
@@ -201,7 +201,7 @@ def validate_exact_existing_families() -> dict[str, object]:
             instance = inct_instance_name(factor, suffix)
             existing_path = GAMSPY_DIR / dataset / f"{instance}.py"
             generated_text = render_instance(
-                REAL_DIR / f"{base_name}.py",
+                BASE_DIR / f"{base_name}.py",
                 dataset=dataset,
                 instance=instance,
                 factor=factor,
@@ -227,8 +227,8 @@ def validate_exact_existing_families() -> dict[str, object]:
             path.rmdir()
     passed = checked - len({(item["dataset"], item["instance"]) for item in failures})
     return {
-        "scope": "IncT2X--IncT5x, Ale_2--Ale_10 only",
-        "excluded": "family suffix _1 is legacy and has an external thesis base not present as Ale_1",
+        "scope": "IncT2X--IncT5x, S_1--S_10",
+        "excluded": None,
         "checked_instances": checked,
         "passed_instances": passed,
         "failed_instances": checked - passed,
