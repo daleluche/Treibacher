@@ -3,11 +3,13 @@ compute_gaps.py
 ===============
 Builds the master comparison table from analysis/output/master_runs.csv.
 
-The Sprint 3 table has one row per instance across Real, 2X, 3X, 4X, 5X,
+The Sprint 3 table has one row per instance across S, 2X, 3X, 4X, 5X,
 8X, and 10X. Best-known solutions (BKS) are computed from CPLEX, ILS, and
 matheuristic runs collected in master_runs.csv. GRASP_v1 remains in the raw
 master dataset but is excluded from comparison tables because the BKS
-safeguard detected legacy evaluator inconsistencies.
+safeguard detected legacy evaluator inconsistencies. The legacy Ale_1 record
+remains in master_runs.csv for provenance but is outside the paper comparison
+set and cannot enter any S-instance BKS.
 
 Run from the repository root:  python analysis/compute_gaps.py
 """
@@ -24,7 +26,7 @@ import pandas as pd
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "analysis", "output")
 EPS = 1e-6
-DATASET_ORDER = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+DATASET_ORDER = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
 warnings.filterwarnings("ignore", message="Mean of empty slice", category=RuntimeWarning)
 
 

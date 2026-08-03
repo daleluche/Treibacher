@@ -13,34 +13,32 @@ from experiments.matheuristics.synthetic_tiny import build_synthetic_tiny
 ROOT = Path(__file__).resolve().parents[3]
 
 
-def test_load_ale_1_instance() -> None:
-    """Ale_1 should parse with the dimensions stored in its GAMSPy source."""
-    inst = load_instance(ROOT / "experiments" / "GAMSPy" / "Real" / "Ale_1.py")
+def test_load_s_1_instance() -> None:
+    """S_1 should parse with the dimensions of the homogeneous S set."""
+    inst = load_instance(ROOT / "experiments" / "GAMSPy" / "S" / "S_1.py")
 
-    assert inst.name == "Ale_1"
-    assert inst.dataset == "Real"
-    assert inst.T == 25
-    assert inst.J == 160
+    assert inst.name == "S_1"
+    assert inst.dataset == "S"
+    assert inst.T == 19
+    assert inst.J == 159
     assert inst.I == 50
-    assert inst.A.shape == (50, 160)
-    assert inst.D.shape == (50, 25)
+    assert inst.A.shape == (50, 159)
+    assert inst.D.shape == (50, 19)
     assert len(inst.products) == 50
 
 
-def test_evaluate_ale_1_cplex_schedule() -> None:
-    """The evaluator must reproduce the CPLEX objective for Ale_1."""
-    inst = load_instance(ROOT / "experiments" / "GAMSPy" / "Real" / "Ale_1.py")
-    result_path = ROOT / "experiments" / "GAMSPy" / "Real" / "results_3horas" / "Ale_1.json"
+def test_evaluate_s_1_mip_schedule() -> None:
+    """The evaluator must reproduce the optimal MIP objective for S_1."""
+    inst = load_instance(ROOT / "experiments" / "GAMSPy" / "S" / "S_1.py")
+    result_path = ROOT / "experiments" / "matheuristics" / "results_production" / "s1" / "S_1_mip_seed1_b600.json"
     with result_path.open("r", encoding="utf-8") as fh:
         result = json.load(fh)
 
-    schedule = np.zeros(inst.T, dtype=np.int64)
-    for item in result["scheduling"]:
-        schedule[int(item["period"]) - 1] = int(item["process"])
+    schedule = np.asarray(result["schedule"], dtype=np.int64)
 
     z_value, shortage_total, excess_total = evaluate(schedule, inst)
 
-    assert abs(z_value - 86264.683) < 0.01
+    assert abs(z_value - 36964.861) < 0.01
     assert shortage_total >= 0.0
     assert excess_total >= 0.0
 

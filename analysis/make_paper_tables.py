@@ -13,7 +13,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "analysis" / "output"
 PAPER_TABLES = ROOT / "paper" / "tables"
-DATASET_ORDER = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+DATASET_ORDER = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
 EPS = 1e-6
 
 if str(ROOT) not in sys.path:
@@ -111,13 +111,6 @@ def make_tab_instances() -> None:
             continue
 
         groups = [(esc(dataset), paths)]
-        if dataset == "Real":
-            ale_1 = [path for path in paths if path.stem == "Ale_1"]
-            ale_rest = [path for path in paths if path.stem != "Ale_1"]
-            groups = [
-                (r"Real ($\mathrm{Ale}_2$--$\mathrm{Ale}_{10}$)", ale_rest),
-                (r"Real ($\mathrm{Ale}_1$)", ale_1),
-            ]
 
         for label, group_paths in groups:
             dims = []
@@ -144,7 +137,7 @@ def make_tab_instances() -> None:
             )
     write_table(
         PAPER_TABLES / "tab_instances.tex",
-        r"Benchmark dimensions by instance family. Instance Ale$_1$ has a longer horizon and one additional process; see Section~\ref{sec:difficulty}.",
+        "Benchmark dimensions by instance family.",
         "tab:instances",
         ["Set", "Inst.", "$T$", "$J$", "$I$", "Binary vars.", "Continuous vars.", "Constraints"],
         rows,
@@ -313,6 +306,10 @@ def make_tab_frontier() -> None:
 
     counts = pd.read_csv(OUT / "sprint3_frontier_counts.csv")
     sources = pd.read_csv(OUT / "sprint3_cell_sources.csv")
+    sources = (
+        sources.groupby(["dataset", "budget_s"], as_index=False)["source_cell"]
+        .agg(lambda values: "; ".join(dict.fromkeys(str(value) for value in values if pd.notna(value))))
+    )
     merged = counts.merge(sources, on=["dataset", "budget_s"], how="left", suffixes=("", "_declared"))
     merged["_rank"] = merged["dataset"].map({d: i for i, d in enumerate(DATASET_ORDER)})
     merged = merged.sort_values(["_rank", "budget_s"]).drop(columns=["_rank"])

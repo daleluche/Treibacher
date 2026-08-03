@@ -16,7 +16,29 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "analysis" / "output"
 FIG = ROOT / "analysis" / "figures"
 MAT = ROOT / "experiments" / "matheuristics"
-DATASET_ORDER = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+DATASET_ORDER = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
+
+
+def canonical_instance(dataset: object, instance: object) -> tuple[object, object]:
+    """Return the paper-facing dataset and instance labels."""
+    if isinstance(dataset, str) and isinstance(instance, str) and dataset == "Real" and instance.startswith("Ale_"):
+        suffix = instance.rsplit("_", 1)[1]
+        if suffix != "1":
+            return "S", f"S_{suffix}"
+    if isinstance(instance, str) and instance.startswith("S_"):
+        return "S", instance
+    return dataset, instance
+
+
+def canonicalize_frame(frame: pd.DataFrame) -> pd.DataFrame:
+    """Apply paper-facing labels to a dataframe with dataset/instance columns."""
+    if frame.empty or not {"dataset", "instance"}.issubset(frame.columns):
+        return frame
+    result = frame.copy()
+    labels = result.apply(lambda row: canonical_instance(row["dataset"], row["instance"]), axis=1, result_type="expand")
+    result["dataset"] = labels[0]
+    result["instance"] = labels[1]
+    return result
 
 
 def fmt(value: object, digits: int = 3) -> str:
@@ -74,6 +96,7 @@ def load_result_jsons() -> pd.DataFrame:
         MAT / "results_production" / "b600",
         MAT / "results_production" / "a3600",
         MAT / "results_production" / "c_seeds",
+        MAT / "results_production" / "s1",
     ]
     rows = []
     for folder in folders:
@@ -84,10 +107,11 @@ def load_result_jsons() -> pd.DataFrame:
             if "Z_final" not in data:
                 continue
             params = data.get("params", {})
+            dataset, instance = canonical_instance(data.get("dataset"), data.get("instance"))
             rows.append(
                 {
-                    "dataset": data.get("dataset"),
-                    "instance": data.get("instance"),
+                    "dataset": dataset,
+                    "instance": instance,
                     "method": data.get("method"),
                     "seed": data.get("seed"),
                     "budget_s": float(params.get("budget", np.nan)),
@@ -244,14 +268,23 @@ def canonical_3600_table(comp: pd.DataFrame, prod3600: pd.DataFrame, scale_v2: p
                 }
             )
         else:
+            mip_value = row.get("cplex_mip_3600_Z") if instance == "S_1" else row.get("cplex_Z_1h")
+            rf_fo_value = row.get("rf_fo_3600_Z") if instance == "S_1" else (
+                rf_fo_a.loc[instance, "Z_final"] if instance in rf_fo_a.index else np.nan
+            )
+            source_cell = (
+                "reconstructed S_1 supplement: mip/rf+fo from results_production/s1"
+                if instance == "S_1"
+                else "registered/production: CPLEX22_1h and Grade A rf+fo"
+            )
             rows.append(
                 {
                     "dataset": dataset,
                     "instance": instance,
-                    "mip": row.get("cplex_Z_1h"),
-                    "rf+fo": rf_fo_a.loc[instance, "Z_final"] if instance in rf_fo_a.index else np.nan,
+                    "mip": mip_value,
+                    "rf+fo": rf_fo_value,
                     "rf+mip": np.nan,
-                    "source_cell": "registered/production: CPLEX22_1h and Grade A rf+fo",
+                    "source_cell": source_cell,
                 }
             )
     return pd.DataFrame(rows).sort_values(["dataset", "instance"])
@@ -260,6 +293,7 @@ def canonical_3600_table(comp: pd.DataFrame, prod3600: pd.DataFrame, scale_v2: p
 def canonical_600_table(prod600: pd.DataFrame) -> pd.DataFrame:
     """Build the canonical 600s comparison table from Grade B."""
     table = prod600.pivot_table(index=["dataset", "instance"], columns="method", values="Z_final", aggfunc="min").reset_index()
+    table = table[table["dataset"].isin(DATASET_ORDER)].copy()
     table["source_cell"] = "production Grade B @600s"
     return table
 
@@ -342,7 +376,7 @@ def frontier_heatmap(frontier: pd.DataFrame) -> None:
     text_color = {"mip": "white", "rf+mip": "white", "rf+fo": "white", "no data": "#333333"}
     grid = frontier.pivot(index="dataset", columns="budget_s", values="winner").reindex(DATASET_ORDER)
     budgets = list(grid.columns)
-    dataset_labels = {"Real": "Real", "2X": "2X\nT=38", "3X": "3X\nT=57", "4X": "4X\nT=76", "5X": "5X\nT=95", "8X": "8X\nT=152", "10X": "10X\nT=190"}
+    dataset_labels = {"S": "S\nT=19", "2X": "2X\nT=38", "3X": "3X\nT=57", "4X": "4X\nT=76", "5X": "5X\nT=95", "8X": "8X\nT=152", "10X": "10X\nT=190"}
     budget_labels = {600: "10 min\n(600 s)", 3600: "1 h\n(3,600 s)", 10800: "3 h\n(10,800 s)"}
 
     fig, ax = plt.subplots(figsize=(7.8, 5.0))
@@ -494,13 +528,23 @@ def main() -> int:
     previous_bks = None
     previous_bks_path = OUT / "sprint3_bks_audit.csv"
     if previous_bks_path.exists():
-        previous_bks = pd.read_csv(previous_bks_path)
+        previous_bks = canonicalize_frame(pd.read_csv(previous_bks_path))
 
     comp = pd.read_csv(OUT / "comparison_table.csv")
     mat_runs = load_result_jsons()
-    prod600 = pd.read_csv(MAT / "results_production" / "b600" / "grade_b_summary.csv")
-    prod3600 = pd.read_csv(MAT / "results_production" / "a3600" / "grade_a_summary.csv")
-    seeds = pd.read_csv(MAT / "results_production" / "c_seeds" / "grade_c_summary.csv")
+    prod600 = canonicalize_frame(pd.read_csv(MAT / "results_production" / "b600" / "grade_b_summary.csv"))
+    prod3600 = canonicalize_frame(pd.read_csv(MAT / "results_production" / "a3600" / "grade_a_summary.csv"))
+    seeds = canonicalize_frame(pd.read_csv(MAT / "results_production" / "c_seeds" / "grade_c_summary.csv"))
+    prod600 = prod600[prod600["dataset"].isin(DATASET_ORDER)].copy()
+    prod3600 = prod3600[prod3600["dataset"].isin(DATASET_ORDER)].copy()
+    seeds = seeds[seeds["dataset"].isin(DATASET_ORDER)].copy()
+    s1_600 = mat_runs[
+        (mat_runs["dataset"] == "S")
+        & (mat_runs["instance"] == "S_1")
+        & (mat_runs["budget_s"] == 600)
+        & (mat_runs["method"].isin(["mip", "rf+fo", "rf+mip"]))
+    ][["dataset", "instance", "method", "Z_final"]]
+    prod600 = pd.concat([prod600, s1_600], ignore_index=True, sort=False)
     short = pd.read_csv(MAT / "results_short_budget" / "short_budget_summary.csv")
     scale = pd.read_csv(MAT / "results_scale_8x10x" / "scale_8x10x_summary.csv")
     scale_v2 = canonical_scale_v2_table(mat_runs)
@@ -592,7 +636,7 @@ def main() -> int:
         "",
         "## Technical summary",
         "",
-        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on Real--5X, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, MIP@10800s scale, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.",
+        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on S--5X plus the reconstructed S_1 supplement, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, MIP@10800s scale, reconstructed S_1, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.",
         "",
         f"The IncT8x_4 BKS audit passes the registered check: BKS = {bks_8x4['BKS']:.3f}, source = `{bks_8x4['bks_source']}`.",
         "",
@@ -664,7 +708,7 @@ def main() -> int:
         "",
         "## Scope and limitations",
         "",
-        "The 10800s frontier cells use the available CPLEX 3h baseline where present. For 8X/10X, 10800s cells now contain cold MIP only from `results_scale_8x10x_mip10800/`; decompositions were not executed at 10800s and this asymmetry is disclosed in the frontier figure and Q5 table. Production Grade A supplies rf+fo at 3600s for Real--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.",
+        "The 10800s frontier cells use the available CPLEX 3h baseline where present. For 8X/10X, 10800s cells now contain cold MIP only from `results_scale_8x10x_mip10800/`; decompositions were not executed at 10800s and this asymmetry is disclosed in the frontier figure and Q5 table. Production Grade A supplies rf+fo at 3600s for S--5X, while 8X/10X 3600s decomposition evidence comes only from results_scale_8x10x_v2/ and is explicitly post-hoc.",
         "",
         "## Reproducibility outputs",
         "",

@@ -40,7 +40,7 @@ from experiments.matheuristics.psp_instance import load_instance
 OUT = os.path.join(ROOT, "analysis", "output")
 os.makedirs(OUT, exist_ok=True)
 
-DATASETS = ["Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+DATASETS = ["S", "Real", "2X", "3X", "4X", "5X", "8X", "10X"]
 EXACT_DATASETS = ["Real", "2X", "3X", "4X", "5X"]
 EPS = 1e-6
 
@@ -58,14 +58,29 @@ def _method_label(method: str, budget: float | None) -> str:
     return f"MAT_{safe}_{int(round(float(budget)))}s"
 
 
+def canonical_instance(dataset: str | None, instance: str | None) -> tuple[str | None, str | None, str | None]:
+    """Return the paper-facing dataset/instance and an optional provenance note."""
+    if instance is None:
+        return dataset, instance, None
+    if dataset == "Real" and instance.startswith("Ale_"):
+        suffix = instance.rsplit("_", 1)[1]
+        if suffix == "1":
+            return dataset, instance, "Retained for provenance; not part of homogeneous set S."
+        return "S", f"S_{suffix}", None
+    if instance.startswith("S_"):
+        return "S", instance, None
+    return dataset, instance, None
+
+
 def instance_metadata() -> dict[str, dict]:
     """Load T, J, and I metadata from GAMSPy instance scripts."""
     meta: dict[str, dict] = {}
     for dataset in DATASETS:
         for path in sorted((Path(ROOT) / "experiments" / "GAMSPy" / dataset).glob("*.py")):
             inst = load_instance(path)
+            dataset_name = path.parent.name
             meta[inst.name] = {
-                "dataset": inst.dataset,
+                "dataset": dataset_name,
                 "T": inst.T,
                 "J": inst.J,
                 "I": inst.I,
@@ -84,10 +99,11 @@ def collect_exact() -> list[dict]:
             for f in sorted(glob.glob(
                     os.path.join(ROOT, "experiments", "GAMSPy", ds, folder, "*.json"))):
                 d = _load(f)
+                dataset, instance, note = canonical_instance(ds, d["instance"])
                 rows.append({
                     "method": method,
-                    "dataset": ds,
-                    "instance": d["instance"],
+                    "dataset": dataset,
+                    "instance": instance,
                     "run_id": 1,
                     "seed": None,
                     "Z": d.get("objective_value"),
@@ -101,6 +117,8 @@ def collect_exact() -> list[dict]:
                     "T": d.get("num_periods"),
                     "J": d.get("num_processes"),
                     "I": d.get("num_products"),
+                    "source_path": os.path.relpath(f, ROOT),
+                    "paper_note": note,
                 })
     return rows
 
@@ -116,6 +134,8 @@ HEURISTIC_SOURCES = [
      "experiments/GRASP/results_ils/*_summary.json"),
     ("ILS_v2", "experiments/GRASP/results_ils_v2/*_run*.json",
      "experiments/GRASP/results_ils_v2/*_summary.json"),
+    ("ILS_v2", "experiments/matheuristics/results_production/s1/S_1_run*.json",
+     "experiments/matheuristics/results_production/s1/S_1_summary.json"),
 ]
 
 
@@ -135,11 +155,12 @@ def collect_heuristics() -> tuple[list[dict], dict]:
         observed_max = 0.0
         for f in sorted(glob.glob(os.path.join(ROOT, run_pat))):
             d = _load(f)
+            dataset, instance, note = canonical_instance(d.get("dataset"), d.get("instance"))
             observed_max = max(observed_max, float(d.get("total_time", 0.0)))
             rows.append({
                 "method": method,
-                "dataset": d.get("dataset"),
-                "instance": d.get("instance"),
+                "dataset": dataset,
+                "instance": instance,
                 "run_id": d.get("run_id"),
                 "seed": d.get("seed"),
                 "Z": d.get("objective"),
@@ -153,6 +174,8 @@ def collect_heuristics() -> tuple[list[dict], dict]:
                 "T": d.get("T"),
                 "J": d.get("J"),
                 "I": d.get("I"),
+                "source_path": os.path.relpath(f, ROOT),
+                "paper_note": note,
             })
         if budget is None:
             # infer: round observed max up to nearest 100 s
@@ -178,6 +201,7 @@ MATHEURISTIC_RESULT_DIRS = [
     os.path.join("results_production", "b600"),
     os.path.join("results_production", "a3600"),
     os.path.join("results_production", "c_seeds"),
+    os.path.join("results_production", "s1"),
 ]
 
 
@@ -195,7 +219,7 @@ def collect_matheuristics(meta: dict[str, dict]) -> list[dict]:
                 continue
             params = data.get("params", {})
             budget = float(params.get("budget", np.nan))
-            instance = data.get("instance")
+            dataset, instance, note = canonical_instance(data.get("dataset"), data.get("instance"))
             inst_meta = meta.get(instance, {})
             method = _method_label(data.get("method"), budget)
             improvements = data.get("improvements") or []
@@ -205,7 +229,7 @@ def collect_matheuristics(meta: dict[str, dict]) -> list[dict]:
                 time_to_best = best.get("time_s")
             rows.append({
                 "method": method,
-                "dataset": data.get("dataset") or inst_meta.get("dataset"),
+                "dataset": dataset or inst_meta.get("dataset"),
                 "instance": instance,
                 "run_id": data.get("run_id") or path.stem,
                 "seed": data.get("seed"),
@@ -227,6 +251,7 @@ def collect_matheuristics(meta: dict[str, dict]) -> list[dict]:
                 if isinstance(data.get("construction"), dict)
                 else data.get("Z_rf"),
                 "rf_wall_time_s": data.get("rf_wall_time_s"),
+                "paper_note": note,
             })
     return rows
 
@@ -279,16 +304,21 @@ def main() -> int:
 
     for method in ["CPLEX22_3h", "ILS_v2"]:
         n = inst.loc[inst.method == method, "instance"].nunique()
-        expected = 50
+        expected = 51 if method == "ILS_v2" else 50
         flag = "OK" if n == expected else "FAIL"
         if flag == "FAIL":
             ok = False
         print(f"[{flag}] {method}: {n} distinct instances (expected {expected})")
 
     n_v2 = len(runs[runs.method == "ILS_v2"])
-    flag = "OK" if n_v2 == 500 else "FAIL"
-    ok &= (n_v2 == 500)
-    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 500)")
+    flag = "OK" if n_v2 == 510 else "FAIL"
+    ok &= (n_v2 == 510)
+    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 510)")
+
+    ale1_rows = runs[(runs.dataset == "Real") & (runs.instance == "Ale_1")]
+    flag = "OK" if not ale1_rows.empty and ale1_rows["paper_note"].notna().any() else "FAIL"
+    ok &= flag == "OK"
+    print(f"[{flag}] Ale_1 retained with provenance note: {len(ale1_rows)} rows")
 
     bad_z = runs[(runs.Z.isna()) | (runs.Z < -EPS)]
     flag = "OK" if bad_z.empty else "FAIL"
