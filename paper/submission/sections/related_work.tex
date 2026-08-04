@@ -35,7 +35,7 @@ our positioning, the classification of simultaneous lot-sizing and
 scheduling models by \citet{copil2017simultaneous}, recently extended
 to secondary resources by \citet{worbelauer2019secondary}. Within this
 taxonomy the PSP is a single-stage, single-machine, big-bucket model
-with at most one ``product'' -- in fact, one \emph{process} -- per
+with at most one ``product'', in fact, one \emph{process}, per
 period; its distinctive trait, absent from the standard classes, is
 that the assignment decision releases a technologically fixed
 \emph{vector} of products rather than a single item. Demand is met
@@ -76,7 +76,7 @@ are, to the best of our knowledge, unavailable.
 \label{sec:rw-matheuristics}
 
 Relax-and-fix constructs solutions by partitioning the integer
-variables -- most naturally along the time axis -- and solving a
+variables, most naturally along the time axis, and solving a
 sequence of MIPs in which one window is kept integral, earlier windows
 are fixed, and later windows are relaxed
 \citep{dillenberger1994practical,pochet2006production}.
@@ -84,8 +84,8 @@ Fix-and-optimize (also called exchange or MIP-based improvement)
 iteratively re-optimizes subsets of integer variables while fixing the
 remainder at incumbent values; it was popularized for multi-level
 capacitated lot sizing by \citet{sahling2009solving} and
-\citet{helber2010fix}. The combination of the two -- \RF{} for
-construction, \FO{} for improvement -- was systematized by
+\citet{helber2010fix}. The combination of the two, \RF{} for
+construction, \FO{} for improvement, was systematized by
 \citet{toledo2015relax} on multi-level lot-sizing and glass-container
 problems, and industrial variants have since accumulated: integrated
 pulp and paper planning \citep{santos2012integrated}, later improved
@@ -103,7 +103,7 @@ co-production structure (windows re-optimize the process schedule,
 with all product balances linked through cumulative demand), a fully
 specified budget-control policy whose implementation details we report
 for reproducibility, and the \RFMIP{} variant in which the \RF{}
-solution warm-starts the \emph{monolithic} model -- a hybrid whose
+solution warm-starts the \emph{monolithic} model, a hybrid whose
 value, as our experiments show, depends on whether the incumbent it
 buys is worth the branch-and-bound time it costs.
 
@@ -115,7 +115,7 @@ of magnitude in MIP solving between the early 2000s and 2020, driven
 by presolve, cutting planes, primal heuristics, and parallel search
 \citep{koch2022progress,achterberg2013analyzing,achterberg2020presolve,bixby2012brief}.
 This progress reframes older intractability findings: conclusions
-drawn against CPLEX~11--12 -- as in the original PSP studies -- need
+drawn against CPLEX~11--12, as in the original PSP studies, need
 not hold against CPLEX~22, and revisiting them yields calibrated
 evidence of practical value. On the methodology side, our experimental
 protocol adopts community standards for heuristic--exact comparisons:

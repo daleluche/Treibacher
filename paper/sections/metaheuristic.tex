@@ -2,8 +2,7 @@
 \label{sec:metaheuristic}
 
 To situate the matheuristics against the strongest \emph{pure}
-metaheuristic we could build -- one that never calls a MIP solver --
-we developed a hybrid procedure (\ILS) combining components with
+metaheuristic we could build, one that never calls a MIP solver, we developed a hybrid procedure (\ILS) combining components with
 strong track records in the GRASP literature. We summarize it here
 and refer to the released source code for full detail.
 \todo{Cross-check every component description against
@@ -24,11 +23,19 @@ relocation moves on the schedule; for long horizons, moves are
 restricted by a sliding time window with a tabu mechanism to keep
 iteration costs bounded. The improvement loop is an iterated local
 search \citep{lourenco2010iterated} whose perturbation applies
-multi-bridge reinsertions of schedule segments, with adaptive
-strength. Ten workers run in parallel from different seeds and share
-an elite pool through cross-run path relinking
-\citep{laguna1999grasp,resende2016optimization}, and the incumbent
-trajectory of every worker is logged.
+multi-bridge reinsertions of schedule segments whose strength adapts
+to the horizon length. Each of ten workers, run in parallel from
+different seeds, maintains its own elite pool and applies path
+relinking within it
+\citep{laguna1999grasp,resende2016optimization}; once all workers
+finish, a final cross-run relinking step is applied to their best
+solutions. The incumbent trajectory of every worker is logged.
+Parameter values follow the released implementation: reactive
+$\alpha$ drawn from $\{0, 0.05, \ldots, 0.30\}$ with exponentially
+smoothed weights, randomized tabu tenure in $[5,12]$ with aspiration,
+windowed tabu search for $|T|>40$, Or-opt blocks of one to three
+periods, elite pools of ten solutions, and intra-run relinking every
+four improvements.
 
 Under the equal-resources protocol of
 Section~\ref{sec:experiments}, \ILS{} occupies a deliberately
@@ -38,8 +45,7 @@ ten runs. This makes the comparison against the matheuristics and
 the solver \emph{a fortiori}: any deficit observed for \ILS{} cannot
 be attributed to a resource handicap. Historically, this procedure
 is the modernized descendant of the heuristics proposed for the PSP
-in the original studies \citep{luche2009combining}
-\citep{daleluche2011tese}, and it improves substantially upon them:
+in the original studies \citep{luche2009combining}, and it improves substantially upon them:
 relative to its own previous version, median best-objective
 improvements are 20.3\% on 2X, 33.4\% on 3X, 41.2\% on 4X,
 43.9\% on 5X, and 6.5\% on Real; across the large 3X--5X sets the

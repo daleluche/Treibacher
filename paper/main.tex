@@ -57,7 +57,7 @@ metaheuristic with path relinking, on a new public benchmark of 60
 instances spanning horizons from 19 to 190 periods. The earlier verdict is
 reversed at the plant's own scale, where instances derived from its
 order book now solve to proven optimality in seconds. We also
-isolate a modeling effect that governs difficulty -- penalizing
+isolate a modeling effect that governs difficulty: penalizing
 accumulated excess production at a thousandth of the weight of
 shortage moves four instance sets from routinely closed to largely
 open, holding everything else fixed. The pure metaheuristic,
@@ -66,7 +66,7 @@ MIP-based methods. The resulting method-choice map has two axes:
 at equal budgets, decomposition wins the majority of instances from
 about 150 periods upward, while granting the monolith triple time
 restores its lead on most, though not all, of the largest
-instances -- decomposition effectively buys one tier of computing
+instances. Decomposition effectively buys one tier of computing
 budget, the currency of rolling re-planning. We release all
 instances, solutions, trajectories, and per-window logs, including
 dual signals, to support reproduction and learning-based extensions.

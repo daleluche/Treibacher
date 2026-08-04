@@ -53,8 +53,9 @@ and $w^{\mathrm{rem}}$ the number of windows still to solve. The
 construction budget is
 $B_{\mathrm{RF}}=\min\{0.25\,B,\; w\,\ell_{\mathrm{RF}}\}$ for global
 budget $B$ and $w$ windows. If a window solve yields no integer
-incumbent, its limit is doubled once; on a second failure -- and
-whenever the global budget guard triggers -- all undecided periods
+incumbent, it is retried within whatever remains of the construction
+and global budgets; if it fails again, or whenever the wall-clock
+guard triggers, all undecided periods
 are completed by a greedy rule based on the evaluator, so the
 construction never returns an incomplete schedule. Under very short
 budgets, where the per-window allowance drops below a threshold
@@ -74,14 +75,18 @@ Improvement re-optimizes windows of $\omega$ consecutive periods:
 binaries inside the window are freed, all others are fixed at the
 incumbent, and the window MIP is solved with relative gap tolerance
 $10^{-2}$, per-window limit $\ell_{\mathrm{FO}}$, and the incumbent
-supplied as a MIP start (accepted starts were verified in the solver
-log). A solution is accepted if it improves the global objective by
+supplied as a MIP start, whose provision is recorded from the solver
+log. A solution is accepted if it improves the global objective by
 more than $10^{-6}$; since the start is feasible for every window
 subproblem, accepted moves never degrade the incumbent, and the
 method reports the best solution found in \emph{any} phase of the
 run. Windows first sweep the horizon with step $\omega/2$; after a
 full sweep without improvement, contiguous windows with random start
-positions (seeded) are drawn until the budget is exhausted.
+positions (seeded) are drawn until the budget is exhausted. When
+$\omega\ge|T|$ the window covers the whole horizon, in which case a
+single solve with the entire remaining budget replaces the sweep and
+the run stops: no proper subset of periods can improve on a
+full-horizon optimum within the same tolerance.
 Parameters were tuned on the two hardest 5X instances over the grid
 $\omega\in\{12,20,28\}\times\ell_{\mathrm{FO}}\in\{30,60\}$
 (Section~\ref{sec:experiments} discloses this choice and its
@@ -116,16 +121,16 @@ warm-started solve of the full model)}
 \label{sec:rfmip}
 
 The third method uses relax-and-fix only to produce a high-quality
-integer solution quickly (on the order of seconds to two minutes),
-then solves the \emph{monolithic} model with the remaining budget,
+integer solution quickly, in seconds on the smaller sets and in
+roughly a quarter of an hour under the wall-clock guard at
+$|T|\ge 152$, then solves the \emph{monolithic} model with the remaining budget,
 zero gap tolerance, and the \RF{} solution as a MIP start. Relative
 to the cold-started solver under the same wall-clock budget, \RFMIP{}
 sacrifices a fraction of branch-and-bound time in exchange for a
 strong initial incumbent; unlike \RFFO{}, it retains the solver's
 global view and dual bound. Because the construction consumes budget, \RFMIP{} is not
 dominant by construction: a post-mortem on one 10X instance showed a
-poor construction consuming over half the budget and an accepted --
-but unhelpful -- MIP start, motivating the wall-clock guard and
+poor construction consuming over half the budget and an accepted, but unhelpful, MIP start, motivating the wall-clock guard and
 greedy floor above. Empirically, \RFMIP{} is the best variant at 8X,
 where the solver's global view still pays, while at 10X the
 monolithic model itself becomes the bottleneck and window-based

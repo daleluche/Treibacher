@@ -4,30 +4,21 @@
 \subsection{Benchmark and public release}
 \label{sec:benchmark}
 
-The benchmark comprises 60 instances in seven sets. All of them
-descend from a single real order book of the plant ($|J|=159$
-processes, 50 items, 19 daily periods). Set Real contains the ten
-instances obtained in the original study by redistributing each item's
-total demand at random over the horizon
-($|T|\in\{19,25\}$, $|J|\in\{159,160\}$, $|I|\in\{50,52\}$; one
-instance uses a longer reserved horizon). A consequence worth stating
-explicitly is that \emph{no released instance reproduces the plant's
-actual order book}: demand profiles are randomized derivatives of it,
-which is what makes the public release compatible with the
-confidentiality of the company's commercial data while preserving the
-technological structure -- the process--product matrix $(a_{ij})$ and
-the aggregate volumes -- that makes the benchmark realistic. Sets 2X--5X, inherited from
-the original study, and the new sets 8X and 10X extend the horizon by
-the replication rule of Section~\ref{sec:difficulty}
-($|T|=19k$ for factor $k$; five instances each for 8X and 10X, built
-on the $|T|=19$ order-book bases). We reimplemented the generator and
-validated it by regenerating the inherited sets: for the 36 instances
-whose 19-period base is available, the regenerated files match the
-inherited ones record by record (demand, horizon, products, and
-technology matrix); the four instances indexed \_1 descend from a
-base not preserved in our archives and are inherited as-is, outside
-the generator's correspondence. The generator is deterministic; the
-manifest records execution provenance only. All instances, solutions,
+The benchmark comprises the plant's real order book and 60 derived
+instances in six sets, all sharing its technology matrix
+($|J|=159$, $|I|=50$). Set S holds the ten instances obtained by
+random redistribution of item demand
+(Section~\ref{sec:difficulty}), sets 2X--5X the inherited horizon
+replications, and sets 8X and 10X the new ones introduced here, with
+five instances each. We reimplemented the generator and validated it
+by regenerating every inherited instance from the corresponding member
+of S: all 40 files of sets 2X--5X match record by record in horizon,
+products, technology matrix and demand. The generator is
+deterministic, and the manifest records execution provenance only.
+Because the derived instances redistribute demand rather than
+reproduce it, they carry no commercial schedule of the company, and
+the real order book itself is released with its dimensions and
+volumes but without any identification of the firm. All instances, solutions,
 per-run trajectories, and per-window logs are released at
 \todo{Zenodo DOI}.
 
@@ -38,8 +29,7 @@ All experiments ran on a single machine (AMD Ryzen~7 5800H, 8~cores /
 16~threads, 32~GB RAM) with CPLEX~22.1.2 called through GAMSPy,
 deterministic parallel mode, and threads set explicitly to all cores
 for every method, including window subproblems. Methods are compared
-under equal wall-clock budgets -- 600, 3{,}600, and 10{,}800~s --
-with all model-generation and bookkeeping overhead charged to the
+under equal wall-clock budgets of 600, 3{,}600, and 10{,}800~s, with all model-generation and bookkeeping overhead charged to the
 budget. The \ILS{} baseline runs ten parallel workers per instance
 and reports the best of ten, a deliberately generous allocation
 (Section~\ref{sec:metaheuristic}). Best-known solutions (BKS) are
@@ -74,10 +64,22 @@ time 8~s), and every instance of 2X within the one-hour budget (mean
 at three hours, mean gaps grow from 1.7\% (3X) to 3.9\% (4X) and 7.2\%
 (5X), with no proven optima in those three sets.
 
+The real order book itself provides an independent check on the
+whole apparatus. Its optimal shortage was reported as 10{,}475~kg in
+the original study \citep[Section~4.2]{luche2009combining}, obtained
+in 26~s by the solver of the time. Our reconstruction of that instance,
+solved here under the model of Section~\ref{sec:model}, returns
+exactly the same shortage, 10{,}475~kg, at an objective of
+11{,}442.6 once accumulated inventory is priced. The agreement to the
+kilogram validates the instance, the technology matrix, the objective
+and the evaluator against a figure published eighteen years earlier,
+and it carries a managerial reading: on this order book the inventory
+term costs nothing in service level, selecting among schedules of
+equal shortage the one that holds least stock.
+
 We deliberately refrain from attributing this reversal to solver
 progress alone. Between the original experiments and ours, the solver
-version, the machine, the number of threads, and -- as
-Section~\ref{sec:gamma} shows -- the objective function itself all
+version, the machine, the number of threads, and, as Section~ef{sec:gamma} shows, the objective function itself all
 changed; isolating any single factor would require the
 machine-independent protocols of dedicated studies
 \citep{koch2022progress,achterberg2013analyzing}, which are outside our
@@ -91,9 +93,9 @@ read at the larger scales. Incumbents are budget-nonmonotone: on three
 instances the one-hour run returned a better solution than the
 independent three-hour run, a consequence of different search
 trajectories rather than of nondeterminism, since the parallel mode is
-deterministic. And dual bounds are weak on a hard subclass -- on
+deterministic. And dual bounds are weak on a hard subclass, on
 IncT5x\_10 the best known solution still lies about 17\% above the
-three-hour bound -- so true optimality gaps there are unknown, which is
+three-hour bound, so true optimality gaps there are unknown, which is
 why we report gaps against best-known solutions.
 
 \subsection{What the excess penalty costs}
@@ -102,8 +104,8 @@ why we report gaps against best-known solutions.
 The model of Section~\ref{sec:model} charges accumulated excess
 production at $\gamma=0.001$ per unit and period; the original
 formulation minimized shortage alone. Because everything else can be
-held fixed -- same instances, solver, machine, threads, tolerance, and
-time limit -- the two variants isolate the computational cost of that
+held fixed, from instances, solver, machine, threads, tolerance, and
+time limit, the two variants isolate the computational cost of that
 single term. Table~\ref{tab:gamma} reports both on the 40
 instances of sets 2X--5X at the three-hour budget.
 
@@ -147,8 +149,8 @@ free, so the feasible region contains large plateaus of equivalent
 optimal schedules and the solver prunes aggressively. Under
 $\gamma>0$, each of those schedules carries a different accumulated
 excess, the plateaus collapse into a single optimum, and the linear
-relaxation -- which can spread production fractionally across
-processes at negligible excess -- becomes markedly weaker. The
+relaxation, which can spread production fractionally across
+processes at negligible excess, becomes markedly weaker. The
 practical lesson generalizes beyond this application: a secondary
 objective term introduced for modeling realism, at a weight three
 orders of magnitude below the primary criterion, can decide whether an
@@ -164,7 +166,7 @@ Table~\ref{tab:main3600} reports, for all 60 instances at
 pure metaheuristic is dominated everywhere: \ILS{} best-of-ten trails
 the solver's primal by 12--26\% on average on 3X--5X, and trails
 \RFFO{} on every large instance, despite its tenfold parallel
-resources -- evidence that, on this problem class, MIP-based
+resources, evidence that, on this problem class, MIP-based
 components are not optional refinements but the main engine.
 Second, up to 5X ($|T|\le 95$) the monolithic solver remains the
 method of choice at this budget: it wins the per-instance majority
@@ -186,7 +188,7 @@ pooled comparisons.
 \subsection{Operational budgets}
 \label{sec:short}
 
-At 600~s -- the regime of daily re-planning -- the picture is
+At 600~s, the regime of daily re-planning, the picture is
 scale-dependent (Table~\ref{tab:short600}). At the plant's own scale the question is moot:
 the solver alone closes the instances in seconds, so the managerial
 conclusion is direct and positive: order-book scheduling that was
@@ -197,7 +199,7 @@ the decomposition methods become competitive from 3X upward (4--5 of
 (\RFMIP, 3/5) and 10X (\RFFO, 4/5). Aggregated over all 60 instances
 the paired difference between \RFFO{} and the cold solver is not
 significant (median $+0.12\%$, $p=0.27$), the small-instance cells
-masking the large-scale advantage -- which is precisely why we
+masking the large-scale advantage, which is precisely why we
 report the frontier by cell rather than pooled. Against the
 truncated \ILS{} trajectories, \RFFO{} wins all six large pilot
 instances at 600~s with median advantage above 20\%
@@ -206,8 +208,8 @@ cold solver in $\ge 4/6$ pilot instances at both 300 and 600~s) is
 \emph{false} as registered (2/6 and 3/6): the original construction
 policy starved the improvement phase at 300~s on $|T|=95$. The
 post-hoc corrected policy (greedy construction when the per-window
-allowance falls below 10~s) repairs the failure cases -- all four
-regression cells now beat the \ILS{} reference -- but we keep the
+allowance falls below 10~s) repairs the failure cases, all four
+regression cells now beat the \ILS{} reference, but we keep the
 registered verdict and label the repair as post-hoc.
 
 \input{tables/tab_short600}
@@ -217,14 +219,14 @@ registered verdict and label the repair as post-hoc.
 
 The new 8X and 10X sets ($|T|=152$ and $190$; up to 30{,}210
 binaries) locate the frontier. At 3{,}600~s the decomposition
-methods win the majority in both sets -- \RFMIP{} at 8X (3/5) and
+methods win the majority in both sets: \RFMIP{} at 8X (3/5) and
 \RFFO{} at 10X (3/5), with paired median advantage of 4.5\% for
 \RFFO{} over the cold solver ($n=10$, $p=0.19$, rank-biserial
 $-0.49$): consistent in direction, not statistically significant at
 this sample size. Within the decomposition family the two variants
 change places with scale: at 8X the warm-started monolith exploits
 the solver's global view, while at 10X the model itself becomes the
-bottleneck and window-based improvement scales better -- on
+bottleneck and window-based improvement scales better, on
 IncT10x\_4, \RFMIP{} stalls at 376{,}198 while \RFFO{}, from the
 same construction, reaches 172{,}983. Construction diagnostics
 temper the story at the extreme scale: at $|T|\ge 152$ the windowed
@@ -239,13 +241,12 @@ whether the cold solver, given 10{,}800~s, strictly beats the best
 decomposition result at 3{,}600~s; the answer is \emph{yes} in both
 sets (4/5 at 8X, 3/5 at 10X), improving six best-known solutions in
 the process (Table~\ref{tab:q5}). Two 10X instances resist even the tripled budget
-(IncT10x\_2 by 14.5\% and IncT10x\_6 by 2.1\%). The synthesis --
-Table~\ref{tab:frontier} and Figure~\ref{fig:frontier-heatmap} -- is a method-choice map with
+(IncT10x\_2 by 14.5\% and IncT10x\_6 by 2.1\%). The synthesis, Table~\ref{tab:frontier} and Figure~\ref{fig:frontier-heatmap}, is a method-choice map with
 two genuine axes: at equal budgets, decomposition dominates from
 $|T|\approx 150$ upward; granting the monolith one budget tier
 ($3\times$) restores its lead at 8/10 of the largest instances.
 Decomposition, in other words, buys approximately one tier of solver
-time -- exactly the currency that matters in rolling re-planning.
+time, exactly the currency that matters in rolling re-planning.
 We disclose the asymmetry that decompositions were not executed at
 10{,}800~s; the released code and instances allow closing that cell.
 Table~\ref{tab:scale-construction} reports the construction source and
