@@ -298,6 +298,10 @@ def main() -> int:
     matheur = collect_matheuristics(meta)
     runs = pd.DataFrame(exact + heur + matheur)
 
+    for dim in ["T", "J", "I"]:
+        canonical_values = runs["instance"].map(lambda name: meta.get(name, {}).get(dim))
+        runs[dim] = canonical_values.combine_first(runs[dim])
+
     runs = runs.sort_values(["method", "dataset", "instance", "run_id"]).reset_index(drop=True)
     runs.to_csv(os.path.join(OUT, "master_runs.csv"), index=False)
 
