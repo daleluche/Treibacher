@@ -164,7 +164,10 @@ Table~\ref{tab:main3600} reports, for all 60 instances at
 3{,}600~s, the cold-started solver, \RFFO{}, \RFMIP{}, and the
 \ILS{} baseline. Three findings organize the section. First, the
 pure metaheuristic is dominated everywhere: \ILS{} best-of-ten trails
-the solver's primal by 12--26\% on average on 3X--5X, and trails
+the solver's primal by an average margin that widens monotonically
+with scale, from nil on the real order book, where it also reaches
+the optimum, to 0.5\% on S, 2.6\% on 2X, and then 10.4\%, 16.4\%
+and 23.9\% on 3X, 4X and 5X. It also trails
 \RFFO{} on every large instance, despite its tenfold parallel
 resources, evidence that, on this problem class, MIP-based
 components are not optional refinements but the main engine.
