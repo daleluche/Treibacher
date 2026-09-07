@@ -348,13 +348,17 @@ def sanitize_release_texts() -> None:
 
 
 def create_zip() -> None:
-    """Create the final release zip."""
+    """Create the final release zip with deterministic entry metadata."""
     if ZIP_PATH.exists():
         ZIP_PATH.unlink()
     with zipfile.ZipFile(ZIP_PATH, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
         for path in sorted(RELEASE.rglob("*")):
             if path.is_file() and path != ZIP_PATH:
-                zf.write(path, path.relative_to(RELEASE).as_posix())
+                archive_name = path.relative_to(RELEASE).as_posix()
+                info = zipfile.ZipInfo(archive_name, date_time=(1980, 1, 1, 0, 0, 0))
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = 0o644 << 16
+                zf.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
 
 
 def main() -> int:

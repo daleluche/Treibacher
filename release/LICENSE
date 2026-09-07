@@ -1,9 +1,0 @@
-# License
-
-Data files in this release are provided under the Creative Commons Attribution 4.0
-International License (CC BY 4.0).
-
-Code files included for reproducibility are provided under the MIT License.
-
-This release contains anonymized benchmark instances derived from randomized demand
-profiles. It does not include the plant's real order book.

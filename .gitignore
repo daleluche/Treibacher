@@ -31,3 +31,4 @@ env/
 paper/*.pdf
 paper/*.docx
 paper/build/
+release/
