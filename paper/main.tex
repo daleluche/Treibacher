@@ -14,9 +14,14 @@
 \usepackage{xcolor}
 \usepackage[hidelinks]{hyperref}
 
-% ---- Working commands (remove before submission) --------------------
-\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
-\newcommand{\sprintii}[1]{\textcolor{blue}{\textbf{[SPRINT-2 DATA: #1]}}}
+% ---- Working commands -----------------------------------------------
+\ifdefined\submissionbuild
+  \newcommand{\todo}[1]{}
+  \newcommand{\sprintii}[1]{}
+\else
+  \newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+  \newcommand{\sprintii}[1]{\textcolor{blue}{\textbf{[SPRINT-2 DATA: #1]}}}
+\fi
 
 % ---- Notation shortcuts ---------------------------------------------
 \newcommand{\RF}{\textsc{rf}}

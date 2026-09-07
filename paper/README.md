@@ -10,10 +10,18 @@
   `article` + shims (uso local/CI apenas; NÃO é o build de submissão).
 - `elsarticle-harv.bst` — estilo bibliográfico Elsevier (incluído).
 
-## Build de submissão
+## Builds
 Requer `elsarticle.cls` (Overleaf já tem; no TeX Live:
-`tlmgr install elsarticle`). Então:
-    latexmk -pdf main.tex
+`tlmgr install elsarticle`) e as ferramentas `pdflatex` e `bibtex`.
+
+- `make draft` compila `main.tex` normalmente e mantém visíveis os
+  marcadores editoriais `\todo{...}` e `\sprintii{...}` no PDF de
+  trabalho (`main.pdf`).
+- `make submission` compila com `\submissionbuild` definido, removendo
+  esses marcadores do PDF final em `build/main.pdf`. O alvo também
+  monta `build/sources/` com os arquivos necessários para submissão; o
+  `main.tex` copiado ali já recebe `\def\submissionbuild{}` no topo, de
+  modo que o pacote compile sem flags adicionais.
 
 ## Convenções de rascunho
 - `\todo{...}` (vermelho): pendência de escrita.
