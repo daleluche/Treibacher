@@ -7,8 +7,9 @@ report diverged from the actual `references.bib` file, so every entry with `TODO
 ## Corrected Entries
 
 - `luche2005otimizacao`: completed journal, volume, number, pages, and DOI from SciELO
-  and cross-citations in Villas Boas et al. (2021). Final fields: `Gestao & Producao`,
-  12(1), 135--149, DOI `10.1590/S0104-530X2005000100012`.
+  and cross-citations in Villas Boas et al. (2021), then removed in C11c because it
+  remained uncited; the English-language account by Luche et al. (2009) carries the
+  cited PSP provenance in the manuscript.
 - `toledo2015sitlsp`: replaced `others` with Toledo, Kimms, Franca, and Morabito;
   added DOI `10.1155/2015/182781`. Source: Wiley/Hindawi and RePEc records.
 - `leachman2002semiconductor`: added editors, address, and pages 746--762 from the
@@ -41,7 +42,7 @@ or publisher/library records and marked `% [OK]`: `karmarkar1985deterministic`,
 `martinez2018coupled`, `araujo2008foundry`, `toso2009lot`, `clark2010production`,
 `villasboas2021modeling`, `ferreira2009solution`, `dillenberger1994practical`,
 `sahling2009solving`, `helber2010fix`, `toledo2015relax`, `santos2012integrated`,
-`figueira2013hybrid`, `james2011single`, `wolsey2002solving`, `feo1995greedy`,
+`figueira2013hybrid`, `james2011single`, `feo1995greedy`,
 `prais2000reactive`, `lourenco2010iterated`, `laguna1999grasp`,
 `resende2016optimization`, `aiex2007ttt`, `koch2022progress`,
 `achterberg2013analyzing`, `achterberg2020presolve`, `bixby2012brief`,
@@ -54,16 +55,20 @@ markers in the manuscript, not bibliography fields.
 
 ## Uncited Entries
 
-At the start of C11, the BibTeX file contained 51 entries and the manuscript cited 48.
-The uncited entries were:
+At the start of C11, the BibTeX file contained 51 entries and the manuscript cited 44
+under the first audit script. That count was too low because the script missed four
+citations written with optional arguments, such as `\citep[DLSP;][]{...}`. After
+correcting that parser and restoring the foundational lot-sizing citations, the only
+uncited entries were:
 
 - The obsolete 2011 thesis entry was removed, as instructed. No citation to that key
   remained in the manuscript.
-- `luche2005otimizacao`: retained. Recommendation: keep available for possible use in
-  the historical/provenance discussion or remove after the senior researcher confirms it
-  is not needed.
-- `wolsey2002solving`: retained. Recommendation: either cite it in the MIP/lot-sizing
-  formulation discussion or remove it if the bibliography should contain only cited work.
+- `luche2005otimizacao`: removed in C11c; the Portuguese case-study reference is
+  superseded in the manuscript by the cited Luche et al. (2009) article.
+- `wolsey2002solving`: removed in C11c; its generic MIP support was redundant given the
+  retained citation to Pochet and Wolsey (2006).
+
+After C11c, all 48 remaining BibTeX entries are cited in the manuscript.
 
 ## Primary Sources Used
 
