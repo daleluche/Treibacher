@@ -38,11 +38,15 @@ to a consistency safeguard that rejects any candidate below an
 available dual bound; this safeguard exposed evaluator
 inconsistencies in the legacy heuristic of the original study, whose
 results we therefore exclude from comparison tables (they remain in
-the released raw data, flagged). The central comparisons were
-pre-registered as hypotheses H1--H4 before the corresponding
-experiments, and a cross-budget question Q5 was registered before
-the final solver runs; we report all verdicts as registered,
-separating clearly labeled post-hoc analyses. Matheuristic
+the released raw data, flagged). The central comparisons were stated
+as hypotheses H1--H4, with explicit decision rules, in the campaign's
+planning documents before the corresponding experiments were run, and
+a cross-budget question Q5 was stated before the final solver runs.
+These are working documents rather than an entry in a public
+registry, so we make no claim of formal pre-registration; we do report
+every outcome against the criterion as originally written, including
+the two hypotheses that were not supported, and we label separately
+every analysis carried out after seeing the results. Matheuristic
 parameters were tuned on the two hardest 5X instances
 (Section~\ref{sec:fo}); both belong to the evaluation set, a choice
 we disclose and weigh when interpreting results on those two
@@ -206,14 +210,16 @@ masking the large-scale advantage, which is precisely why we
 report the frontier by cell rather than pooled. Against the
 truncated \ILS{} trajectories, \RFFO{} wins all six large pilot
 instances at 600~s with median advantage above 20\%
-($p=0.031$). The registered hypothesis H1 (decomposition beats the
-cold solver in $\ge 4/6$ pilot instances at both 300 and 600~s) is
-\emph{false} as registered (2/6 and 3/6): the original construction
-policy starved the improvement phase at 300~s on $|T|=95$. The
-post-hoc corrected policy (greedy construction when the per-window
-allowance falls below 10~s) repairs the failure cases, all four
-regression cells now beat the \ILS{} reference, but we keep the
-registered verdict and label the repair as post-hoc.
+($p=0.031$). Hypothesis H1, whose decision rule required
+decomposition to beat the cold solver in at least four of the six
+pilot instances at both 300 and 600~s, was not supported (2/6 and
+3/6): the original construction policy starved the improvement phase
+at 300~s on $|T|=95$. A corrected policy devised after seeing that
+outcome, which switches to greedy construction when the per-window
+allowance falls below 10~s, repairs the failure cases and all four
+regression cells then beat the \ILS{} reference; we report the
+original outcome against the original criterion and treat the repair
+as an exploratory follow-up.
 
 \input{tables/tab_short600}
 
