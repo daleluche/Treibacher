@@ -53,7 +53,17 @@ parameters were tuned on the two hardest 5X instances
 we disclose and weigh when interpreting results on those two
 instances. Unless stated otherwise, all results refer to the model
 with $\gamma=0.001$; the $\gamma=0$ variant appears only in
-Section~\ref{sec:gamma}.
+Section~\ref{sec:gamma}. One feature of the benchmark constrains
+every inference drawn from it. The ten instances of S are randomized
+redistributions of a single real order book, and each replicated
+family repeats those same ten demand patterns over longer horizons;
+the 8X and 10X families rest on five of them. Instances within a
+family are therefore not independent draws, and we treat the base
+pattern as the unit of replication throughout: paired differences are
+aggregated per pattern before any test, giving at most ten
+independent units, and five for the largest families. All results are
+reported for this single industrial case with controlled replication,
+not as estimates for a population of plants.
 
 \subsection{The problem's practical status today}
 \label{sec:progress}
@@ -213,8 +223,8 @@ five of twelve replicated instances and coefficients of variation
 below 4\% elsewhere, with window-log audits confirming that
 different seeds explore different window sequences
 (Table~\ref{tab:seeds}).
-Table~\ref{tab:stats} reports the paired Wilcoxon tests behind the
-pooled comparisons.
+Table~\ref{tab:stats} reports the block-level summaries and tests
+behind the pooled comparisons.
 
 \input{tables/tab_main3600}
 \input{tables/tab_stats}
@@ -231,14 +241,19 @@ heuristic territory in the original study is now re-optimized exactly
 within any operational deadline. On the replicated scales
 the decomposition methods become competitive from 3X upward (4--5 of
 10 wins per set for \RF-based methods) and majority winners at 8X
-(\RFMIP, 3/5) and 10X (\RFFO, 4/5). Aggregated over all 60 instances
-the paired difference between \RFFO{} and the cold solver is not
-significant (median $+0.12\%$, $p=0.27$), the small-instance cells
-masking the large-scale advantage, which is precisely why we
-report the frontier by cell rather than pooled. Against the
-truncated \ILS{} trajectories, \RFFO{} wins all six large pilot
-instances at 600~s with median advantage above 20\%
-($p=0.031$). Hypothesis H1, whose decision rule required
+(\RFMIP, 3/5) and 10X (\RFFO, 4/5). Pooling the seven families and
+taking one paired difference per base pattern, the ten blocks favour
+the cold solver over \RFFO{} at this budget, by a median of $0.14\%$
+(exact sign-permutation test, $p=0.047$; bootstrap interval over
+resampled blocks includes zero). The margin is a seventh of a percent
+and the pooled figure hides opposite behaviour at the two ends of the
+scale axis, from $+0.01\%$ on S to $-37.8\%$ on 10X, which is
+precisely why we report the frontier by cell rather than pooled.
+Against the truncated \ILS{} trajectories, \RFFO{} wins all six large
+pilot instances at 600~s, by a median of $25.7\%$; those six
+instances descend from only three base patterns, so we report the
+comparison descriptively and attach no $p$-value to it. Hypothesis H1,
+whose decision rule required
 decomposition to beat the cold solver in at least four of the six
 pilot instances at both 300 and 600~s, was not supported (2/6 and
 3/6): the original construction policy starved the improvement phase
@@ -257,10 +272,13 @@ as an exploratory follow-up.
 The new 8X and 10X sets ($|T|=152$ and $190$; up to 30{,}210
 binaries) locate the frontier. At 3{,}600~s the decomposition
 methods win the majority in both sets: \RFMIP{} at 8X (3/5) and
-\RFFO{} at 10X (3/5), with paired median advantage of 4.5\% for
-\RFFO{} over the cold solver ($n=10$, $p=0.19$, rank-biserial
-$-0.49$): consistent in direction, not statistically significant at
-this sample size. Within the decomposition family the two variants
+\RFFO{} at 10X (3/5). Each family rests on five base patterns, for
+which the smallest attainable two-sided $p$ of an exact permutation
+test is $0.0625$; we therefore report these families descriptively
+and without significance tests. Per block, \RFFO{} is $1.2\%$ worse
+than the cold solver at 8X and $13.9\%$ better at 10X, while \RFMIP{}
+is $3.0\%$ better at 8X and $26.3\%$ worse at 10X: each variant wins
+in one family and loses in the other. Within the decomposition family the two variants
 change places with scale: at 8X the warm-started monolith exploits
 the solver's global view, while at 10X the model itself becomes the
 bottleneck and window-based improvement scales better, on
