@@ -39,11 +39,12 @@ four improvements.
 
 Under the equal-resources protocol of
 Section~\ref{sec:experiments}, \ILS{} occupies a deliberately
-generous position: its ten workers exploit the full machine for the
-whole wall-clock budget, and its per-instance result is the best of
-ten runs. This makes the comparison against the matheuristics and
-the solver \emph{a fortiori}: any deficit observed for \ILS{} cannot
-be attributed to a resource handicap. Historically, this procedure
+generous position in terms of attempts, not hardware: its ten workers
+run concurrently on the same cores and within the same wall-clock
+budget as the MIP-based methods, and its per-instance result is the
+best of ten stochastic attempts. Thus the comparison credits \ILS{}
+with more opportunities to find a good incumbent, but not with a
+separate machine or a longer elapsed time. Historically, this procedure
 is the modernized descendant of the heuristics proposed for the PSP
 in the original studies \citep{luche2009combining}, and it improves substantially upon them:
 relative to its own previous version, median best-objective

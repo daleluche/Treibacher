@@ -19,9 +19,11 @@ moves sets 2X--5X from routinely closed to largely open. Modeling
 choices made for realism deserve the same computational scrutiny as
 algorithmic ones. Second, on the question
 of paradigms: when the monolith does falter, what replaces it is
-not the pure metaheuristic, our strongest GRASP-ILS hybrid, with
-tenfold parallel resources, is dominated everywhere by MIP-based
-methods, but decomposition that keeps the solver in the loop.
+not the pure metaheuristic. On the scales where it was run, our
+strongest GRASP-ILS hybrid is credited with the best of ten concurrent
+attempts on the same machine, but is still dominated by MIP-based
+methods. The effective replacement is decomposition that keeps the
+solver in the loop.
 Third, on the question of \emph{when}: the method-choice map has
 two genuine axes. At equal budgets, decomposition wins the majority
 of instances from $|T|\approx 150$ upward; granting the monolith

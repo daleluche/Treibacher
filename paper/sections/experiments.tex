@@ -30,8 +30,9 @@ All experiments ran on a single machine (AMD Ryzen~7 5800H, 8~cores /
 deterministic parallel mode, and threads set explicitly to all cores
 for every method, including window subproblems. Methods are compared
 under equal wall-clock budgets of 600, 3{,}600, and 10{,}800~s, with all model-generation and bookkeeping overhead charged to the
-budget. The \ILS{} baseline runs ten parallel workers per instance
-and reports the best of ten, a deliberately generous allocation
+budget. The \ILS{} baseline runs ten concurrent workers on the same
+cores and within the same elapsed-time budget, and is credited with
+the best solution among those ten stochastic attempts
 (Section~\ref{sec:metaheuristic}). Best-known solutions (BKS) are
 the minimum objective over all methods, budgets, and seeds, subject
 to a consistency safeguard that rejects any candidate below an
