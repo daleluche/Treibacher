@@ -38,8 +38,11 @@ of how the gain divides among its causes. Second, MIP-based
 construction and improvement heuristics, \emph{relax-and-fix} (\RF) and \emph{fix-and-optimize} (\FO), now
 standard components of the matheuristics toolbox
 \citep{sahling2009solving,helber2010fix,toledo2015relax}, have
-matured precisely on lot-sizing structures similar to the PSP, but
-have never been applied to it.
+matured on lot-sizing structures close to the PSP. They have been
+applied to a generalization of it by \citet{villasboas2021modeling},
+on reduced instances and under a different formulation; what has not
+been examined is how they fare against a current solver on the problem
+at full industrial size.
 
 This paper reports a comprehensive computational study of the PSP that
 confronts three algorithmic paradigms under a strict equal-resources
@@ -71,12 +74,17 @@ into one that it leaves open on most instances of the same size. The
 comparison is controlled (same solver, machine, threads, budget, and
 instances; only the objective changes), and it qualifies a broader
 practice: secondary objective terms that look innocuous in a model can
-dominate its computational character. Second, we develop and specify, at a reproducibility level rarely
-reported (bound-update mechanics, per-window time-limit policies, and
-budget guards included), \RF{} and \FO{} matheuristics tailored to the
-co-production structure of the PSP, together with an \RFMIP{} hybrid
-that trades a modest construction budget for a strong initial
-incumbent of the monolithic solve. Third, we
+dominate its computational character. Second, we specify, at a
+reproducibility level rarely reported (bound-update mechanics,
+per-window time-limit policies, and budget guards included), \RF{} and
+\FO{} matheuristics tailored to the co-production structure of the PSP
+at full industrial size, together with an \RFMIP{} hybrid that trades
+a modest construction budget for a strong initial incumbent of the
+monolithic solve. Where an earlier study established that such
+heuristics outperform the solver on a larger formulation over reduced
+instances \citep{villasboas2021modeling}, we find the answer to
+depend on scale and budget, and we characterize where the boundary
+lies. Third, we
 provide what is, to the best of our knowledge, the first publicly
 available benchmark for lot sizing with co-production in fixed
 proportions: 60 instances spanning ten problem scales, with best-known

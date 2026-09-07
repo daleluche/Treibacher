@@ -58,7 +58,7 @@ alloy enables a set of castable parts \citep{araujo2008foundry}.
 Related recipe- or process-based settings include animal nutrition
 plants \citep{toso2009lot,clark2010production}, chemical plants in
 which one item may be produced by alternative processes
-\citep{villasboas2021chemical}, and integrated soft-drink production
+\citep{villasboas2021modeling}, and integrated soft-drink production
 where tank lots feed bottling lines
 \citep{ferreira2009solution,toledo2015sitlsp}. Co-production in fixed
 (or stochastic) proportions is also the defining feature of
@@ -107,6 +107,30 @@ solution warm-starts the \emph{monolithic} model, a hybrid whose
 value, as our experiments show, depends on whether the incumbent it
 buys is worth the branch-and-bound time it costs.
 
+The closest antecedent is \citet{villasboas2021modeling}, who
+formulate a general lotsizing and scheduling problem with process
+configuration selection and solve it with relax-and-fix and
+fix-and-optimize, reporting experiments on instances drawn from molded
+pulp, furniture and electrofused grains. Their formulation extends the
+GLSP with micro-periods, capacity constraints and sequence-dependent
+changeover times and costs, which places up to $1.3$ million binaries
+in the largest cases; the electrofused instances are explicitly
+reduced cutouts of \citet{luche2009combining}, retaining five or ten
+products and fifty to one hundred and forty-nine configurations out
+of the fifty products and one hundred and fifty-nine processes of the
+industrial case. Their conclusion is that the MIP-heuristics beat the
+solver on the monolithic model in a third of its time. Our study moves
+in the opposite direction along two axes. We keep the industrial
+instance intact and extend it in horizon rather than shrinking it in
+products and processes, and we ask not whether decomposition beats the
+solver but under which combinations of scale and time budget each
+method is preferable, which is a question their design, with a fixed
+horizon and a single budget, cannot address. The two sets of results
+are complementary rather than conflicting: their model is an order of
+magnitude larger in binaries than ours at comparable horizons, and
+Section~\ref{sec:gamma} shows that model structure, not the industry,
+is what governs whether decomposition pays.
+
 \subsection{Solver progress and experimental methodology}
 \label{sec:rw-methodology}
 
@@ -132,10 +156,11 @@ rolling-horizon tradition initiated by \citet{baker1977experimental}.
 
 \medskip
 \noindent\textbf{Gap.} In summary: (i) the PSP with co-production in
-fixed proportions has not been revisited since 2011, despite solver
-progress that plausibly changes its practical status; (ii) matheuristic
-studies seldom report primal--primal comparisons against a modern
-solver under strictly equal wall-clock and thread budgets, leaving the
-``method of choice'' question anecdotal; and (iii) no public benchmark
-exists for this problem class. This paper addresses all three gaps,
-with hypotheses registered before experimentation.
+fixed proportions has not been re-examined at industrial size against
+a current solver, the one study that applies MIP-heuristics to a
+generalization of it having worked on reduced cutouts
+\citep{villasboas2021modeling}; (ii) matheuristic studies seldom
+report primal--primal comparisons against a modern solver under
+strictly equal wall-clock and thread budgets, leaving the ``method of
+choice'' question anecdotal; and (iii) no public benchmark exists for
+this problem class. This paper addresses all three gaps.
