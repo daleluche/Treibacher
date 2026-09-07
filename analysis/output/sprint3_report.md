@@ -6,7 +6,7 @@ The final production grid is complete: Grade B contributes 180 short-budget runs
 
 The IncT8x_4 BKS audit passes the registered check: BKS = 158113.714, source = `MAT_rf_mip_3600s | 3600s | experiments/matheuristics/results_scale_8x10x/IncT8x_4_rf_mip_seed1_b3600.json`.
 
-Using canonical v2 decomposition data for 8X/10X @3600s, `rf+fo vs mip` has median block relative delta -4.9746%; it is not assigned a p-value because the scale subset has five base-pattern blocks.
+Using canonical v2 decomposition data for 8X/10X @3600s, `rf+fo vs mip` is reported separately by scale with median block relative deltas 10X scale subset: -13.8944%; 8X scale subset: 1.2172%; 8X/10X heterogeneous family aggregate: -4.9746%. None of these rows is assigned a p-value because each scale has five base-pattern blocks; the combined row is retained only as a heterogeneous family aggregate.
 
 ## Registered Sprint 2 hypotheses
 
@@ -155,8 +155,10 @@ Differences are relative objective changes in percent, left method minus right m
 | rf+fo vs mip | 600.0000 | S-10X benchmark | 5X | 10.0000 | 1.1085 | -1.0355 | 3.1459 | 3.0000 | 0.0000 | 7.0000 |
 | rf+fo vs mip | 600.0000 | S-10X benchmark | 8X | 5.0000 | -4.0974 | -7.0306 | -4.0928 | 4.0000 | 0.0000 | 1.0000 |
 | rf+fo vs mip | 600.0000 | S-10X benchmark | 10X | 5.0000 | -37.8326 | -38.1149 | -34.2033 | 4.0000 | 0.0000 | 1.0000 |
-| rf+fo vs mip | 3600.0000 | 8X/10X scale subset | 8X | 5.0000 | 1.2172 | -3.0609 | 2.6185 | 2.0000 | 0.0000 | 3.0000 |
-| rf+fo vs mip | 3600.0000 | 8X/10X scale subset | 10X | 5.0000 | -13.8944 | -16.4682 | -6.8883 | 4.0000 | 0.0000 | 1.0000 |
+| rf+fo vs mip | 3600.0000 | 10X scale subset | 10X | 5.0000 | -13.8944 | -16.4682 | -6.8883 | 4.0000 | 0.0000 | 1.0000 |
+| rf+fo vs mip | 3600.0000 | 8X scale subset | 8X | 5.0000 | 1.2172 | -3.0609 | 2.6185 | 2.0000 | 0.0000 | 3.0000 |
+| rf+fo vs mip | 3600.0000 | 8X/10X heterogeneous family aggregate | 8X | 5.0000 | 1.2172 | -3.0609 | 2.6185 | 2.0000 | 0.0000 | 3.0000 |
+| rf+fo vs mip | 3600.0000 | 8X/10X heterogeneous family aggregate | 10X | 5.0000 | -13.8944 | -16.4682 | -6.8883 | 4.0000 | 0.0000 | 1.0000 |
 | rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 3X | 2.0000 | -19.2114 | -23.7067 | -14.7162 | 2.0000 | 0.0000 | 0.0000 |
 | rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 4X | 2.0000 | -20.4246 | -21.7777 | -19.0715 | 2.0000 | 0.0000 | 0.0000 |
 | rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 5X | 2.0000 | -16.9195 | -22.9526 | -10.8864 | 2.0000 | 0.0000 | 0.0000 |
@@ -167,8 +169,10 @@ Differences are relative objective changes in percent, left method minus right m
 | rf+mip vs mip | 600.0000 | S-10X benchmark | 5X | 10.0000 | 0.2623 | -0.3997 | 4.3609 | 3.0000 | 0.0000 | 7.0000 |
 | rf+mip vs mip | 600.0000 | S-10X benchmark | 8X | 5.0000 | -5.9967 | -9.5930 | 3.2832 | 3.0000 | 0.0000 | 2.0000 |
 | rf+mip vs mip | 600.0000 | S-10X benchmark | 10X | 5.0000 | 7.7143 | 2.8629 | 29.9898 | 1.0000 | 0.0000 | 4.0000 |
-| rf+mip vs mip | 3600.0000 | 8X/10X scale subset | 8X | 5.0000 | -2.9571 | -3.2939 | -0.4498 | 4.0000 | 0.0000 | 1.0000 |
-| rf+mip vs mip | 3600.0000 | 8X/10X scale subset | 10X | 5.0000 | 26.2968 | -15.0630 | 43.3239 | 2.0000 | 0.0000 | 3.0000 |
+| rf+mip vs mip | 3600.0000 | 10X scale subset | 10X | 5.0000 | 26.2968 | -15.0630 | 43.3239 | 2.0000 | 0.0000 | 3.0000 |
+| rf+mip vs mip | 3600.0000 | 8X scale subset | 8X | 5.0000 | -2.9571 | -3.2939 | -0.4498 | 4.0000 | 0.0000 | 1.0000 |
+| rf+mip vs mip | 3600.0000 | 8X/10X heterogeneous family aggregate | 8X | 5.0000 | -2.9571 | -3.2939 | -0.4498 | 4.0000 | 0.0000 | 1.0000 |
+| rf+mip vs mip | 3600.0000 | 8X/10X heterogeneous family aggregate | 10X | 5.0000 | 26.2968 | -15.0630 | 43.3239 | 2.0000 | 0.0000 | 3.0000 |
 
 ### Block map
 
@@ -193,8 +197,12 @@ Each test first collapses repeated descendants to one median relative difference
 | rf+fo vs mip | 600.0000 | S-10X benchmark | 10.0000 | 60.0000 | 0.1357 | -0.0046 | 1.7054 | 0.7778 | 0.0469 | exact sign permutation over blocks | tested on 10 base-pattern blocks | 20260907.0000 |
 | rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 3.0000 | 6.0000 | -25.6664 | -28.9857 | -10.2209 | -1.0000 |  | none | not tested: 3 blocks | 20260907.0000 |
 | rf+mip vs mip | 600.0000 | S-10X benchmark | 10.0000 | 60.0000 | 0.0000 | 0.0000 | 0.0214 | 0.4000 | 0.5000 | exact sign permutation over blocks | tested on 10 base-pattern blocks | 20260907.0000 |
-| rf+fo vs mip | 3600.0000 | 8X/10X scale subset | 5.0000 | 10.0000 | -4.9746 | -11.2034 | 10.8418 | -0.4667 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
-| rf+mip vs mip | 3600.0000 | 8X/10X scale subset | 5.0000 | 10.0000 | 11.6698 | -8.4655 | 49.6016 | 0.6000 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+| rf+fo vs mip | 3600.0000 | 10X scale subset | 5.0000 | 5.0000 | -13.8944 | -22.9358 | 20.4664 | -0.4667 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+| rf+fo vs mip | 3600.0000 | 8X scale subset | 5.0000 | 5.0000 | 1.2172 | -5.9385 | 8.5584 | 0.0667 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+| rf+fo vs mip | 3600.0000 | 8X/10X heterogeneous family aggregate | 5.0000 | 10.0000 | -4.9746 | -11.2034 | 10.8418 | -0.4667 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+| rf+mip vs mip | 3600.0000 | 10X scale subset | 5.0000 | 5.0000 | 26.2968 | -16.4811 | 102.4970 | 0.6000 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+| rf+mip vs mip | 3600.0000 | 8X scale subset | 5.0000 | 5.0000 | -2.9571 | -4.2517 | 0.0792 | -0.8667 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+| rf+mip vs mip | 3600.0000 | 8X/10X heterogeneous family aggregate | 5.0000 | 10.0000 | 11.6698 | -8.4655 | 49.6016 | 0.6000 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
 
 ### Methodological note
 

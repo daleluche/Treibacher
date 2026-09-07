@@ -757,11 +757,22 @@ def main() -> int:
         comparison_frame(short600, "rf+fo", "ILS v2 truncated", "rf+fo vs truncated ILS v2", 600, "3X-5X short-budget subset")
     )
     scale_wide = scale_v2.rename(columns={"rf+fo": "rf+fo", "rf+mip": "rf+mip", "mip": "mip"})
+    scale_scopes = [
+        ("8X", "8X scale subset"),
+        ("10X", "10X scale subset"),
+        (None, "8X/10X heterogeneous family aggregate"),
+    ]
     stat_inputs.extend(
-        [
-            comparison_frame(scale_wide, "rf+fo", "mip", "rf+fo vs mip", 3600, "8X/10X scale subset"),
-            comparison_frame(scale_wide, "rf+mip", "mip", "rf+mip vs mip", 3600, "8X/10X scale subset"),
-        ]
+        comparison_frame(
+            scale_wide if dataset is None else scale_wide[scale_wide["dataset"] == dataset],
+            lhs,
+            "mip",
+            f"{lhs} vs mip",
+            3600,
+            scope,
+        )
+        for dataset, scope in scale_scopes
+        for lhs in ["rf+fo", "rf+mip"]
     )
     descriptive = descriptive_by_scale(stat_inputs)
     write_table(
@@ -789,9 +800,15 @@ def main() -> int:
     )
     block_summary["dataset"] = pd.Categorical(block_summary["dataset"], BENCHMARK_FAMILY_ORDER, ordered=True)
     block_summary = block_summary.sort_values("dataset")
-    scale_stat = stats.loc[
-        (stats["comparison"] == "rf+fo vs mip") & (stats["budget_s"] == 3600) & (stats["scope"] == "8X/10X scale subset")
-    ].iloc[0]
+    scale_stats = stats.loc[
+        (stats["comparison"] == "rf+fo vs mip")
+        & (stats["budget_s"] == 3600)
+        & (stats["scope"].isin(["8X scale subset", "10X scale subset", "8X/10X heterogeneous family aggregate"]))
+    ].copy()
+    scale_summary = "; ".join(
+        f"{row.scope}: {row.median_block_delta_pct:.4f}%"
+        for row in scale_stats.sort_values("scope").itertuples()
+    )
 
     bks_8x4 = comp.loc[comp.instance == "IncT8x_4", ["BKS", "bks_source"]].iloc[0]
     report = [
@@ -803,7 +820,7 @@ def main() -> int:
         "",
         f"The IncT8x_4 BKS audit passes the registered check: BKS = {bks_8x4['BKS']:.3f}, source = `{bks_8x4['bks_source']}`.",
         "",
-        f"Using canonical v2 decomposition data for 8X/10X @3600s, `rf+fo vs mip` has median block relative delta {scale_stat['median_block_delta_pct']:.4f}%; it is not assigned a p-value because the scale subset has five base-pattern blocks.",
+        f"Using canonical v2 decomposition data for 8X/10X @3600s, `rf+fo vs mip` is reported separately by scale with median block relative deltas {scale_summary}. None of these rows is assigned a p-value because each scale has five base-pattern blocks; the combined row is retained only as a heterogeneous family aggregate.",
         "",
         "## Registered Sprint 2 hypotheses",
         "",

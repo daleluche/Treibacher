@@ -2,5 +2,9 @@ comparison,budget_s,scope,n_blocks,n_instances,median_block_delta_pct,ci_low_pct
 rf+fo vs mip,600,S-10X benchmark,10,60,0.1357108570017804,-0.00459352455370633,1.7054414357881627,0.7777777777777778,0.046875,exact sign permutation over blocks,tested on 10 base-pattern blocks,20260907
 rf+fo vs truncated ILS v2,600,3X-5X short-budget subset,3,6,-25.66635868473007,-28.985658308401547,-10.220917780510055,-1.0,,none,not tested: 3 blocks,20260907
 rf+mip vs mip,600,S-10X benchmark,10,60,0.0,0.0,0.021395739274933902,0.4,0.5,exact sign permutation over blocks,tested on 10 base-pattern blocks,20260907
-rf+fo vs mip,3600,8X/10X scale subset,5,10,-4.974595078489983,-11.203379833603297,10.841822385991424,-0.4666666666666667,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
-rf+mip vs mip,3600,8X/10X scale subset,5,10,11.669833445135493,-8.465464678413555,49.60155694644415,0.6,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
+rf+fo vs mip,3600,10X scale subset,5,5,-13.894392208245746,-22.935759645772343,20.46642255607415,-0.4666666666666667,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
+rf+fo vs mip,3600,8X scale subset,5,5,1.2172222159086994,-5.938548740240213,8.558447487605626,0.06666666666666667,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
+rf+fo vs mip,3600,8X/10X heterogeneous family aggregate,5,10,-4.974595078489983,-11.203379833603297,10.841822385991424,-0.4666666666666667,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
+rf+mip vs mip,3600,10X scale subset,5,5,26.29679665067189,-16.481125495367237,102.49697375286715,0.6,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
+rf+mip vs mip,3600,8X scale subset,5,5,-2.9571297604009046,-4.251668408986228,0.07921549764044195,-0.8666666666666667,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
+rf+mip vs mip,3600,8X/10X heterogeneous family aggregate,5,10,11.669833445135493,-8.465464678413555,49.60155694644415,0.6,,none,"not tested: 5 blocks, minimum attainable two-sided p = 0.0625",20260907
