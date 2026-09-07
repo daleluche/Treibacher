@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import math
+import re
 import sys
 from pathlib import Path
 from typing import Iterable
@@ -202,6 +203,46 @@ def make_tab_gamma() -> None:
             "$\\Delta Z$",
             "$\\Delta$ (\\%)",
         ],
+        rows,
+    )
+
+
+def make_tab_gamma_tradeoff() -> None:
+    """Generate the 2X service-inventory trade-off table."""
+    def instance_number(name: object) -> int:
+        """Return the numeric suffix of an IncT instance name."""
+        match = re.search(r"_(\d+)$", str(name))
+        return int(match.group(1)) if match else 0
+
+    df = pd.read_csv(OUT / "gamma_tradeoff_2x.csv")
+    detail = df[df["instance"].str.upper().str.startswith("INCT2X_")].copy()
+    detail["_number"] = detail["instance"].map(instance_number)
+    median = df[df["instance"].eq("MEDIAN")].iloc[0]
+    rows = []
+    for _, row in detail.sort_values("_number").iterrows():
+        rows.append(
+            [
+                esc(row["instance"]),
+                fmt_int(row["delta_shortage"]),
+                fmt_pct(row["delta_shortage_pct"]),
+                fmt_int(row["excess_reduction"]),
+                fmt_pct(row["excess_reduction_pct"]),
+            ]
+        )
+    rows.append(
+        [
+            "Median",
+            "--",
+            fmt_pct(median["delta_shortage_pct"]),
+            "--",
+            fmt_pct(median["excess_reduction_pct"]),
+        ]
+    )
+    write_latex_table(
+        PAPER_TABLES / "tab_gamma_tradeoff.tex",
+        r"Service-inventory trade-off between the proven optima for $\gamma=0$ and $\gamma=0.001$ on 2X.",
+        "tab:gamma-tradeoff",
+        ["Instance", "$\\Delta$ backlog (kg)", "$\\Delta$ backlog (\\%)", "Inventory reduction", "Reduction (\\%)"],
         rows,
     )
 
@@ -459,6 +500,7 @@ def main() -> int:
     PAPER_TABLES.mkdir(parents=True, exist_ok=True)
     make_tab_instances()
     make_tab_gamma()
+    make_tab_gamma_tradeoff()
     make_tab_main3600()
     make_tab_short600()
     make_tab_frontier()

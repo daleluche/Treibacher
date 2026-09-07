@@ -114,6 +114,7 @@ single term. Table~\ref{tab:gamma} reports both on the 40
 instances of sets 2X--5X at the three-hour budget.
 
 \input{tables/tab_gamma}
+\input{tables/tab_gamma_tradeoff}
 
 The contrast is categorical (Table~\ref{tab:gamma}). Without the
 holding term, the solver closes \emph{all forty} instances to proven
@@ -128,6 +129,27 @@ machine leaves open. As required by construction,
 $Z(\gamma=0)\le Z(\gamma=0.001)$ on every instance; the holding term
 accounts for a median 13\% to 29\% of the objective, growing with the
 horizon.
+
+The same pair of runs measures what the holding term buys and what it
+costs, and here the 2X set carries the argument
+(Table~\ref{tab:gamma-tradeoff}): it is the only one in which both
+variants are closed to proven optimality, so the difference between
+their optima is a property of the objective rather than of search
+effort. Re-evaluating both optimal schedules with the common evaluator,
+seven of the ten 2X instances incur \emph{more} backlog under
+$\gamma=0.001$ than under $\gamma=0$, by a median of $0.12\%$ and at
+most $1.94\%$ of the backlog level, while accumulated inventory falls
+by a median of $34.3\%$. Aggregated over the ten instances,
+$1{,}836$~kg of additional backlog buy a reduction of $26.3$~million
+kg-periods of held inventory, a rate of roughly one to fourteen
+thousand. The plant's planners accept that exchange, which is why the
+weighted objective rather than a strict-priority one represents their
+problem; but it is an exchange, and the model should not be described
+as protecting service unconditionally. Across the harder sets the same
+direction holds in 31 of the 40 instances, though there the
+$\gamma=0.001$ runs terminate with gaps of up to $7.2\%$, so those
+differences mix the effect of the objective with residual
+suboptimality and we report them as descriptive only.
 
 A second pattern in the same data explains why. Under $\gamma=0$ the
 optimal value is \emph{invariant} to horizon replication: each base

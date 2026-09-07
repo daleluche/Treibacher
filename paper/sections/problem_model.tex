@@ -63,8 +63,11 @@ MFP (minimization of shortage of production, after
 Constraints~\eqref{eq:dem} balance cumulative production against
 cumulative demand for every product and period, so that $f_{it}$
 captures lateness with respect to due dates (not only end-of-horizon
-shortage), and constraints~\eqref{eq:prop} allow at most one process, possibly none, per period. The weight $\gamma=0.001$ makes
-excess lexicographically subordinate to shortage in practice. The
+shortage), and constraints~\eqref{eq:prop} allow at most one process, possibly none, per period. The objective is
+a weighted scalarization, not a strict priority ordering: at
+$\gamma=0.001$ the model does trade service for inventory when the
+exchange is favourable enough, and Section~\ref{sec:gamma} quantifies
+how often and at what rate. The
 holding term is a deliberate refinement of the original formulation
 \citep{luche2009combining}, which minimized backlog alone under an
 inequality balance and therefore priced early production at zero.
