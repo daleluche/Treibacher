@@ -53,9 +53,13 @@ def copy_instance_script(src: Path, dst: Path, dataset: str) -> None:
 
 
 def drop_retired_real_rows(frame: pd.DataFrame) -> pd.DataFrame:
-    """Remove the retired Ale_1 provenance rows from release-facing analysis CSVs."""
+    """Remove nonreleased real-order-book rows from release-facing CSV files."""
     if {"dataset", "instance"}.issubset(frame.columns):
-        mask = (frame["dataset"].astype(str) == "Real") & (frame["instance"].astype(str) == "Ale_1")
+        dataset = frame["dataset"].astype(str)
+        instance = frame["instance"].astype(str)
+        mask = ((dataset == "Real") & (instance == "Ale_1")) | (
+            (dataset == "Real order book") & (instance == "REAL_1")
+        )
         return frame.loc[~mask].copy()
     return frame
 
@@ -67,6 +71,8 @@ def write_instances() -> None:
     demand_rows = []
     for dataset in DATASETS:
         for path in sorted((ROOT / "experiments" / "GAMSPy" / dataset).glob("*.py")):
+            if path.stem == "REAL_1":
+                continue
             inst = load_instance(path)
             copy_instance_script(path, RELEASE / "instances" / "gamspy_py" / dataset / path.name, dataset)
             json_data = {
@@ -141,6 +147,8 @@ def write_solution_and_bound_files() -> None:
     bound_rows = []
     schedules = {}
     for _, row in comp.iterrows():
+        if str(row.get("dataset", "")) == "Real order book" and str(row.get("instance", "")) == "REAL_1":
+            continue
         source = str(row.get("bks_source", ""))
         source_path = ""
         if " | " in source:
@@ -185,6 +193,8 @@ def copy_analysis_outputs() -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     for path in sorted((ROOT / "analysis" / "output").glob("*")):
         if path.is_file() and path.suffix.lower() in {".csv", ".md"}:
+            if path.name == "real_instance_crosscheck.md":
+                continue
             dst = out_dir / path.name
             if path.suffix.lower() == ".csv":
                 frame = drop_retired_real_rows(pd.read_csv(path))
@@ -231,6 +241,8 @@ def copy_window_logs() -> None:
         for path in sorted(directory.glob("*")):
             if path.is_file() and path.suffix.lower() in {".parquet", ".csv"}:
                 if path.stem == "Ale_1" or path.stem.startswith("Ale_1_"):
+                    continue
+                if path.stem == "REAL_1" or path.stem.startswith("REAL_1_"):
                     continue
                 copy_file(path, dst_root / rel(path))
 
