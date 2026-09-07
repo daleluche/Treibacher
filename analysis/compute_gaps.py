@@ -71,6 +71,7 @@ def source_label(row: pd.Series | None) -> str | None:
         return None
     path = row.get("source_path")
     if isinstance(path, str) and path:
+        path = path.replace("\\", "/")
         return f"{row['method']} | {int(row['time_budget_s']) if pd.notna(row['time_budget_s']) else 'NA'}s | {path}"
     return f"{row['method']} | {int(row['time_budget_s']) if pd.notna(row['time_budget_s']) else 'NA'}s"
 

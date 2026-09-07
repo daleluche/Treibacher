@@ -71,9 +71,14 @@ def atomic_write_text(path: str | Path, text: str) -> None:
 
 def write_table(df: pd.DataFrame, path: str | Path, key_cols: Sequence[str]) -> None:
     """Validate and atomically write a CSV table."""
-    validate_key_columns(df, key_cols, path)
+    normalized = df.copy()
+    for column in normalized.select_dtypes(include=["object", "string"]).columns:
+        normalized[column] = normalized[column].map(
+            lambda value: value.replace("\\", "/") if isinstance(value, str) else value
+        )
+    validate_key_columns(normalized, key_cols, path)
     target = Path(path)
-    atomic_write_text(target, df.to_csv(index=False))
+    atomic_write_text(target, normalized.to_csv(index=False))
 
 
 def validate_latex_first_cells(rows: Iterable[Sequence[object]], path: str | Path) -> None:
