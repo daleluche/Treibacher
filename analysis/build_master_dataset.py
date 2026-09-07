@@ -36,6 +36,7 @@ if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
 from experiments.matheuristics.psp_instance import load_instance
+from analysis.families import write_table
 
 OUT = os.path.join(ROOT, "analysis", "output")
 os.makedirs(OUT, exist_ok=True)
@@ -303,7 +304,7 @@ def main() -> int:
         runs[dim] = canonical_values.combine_first(runs[dim])
 
     runs = runs.sort_values(["method", "dataset", "instance", "run_id"]).reset_index(drop=True)
-    runs.to_csv(os.path.join(OUT, "master_runs.csv"), index=False)
+    write_table(runs, os.path.join(OUT, "master_runs.csv"), ["method", "dataset", "instance", "run_id"])
 
     # instance-level aggregation
     def agg(g: pd.DataFrame) -> pd.Series:
@@ -333,7 +334,7 @@ def main() -> int:
 
     inst = (runs.groupby(["method", "dataset", "instance"])
                 .apply(agg, include_groups=False).reset_index())
-    inst.to_csv(os.path.join(OUT, "master_instances.csv"), index=False)
+    write_table(inst, os.path.join(OUT, "master_instances.csv"), ["method", "dataset", "instance"])
 
     # ------------------------------------------------------------------ #
     # Validation report

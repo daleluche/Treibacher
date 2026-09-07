@@ -13,12 +13,19 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "analysis" / "output"
 PAPER_TABLES = ROOT / "paper" / "tables"
-DATASET_ORDER = ["Real order book", "S", "2X", "3X", "4X", "5X", "8X", "10X"]
 EPS = 1e-6
 
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from analysis.families import (
+    BENCHMARK_FAMILY_ORDER,
+    FULL_FAMILY_ORDER,
+    atomic_write_text,
+    family_rank,
+    public_benchmark,
+    validate_latex_first_cells,
+)
 from experiments.matheuristics.psp_instance import load_instance
 
 
@@ -74,8 +81,9 @@ def value_range(values: Iterable[object], formatter=fmt_int) -> str:
     return f"{formatter(lo)}--{formatter(hi)}"
 
 
-def write_table(path: Path, caption: str, label: str, headers: list[str], rows: list[list[object]]) -> None:
-    """Write a small booktabs LaTeX table."""
+def write_latex_table(path: Path, caption: str, label: str, headers: list[str], rows: list[list[object]]) -> None:
+    """Validate and atomically write a small booktabs LaTeX table."""
+    validate_latex_first_cells(rows, path)
     align = "l" + "r" * (len(headers) - 1)
     lines = [
         r"\begin{table}[t]",
@@ -92,20 +100,21 @@ def write_table(path: Path, caption: str, label: str, headers: list[str], rows: 
     for row in rows:
         lines.append(" & ".join(str(cell) for cell in row) + r" \\")
     lines.extend([r"\bottomrule", r"\end{tabular}%", r"}", r"\end{table}", ""])
-    path.write_text("\n".join(lines), encoding="utf-8")
+    atomic_write_text(path, "\n".join(lines))
 
 
-def dataset_sort(frame: pd.DataFrame) -> pd.DataFrame:
-    """Sort a dataframe by the canonical dataset order."""
+def dataset_sort(frame: pd.DataFrame, order: list[str] | None = None) -> pd.DataFrame:
+    """Sort a dataframe by a canonical dataset order."""
+    order = order or BENCHMARK_FAMILY_ORDER
     result = frame.copy()
-    result["_rank"] = result["dataset"].map({d: i for i, d in enumerate(DATASET_ORDER)})
+    result["_rank"] = result["dataset"].map(family_rank(order))
     return result.sort_values(["_rank", "dataset"]).drop(columns=["_rank"])
 
 
 def make_tab_instances() -> None:
     """Generate the instance-dimension table."""
     rows = []
-    for dataset in DATASET_ORDER:
+    for dataset in FULL_FAMILY_ORDER:
         if dataset == "Real order book":
             paths = [ROOT / "experiments" / "GAMSPy" / "S" / "REAL_1.py"]
         elif dataset == "S":
@@ -144,7 +153,7 @@ def make_tab_instances() -> None:
                     value_range(frame["constraints"]),
                 ]
             )
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_instances.tex",
         "Benchmark dimensions by instance family.",
         "tab:instances",
@@ -164,7 +173,7 @@ def make_tab_gamma() -> None:
         .to_dict()
     )
     rows = []
-    for _, row in dataset_sort(summary).iterrows():
+    for _, row in dataset_sort(public_benchmark(summary)).iterrows():
         rows.append(
             [
                 esc(row["dataset"]),
@@ -178,7 +187,7 @@ def make_tab_gamma() -> None:
                 fmt_pct(row["delta_pct_mean"]),
             ]
         )
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_gamma.tex",
         r"Controlled effect of removing the excess penalty ($\gamma=0$).",
         "tab:gamma",
@@ -223,7 +232,7 @@ def method_summary(comp: pd.DataFrame, z_columns: dict[str, str], status_map: di
     """Build per-dataset method rows with mean gap, wins, and proven optima."""
     rows = []
     status_map = status_map or {}
-    for dataset in DATASET_ORDER:
+    for dataset in BENCHMARK_FAMILY_ORDER:
         subset = comp[comp["dataset"] == dataset].copy()
         if subset.empty:
             continue
@@ -270,7 +279,7 @@ def make_tab_main3600() -> None:
         },
         {"mip": comp["mip_3600_status"]},
     )
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_main3600.tex",
         "Method comparison at a 3600-second budget.",
         "tab:main3600",
@@ -297,7 +306,7 @@ def make_tab_short600() -> None:
         },
         {"mip": comp["mip_600_status"]},
     )
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_short600.tex",
         "Method comparison at a 600-second budget.",
         "tab:short600",
@@ -326,7 +335,8 @@ def make_tab_frontier() -> None:
         .agg(lambda values: "; ".join(dict.fromkeys(str(value) for value in values if pd.notna(value))))
     )
     merged = counts.merge(sources, on=["dataset", "budget_s"], how="left", suffixes=("", "_declared"))
-    merged["_rank"] = merged["dataset"].map({d: i for i, d in enumerate(DATASET_ORDER)})
+    merged = public_benchmark(merged)
+    merged["_rank"] = merged["dataset"].map(family_rank(BENCHMARK_FAMILY_ORDER))
     merged = merged.sort_values(["_rank", "budget_s"]).drop(columns=["_rank"])
     rows = []
     for _, row in merged.iterrows():
@@ -343,7 +353,7 @@ def make_tab_frontier() -> None:
                 esc(compact_source(source)),
             ]
         )
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_frontier.tex",
         "Observed method frontier by family and time budget.",
         "tab:frontier",
@@ -356,7 +366,7 @@ def make_tab_q5() -> None:
     """Generate the Q5 cross-budget table."""
     df = pd.read_csv(OUT / "sprint3_q5_cross_budget.csv")
     rows = []
-    for _, row in dataset_sort(df).iterrows():
+    for _, row in dataset_sort(public_benchmark(df)).iterrows():
         rows.append(
             [
                 esc(row["dataset"]),
@@ -368,7 +378,7 @@ def make_tab_q5() -> None:
                 esc(row["winner"]),
             ]
         )
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_q5.tex",
         "Cross-budget check: cold MIP at 10800 seconds versus the best decomposition at 3600 seconds.",
         "tab:q5",
@@ -384,7 +394,7 @@ def make_tab_stats() -> None:
         [esc(r["comparison"]), fmt_int(r["n"]), fmt_p(r["p_value"]), fmt_num(r["rank_biserial"], 3), fmt_pct(r["median_rel_delta_pct"])]
         for _, r in df.iterrows()
     ]
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_stats.tex",
         "Wilcoxon paired tests over matched cells.",
         "tab:stats",
@@ -397,9 +407,9 @@ def make_tab_seeds() -> None:
     """Generate the seed-variability table."""
     df = pd.read_csv(OUT / "sprint3_seed_variability.csv")
     rows = []
-    for _, r in dataset_sort(df).iterrows():
+    for _, r in dataset_sort(public_benchmark(df)).iterrows():
         rows.append([esc(r["dataset"]), esc(r["instance"]), fmt_num(r["Z_mean"], 1), fmt_num(r["Z_std"], 1), fmt_num(r["Z_min"], 1), fmt_num(r["Z_max"], 1)])
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_seeds.tex",
         "Seed variability for the production RF+FO configuration.",
         "tab:seeds",
@@ -412,7 +422,7 @@ def make_tab_scale_construction() -> None:
     """Generate the 8X/10X construction-diagnostic table."""
     df = pd.read_csv(OUT / "sprint3_scale_v2_construction.csv")
     rows = []
-    for _, r in dataset_sort(df).iterrows():
+    for _, r in dataset_sort(public_benchmark(df)).iterrows():
         rows.append(
             [
                 esc(r["dataset"]),
@@ -425,7 +435,7 @@ def make_tab_scale_construction() -> None:
                 fmt_num(r["Z_final"], 1),
             ]
         )
-    write_table(
+    write_latex_table(
         PAPER_TABLES / "tab_scale_construction.tex",
         "Construction diagnostics for post-fix 8X/10X runs.",
         "tab:scale-construction",

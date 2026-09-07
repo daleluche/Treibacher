@@ -44,13 +44,12 @@ Each frontier/statistical cell is tied to a single declared source. In particula
 | 8X | 3600 | post-hoc: MIP from results_scale_8x10x; rf+fo/rf+mip from results_scale_8x10x_v2 |
 | 8X | 10800 | post-hoc: cold MIP from results_scale_8x10x_mip10800 only; decompositions not run @10800s |
 | S | 600 | production Grade B @600s |
-| S | 3600 | reconstructed S_1 supplement: mip/rf+fo from results_production/s1 |
-| S | 3600 | registered/production: CPLEX22_1h and Grade A rf+fo |
+| S | 3600 | reconstructed S_1 supplement: mip/rf+fo from results_production/s1; registered/production: CPLEX22_1h and Grade A rf+fo |
 | S | 10800 | registered CPLEX22_3h where available |
 
 ## Global BKS and comparison table
 
-`comparison_table.csv` now has 60 rows and includes `bks_source`. Dataset coverage is: S=10, 2X=10, 3X=10, 4X=10, 5X=10, 8X=5, 10X=5.
+`comparison_table.csv` now has 61 rows and includes `bks_source`. Dataset coverage is: S=10, 2X=10, 3X=10, 4X=10, 5X=10, 8X=5, 10X=5.
 
 BKS candidates are scanned from registered CPLEX, ILS, and matheuristic sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. Legacy GRASP_v1 remains in `master_runs.csv` only and is intentionally excluded from paper comparison tables because the safeguard exposed evaluator inconsistencies.
 
@@ -108,7 +107,9 @@ A negative delta means MIP@10800s is better; a positive delta means the 3600s de
 
 ## BKS changes after MIP@10800s
 
-_No rows._
+| dataset | instance | BKS_previous | BKS_current | bks_source_previous | bks_source_current |
+| --- | --- | --- | --- | --- | --- |
+| none | none |  |  | No BKS changes after regeneration. | No BKS changes after regeneration. |
 
 Figures: `analysis/figures/performance_profile_600s.*`, `performance_profile_3600s.*`, `frontier_heatmap.*`, and convergence curves for IncT3x_7, IncT5x_10, and IncT10x_2.
 

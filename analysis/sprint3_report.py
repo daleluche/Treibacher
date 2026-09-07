@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import sys
 from pathlib import Path
 from typing import Iterable
 
@@ -16,7 +17,15 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "analysis" / "output"
 FIG = ROOT / "analysis" / "figures"
 MAT = ROOT / "experiments" / "matheuristics"
-DATASET_ORDER = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from analysis.families import (
+    BENCHMARK_FAMILY_ORDER,
+    atomic_write_text,
+    public_benchmark,
+    write_table,
+)
 
 
 def canonical_instance(dataset: object, instance: object) -> tuple[object, object]:
@@ -139,8 +148,18 @@ def save_figure(fig: plt.Figure, name: str) -> None:
     """Save a Matplotlib figure as PNG and PDF."""
     FIG.mkdir(parents=True, exist_ok=True)
     fig.tight_layout()
-    fig.savefig(FIG / f"{name}.png", dpi=220)
-    fig.savefig(FIG / f"{name}.pdf")
+    png_path = FIG / f"{name}.png"
+    pdf_path = FIG / f"{name}.pdf"
+    fig.savefig(png_path, dpi=220)
+    fig.savefig(
+        pdf_path,
+        metadata={
+            "Creator": "Treibacher analysis pipeline",
+            "Producer": "Treibacher analysis pipeline",
+            "CreationDate": None,
+            "ModDate": None,
+        },
+    )
     plt.close(fig)
 
 
@@ -248,6 +267,7 @@ def q5_cross_budget_table(scale_v2: pd.DataFrame, mip10800: pd.DataFrame) -> tup
 def canonical_3600_table(comp: pd.DataFrame, prod3600: pd.DataFrame, scale_v2: pd.DataFrame) -> pd.DataFrame:
     """Build the canonical 3600s comparison table used in paper statistics and frontier cells."""
     rows = []
+    comp = public_benchmark(comp)
     rf_fo_a = prod3600[prod3600["method"] == "rf+fo"].set_index("instance")
     for _, row in comp.iterrows():
         dataset = row["dataset"]
@@ -293,7 +313,7 @@ def canonical_3600_table(comp: pd.DataFrame, prod3600: pd.DataFrame, scale_v2: p
 def canonical_600_table(prod600: pd.DataFrame) -> pd.DataFrame:
     """Build the canonical 600s comparison table from Grade B."""
     table = prod600.pivot_table(index=["dataset", "instance"], columns="method", values="Z_final", aggfunc="min").reset_index()
-    table = table[table["dataset"].isin(DATASET_ORDER)].copy()
+    table = public_benchmark(table)
     table["source_cell"] = "production Grade B @600s"
     return table
 
@@ -332,6 +352,7 @@ def convergence_plot(mat_runs: pd.DataFrame, instance: str) -> None:
 def frontier_table(comp: pd.DataFrame, canonical_600: pd.DataFrame, canonical_3600: pd.DataFrame) -> pd.DataFrame:
     """Build the method-frontier winner table by dataset and budget."""
     rows = []
+    comp = public_benchmark(comp)
     for dataset, group in comp.groupby("dataset"):
         for budget in [600, 3600, 10800]:
             winners: list[str] = []
@@ -361,7 +382,7 @@ def frontier_table(comp: pd.DataFrame, canonical_600: pd.DataFrame, canonical_36
             majority = max(counts, key=counts.get) if winners else "no data"
             rows.append({"dataset": dataset, "budget_s": budget, "winner": majority, "n": len(winners), "source_cell": source_cell, **counts})
     table = pd.DataFrame(rows)
-    table["dataset"] = pd.Categorical(table["dataset"], DATASET_ORDER, ordered=True)
+    table["dataset"] = pd.Categorical(table["dataset"], BENCHMARK_FAMILY_ORDER, ordered=True)
     return table.sort_values(["dataset", "budget_s"])
 
 
@@ -374,7 +395,7 @@ def frontier_heatmap(frontier: pd.DataFrame) -> None:
         "no data": "#d6d6d6",
     }
     text_color = {"mip": "white", "rf+mip": "white", "rf+fo": "white", "no data": "#333333"}
-    grid = frontier.pivot(index="dataset", columns="budget_s", values="winner").reindex(DATASET_ORDER)
+    grid = frontier.pivot(index="dataset", columns="budget_s", values="winner").reindex(BENCHMARK_FAMILY_ORDER)
     budgets = list(grid.columns)
     dataset_labels = {"S": "S\nT=19", "2X": "2X\nT=38", "3X": "3X\nT=57", "4X": "4X\nT=76", "5X": "5X\nT=95", "8X": "8X\nT=152", "10X": "10X\nT=190"}
     budget_labels = {600: "10 min\n(600 s)", 3600: "1 h\n(3,600 s)", 10800: "3 h\n(10,800 s)"}
@@ -535,9 +556,9 @@ def main() -> int:
     prod600 = canonicalize_frame(pd.read_csv(MAT / "results_production" / "b600" / "grade_b_summary.csv"))
     prod3600 = canonicalize_frame(pd.read_csv(MAT / "results_production" / "a3600" / "grade_a_summary.csv"))
     seeds = canonicalize_frame(pd.read_csv(MAT / "results_production" / "c_seeds" / "grade_c_summary.csv"))
-    prod600 = prod600[prod600["dataset"].isin(DATASET_ORDER)].copy()
-    prod3600 = prod3600[prod3600["dataset"].isin(DATASET_ORDER)].copy()
-    seeds = seeds[seeds["dataset"].isin(DATASET_ORDER)].copy()
+    prod600 = public_benchmark(prod600)
+    prod3600 = public_benchmark(prod3600)
+    seeds = public_benchmark(seeds)
     s1_600 = mat_runs[
         (mat_runs["dataset"] == "S")
         & (mat_runs["instance"] == "S_1")
@@ -554,7 +575,7 @@ def main() -> int:
     canonical_3600 = canonical_3600_table(comp, prod3600, scale_v2)
 
     bks_audit = comp[["dataset", "instance", "BKS", "bks_source"]].copy()
-    bks_audit.to_csv(OUT / "sprint3_bks_audit.csv", index=False)
+    write_table(bks_audit, OUT / "sprint3_bks_audit.csv", ["dataset", "instance"])
     if previous_bks is not None:
         bks_changes = previous_bks.merge(bks_audit, on=["dataset", "instance"], how="outer", suffixes=("_previous", "_current"))
         bks_changes = bks_changes[
@@ -563,19 +584,32 @@ def main() -> int:
         ].copy()
     else:
         bks_changes = pd.DataFrame(columns=["dataset", "instance", "BKS_previous", "BKS_current", "bks_source_previous", "bks_source_current"])
-    bks_changes.to_csv(OUT / "sprint3_bks_changes_after_mip10800.csv", index=False)
+    if bks_changes.empty:
+        bks_changes = pd.DataFrame(
+            [
+                {
+                    "dataset": "none",
+                    "instance": "none",
+                    "BKS_previous": np.nan,
+                    "BKS_current": np.nan,
+                    "bks_source_previous": "No BKS changes after regeneration.",
+                    "bks_source_current": "No BKS changes after regeneration.",
+                }
+            ]
+        )
+    write_table(bks_changes, OUT / "sprint3_bks_changes_after_mip10800.csv", ["dataset", "instance"])
     v2_table = v2_explanation(mat_runs)
-    v2_table.to_csv(OUT / "sprint3_scale_v2_construction.csv", index=False)
-    scale_v2.to_csv(OUT / "sprint3_scale_8x10x_canonical_v2.csv", index=False)
-    mip10800.to_csv(OUT / "sprint3_mip10800_8x10x.csv", index=False)
-    q5_table.to_csv(OUT / "sprint3_q5_cross_budget.csv", index=False)
-    q5_verdict.to_csv(OUT / "sprint3_q5_verdict.csv", index=False)
-    canonical_3600.to_csv(OUT / "sprint3_canonical_3600_cells.csv", index=False)
+    write_table(v2_table, OUT / "sprint3_scale_v2_construction.csv", ["dataset", "instance", "method"])
+    write_table(scale_v2, OUT / "sprint3_scale_8x10x_canonical_v2.csv", ["dataset", "instance"])
+    write_table(mip10800, OUT / "sprint3_mip10800_8x10x.csv", ["dataset", "instance"])
+    write_table(q5_table, OUT / "sprint3_q5_cross_budget.csv", ["dataset", "instance"])
+    write_table(q5_verdict, OUT / "sprint3_q5_verdict.csv", ["dataset"])
+    write_table(canonical_3600, OUT / "sprint3_canonical_3600_cells.csv", ["dataset", "instance"])
     source_cells = pd.concat(
         [
             canonical_600[["dataset", "source_cell"]].drop_duplicates().assign(budget_s=600),
             canonical_3600[["dataset", "source_cell"]].drop_duplicates().assign(budget_s=3600),
-            comp[["dataset"]]
+            public_benchmark(comp)[["dataset"]]
             .drop_duplicates()
             .assign(
                 budget_s=10800,
@@ -588,7 +622,12 @@ def main() -> int:
         ],
         ignore_index=True,
     ).sort_values(["dataset", "budget_s"])
-    source_cells.to_csv(OUT / "sprint3_cell_sources.csv", index=False)
+    source_cells = (
+        source_cells.groupby(["dataset", "budget_s"], as_index=False)["source_cell"]
+        .agg(lambda values: "; ".join(dict.fromkeys(str(value) for value in values if pd.notna(value))))
+        .sort_values(["dataset", "budget_s"])
+    )
+    write_table(source_cells, OUT / "sprint3_cell_sources.csv", ["dataset", "budget_s"])
 
     perf600 = prod600[prod600["method"].isin(["mip", "rf+fo", "rf+mip"])]
     performance_profile(perf600, "performance_profile_600s", "Performance profile at 600 seconds")
@@ -600,7 +639,7 @@ def main() -> int:
         convergence_plot(mat_runs, instance)
 
     frontier = frontier_table(comp, canonical_600, canonical_3600)
-    frontier.to_csv(OUT / "sprint3_frontier_counts.csv", index=False)
+    write_table(frontier, OUT / "sprint3_frontier_counts.csv", ["dataset", "budget_s"])
     frontier_heatmap(frontier)
 
     prod600_wide = prod600.pivot_table(index="instance", columns="method", values="Z_final", aggfunc="min")
@@ -616,16 +655,16 @@ def main() -> int:
         paired_test(scale_wide, "rf+mip", "mip", "3600s 8X/10X rf+mip vs mip"),
     ])
     stats = pd.DataFrame(stats_rows)
-    stats.to_csv(OUT / "sprint3_statistical_tests.csv", index=False)
+    write_table(stats, OUT / "sprint3_statistical_tests.csv", ["comparison"])
 
     variability = (
         seeds.groupby(["dataset", "instance"], as_index=False)
         .agg(Z_mean=("Z_final", "mean"), Z_std=("Z_final", "std"), Z_min=("Z_final", "min"), Z_max=("Z_final", "max"))
     )
     variability["Z_range"] = variability["Z_max"] - variability["Z_min"]
-    variability.to_csv(OUT / "sprint3_seed_variability.csv", index=False)
+    write_table(variability, OUT / "sprint3_seed_variability.csv", ["dataset", "instance"])
     seed_audit, seed_sequences_differ = audit_inc_t3x3_seed_windows()
-    seed_audit.to_csv(OUT / "sprint3_seed_window_audit.csv", index=False)
+    write_table(seed_audit, OUT / "sprint3_seed_window_audit.csv", ["instance", "seed"])
 
     hypotheses = sprint2_hypotheses(short, scale, mat_runs)
     scale_stat = stats.loc[stats["comparison"] == "3600s 8X/10X rf+fo vs mip"].iloc[0]
@@ -657,7 +696,15 @@ def main() -> int:
         "## Global BKS and comparison table",
         "",
         f"`comparison_table.csv` now has {len(comp)} rows and includes `bks_source`. Dataset coverage is: "
-        + ", ".join(f"{k}={v}" for k, v in comp.dataset.value_counts().reindex(DATASET_ORDER).fillna(0).astype(int).items())
+        + ", ".join(
+            f"{k}={v}"
+            for k, v in public_benchmark(comp)
+            .dataset.value_counts()
+            .reindex(BENCHMARK_FAMILY_ORDER)
+            .fillna(0)
+            .astype(int)
+            .items()
+        )
         + ".",
         "",
         "BKS candidates are scanned from registered CPLEX, ILS, and matheuristic sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. Legacy GRASP_v1 remains in `master_runs.csv` only and is intentionally excluded from paper comparison tables because the safeguard exposed evaluator inconsistencies.",
@@ -729,7 +776,7 @@ def main() -> int:
         "- `analysis/figures/*.png` and `analysis/figures/*.pdf`",
         "",
     ]
-    (OUT / "sprint3_report.md").write_text("\n".join(report), encoding="utf-8")
+    atomic_write_text(OUT / "sprint3_report.md", "\n".join(report))
     print(f"Wrote {OUT / 'sprint3_report.md'}")
     return 0
 

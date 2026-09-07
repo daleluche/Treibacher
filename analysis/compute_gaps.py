@@ -26,7 +26,11 @@ import pandas as pd
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "analysis", "output")
 EPS = 1e-6
-DATASET_ORDER = ["Real order book", "S", "2X", "3X", "4X", "5X", "8X", "10X"]
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from analysis.families import BENCHMARK_FAMILY_ORDER, FULL_FAMILY_ORDER, public_benchmark, write_table
+
 warnings.filterwarnings("ignore", message="Mean of empty slice", category=RuntimeWarning)
 
 
@@ -83,11 +87,11 @@ def main() -> int:
 
     all_instances = (
         runs.dropna(subset=["instance", "dataset"])
-        .loc[lambda frame: frame["dataset"].isin(DATASET_ORDER)]
+        .loc[lambda frame: frame["dataset"].isin(FULL_FAMILY_ORDER)]
         .drop_duplicates("instance")[["dataset", "instance", "T", "J", "I"]]
         .copy()
     )
-    all_instances["dataset_rank"] = all_instances["dataset"].map({d: i for i, d in enumerate(DATASET_ORDER)})
+    all_instances["dataset_rank"] = all_instances["dataset"].map({d: i for i, d in enumerate(FULL_FAMILY_ORDER)})
     all_instances = all_instances.sort_values(["dataset_rank", "instance"])
 
     mat_methods = sorted(m for m in runs.method.dropna().unique() if str(m).startswith("MAT_"))
@@ -188,7 +192,7 @@ def main() -> int:
 
     comp = pd.DataFrame(rows).sort_values(
         by=["dataset"],
-        key=lambda col: col.map({d: i for i, d in enumerate(DATASET_ORDER)}) if col.name == "dataset" else col,
+        key=lambda col: col.map({d: i for i, d in enumerate(FULL_FAMILY_ORDER)}) if col.name == "dataset" else col,
     ).reset_index(drop=True)
 
     viol = comp[pd.notna(comp["cplex_bound"]) & (comp["BKS"] < comp["cplex_bound"] - 1e-4)]
@@ -201,7 +205,7 @@ def main() -> int:
         print(f"FATAL: comparison_table has {len(comp)} rows, expected 61.")
         return 1
 
-    comp.to_csv(os.path.join(OUT, "comparison_table.csv"), index=False)
+    write_table(comp, os.path.join(OUT, "comparison_table.csv"), ["dataset", "instance"])
 
     def agg(g: pd.DataFrame) -> pd.Series:
         return pd.Series({
@@ -219,8 +223,8 @@ def main() -> int:
             "cplex_wins": int((~g.ils2_wins & ~g.ties & g.cplex_Z.notna() & g.ils2_Z_best.notna()).sum()),
         })
 
-    by_ds = comp.groupby("dataset").apply(agg, include_groups=False).reindex(DATASET_ORDER).reset_index()
-    by_ds.to_csv(os.path.join(OUT, "comparison_by_dataset.csv"), index=False)
+    by_ds = public_benchmark(comp).groupby("dataset").apply(agg, include_groups=False).reindex(BENCHMARK_FAMILY_ORDER).reset_index()
+    write_table(by_ds, os.path.join(OUT, "comparison_by_dataset.csv"), ["dataset"])
 
     print("=" * 88)
     print("COMPARISON BY DATASET — global BKS includes CPLEX, ILS, and matheuristics")

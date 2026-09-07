@@ -8,6 +8,11 @@ from pathlib import Path
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from analysis.families import atomic_write_text, write_table
+
 OUT = ROOT / "analysis" / "output"
 GAMSPY = ROOT / "experiments" / "GAMSPy"
 GAMMA0 = GAMSPY / "variant_gamma0" / "results_gamma0"
@@ -116,7 +121,7 @@ def write_note(df: pd.DataFrame, by_set: pd.DataFrame) -> None:
         ),
         "",
     ]
-    (OUT / "gamma_effect_note.md").write_text("\n".join(lines), encoding="utf-8")
+    atomic_write_text(OUT / "gamma_effect_note.md", "\n".join(lines))
 
 
 def main() -> int:
@@ -146,8 +151,8 @@ def main() -> int:
         )
         .sort_values("dataset")
     )
-    df.to_csv(OUT / "gamma_effect.csv", index=False)
-    by_set.to_csv(OUT / "gamma_effect_by_set.csv", index=False)
+    write_table(df, OUT / "gamma_effect.csv", ["dataset", "instance"])
+    write_table(by_set, OUT / "gamma_effect_by_set.csv", ["dataset"])
     write_note(df, by_set)
     print(f"Wrote {OUT / 'gamma_effect.csv'}")
     print(f"Wrote {OUT / 'gamma_effect_by_set.csv'}")
