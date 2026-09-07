@@ -6,7 +6,7 @@ The final production grid is complete: Grade B contributes 180 short-budget runs
 
 The IncT8x_4 BKS audit passes the registered check: BKS = 158113.714, source = `MAT_rf_mip_3600s | 3600s | experiments/matheuristics/results_scale_8x10x/IncT8x_4_rf_mip_seed1_b3600.json`.
 
-Using canonical v2 decomposition data for 8X/10X @3600s, the Wilcoxon row `3600s 8X/10X rf+fo vs mip` has median relative delta -4.4997%, p-value 0.1934, and rank-biserial effect -0.4909.
+Using canonical v2 decomposition data for 8X/10X @3600s, `rf+fo vs mip` has median block relative delta -4.9746%; it is not assigned a p-value because the scale subset has five base-pattern blocks.
 
 ## Registered Sprint 2 hypotheses
 
@@ -109,67 +109,7 @@ A negative delta means MIP@10800s is better; a positive delta means the 3600s de
 
 | dataset | instance | BKS_previous | BKS_current | bks_source_previous | bks_source_current |
 | --- | --- | --- | --- | --- | --- |
-| 10X | IncT10x_2 | 142834.183 | 142834.183 | MAT_rf_fo_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x_v2\IncT10x_2_rf_fo_seed1_b3600.json | MAT_rf_fo_3600s \| 3600s \| experiments/matheuristics/results_scale_8x10x_v2/IncT10x_2_rf_fo_seed1_b3600.json |
-| 10X | IncT10x_3 | 80690.614 | 80690.614 | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_3_mip_seed1_b10800.json | MAT_mip_10800s \| 10800s \| experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_3_mip_seed1_b10800.json |
-| 10X | IncT10x_4 | 168985.520 | 168985.520 | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_4_mip_seed1_b10800.json | MAT_mip_10800s \| 10800s \| experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_4_mip_seed1_b10800.json |
-| 10X | IncT10x_5 | 66696.973 | 66696.973 | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT10x_5_mip_seed1_b10800.json | MAT_mip_10800s \| 10800s \| experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_5_mip_seed1_b10800.json |
-| 10X | IncT10x_6 | 109047.046 | 109047.046 | MAT_rf_fo_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x_v2\IncT10x_6_rf_fo_seed1_b3600.json | MAT_rf_fo_3600s \| 3600s \| experiments/matheuristics/results_scale_8x10x_v2/IncT10x_6_rf_fo_seed1_b3600.json |
-| 2X | IncT2X_1 | 40179.544 | 40179.544 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_1_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_1_mip_seed1_b600.json |
-| 2X | IncT2X_10 | 8335.230 | 8335.230 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_10_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_10_mip_seed1_b600.json |
-| 2X | IncT2X_2 | 105100.906 | 105100.906 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_2_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_2_mip_seed1_b600.json |
-| 2X | IncT2X_3 | 42938.570 | 42938.570 | MAT_rf_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_3_rf_mip_seed1_b600.json | MAT_rf_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_3_rf_mip_seed1_b600.json |
-| 2X | IncT2X_4 | 131571.000 | 131571.000 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_4_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_4_mip_seed1_b600.json |
-| 2X | IncT2X_5 | 38183.994 | 38183.994 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_5_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_5_mip_seed1_b600.json |
-| 2X | IncT2X_6 | 70335.169 | 70335.169 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_6_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_6_mip_seed1_b600.json |
-| 2X | IncT2X_7 | 13506.887 | 13506.887 | CPLEX22_1h \| 3600s \| experiments\GAMSPy\2X\results\IncT2X_7.json | CPLEX22_1h \| 3600s \| experiments/GAMSPy/2X/results/IncT2X_7.json |
-| 2X | IncT2X_8 | 169018.311 | 169018.311 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_8_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_8_mip_seed1_b600.json |
-| 2X | IncT2X_9 | 18632.113 | 18632.113 | MAT_rf_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT2X_9_rf_mip_seed1_b600.json | MAT_rf_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT2X_9_rf_mip_seed1_b600.json |
-| 3X | IncT3x_1 | 43424.391 | 43424.391 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\3X\results_3horas\IncT3x_1.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/3X/results_3horas/IncT3x_1.json |
-| 3X | IncT3x_10 | 10914.378 | 10914.378 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\3X\results_3horas\IncT3x_10.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/3X/results_3horas/IncT3x_10.json |
-| 3X | IncT3x_2 | 108645.892 | 108645.892 | MAT_rf_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT3x_2_rf_mip_seed1_b600.json | MAT_rf_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT3x_2_rf_mip_seed1_b600.json |
-| 3X | IncT3x_3 | 46154.492 | 46154.492 | MAT_rf_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT3x_3_rf_mip_seed1_b600.json | MAT_rf_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT3x_3_rf_mip_seed1_b600.json |
-| 3X | IncT3x_4 | 134477.501 | 134477.501 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT3x_4_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT3x_4_mip_seed1_b600.json |
-| 3X | IncT3x_5 | 40735.322 | 40735.322 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT3x_5_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT3x_5_mip_seed1_b600.json |
-| 3X | IncT3x_6 | 73458.775 | 73458.775 | CPLEX22_1h \| 3600s \| experiments\GAMSPy\3X\results\IncT3x_6.json | CPLEX22_1h \| 3600s \| experiments/GAMSPy/3X/results/IncT3x_6.json |
-| 3X | IncT3x_7 | 16441.491 | 16441.491 | MAT_rf_mip_600s \| 600s \| experiments\matheuristics\results_short_budget\IncT3x_7_rf_mip_seed1_b600.json | MAT_rf_mip_600s \| 600s \| experiments/matheuristics/results_short_budget/IncT3x_7_rf_mip_seed1_b600.json |
-| 3X | IncT3x_8 | 171942.718 | 171942.718 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\3X\results_3horas\IncT3x_8.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/3X/results_3horas/IncT3x_8.json |
-| 3X | IncT3x_9 | 21779.420 | 21779.420 | CPLEX22_1h \| 3600s \| experiments\GAMSPy\3X\results\IncT3x_9.json | CPLEX22_1h \| 3600s \| experiments/GAMSPy/3X/results/IncT3x_9.json |
-| 4X | IncT4x_1 | 46880.699 | 46880.699 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_1.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_1.json |
-| 4X | IncT4x_10 | 13375.333 | 13375.333 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_10.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_10.json |
-| 4X | IncT4x_2 | 111902.298 | 111902.298 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_2.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_2.json |
-| 4X | IncT4x_3 | 49468.889 | 49468.889 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_3.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_3.json |
-| 4X | IncT4x_4 | 137435.102 | 137435.102 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_4.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_4.json |
-| 4X | IncT4x_5 | 43396.022 | 43396.022 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_5.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_5.json |
-| 4X | IncT4x_6 | 76811.290 | 76811.290 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_6.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_6.json |
-| 4X | IncT4x_7 | 19282.326 | 19282.326 | MAT_rf_fo_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT4x_7_rf_fo_seed1_b600.json | MAT_rf_fo_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT4x_7_rf_fo_seed1_b600.json |
-| 4X | IncT4x_8 | 174700.915 | 174700.915 | CPLEX22_1h \| 3600s \| experiments\GAMSPy\4X\results\IncT4x_8.json | CPLEX22_1h \| 3600s \| experiments/GAMSPy/4X/results/IncT4x_8.json |
-| 4X | IncT4x_9 | 24689.228 | 24689.228 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\4X\results_3horas\IncT4x_9.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/4X/results_3horas/IncT4x_9.json |
-| 5X | IncT5x_1 | 50351.243 | 50351.243 | MAT_rf_fo_3600s \| 3600s \| experiments\matheuristics\results_production\a3600\IncT5x_1_rf_fo_seed1_b3600.json | MAT_rf_fo_3600s \| 3600s \| experiments/matheuristics/results_production/a3600/IncT5x_1_rf_fo_seed1_b3600.json |
-| 5X | IncT5x_10 | 16115.811 | 16115.811 | MAT_rf_fo_3600s \| 3600s \| experiments\matheuristics\results_production\c_seeds\IncT5x_10_rf_fo_seed2_b3600.json | MAT_rf_fo_3600s \| 3600s \| experiments/matheuristics/results_production/c_seeds/IncT5x_10_rf_fo_seed2_b3600.json |
-| 5X | IncT5x_2 | 116353.298 | 116353.298 | MAT_rf_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT5x_2_rf_mip_seed1_b600.json | MAT_rf_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT5x_2_rf_mip_seed1_b600.json |
-| 5X | IncT5x_3 | 53570.461 | 53570.461 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\5X\results_3horas\IncT5x_3.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/5X/results_3horas/IncT5x_3.json |
-| 5X | IncT5x_4 | 141043.753 | 141043.753 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\5X\results_3horas\IncT5x_4.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/5X/results_3horas/IncT5x_4.json |
-| 5X | IncT5x_5 | 46138.191 | 46138.191 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\5X\results_3horas\IncT5x_5.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/5X/results_3horas/IncT5x_5.json |
-| 5X | IncT5x_6 | 80612.087 | 80612.087 | CPLEX22_1h \| 3600s \| experiments\GAMSPy\5X\results\IncT5x_6.json | CPLEX22_1h \| 3600s \| experiments/GAMSPy/5X/results/IncT5x_6.json |
-| 5X | IncT5x_7 | 22166.183 | 22166.183 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\5X\results_3horas\IncT5x_7.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/5X/results_3horas/IncT5x_7.json |
-| 5X | IncT5x_8 | 177536.272 | 177536.272 | CPLEX22_3h \| 10800s \| experiments\GAMSPy\5X\results_3horas\IncT5x_8.json | CPLEX22_3h \| 10800s \| experiments/GAMSPy/5X/results_3horas/IncT5x_8.json |
-| 5X | IncT5x_9 | 28381.253 | 28381.253 | MAT_rf_fo_600s \| 600s \| experiments\matheuristics\results_production\b600\IncT5x_9_rf_fo_seed1_b600.json | MAT_rf_fo_600s \| 600s \| experiments/matheuristics/results_production/b600/IncT5x_9_rf_fo_seed1_b600.json |
-| 8X | IncT8x_2 | 128054.148 | 128054.148 | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_2_mip_seed1_b10800.json | MAT_mip_10800s \| 10800s \| experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_2_mip_seed1_b10800.json |
-| 8X | IncT8x_3 | 67597.088 | 67597.088 | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_3_mip_seed1_b10800.json | MAT_mip_10800s \| 10800s \| experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_3_mip_seed1_b10800.json |
-| 8X | IncT8x_4 | 158113.714 | 158113.714 | MAT_rf_mip_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x\IncT8x_4_rf_mip_seed1_b3600.json | MAT_rf_mip_3600s \| 3600s \| experiments/matheuristics/results_scale_8x10x/IncT8x_4_rf_mip_seed1_b3600.json |
-| 8X | IncT8x_5 | 58152.349 | 58152.349 | MAT_rf_mip_3600s \| 3600s \| experiments\matheuristics\results_scale_8x10x_v2\IncT8x_5_rf_mip_seed1_b3600.json | MAT_rf_mip_3600s \| 3600s \| experiments/matheuristics/results_scale_8x10x_v2/IncT8x_5_rf_mip_seed1_b3600.json |
-| 8X | IncT8x_6 | 95679.146 | 95679.146 | MAT_mip_10800s \| 10800s \| experiments\matheuristics\results_scale_8x10x_mip10800\IncT8x_6_mip_seed1_b10800.json | MAT_mip_10800s \| 10800s \| experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_6_mip_seed1_b10800.json |
-| Real order book | REAL_1 | 11442.625 | 11442.625 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\real\REAL_1_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/real/REAL_1_mip_seed1_b600.json |
-| S | S_1 | 36964.861 | 36964.861 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\s1\S_1_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/s1/S_1_mip_seed1_b600.json |
-| S | S_10 | 5639.568 | 5639.568 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_10_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_10_mip_seed1_b600.json |
-| S | S_2 | 99950.709 | 99950.709 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_2_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_2_mip_seed1_b600.json |
-| S | S_3 | 39695.173 | 39695.173 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_3_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_3_mip_seed1_b600.json |
-| S | S_4 | 127725.976 | 127725.976 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_4_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_4_mip_seed1_b600.json |
-| S | S_5 | 35426.141 | 35426.141 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_5_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_5_mip_seed1_b600.json |
-| S | S_6 | 66677.463 | 66677.463 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_6_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_6_mip_seed1_b600.json |
-| S | S_7 | 10568.618 | 10568.618 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_7_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_7_mip_seed1_b600.json |
-| S | S_8 | 160911.938 | 160911.938 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_8_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_8_mip_seed1_b600.json |
-| S | S_9 | 15627.917 | 15627.917 | MAT_mip_600s \| 600s \| experiments\matheuristics\results_production\b600\Ale_9_mip_seed1_b600.json | MAT_mip_600s \| 600s \| experiments/matheuristics/results_production/b600/Ale_9_mip_seed1_b600.json |
+| none | none |  |  | No BKS changes after regeneration. | No BKS changes after regeneration. |
 
 Figures: `analysis/figures/performance_profile_600s.*`, `performance_profile_3600s.*`, `frontier_heatmap.*`, and convergence curves for IncT3x_7, IncT5x_10, and IncT10x_2.
 
@@ -202,15 +142,63 @@ The v2 diagnostics separate the construction handoff from the improvement phase.
 
 ## Statistical tests
 
-Wilcoxon tests are paired by instance. Rank-biserial effect size is computed on paired objective differences (left minus right); negative values favor the first method because lower objective is better.
+### Descriptive by scale
 
-| comparison | n | p_value | rank_biserial | median_rel_delta_pct |
-| --- | --- | --- | --- | --- |
-| 600s rf+fo vs mip | 60.0000 | 0.2798 | 0.1675 | 0.1177 |
-| 600s rf+mip vs mip | 60.0000 | 0.3202 | 0.1761 | 0.0000 |
-| 600s rf+fo vs truncated ILS v2 | 6.0000 | 0.0312 | -1.0000 | -20.4246 |
-| 3600s 8X/10X rf+fo vs mip | 10.0000 | 0.1934 | -0.4909 | -4.4997 |
-| 3600s 8X/10X rf+mip vs mip | 10.0000 | 1.0000 | -0.0182 | -1.7035 |
+Differences are relative objective changes in percent, left method minus right method; negative values favor the left method because lower objective is better.
+
+| comparison | budget_s | scope | dataset | n_instances | median_delta_pct | iqr_low_pct | iqr_high_pct | wins | ties | losses |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | S | 10.0000 | 0.0141 | 0.0000 | 0.0448 | 0.0000 | 5.0000 | 5.0000 |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | 2X | 10.0000 | 0.4101 | 0.2438 | 0.5214 | 0.0000 | 0.0000 | 10.0000 |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | 3X | 10.0000 | 0.6845 | 0.1090 | 2.5810 | 2.0000 | 0.0000 | 8.0000 |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | 4X | 10.0000 | 0.5224 | -0.4358 | 3.0864 | 5.0000 | 0.0000 | 5.0000 |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | 5X | 10.0000 | 1.1085 | -1.0355 | 3.1459 | 3.0000 | 0.0000 | 7.0000 |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | 8X | 5.0000 | -4.0974 | -7.0306 | -4.0928 | 4.0000 | 0.0000 | 1.0000 |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | 10X | 5.0000 | -37.8326 | -38.1149 | -34.2033 | 4.0000 | 0.0000 | 1.0000 |
+| rf+fo vs mip | 3600.0000 | 8X/10X scale subset | 8X | 5.0000 | 1.2172 | -3.0609 | 2.6185 | 2.0000 | 0.0000 | 3.0000 |
+| rf+fo vs mip | 3600.0000 | 8X/10X scale subset | 10X | 5.0000 | -13.8944 | -16.4682 | -6.8883 | 4.0000 | 0.0000 | 1.0000 |
+| rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 3X | 2.0000 | -19.2114 | -23.7067 | -14.7162 | 2.0000 | 0.0000 | 0.0000 |
+| rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 4X | 2.0000 | -20.4246 | -21.7777 | -19.0715 | 2.0000 | 0.0000 | 0.0000 |
+| rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 5X | 2.0000 | -16.9195 | -22.9526 | -10.8864 | 2.0000 | 0.0000 | 0.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | S | 10.0000 | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 10.0000 | 0.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | 2X | 10.0000 | 0.0000 | 0.0000 | 0.0000 | 2.0000 | 8.0000 | 0.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | 3X | 10.0000 | -0.0049 | -0.1118 | 0.0291 | 5.0000 | 0.0000 | 5.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | 4X | 10.0000 | 0.3573 | -1.2199 | 0.6325 | 4.0000 | 0.0000 | 6.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | 5X | 10.0000 | 0.2623 | -0.3997 | 4.3609 | 3.0000 | 0.0000 | 7.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | 8X | 5.0000 | -5.9967 | -9.5930 | 3.2832 | 3.0000 | 0.0000 | 2.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | 10X | 5.0000 | 7.7143 | 2.8629 | 29.9898 | 1.0000 | 0.0000 | 4.0000 |
+| rf+mip vs mip | 3600.0000 | 8X/10X scale subset | 8X | 5.0000 | -2.9571 | -3.2939 | -0.4498 | 4.0000 | 0.0000 | 1.0000 |
+| rf+mip vs mip | 3600.0000 | 8X/10X scale subset | 10X | 5.0000 | 26.2968 | -15.0630 | 43.3239 | 2.0000 | 0.0000 | 3.0000 |
+
+### Block map
+
+The dependency map is written to `analysis/output/block_map.csv`. The benchmark contains ten base patterns for S--5X and five base patterns for 8X/10X.
+
+| dataset | n_instances | n_base_patterns |
+| --- | --- | --- |
+| S | 10 | 10 |
+| 2X | 10 | 10 |
+| 3X | 10 | 10 |
+| 4X | 10 | 10 |
+| 5X | 10 | 10 |
+| 8X | 5 | 5 |
+| 10X | 5 | 5 |
+
+### Block-structured tests
+
+Each test first collapses repeated descendants to one median relative difference per base pattern. Exact sign-permutation p-values are reported only when ten base-pattern blocks are available; five-block 8X/10X comparisons are descriptive only.
+
+| comparison | budget_s | scope | n_blocks | n_instances | median_block_delta_pct | ci_low_pct | ci_high_pct | effect_size | p_value | test | test_note | seed |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| rf+fo vs mip | 600.0000 | S-10X benchmark | 10.0000 | 60.0000 | 0.1357 | -0.0046 | 1.7054 | 0.7778 | 0.0469 | exact sign permutation over blocks | tested on 10 base-pattern blocks | 20260907.0000 |
+| rf+fo vs truncated ILS v2 | 600.0000 | 3X-5X short-budget subset | 3.0000 | 6.0000 | -25.6664 | -28.9857 | -10.2209 | -1.0000 |  | none | not tested: 3 blocks | 20260907.0000 |
+| rf+mip vs mip | 600.0000 | S-10X benchmark | 10.0000 | 60.0000 | 0.0000 | 0.0000 | 0.0214 | 0.4000 | 0.5000 | exact sign permutation over blocks | tested on 10 base-pattern blocks | 20260907.0000 |
+| rf+fo vs mip | 3600.0000 | 8X/10X scale subset | 5.0000 | 10.0000 | -4.9746 | -11.2034 | 10.8418 | -0.4667 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+| rf+mip vs mip | 3600.0000 | 8X/10X scale subset | 5.0000 | 10.0000 | 11.6698 | -8.4655 | 49.6016 | 0.6000 |  | none | not tested: 5 blocks, minimum attainable two-sided p = 0.0625 | 20260907.0000 |
+
+### Methodological note
+
+The 2X--5X families repeat the same ten S order-book patterns at larger horizons, and the 8X/10X families descend from five of those patterns. Treating all derived instances as independent would therefore overstate the effective sample size. The inferential unit is the base pattern, not the individual replicated instance.
 
 ## Seed variability
 
@@ -253,6 +241,8 @@ The 10800s frontier cells use the available CPLEX 3h baseline where present. For
 - `analysis/output/sprint3_bks_changes_after_mip10800.csv`
 - `analysis/output/sprint3_cell_sources.csv`
 - `analysis/output/sprint3_canonical_3600_cells.csv`
+- `analysis/output/block_map.csv`
+- `analysis/output/sprint3_descriptive_by_scale.csv`
 - `analysis/output/sprint3_scale_8x10x_canonical_v2.csv`
 - `analysis/output/sprint3_scale_v2_construction.csv`
 - `analysis/output/sprint3_seed_window_audit.csv`

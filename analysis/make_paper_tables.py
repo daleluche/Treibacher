@@ -388,17 +388,27 @@ def make_tab_q5() -> None:
 
 
 def make_tab_stats() -> None:
-    """Generate the Wilcoxon statistical-test table."""
+    """Generate the block-structured statistical-test table."""
     df = pd.read_csv(OUT / "sprint3_statistical_tests.csv")
     rows = [
-        [esc(r["comparison"]), fmt_int(r["n"]), fmt_p(r["p_value"]), fmt_num(r["rank_biserial"], 3), fmt_pct(r["median_rel_delta_pct"])]
+        [
+            esc(r["comparison"]),
+            fmt_int(r["budget_s"]),
+            esc(r["scope"]),
+            fmt_int(r["n_blocks"]),
+            fmt_int(r["n_instances"]),
+            fmt_pct(r["median_block_delta_pct"]),
+            fmt_num(r["effect_size"], 3),
+            fmt_p(r["p_value"]),
+            esc(r["test_note"]),
+        ]
         for _, r in df.iterrows()
     ]
     write_latex_table(
         PAPER_TABLES / "tab_stats.tex",
-        "Wilcoxon paired tests over matched cells.",
+        "Block-structured statistical summaries over matched cells.",
         "tab:stats",
-        ["Comparison", "$n$", "$p$", "Rank-biserial", "Median $\\Delta$ (\\%)"],
+        ["Comparison", "Budget", "Scope", "Blocks", "Inst.", "Median $\\Delta$ (\\%)", "Effect", "$p$", "Note"],
         rows,
     )
 

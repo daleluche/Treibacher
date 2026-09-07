@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import re
 import tempfile
 from pathlib import Path
 from typing import Iterable, Sequence
@@ -22,6 +23,20 @@ BENCHMARK_FAMILY_ORDER = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
 def public_benchmark(df: pd.DataFrame) -> pd.DataFrame:
     """Return a copy of *df* restricted to the derived public benchmark."""
     return df[df["dataset"].isin(BENCHMARK_FAMILY_ORDER)].copy()
+
+
+def base_pattern(instance: str) -> str:
+    """Return the base order-book pattern from which an instance descends."""
+    name = str(instance)
+    if name == "REAL_1":
+        return "REAL_1"
+    match = re.fullmatch(r"S_(\d+)", name, flags=re.IGNORECASE)
+    if match:
+        return f"S_{int(match.group(1))}"
+    match = re.fullmatch(r"IncT(?:2X|3x|4x|5x|8x|10x)_(\d+)", name, flags=re.IGNORECASE)
+    if match:
+        return f"S_{int(match.group(1))}"
+    raise ValueError(f"Cannot infer base pattern for instance {instance!r}")
 
 
 def family_rank(order: Sequence[str]) -> dict[str, int]:

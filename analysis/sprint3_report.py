@@ -11,8 +11,6 @@ from typing import Iterable
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from scipy.stats import wilcoxon
-
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "analysis" / "output"
 FIG = ROOT / "analysis" / "figures"
@@ -23,6 +21,7 @@ if str(ROOT) not in sys.path:
 from analysis.families import (
     BENCHMARK_FAMILY_ORDER,
     atomic_write_text,
+    base_pattern,
     public_benchmark,
     write_table,
 )
@@ -462,24 +461,126 @@ def rank_biserial(x: np.ndarray, y: np.ndarray) -> float:
     return float((pos - neg) / (diff.size * (diff.size + 1) / 2.0))
 
 
-def paired_test(frame: pd.DataFrame, lhs: str, rhs: str, label: str) -> dict:
-    """Run Wilcoxon and effect-size calculations for paired objective values."""
-    sub = frame[[lhs, rhs]].dropna()
-    if len(sub) < 2:
-        return {"comparison": label, "n": len(sub), "p_value": np.nan, "rank_biserial": np.nan, "median_rel_delta_pct": np.nan}
-    x = sub[lhs].to_numpy(dtype=float)
-    y = sub[rhs].to_numpy(dtype=float)
-    try:
-        p_value = float(wilcoxon(x, y, zero_method="wilcox", alternative="two-sided").pvalue)
-    except ValueError:
+def relative_delta(lhs: pd.Series, rhs: pd.Series) -> pd.Series:
+    """Return relative objective differences in percent; negative favors lhs."""
+    return (lhs.astype(float) - rhs.astype(float)) / np.maximum(np.abs(rhs.astype(float)), 1.0) * 100.0
+
+
+def exact_sign_permutation_pvalue(values: np.ndarray) -> float:
+    """Enumerate the exact two-sided sign-permutation p-value for block deltas."""
+    clean = values[np.abs(values) > 1e-12]
+    if clean.size == 0:
+        return 1.0
+    observed = abs(float(clean.sum()))
+    extreme = 0
+    total = 2 ** clean.size
+    for mask in range(total):
+        signs = np.array([1.0 if (mask >> bit) & 1 else -1.0 for bit in range(clean.size)])
+        if abs(float((signs * clean).sum())) >= observed - 1e-12:
+            extreme += 1
+    return extreme / total
+
+
+def bootstrap_block_ci(values: np.ndarray, seed: int, reps: int = 10_000) -> tuple[float, float]:
+    """Bootstrap a confidence interval by resampling whole block deltas."""
+    clean = values[np.isfinite(values)]
+    if clean.size == 0:
+        return np.nan, np.nan
+    rng = np.random.default_rng(seed)
+    samples = rng.choice(clean, size=(reps, clean.size), replace=True)
+    medians = np.median(samples, axis=1)
+    return tuple(np.percentile(medians, [2.5, 97.5]))
+
+
+def comparison_frame(
+    source: pd.DataFrame,
+    lhs: str,
+    rhs: str,
+    comparison: str,
+    budget_s: int,
+    scope: str,
+) -> pd.DataFrame:
+    """Build a tidy frame for one method comparison."""
+    cols = ["dataset", "instance", lhs, rhs]
+    sub = public_benchmark(source[cols].dropna(subset=[lhs, rhs])).copy()
+    sub["comparison"] = comparison
+    sub["budget_s"] = budget_s
+    sub["scope"] = scope
+    sub["lhs_method"] = lhs
+    sub["rhs_method"] = rhs
+    sub["delta_pct"] = relative_delta(sub[lhs], sub[rhs])
+    sub["base_pattern"] = sub["instance"].map(base_pattern)
+    return sub
+
+
+def descriptive_by_scale(comparisons: list[pd.DataFrame]) -> pd.DataFrame:
+    """Summarize paired differences by family without treating them as independent tests."""
+    rows = []
+    data = pd.concat(comparisons, ignore_index=True)
+    for (comparison, budget_s, scope, dataset), group in data.groupby(["comparison", "budget_s", "scope", "dataset"]):
+        delta = group["delta_pct"].to_numpy(dtype=float)
+        rows.append(
+            {
+                "comparison": comparison,
+                "budget_s": int(budget_s),
+                "scope": scope,
+                "dataset": dataset,
+                "n_instances": len(group),
+                "median_delta_pct": float(np.median(delta)),
+                "iqr_low_pct": float(np.percentile(delta, 25)),
+                "iqr_high_pct": float(np.percentile(delta, 75)),
+                "wins": int((delta < -1e-9).sum()),
+                "ties": int((np.abs(delta) <= 1e-9).sum()),
+                "losses": int((delta > 1e-9).sum()),
+            }
+        )
+    result = pd.DataFrame(rows)
+    result["dataset"] = pd.Categorical(result["dataset"], BENCHMARK_FAMILY_ORDER, ordered=True)
+    return result.sort_values(["comparison", "budget_s", "scope", "dataset"]).reset_index(drop=True)
+
+
+def block_structured_tests(comparisons: list[pd.DataFrame], seed: int = 20260907) -> pd.DataFrame:
+    """Run block-aware statistical summaries and tests."""
+    rows = []
+    data = pd.concat(comparisons, ignore_index=True)
+    for (comparison, budget_s, scope), group in data.groupby(["comparison", "budget_s", "scope"]):
+        block_delta = (
+            group.groupby("base_pattern")["delta_pct"]
+            .median()
+            .sort_index()
+            .to_numpy(dtype=float)
+        )
+        n_blocks = int(len(block_delta))
+        ci_low, ci_high = bootstrap_block_ci(block_delta, seed=seed)
+        effect = rank_biserial(block_delta, np.zeros_like(block_delta)) if n_blocks else np.nan
         p_value = np.nan
-    return {
-        "comparison": label,
-        "n": len(sub),
-        "p_value": p_value,
-        "rank_biserial": rank_biserial(x, y),
-        "median_rel_delta_pct": float(np.median((x - y) / np.maximum(np.abs(y), 1.0) * 100.0)),
-    }
+        test = "none"
+        if n_blocks == 10:
+            p_value = exact_sign_permutation_pvalue(block_delta)
+            test = "exact sign permutation over blocks"
+            test_note = "tested on 10 base-pattern blocks"
+        elif n_blocks == 5:
+            test_note = "not tested: 5 blocks, minimum attainable two-sided p = 0.0625"
+        else:
+            test_note = f"not tested: {n_blocks} blocks"
+        rows.append(
+            {
+                "comparison": comparison,
+                "budget_s": int(budget_s),
+                "scope": scope,
+                "n_blocks": n_blocks,
+                "n_instances": int(len(group)),
+                "median_block_delta_pct": float(np.median(block_delta)) if n_blocks else np.nan,
+                "ci_low_pct": ci_low,
+                "ci_high_pct": ci_high,
+                "effect_size": effect,
+                "p_value": p_value,
+                "test": test,
+                "test_note": test_note,
+                "seed": seed,
+            }
+        )
+    return pd.DataFrame(rows).sort_values(["budget_s", "comparison", "scope"]).reset_index(drop=True)
 
 
 def v2_explanation(mat_runs: pd.DataFrame) -> pd.DataFrame:
@@ -573,6 +674,9 @@ def main() -> int:
     q5_table, q5_verdict = q5_cross_budget_table(scale_v2, mip10800)
     canonical_600 = canonical_600_table(prod600)
     canonical_3600 = canonical_3600_table(comp, prod3600, scale_v2)
+    block_map = comp[["dataset", "instance"]].copy()
+    block_map["base_pattern"] = block_map["instance"].map(base_pattern)
+    write_table(block_map, OUT / "block_map.csv", ["dataset", "instance", "base_pattern"])
 
     bks_audit = comp[["dataset", "instance", "BKS", "bks_source"]].copy()
     write_table(bks_audit, OUT / "sprint3_bks_audit.csv", ["dataset", "instance"])
@@ -642,20 +746,31 @@ def main() -> int:
     write_table(frontier, OUT / "sprint3_frontier_counts.csv", ["dataset", "budget_s"])
     frontier_heatmap(frontier)
 
-    prod600_wide = prod600.pivot_table(index="instance", columns="method", values="Z_final", aggfunc="min")
-    stats_rows = [
-        paired_test(prod600_wide, "rf+fo", "mip", "600s rf+fo vs mip"),
-        paired_test(prod600_wide, "rf+mip", "mip", "600s rf+mip vs mip"),
+    stat_inputs = [
+        comparison_frame(canonical_600, "rf+fo", "mip", "rf+fo vs mip", 600, "S-10X benchmark"),
+        comparison_frame(canonical_600, "rf+mip", "mip", "rf+mip vs mip", 600, "S-10X benchmark"),
     ]
-    short600 = short[short["budget_s"] == 600].rename(columns={"Z_rf_fo": "rf+fo", "Z_ils_v2_best_until_budget": "ils"})
-    stats_rows.append(paired_test(short600, "rf+fo", "ils", "600s rf+fo vs truncated ILS v2"))
+    short600 = short[short["budget_s"] == 600].rename(
+        columns={"Z_rf_fo": "rf+fo", "Z_ils_v2_best_until_budget": "ILS v2 truncated"}
+    )
+    stat_inputs.append(
+        comparison_frame(short600, "rf+fo", "ILS v2 truncated", "rf+fo vs truncated ILS v2", 600, "3X-5X short-budget subset")
+    )
     scale_wide = scale_v2.rename(columns={"rf+fo": "rf+fo", "rf+mip": "rf+mip", "mip": "mip"})
-    stats_rows.extend([
-        paired_test(scale_wide, "rf+fo", "mip", "3600s 8X/10X rf+fo vs mip"),
-        paired_test(scale_wide, "rf+mip", "mip", "3600s 8X/10X rf+mip vs mip"),
-    ])
-    stats = pd.DataFrame(stats_rows)
-    write_table(stats, OUT / "sprint3_statistical_tests.csv", ["comparison"])
+    stat_inputs.extend(
+        [
+            comparison_frame(scale_wide, "rf+fo", "mip", "rf+fo vs mip", 3600, "8X/10X scale subset"),
+            comparison_frame(scale_wide, "rf+mip", "mip", "rf+mip vs mip", 3600, "8X/10X scale subset"),
+        ]
+    )
+    descriptive = descriptive_by_scale(stat_inputs)
+    write_table(
+        descriptive,
+        OUT / "sprint3_descriptive_by_scale.csv",
+        ["comparison", "budget_s", "scope", "dataset"],
+    )
+    stats = block_structured_tests(stat_inputs)
+    write_table(stats, OUT / "sprint3_statistical_tests.csv", ["comparison", "budget_s", "scope"])
 
     variability = (
         seeds.groupby(["dataset", "instance"], as_index=False)
@@ -667,7 +782,16 @@ def main() -> int:
     write_table(seed_audit, OUT / "sprint3_seed_window_audit.csv", ["instance", "seed"])
 
     hypotheses = sprint2_hypotheses(short, scale, mat_runs)
-    scale_stat = stats.loc[stats["comparison"] == "3600s 8X/10X rf+fo vs mip"].iloc[0]
+    block_summary = (
+        public_benchmark(block_map)
+        .groupby("dataset", as_index=False)
+        .agg(n_instances=("instance", "count"), n_base_patterns=("base_pattern", "nunique"))
+    )
+    block_summary["dataset"] = pd.Categorical(block_summary["dataset"], BENCHMARK_FAMILY_ORDER, ordered=True)
+    block_summary = block_summary.sort_values("dataset")
+    scale_stat = stats.loc[
+        (stats["comparison"] == "rf+fo vs mip") & (stats["budget_s"] == 3600) & (stats["scope"] == "8X/10X scale subset")
+    ].iloc[0]
 
     bks_8x4 = comp.loc[comp.instance == "IncT8x_4", ["BKS", "bks_source"]].iloc[0]
     report = [
@@ -679,7 +803,7 @@ def main() -> int:
         "",
         f"The IncT8x_4 BKS audit passes the registered check: BKS = {bks_8x4['BKS']:.3f}, source = `{bks_8x4['bks_source']}`.",
         "",
-        f"Using canonical v2 decomposition data for 8X/10X @3600s, the Wilcoxon row `3600s 8X/10X rf+fo vs mip` has median relative delta {scale_stat['median_rel_delta_pct']:.4f}%, p-value {scale_stat['p_value']:.4f}, and rank-biserial effect {scale_stat['rank_biserial']:.4f}.",
+        f"Using canonical v2 decomposition data for 8X/10X @3600s, `rf+fo vs mip` has median block relative delta {scale_stat['median_block_delta_pct']:.4f}%; it is not assigned a p-value because the scale subset has five base-pattern blocks.",
         "",
         "## Registered Sprint 2 hypotheses",
         "",
@@ -739,9 +863,27 @@ def main() -> int:
         "",
         "## Statistical tests",
         "",
-        "Wilcoxon tests are paired by instance. Rank-biserial effect size is computed on paired objective differences (left minus right); negative values favor the first method because lower objective is better.",
+        "### Descriptive by scale",
         "",
-        markdown_table(stats.to_dict("records"), ["comparison", "n", "p_value", "rank_biserial", "median_rel_delta_pct"], digits=4),
+        "Differences are relative objective changes in percent, left method minus right method; negative values favor the left method because lower objective is better.",
+        "",
+        markdown_table(descriptive.to_dict("records"), ["comparison", "budget_s", "scope", "dataset", "n_instances", "median_delta_pct", "iqr_low_pct", "iqr_high_pct", "wins", "ties", "losses"], digits=4),
+        "",
+        "### Block map",
+        "",
+        "The dependency map is written to `analysis/output/block_map.csv`. The benchmark contains ten base patterns for S--5X and five base patterns for 8X/10X.",
+        "",
+        markdown_table(block_summary.to_dict("records"), ["dataset", "n_instances", "n_base_patterns"], digits=0),
+        "",
+        "### Block-structured tests",
+        "",
+        "Each test first collapses repeated descendants to one median relative difference per base pattern. Exact sign-permutation p-values are reported only when ten base-pattern blocks are available; five-block 8X/10X comparisons are descriptive only.",
+        "",
+        markdown_table(stats.to_dict("records"), ["comparison", "budget_s", "scope", "n_blocks", "n_instances", "median_block_delta_pct", "ci_low_pct", "ci_high_pct", "effect_size", "p_value", "test", "test_note", "seed"], digits=4),
+        "",
+        "### Methodological note",
+        "",
+        "The 2X--5X families repeat the same ten S order-book patterns at larger horizons, and the 8X/10X families descend from five of those patterns. Treating all derived instances as independent would therefore overstate the effective sample size. The inferential unit is the base pattern, not the individual replicated instance.",
         "",
         "## Seed variability",
         "",
@@ -768,6 +910,8 @@ def main() -> int:
         "- `analysis/output/sprint3_bks_changes_after_mip10800.csv`",
         "- `analysis/output/sprint3_cell_sources.csv`",
         "- `analysis/output/sprint3_canonical_3600_cells.csv`",
+        "- `analysis/output/block_map.csv`",
+        "- `analysis/output/sprint3_descriptive_by_scale.csv`",
         "- `analysis/output/sprint3_scale_8x10x_canonical_v2.csv`",
         "- `analysis/output/sprint3_scale_v2_construction.csv`",
         "- `analysis/output/sprint3_seed_window_audit.csv`",

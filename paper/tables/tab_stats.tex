@@ -1,18 +1,18 @@
 \begin{table}[t]
 \centering
 \footnotesize
-\caption{Wilcoxon paired tests over matched cells.}
+\caption{Block-structured statistical summaries over matched cells.}
 \label{tab:stats}
 \resizebox{\linewidth}{!}{%
-\begin{tabular}{lrrrr}
+\begin{tabular}{lrrrrrrrr}
 \toprule
-Comparison & $n$ & $p$ & Rank-biserial & Median $\Delta$ (\%) \\
+Comparison & Budget & Scope & Blocks & Inst. & Median $\Delta$ (\%) & Effect & $p$ & Note \\
 \midrule
-600s rf+fo vs mip & 60 & 0.2798 & 0.168 & 0.12 \\
-600s rf+mip vs mip & 60 & 0.3202 & 0.176 & 0.00 \\
-600s rf+fo vs truncated ILS v2 & 6 & 0.0312 & -1.000 & -20.42 \\
-3600s 8X/10X rf+fo vs mip & 10 & 0.1934 & -0.491 & -4.50 \\
-3600s 8X/10X rf+mip vs mip & 10 & 1.0000 & -0.018 & -1.70 \\
+rf+fo vs mip & 600 & S-10X benchmark & 10 & 60 & 0.14 & 0.778 & 0.0469 & tested on 10 base-pattern blocks \\
+rf+fo vs truncated ILS v2 & 600 & 3X-5X short-budget subset & 3 & 6 & -25.67 & -1.000 & -- & not tested: 3 blocks \\
+rf+mip vs mip & 600 & S-10X benchmark & 10 & 60 & 0.00 & 0.400 & 0.5000 & tested on 10 base-pattern blocks \\
+rf+fo vs mip & 3\,600 & 8X/10X scale subset & 5 & 10 & -4.97 & -0.467 & -- & not tested: 5 blocks, minimum attainable two-sided p = 0.0625 \\
+rf+mip vs mip & 3\,600 & 8X/10X scale subset & 5 & 10 & 11.67 & 0.600 & -- & not tested: 5 blocks, minimum attainable two-sided p = 0.0625 \\
 \bottomrule
 \end{tabular}%
 }
