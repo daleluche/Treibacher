@@ -262,15 +262,26 @@ profiles. It does not include the plant's real order book.
     (RELEASE / "LICENSE").write_text(text, encoding="utf-8")
 
 
-def write_readme() -> None:
+def write_readme(file_count: int | None = None, zip_size_bytes: int | None = None) -> None:
     """Write the release README."""
-    text = """# PSP Electrofused-Grains Benchmark Release v1
+    if file_count is None:
+        file_count_text = "computed during package generation"
+    else:
+        file_count_text = f"{file_count}"
+    if zip_size_bytes is None:
+        zip_size_text = "computed during package generation"
+    else:
+        zip_size_text = f"approximately {zip_size_bytes / (1024 * 1024):.2f} MiB"
+    text = f"""# PSP Electrofused-Grains Benchmark Release v1
 
 This package accompanies the PSP computational study. It contains the 60 benchmark
 instances, best-known solutions, dual bounds, run trajectories, window logs, analysis
 outputs, and the controlled `gamma=0` variant.
 
 ## Contents
+
+Package inventory: {file_count_text} files in the ZIP archive; ZIP size
+{zip_size_text}.
 
 - `instances/gamspy_py/`: original GAMSPy instance scripts.
 - `instances/json/`: open JSON representation of each instance.
@@ -324,12 +335,13 @@ Data are CC BY 4.0; code is MIT. See `LICENSE`.
 def write_checksums() -> None:
     """Write SHA-256 checksums for all release files except the final zip."""
     rows = []
+    checksum_path = RELEASE / "checksums.sha256"
     for path in sorted(RELEASE.rglob("*")):
-        if not path.is_file() or path == ZIP_PATH:
+        if not path.is_file() or path in {ZIP_PATH, checksum_path}:
             continue
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         rows.append((digest, path.relative_to(RELEASE).as_posix()))
-    with (RELEASE / "checksums.sha256").open("w", encoding="utf-8", newline="") as fh:
+    with checksum_path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.writer(fh, delimiter=" ")
         for digest, name in rows:
             writer.writerow([digest, name])
@@ -373,6 +385,30 @@ def create_zip() -> None:
                 zf.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
 
 
+def package_file_count() -> int:
+    """Return the number of files included in the release zip."""
+    return sum(1 for path in RELEASE.rglob("*") if path.is_file() and path != ZIP_PATH)
+
+
+def finalize_readme_and_zip() -> None:
+    """Write package inventory into README and create a stable deterministic zip."""
+    previous_size_text: str | None = None
+    for _ in range(6):
+        size_bytes = None
+        if previous_size_text is not None:
+            size_bytes = int(float(previous_size_text) * 1024 * 1024)
+        write_readme(file_count=package_file_count(), zip_size_bytes=size_bytes)
+        sanitize_release_texts()
+        write_checksums()
+        create_zip()
+        size = ZIP_PATH.stat().st_size
+        size_text = f"{size / (1024 * 1024):.2f}"
+        if size_text == previous_size_text:
+            return
+        previous_size_text = size_text
+    raise RuntimeError("Release zip size did not stabilize after updating README inventory")
+
+
 def main() -> int:
     """Build the full release package."""
     reset_release()
@@ -383,10 +419,7 @@ def main() -> int:
     copy_trajectories()
     copy_window_logs()
     write_license()
-    write_readme()
-    sanitize_release_texts()
-    write_checksums()
-    create_zip()
+    finalize_readme_and_zip()
     print(f"Release written to {RELEASE}")
     print(f"Zip written to {ZIP_PATH}")
     return 0
