@@ -5,9 +5,8 @@ repository artifacts. Commands are intended to be run from the repository root.
 
 ## UNVERIFIED Lines
 
-| Value | Local | Reason |
-|---|---|---|
-| 2011 | `paper/sections/introduction.tex:35` | Historical shorthand for the earlier thesis-era verdict; no cited or versioned artifact now carries the exact year after removal of the uncited thesis entry. |
+None. Every empirical or configuration number covered by this audit is traced to a
+versioned CSV, JSON, script, or instance artifact.
 
 All other empirical numbers listed below are traced to versioned CSV, JSON, script, or
 instance artifacts.
