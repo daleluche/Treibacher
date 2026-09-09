@@ -206,7 +206,7 @@ Each comparison first collapses repeated descendants to one median relative diff
 
 ### Methodological note
 
-The 2X--5X families repeat the same ten S order-book patterns at larger horizons, and the 8X/10X families descend from five of those patterns. Treating all derived instances as independent would therefore overstate the effective sample size. The inferential unit is the base pattern, not the individual replicated instance. Five-block 8X and 10X rows are descriptive because their minimum attainable exact two-sided p-value is 0.0625.
+The inferential unit is the base pattern, not the individual replicated instance. The ten S instances are randomizations of a single real order book, so the results describe one industrial case with controlled replication rather than estimating population parameters. The 2X--5X families repeat the same ten S order-book patterns at larger horizons, and the 8X/10X families descend from five of those patterns. Treating all derived instances as independent would therefore overstate the effective sample size. Five-block 8X and 10X rows are descriptive because their minimum attainable exact two-sided p-value is 0.0625. The p-values are unadjusted sensitivity analyses based on different test statistics and are not used for confirmatory decisions.
 
 ## Seed variability
 
