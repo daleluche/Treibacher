@@ -450,16 +450,21 @@ def make_tab_q5() -> None:
 def make_tab_stats() -> None:
     """Generate the block-structured statistical-test table."""
     df = pd.read_csv(OUT / "sprint3_statistical_tests.csv")
+    if "analysis_role" in df.columns:
+        df = df[df["analysis_role"] == "descriptive_primary"].copy()
     rows = [
         [
             esc(r["comparison"]),
             fmt_int(r["budget_s"]),
             esc(r["scope"]),
             fmt_int(r["n_blocks"]),
+            fmt_int(r["n_nonzero_blocks"]),
             fmt_int(r["n_instances"]),
+            fmt_pct(r["mean_block_delta_pct"]),
             fmt_pct(r["median_block_delta_pct"]),
-            fmt_num(r["effect_size"], 3),
-            fmt_p(r["p_value"]),
+            fmt_p(r["p_randomization_mean"]),
+            fmt_p(r["p_wilcoxon_signed_rank"]),
+            fmt_p(r["p_sign_test"]),
             esc(r["test_note"]),
         ]
         for _, r in df.iterrows()
@@ -468,7 +473,7 @@ def make_tab_stats() -> None:
         PAPER_TABLES / "tab_stats.tex",
         "Block-structured statistical summaries over matched cells.",
         "tab:stats",
-        ["Comparison", "Budget", "Scope", "Blocks", "Inst.", "Median $\\Delta$ (\\%)", "Effect", "$p$", "Note"],
+        ["Comparison", "Budget", "Scope", "Blocks", "Nonzero", "Inst.", "Mean $\\Delta$ (\\%)", "Median $\\Delta$ (\\%)", "$p_{mean}$", "$p_{W}$", "$p_{sign}$", "Note"],
         rows,
     )
 

@@ -447,18 +447,20 @@ def frontier_heatmap(frontier: pd.DataFrame) -> None:
     save_figure(fig, "frontier_heatmap")
 
 
-def rank_biserial(x: np.ndarray, y: np.ndarray) -> float:
-    """Compute rank-biserial effect size for paired differences x-y."""
-    diff = x - y
-    diff = diff[np.abs(diff) > 1e-12]
-    if diff.size == 0:
-        return 0.0
-    order = np.argsort(np.abs(diff))
-    ranks = np.empty_like(diff, dtype=float)
-    ranks[order] = np.arange(1, diff.size + 1)
-    pos = ranks[diff > 0].sum()
-    neg = ranks[diff < 0].sum()
-    return float((pos - neg) / (diff.size * (diff.size + 1) / 2.0))
+POOLED_SCOPES = {
+    "S-10X benchmark",
+    "8X/10X heterogeneous family aggregate",
+}
+
+POOLED_NOTE = (
+    "exploratory pooled comparison across families with heterogeneous behaviour; "
+    "conclusions rest on the per-family results"
+)
+
+
+def analysis_role(scope: str, *, is_aggregate: bool = False) -> str:
+    """Return the registered analysis role for a statistical row."""
+    return "pooled_exploratory" if scope in POOLED_SCOPES and is_aggregate else "descriptive_primary"
 
 
 def relative_delta(lhs: pd.Series, rhs: pd.Series) -> pd.Series:
@@ -466,30 +468,88 @@ def relative_delta(lhs: pd.Series, rhs: pd.Series) -> pd.Series:
     return (lhs.astype(float) - rhs.astype(float)) / np.maximum(np.abs(rhs.astype(float)), 1.0) * 100.0
 
 
-def exact_sign_permutation_pvalue(values: np.ndarray) -> float:
-    """Enumerate the exact two-sided sign-permutation p-value for block deltas."""
-    clean = values[np.abs(values) > 1e-12]
+def clean_nonzero(values: np.ndarray) -> np.ndarray:
+    """Return finite, nonzero values under the numerical tie tolerance."""
+    finite = values[np.isfinite(values)]
+    return finite[np.abs(finite) > 1e-12]
+
+
+def exact_sign_permutation_mean_pvalue(values: np.ndarray) -> float:
+    """Enumerate the exact two-sided sign-randomization p-value for the mean."""
+    clean = clean_nonzero(values)
     if clean.size == 0:
         return 1.0
-    observed = abs(float(clean.sum()))
+    observed = abs(float(clean.mean()))
     extreme = 0
     total = 2 ** clean.size
     for mask in range(total):
         signs = np.array([1.0 if (mask >> bit) & 1 else -1.0 for bit in range(clean.size)])
-        if abs(float((signs * clean).sum())) >= observed - 1e-12:
+        if abs(float((signs * clean).mean())) >= observed - 1e-12:
             extreme += 1
     return extreme / total
 
 
-def bootstrap_block_ci(values: np.ndarray, seed: int, reps: int = 10_000) -> tuple[float, float]:
+def exact_sign_test_pvalue(values: np.ndarray) -> float:
+    """Return the exact two-sided binomial sign-test p-value after discarding zeros."""
+    clean = clean_nonzero(values)
+    if clean.size == 0:
+        return 1.0
+    positives = int((clean > 0).sum())
+    n = int(clean.size)
+    tail = sum(math.comb(n, k) for k in range(0, min(positives, n - positives) + 1)) / (2 ** n)
+    return min(1.0, 2.0 * tail)
+
+
+def average_abs_ranks(values: np.ndarray) -> np.ndarray:
+    """Return average ranks of absolute values, using one-based ranks."""
+    order = np.argsort(np.abs(values), kind="mergesort")
+    sorted_abs = np.abs(values)[order]
+    ranks_sorted = np.empty_like(sorted_abs, dtype=float)
+    start = 0
+    while start < sorted_abs.size:
+        end = start + 1
+        while end < sorted_abs.size and abs(sorted_abs[end] - sorted_abs[start]) <= 1e-12:
+            end += 1
+        ranks_sorted[start:end] = (start + 1 + end) / 2.0
+        start = end
+    ranks = np.empty_like(ranks_sorted, dtype=float)
+    ranks[order] = ranks_sorted
+    return ranks
+
+
+def exact_wilcoxon_signed_rank_pvalue(values: np.ndarray) -> float:
+    """Enumerate the exact signed-rank p-value with average ranks for ties."""
+    clean = clean_nonzero(values)
+    if clean.size == 0:
+        return 1.0
+    ranks = average_abs_ranks(clean)
+    total_rank = float(ranks.sum())
+    observed_wplus = float(ranks[clean > 0].sum())
+    observed = min(observed_wplus, total_rank - observed_wplus)
+    extreme = 0
+    total = 2 ** clean.size
+    for mask in range(total):
+        wplus = sum(float(ranks[bit]) for bit in range(clean.size) if (mask >> bit) & 1)
+        statistic = min(wplus, total_rank - wplus)
+        if statistic <= observed + 1e-12:
+            extreme += 1
+    return extreme / total
+
+
+def bootstrap_block_ci(values: np.ndarray, seed: int, estimator: str, reps: int = 10_000) -> tuple[float, float]:
     """Bootstrap a confidence interval by resampling whole block deltas."""
     clean = values[np.isfinite(values)]
     if clean.size == 0:
         return np.nan, np.nan
     rng = np.random.default_rng(seed)
     samples = rng.choice(clean, size=(reps, clean.size), replace=True)
-    medians = np.median(samples, axis=1)
-    return tuple(np.percentile(medians, [2.5, 97.5]))
+    if estimator == "mean":
+        estimates = np.mean(samples, axis=1)
+    elif estimator == "median":
+        estimates = np.median(samples, axis=1)
+    else:
+        raise ValueError(f"Unsupported bootstrap estimator: {estimator}")
+    return tuple(np.percentile(estimates, [2.5, 97.5]))
 
 
 def comparison_frame(
@@ -532,11 +592,35 @@ def descriptive_by_scale(comparisons: list[pd.DataFrame]) -> pd.DataFrame:
                 "wins": int((delta < -1e-9).sum()),
                 "ties": int((np.abs(delta) <= 1e-9).sum()),
                 "losses": int((delta > 1e-9).sum()),
+                "analysis_role": analysis_role(str(scope)),
+                "test_note": "",
+            }
+        )
+    for (comparison, budget_s, scope), group in data.groupby(["comparison", "budget_s", "scope"]):
+        if str(scope) not in POOLED_SCOPES:
+            continue
+        delta = group["delta_pct"].to_numpy(dtype=float)
+        rows.append(
+            {
+                "comparison": comparison,
+                "budget_s": int(budget_s),
+                "scope": scope,
+                "dataset": f"{scope} pooled",
+                "n_instances": len(group),
+                "median_delta_pct": float(np.median(delta)),
+                "iqr_low_pct": float(np.percentile(delta, 25)),
+                "iqr_high_pct": float(np.percentile(delta, 75)),
+                "wins": int((delta < -1e-9).sum()),
+                "ties": int((np.abs(delta) <= 1e-9).sum()),
+                "losses": int((delta > 1e-9).sum()),
+                "analysis_role": analysis_role(str(scope), is_aggregate=True),
+                "test_note": POOLED_NOTE,
             }
         )
     result = pd.DataFrame(rows)
-    result["dataset"] = pd.Categorical(result["dataset"], BENCHMARK_FAMILY_ORDER, ordered=True)
-    return result.sort_values(["comparison", "budget_s", "scope", "dataset"]).reset_index(drop=True)
+    order = {dataset: idx for idx, dataset in enumerate(BENCHMARK_FAMILY_ORDER)}
+    result["_dataset_rank"] = result["dataset"].map(order).fillna(999).astype(int)
+    return result.sort_values(["comparison", "budget_s", "scope", "_dataset_rank", "dataset"]).drop(columns="_dataset_rank").reset_index(drop=True)
 
 
 def block_structured_tests(comparisons: list[pd.DataFrame], seed: int = 20260907) -> pd.DataFrame:
@@ -551,32 +635,44 @@ def block_structured_tests(comparisons: list[pd.DataFrame], seed: int = 20260907
             .to_numpy(dtype=float)
         )
         n_blocks = int(len(block_delta))
-        ci_low, ci_high = bootstrap_block_ci(block_delta, seed=seed)
-        effect = rank_biserial(block_delta, np.zeros_like(block_delta)) if n_blocks else np.nan
-        p_value = np.nan
-        test = "none"
+        n_nonzero = int(clean_nonzero(block_delta).size)
+        mean_ci_low, mean_ci_high = bootstrap_block_ci(block_delta, seed=seed, estimator="mean")
+        median_ci_low, median_ci_high = bootstrap_block_ci(block_delta, seed=seed, estimator="median")
+        p_randomization = np.nan
+        p_wilcoxon = np.nan
+        p_sign = np.nan
+        notes = []
+        role = analysis_role(str(scope), is_aggregate=str(scope) in POOLED_SCOPES)
         if n_blocks == 10:
-            p_value = exact_sign_permutation_pvalue(block_delta)
-            test = "exact sign permutation over blocks"
-            test_note = "tested on 10 base-pattern blocks"
+            p_randomization = exact_sign_permutation_mean_pvalue(block_delta)
+            p_wilcoxon = exact_wilcoxon_signed_rank_pvalue(block_delta)
+            p_sign = exact_sign_test_pvalue(block_delta)
+            notes.append("tested on 10 base-pattern blocks; zeros discarded for p-values; wilcoxon exact enumeration with average ranks")
         elif n_blocks == 5:
-            test_note = "not tested: 5 blocks, minimum attainable two-sided p = 0.0625"
+            notes.append("not tested: 5 blocks, minimum attainable two-sided p = 0.0625")
         else:
-            test_note = f"not tested: {n_blocks} blocks"
+            notes.append(f"not tested: {n_blocks} blocks")
+        if role == "pooled_exploratory":
+            notes.append(POOLED_NOTE)
         rows.append(
             {
                 "comparison": comparison,
                 "budget_s": int(budget_s),
                 "scope": scope,
-                "n_blocks": n_blocks,
-                "n_instances": int(len(group)),
+                "mean_block_delta_pct": float(np.mean(block_delta)) if n_blocks else np.nan,
+                "mean_ci_low_pct": mean_ci_low,
+                "mean_ci_high_pct": mean_ci_high,
                 "median_block_delta_pct": float(np.median(block_delta)) if n_blocks else np.nan,
-                "ci_low_pct": ci_low,
-                "ci_high_pct": ci_high,
-                "effect_size": effect,
-                "p_value": p_value,
-                "test": test,
-                "test_note": test_note,
+                "median_ci_low_pct": median_ci_low,
+                "median_ci_high_pct": median_ci_high,
+                "p_randomization_mean": p_randomization,
+                "p_wilcoxon_signed_rank": p_wilcoxon,
+                "p_sign_test": p_sign,
+                "n_blocks": n_blocks,
+                "n_nonzero_blocks": n_nonzero,
+                "n_instances": int(len(group)),
+                "analysis_role": role,
+                "test_note": "; ".join(notes),
                 "seed": seed,
             }
         )
@@ -880,11 +976,15 @@ def main() -> int:
         "",
         "## Statistical tests",
         "",
-        "### Descriptive by scale",
+        "### Descriptive by family",
         "",
         "Differences are relative objective changes in percent, left method minus right method; negative values favor the left method because lower objective is better.",
         "",
-        markdown_table(descriptive.to_dict("records"), ["comparison", "budget_s", "scope", "dataset", "n_instances", "median_delta_pct", "iqr_low_pct", "iqr_high_pct", "wins", "ties", "losses"], digits=4),
+        markdown_table(
+            descriptive[descriptive["analysis_role"] == "descriptive_primary"].to_dict("records"),
+            ["comparison", "budget_s", "scope", "dataset", "n_instances", "median_delta_pct", "iqr_low_pct", "iqr_high_pct", "wins", "ties", "losses", "analysis_role"],
+            digits=4,
+        ),
         "",
         "### Block map",
         "",
@@ -892,15 +992,37 @@ def main() -> int:
         "",
         markdown_table(block_summary.to_dict("records"), ["dataset", "n_instances", "n_base_patterns"], digits=0),
         "",
-        "### Block-structured tests",
+        "### Exploratory block comparisons",
         "",
-        "Each test first collapses repeated descendants to one median relative difference per base pattern. Exact sign-permutation p-values are reported only when ten base-pattern blocks are available; five-block 8X/10X comparisons are descriptive only.",
+        "Each comparison first collapses repeated descendants to one median relative difference per base pattern. Mean and median summaries are reported separately, with percentile bootstrap intervals over whole blocks. The p-values are unadjusted sensitivity analyses based on different test statistics and are not used for confirmatory decisions.",
         "",
-        markdown_table(stats.to_dict("records"), ["comparison", "budget_s", "scope", "n_blocks", "n_instances", "median_block_delta_pct", "ci_low_pct", "ci_high_pct", "effect_size", "p_value", "test", "test_note", "seed"], digits=4),
+        markdown_table(
+            stats.to_dict("records"),
+            [
+                "comparison",
+                "budget_s",
+                "scope",
+                "analysis_role",
+                "n_blocks",
+                "n_nonzero_blocks",
+                "n_instances",
+                "mean_block_delta_pct",
+                "mean_ci_low_pct",
+                "mean_ci_high_pct",
+                "median_block_delta_pct",
+                "median_ci_low_pct",
+                "median_ci_high_pct",
+                "p_randomization_mean",
+                "p_wilcoxon_signed_rank",
+                "p_sign_test",
+                "test_note",
+            ],
+            digits=4,
+        ),
         "",
         "### Methodological note",
         "",
-        "The 2X--5X families repeat the same ten S order-book patterns at larger horizons, and the 8X/10X families descend from five of those patterns. Treating all derived instances as independent would therefore overstate the effective sample size. The inferential unit is the base pattern, not the individual replicated instance.",
+        "The 2X--5X families repeat the same ten S order-book patterns at larger horizons, and the 8X/10X families descend from five of those patterns. Treating all derived instances as independent would therefore overstate the effective sample size. The inferential unit is the base pattern, not the individual replicated instance. Five-block 8X and 10X rows are descriptive because their minimum attainable exact two-sided p-value is 0.0625.",
         "",
         "## Seed variability",
         "",
