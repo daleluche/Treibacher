@@ -30,6 +30,30 @@ from analysis.families import (
 from experiments.matheuristics.psp_instance import load_instance
 
 
+def ensure_gamma_effect_outputs() -> None:
+    """Generate gamma-effect inputs when running from an empty output folder."""
+    required = [OUT / "gamma_effect.csv", OUT / "gamma_effect_by_set.csv"]
+    if all(path.exists() for path in required):
+        return
+    from analysis.gamma_effect import main as gamma_effect_main
+
+    status = gamma_effect_main()
+    if status != 0:
+        raise RuntimeError("gamma_effect.py failed while preparing paper tables.")
+
+
+def ensure_markdown_outputs() -> None:
+    """Generate Markdown analysis notes required in a clean output folder."""
+    if not (OUT / "sprint2_report.md").exists():
+        from analysis.sprint2_report import main as sprint2_main
+
+        sprint2_main()
+    if not (OUT / "real_instance_crosscheck.md").exists():
+        from analysis.real_instance_crosscheck import main as real_crosscheck_main
+
+        real_crosscheck_main()
+
+
 def esc(value: object) -> str:
     """Escape a value for LaTeX table cells."""
     text = "" if value is None or (isinstance(value, float) and math.isnan(value)) else str(value)
@@ -296,17 +320,12 @@ def method_summary(comp: pd.DataFrame, z_columns: dict[str, str], status_map: di
 def make_tab_main3600() -> None:
     """Generate the 3600-second comparison table."""
     comp = pd.read_csv(OUT / "comparison_table.csv")
-    comp["mip_3600_Z"] = np.where(
-        comp["dataset"].isin(["8X", "10X"]) | comp["cplex_Z_1h"].isna(),
-        comp["cplex_mip_3600_Z"],
-        comp["cplex_Z_1h"],
-    )
+    comp["mip_3600_Z"] = comp["mip_equal_budget_3600_Z"]
     inst = pd.read_csv(OUT / "master_instances.csv")
     cplex_1h = inst[inst["method"] == "CPLEX22_1h"].set_index("instance")["model_status"]
     mat_mip = inst[inst["method"] == "MAT_mip_3600s"].set_index("instance")["model_status"]
     comp["mip_3600_status"] = [
-        mat_mip.get(row["instance"], np.nan)
-        if row["dataset"] in ["8X", "10X"] or pd.isna(row["cplex_Z_1h"])
+        mat_mip.get(row["instance"], np.nan) if row["mip_equal_budget_3600_source"] == "MAT_mip_3600s"
         else cplex_1h.get(row["instance"], np.nan)
         for _, row in comp.iterrows()
     ]
@@ -498,6 +517,8 @@ def make_tab_scale_construction() -> None:
 def main() -> int:
     """Generate all manuscript tables."""
     PAPER_TABLES.mkdir(parents=True, exist_ok=True)
+    ensure_gamma_effect_outputs()
+    ensure_markdown_outputs()
     make_tab_instances()
     make_tab_gamma()
     make_tab_gamma_tradeoff()

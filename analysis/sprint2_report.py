@@ -9,6 +9,12 @@ from typing import Iterable
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
+import sys
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
+from analysis.families import atomic_write_text
+
 OUTPUT_DIR = ROOT / "analysis" / "output"
 REPORT_PATH = OUTPUT_DIR / "sprint2_report.md"
 COMPARISON_TABLE = OUTPUT_DIR / "comparison_table.csv"
@@ -417,7 +423,7 @@ def write_report() -> None:
         )
     lines.append("")
 
-    REPORT_PATH.write_text("\n".join(lines), encoding="utf-8")
+    atomic_write_text(REPORT_PATH, "\n".join(lines) + "\n")
 
 
 def main() -> int:

@@ -287,7 +287,7 @@ def canonical_3600_table(comp: pd.DataFrame, prod3600: pd.DataFrame, scale_v2: p
                 }
             )
         else:
-            mip_value = row.get("cplex_mip_3600_Z") if instance == "S_1" else row.get("cplex_Z_1h")
+            mip_value = row.get("mip_equal_budget_3600_Z")
             rf_fo_value = row.get("rf_fo_3600_Z") if instance == "S_1" else (
                 rf_fo_a.loc[instance, "Z_final"] if instance in rf_fo_a.index else np.nan
             )

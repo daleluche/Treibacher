@@ -4,12 +4,15 @@ compute_gaps.py
 Builds the master comparison table from analysis/output/master_runs.csv.
 
 The Sprint 3 table has one row per instance across the real order book, S,
-2X, 3X, 4X, 5X, 8X, and 10X. Best-known solutions (BKS) are computed from CPLEX, ILS, and
-matheuristic runs collected in master_runs.csv. GRASP_v1 remains in the raw
-master dataset but is excluded from comparison tables because the BKS
-safeguard detected legacy evaluator inconsistencies. The legacy Ale_1 record
-remains in master_runs.csv for provenance but is outside the paper comparison
-set and cannot enter any S-instance BKS.
+2X, 3X, 4X, 5X, 8X, and 10X. Best-known solutions (BKS) are computed from CPLEX,
+strict-budget ILS v2, and matheuristic runs collected in master_runs.csv.
+Cross-run path-relinking summaries are exposed as ILS_v2_pr in the master data
+but are excluded from BKS, tests, win counts, performance profiles, and
+frontier comparisons. GRASP_v1 remains in the raw master dataset but is
+excluded from comparison tables because the BKS safeguard detected legacy
+evaluator inconsistencies. The legacy Ale_1 record remains in master_runs.csv
+for provenance but is outside the paper comparison set and cannot enter any
+S-instance BKS.
 
 Run from the repository root:  python analysis/compute_gaps.py
 """
@@ -29,7 +32,8 @@ EPS = 1e-6
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from analysis.families import BENCHMARK_FAMILY_ORDER, FULL_FAMILY_ORDER, public_benchmark, write_table
+from analysis.families import BENCHMARK_FAMILY_ORDER, FULL_FAMILY_ORDER, REAL_ORDER_BOOK, public_benchmark, write_table
+from analysis.ils_equal_budget import build_instance_audit
 
 warnings.filterwarnings("ignore", message="Mean of empty slice", category=RuntimeWarning)
 
@@ -46,11 +50,15 @@ def best_row(
     instance: str,
     methods: list[str] | None = None,
     min_feasible_bound: float | None = None,
+    ils_without_schedule: set[str] | None = None,
 ) -> pd.Series | None:
     """Return the best row for an instance, optionally restricted by methods."""
-    subset = runs[(runs["instance"] == instance) & (runs["method"] != "GRASP_v1")].dropna(subset=["Z"])
+    excluded = {"GRASP_v1", "ILS_v2_pr"}
+    subset = runs[(runs["instance"] == instance) & (~runs["method"].isin(excluded))].dropna(subset=["Z"])
     if methods is not None:
         subset = subset[subset["method"].isin(methods)]
+    if ils_without_schedule and instance in ils_without_schedule:
+        subset = subset[subset["method"] != "ILS_v2"]
     if min_feasible_bound is not None and pd.notna(min_feasible_bound):
         subset = subset[subset["Z"] >= float(min_feasible_bound) - 1e-4]
     if subset.empty:
@@ -76,10 +84,28 @@ def source_label(row: pd.Series | None) -> str | None:
     return f"{row['method']} | {int(row['time_budget_s']) if pd.notna(row['time_budget_s']) else 'NA'}s"
 
 
+def equal_budget_mip_value(
+    dataset: str,
+    instance: str,
+    cplex_1h: float,
+    mat_3600_mip: float,
+) -> tuple[float, str | None]:
+    """Return the canonical 3600-second MIP baseline and provenance label."""
+    if dataset in {"8X", "10X"} or dataset == REAL_ORDER_BOOK or instance == "S_1":
+        return mat_3600_mip, "MAT_mip_3600s"
+    if dataset in {"S", "2X", "3X", "4X", "5X"}:
+        return cplex_1h, "CPLEX22_1h"
+    return np.nan, None
+
+
 def main() -> int:
     runs = pd.read_csv(os.path.join(OUT, "master_runs.csv"))
     runs["Z"] = pd.to_numeric(runs["Z"], errors="coerce")
     inst = pd.read_csv(os.path.join(OUT, "master_instances.csv"))
+    ils_audit = build_instance_audit()
+    ils_without_schedule = set(
+        ils_audit.loc[~ils_audit["schedule_available"].astype(bool), "instance"].astype(str)
+    )
 
     wide: dict[str, pd.DataFrame] = {
         m: inst[inst.method == m].set_index("instance")
@@ -146,8 +172,9 @@ def main() -> int:
         mat_3600_mip = get_value(wide, "MAT_mip_3600s", name, "Z_best")
         mat_3600_rf_fo = get_value(wide, "MAT_rf_fo_3600s", name, "Z_best")
         mat_3600_rf_mip = get_value(wide, "MAT_rf_mip_3600s", name, "Z_best")
+        mip_equal_3600, mip_equal_3600_source = equal_budget_mip_value(ds, name, cplex_1h, mat_3600_mip)
 
-        bks_row = best_row(runs, name, min_feasible_bound=bound)
+        bks_row = best_row(runs, name, min_feasible_bound=bound, ils_without_schedule=ils_without_schedule)
         bks = float(bks_row["Z"]) if bks_row is not None else np.nan
 
         rows.append({
@@ -164,6 +191,8 @@ def main() -> int:
             "cplex_status": cplex_status,
             "cplex_mip_600_Z": mat_600_mip,
             "cplex_mip_3600_Z": mat_3600_mip,
+            "mip_equal_budget_3600_Z": mip_equal_3600,
+            "mip_equal_budget_3600_source": mip_equal_3600_source,
             "cplex_mip_10800_Z": mat_10800_mip,
             "cplex_mip_10800_bound": mat_10800_bound,
             "cplex_mip_10800_gap_pct": mat_10800_gap,
@@ -178,7 +207,8 @@ def main() -> int:
             "BKS": bks,
             "bks_source": source_label(bks_row),
             "gap_ils2_vs_bound_pct": pct(ils2_best - bound, bound),
-            "gap_ils2_vs_cplex_primal_pct": pct(ils2_best - cplex_Z, cplex_Z),
+            "gap_ils2_vs_cplex_primal_pct": pct(ils2_best - mip_equal_3600, mip_equal_3600),
+            "gap_ils2_vs_mip_equal_budget_3600_pct": pct(ils2_best - mip_equal_3600, mip_equal_3600),
             "gap_ils2_vs_BKS_pct": pct(ils2_best - bks, bks),
             "gap_cplex_vs_BKS_pct": pct(cplex_Z - bks, bks),
             "gap_rf_fo_600_vs_BKS_pct": pct(mat_600_rf_fo - bks, bks),
@@ -187,8 +217,8 @@ def main() -> int:
             "gap_rf_fo_3600_vs_BKS_pct": pct(mat_3600_rf_fo - bks, bks),
             "gap_rf_mip_3600_vs_BKS_pct": pct(mat_3600_rf_mip - bks, bks),
             "gap_mip_3600_vs_BKS_pct": pct(mat_3600_mip - bks, bks),
-            "ils2_wins": bool(pd.notna(ils2_best) and pd.notna(cplex_Z) and ils2_best < cplex_Z - EPS),
-            "ties": bool(pd.notna(ils2_best) and pd.notna(cplex_Z) and abs(ils2_best - cplex_Z) <= EPS),
+            "ils2_wins": bool(pd.notna(ils2_best) and pd.notna(mip_equal_3600) and ils2_best < mip_equal_3600 - EPS),
+            "ties": bool(pd.notna(ils2_best) and pd.notna(mip_equal_3600) and abs(ils2_best - mip_equal_3600) <= EPS),
         })
 
     comp = pd.DataFrame(rows).sort_values(
@@ -206,6 +236,12 @@ def main() -> int:
         print(f"FATAL: comparison_table has {len(comp)} rows, expected 61.")
         return 1
 
+    missing_equal_mip = comp[comp["mip_equal_budget_3600_Z"].isna()]
+    if not missing_equal_mip.empty:
+        print("FATAL: missing canonical 3600-second MIP baseline for instances:")
+        print(missing_equal_mip[["dataset", "instance", "mip_equal_budget_3600_source"]].to_string(index=False))
+        return 1
+
     write_table(comp, os.path.join(OUT, "comparison_table.csv"), ["dataset", "instance"])
 
     def agg(g: pd.DataFrame) -> pd.Series:
@@ -221,7 +257,7 @@ def main() -> int:
             "rf_fo_3600_gap_mean_pct": g.gap_rf_fo_3600_vs_BKS_pct.mean(),
             "ils2_wins": int(g.ils2_wins.sum()),
             "ties": int(g.ties.sum()),
-            "cplex_wins": int((~g.ils2_wins & ~g.ties & g.cplex_Z.notna() & g.ils2_Z_best.notna()).sum()),
+            "cplex_wins": int((~g.ils2_wins & ~g.ties & g.mip_equal_budget_3600_Z.notna() & g.ils2_Z_best.notna()).sum()),
         })
 
     by_ds = public_benchmark(comp).groupby("dataset").apply(agg, include_groups=False).reindex(BENCHMARK_FAMILY_ORDER).reset_index()

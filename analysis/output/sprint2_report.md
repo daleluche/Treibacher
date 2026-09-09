@@ -18,11 +18,11 @@ BKS is recomputed after adding matheuristic outputs from tuning, pilot, short-bu
 
 | dataset | instance | BKS | matheuristic_best | matheuristic_method | matheuristic_budget | updated_BKS | updated_source |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 10X | IncT10x_2 |  | 165438.755 | rf+mip | 3600.000 | 165438.755 | rf+mip |
-| 10X | IncT10x_3 |  | 102151.544 | rf+mip | 3600.000 | 102151.544 | rf+mip |
-| 10X | IncT10x_4 |  | 185779.606 | mip | 3600.000 | 185779.606 | mip |
-| 10X | IncT10x_5 |  | 68914.120 | mip | 3600.000 | 68914.120 | mip |
-| 10X | IncT10x_6 |  | 127960.821 | rf+mip | 3600.000 | 127960.821 | rf+mip |
+| 10X | IncT10x_2 | 142834.183 | 165438.755 | rf+mip | 3600.000 | 142834.183 | analysis_table |
+| 10X | IncT10x_3 | 80690.614 | 102151.544 | rf+mip | 3600.000 | 80690.614 | analysis_table |
+| 10X | IncT10x_4 | 168985.520 | 185779.606 | mip | 3600.000 | 168985.520 | analysis_table |
+| 10X | IncT10x_5 | 66696.973 | 68914.120 | mip | 3600.000 | 66696.973 | analysis_table |
+| 10X | IncT10x_6 | 109047.046 | 127960.821 | rf+mip | 3600.000 | 109047.046 | analysis_table |
 | 3X | IncT3x_1 | 43424.391 |  |  |  | 43424.391 | analysis_table |
 | 3X | IncT3x_10 | 10914.378 |  |  |  | 10914.378 | analysis_table |
 | 3X | IncT3x_2 | 108645.892 |  |  |  | 108645.892 | analysis_table |
@@ -30,7 +30,7 @@ BKS is recomputed after adding matheuristic outputs from tuning, pilot, short-bu
 | 3X | IncT3x_4 | 134477.501 |  |  |  | 134477.501 | analysis_table |
 | 3X | IncT3x_5 | 40735.322 |  |  |  | 40735.322 | analysis_table |
 | 3X | IncT3x_6 | 73458.775 |  |  |  | 73458.775 | analysis_table |
-| 3X | IncT3x_7 | 16586.707 | 16441.491 | rf+mip | 600.000 | 16441.491 | rf+mip |
+| 3X | IncT3x_7 | 16441.491 | 16441.491 | rf+mip | 600.000 | 16441.491 | rf+mip |
 | 3X | IncT3x_8 | 171942.718 |  |  |  | 171942.718 | analysis_table |
 | 3X | IncT3x_9 | 21779.420 |  |  |  | 21779.420 | analysis_table |
 | 4X | IncT4x_1 | 46880.699 |  |  |  | 46880.699 | analysis_table |
@@ -40,24 +40,24 @@ BKS is recomputed after adding matheuristic outputs from tuning, pilot, short-bu
 | 4X | IncT4x_4 | 137435.102 |  |  |  | 137435.102 | analysis_table |
 | 4X | IncT4x_5 | 43396.022 |  |  |  | 43396.022 | analysis_table |
 | 4X | IncT4x_6 | 76811.290 |  |  |  | 76811.290 | analysis_table |
-| 4X | IncT4x_7 | 19759.389 | 19873.039 | rf+fo | 3600.000 | 19759.389 | analysis_table |
+| 4X | IncT4x_7 | 19282.326 | 19873.039 | rf+fo | 3600.000 | 19282.326 | analysis_table |
 | 4X | IncT4x_8 | 174700.915 |  |  |  | 174700.915 | analysis_table |
 | 4X | IncT4x_9 | 24689.228 |  |  |  | 24689.228 | analysis_table |
-| 5X | IncT5x_1 | 50531.718 |  |  |  | 50531.718 | analysis_table |
-| 5X | IncT5x_10 | 16964.090 | 16188.998 | rf+fo | 3600.000 | 16188.998 | rf+fo |
-| 5X | IncT5x_2 | 116736.699 |  |  |  | 116736.699 | analysis_table |
+| 5X | IncT5x_1 | 50351.243 |  |  |  | 50351.243 | analysis_table |
+| 5X | IncT5x_10 | 16115.811 | 16188.998 | rf+fo | 3600.000 | 16115.811 | analysis_table |
+| 5X | IncT5x_2 | 116353.298 |  |  |  | 116353.298 | analysis_table |
 | 5X | IncT5x_3 | 53570.461 | 54844.669 | rf+fo | 3600.000 | 53570.461 | analysis_table |
 | 5X | IncT5x_4 | 141043.753 |  |  |  | 141043.753 | analysis_table |
 | 5X | IncT5x_5 | 46138.191 |  |  |  | 46138.191 | analysis_table |
 | 5X | IncT5x_6 | 80612.087 |  |  |  | 80612.087 | analysis_table |
 | 5X | IncT5x_7 | 22166.183 |  |  |  | 22166.183 | analysis_table |
 | 5X | IncT5x_8 | 177536.272 |  |  |  | 177536.272 | analysis_table |
-| 5X | IncT5x_9 | 28653.896 |  |  |  | 28653.896 | analysis_table |
-| 8X | IncT8x_2 |  | 131839.464 | mip | 3600.000 | 131839.464 | mip |
-| 8X | IncT8x_3 |  | 68783.650 | rf+mip | 3600.000 | 68783.650 | rf+mip |
-| 8X | IncT8x_4 |  | 158113.714 | rf+mip | 3600.000 | 158113.714 | rf+mip |
-| 8X | IncT8x_5 |  | 59924.391 | mip | 3600.000 | 59924.391 | mip |
-| 8X | IncT8x_6 |  | 98744.057 | rf+mip | 3600.000 | 98744.057 | rf+mip |
+| 5X | IncT5x_9 | 28381.253 |  |  |  | 28381.253 | analysis_table |
+| 8X | IncT8x_2 | 128054.148 | 131839.464 | mip | 3600.000 | 128054.148 | analysis_table |
+| 8X | IncT8x_3 | 67597.088 | 68783.650 | rf+mip | 3600.000 | 67597.088 | analysis_table |
+| 8X | IncT8x_4 | 158113.714 | 158113.714 | rf+mip | 3600.000 | 158113.714 | rf+mip |
+| 8X | IncT8x_5 | 58152.349 | 59924.391 | mip | 3600.000 | 58152.349 | analysis_table |
+| 8X | IncT8x_6 | 95679.146 | 98744.057 | rf+mip | 3600.000 | 95679.146 | analysis_table |
 
 ## Tuning Grid
 
@@ -161,10 +161,11 @@ BKS is recomputed after adding matheuristic outputs from tuning, pilot, short-bu
 
 RF reference includes the RF phase inside each rf+fo JSON and any standalone rf JSON with the same instance, seed, and budget.
 
-Checked comparisons: 65. Violations: 3.
+Checked comparisons: 66. Violations: 3.
 
 | instance | dataset | seed | budget | Z_final | Z_rf_reference | comparison | source_file |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | IncT5x_3 | 5X | 1.000 | 3600.000 | 56880.968 | 54879.119 | standalone_rf_json | experiments\matheuristics\results_pilot\IncT5x_3_rf_fo_seed1.json |
 | IncT5x_3 | 5X | 1.000 | 3600.000 | 57006.921 | 54879.119 | standalone_rf_json | experiments\matheuristics\results_tuning\IncT5x_3_rf_fo_seed1_omega12_tlfo30.json |
 | IncT5x_3 | 5X | 1.000 | 3600.000 | 57006.921 | 54879.119 | standalone_rf_json | experiments\matheuristics\results_tuning\IncT5x_3_rf_fo_seed1_omega12_tlfo60.json |
+
