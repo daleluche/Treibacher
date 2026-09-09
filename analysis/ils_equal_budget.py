@@ -15,9 +15,9 @@ from __future__ import annotations
 
 import json
 import math
-import os
 import re
 import sys
+import argparse
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -174,7 +174,7 @@ def collect_run_audit(cutoff_s: float = DEFAULT_CUTOFF_S, root: Path = ROOT) -> 
                     "instance": instance,
                     "run_id": data.get("run_id"),
                     "seed": data.get("seed"),
-                    "Z_at_3600": z_at_cutoff,
+                    "Z_at_cutoff": z_at_cutoff,
                     "selected_time_s": selected_time,
                     "selected_tag": selected_tag,
                     "final_objective": final_z,
@@ -215,8 +215,8 @@ def build_instance_audit(
             selected = group.sort_values(["source_path"]).iloc[0]
             z_best_truncated = math.nan
         else:
-            selected = eligible.sort_values(["Z_at_3600", "selected_time_s", "source_path"]).iloc[0]
-            z_best_truncated = float(selected["Z_at_3600"])
+            selected = eligible.sort_values(["Z_at_cutoff", "selected_time_s", "source_path"]).iloc[0]
+            z_best_truncated = float(selected["Z_at_cutoff"])
         z_best_untruncated = float(group["final_objective"].min())
         summary = summaries.get((dataset, instance), {})
         z_best_with_cross_pr = summary.get("Z_best_with_cross_pr")
@@ -236,9 +236,9 @@ def build_instance_audit(
                 "instance": instance,
                 "n_runs": int(len(group)),
                 "Z_best_truncated": z_best_truncated,
-                "Z_mean_truncated": float(eligible["Z_at_3600"].mean()) if not eligible.empty else math.nan,
-                "Z_std_truncated": float(eligible["Z_at_3600"].std(ddof=1)) if len(eligible) > 1 else 0.0,
-                "Z_worst_truncated": float(eligible["Z_at_3600"].max()) if not eligible.empty else math.nan,
+                "Z_mean_truncated": float(eligible["Z_at_cutoff"].mean()) if not eligible.empty else math.nan,
+                "Z_std_truncated": float(eligible["Z_at_cutoff"].std(ddof=1)) if len(eligible) > 1 else 0.0,
+                "Z_worst_truncated": float(eligible["Z_at_cutoff"].max()) if not eligible.empty else math.nan,
                 "Z_best_untruncated": z_best_untruncated,
                 "Z_best_with_cross_pr": z_best_with_cross_pr,
                 "postbudget_gain_pct": 100.0 * (z_best_truncated - z_best_untruncated) / z_best_truncated
@@ -280,7 +280,7 @@ def master_run_rows(cutoff_s: float = DEFAULT_CUTOFF_S, root: Path = ROOT) -> tu
                 "instance": row["instance"],
                 "run_id": row["run_id"],
                 "seed": row["seed"],
-                "Z": row["Z_at_3600"],
+                "Z": row["Z_at_cutoff"],
                 "bound": None,
                 "gap_solver_pct": None,
                 "time_to_best_s": row["selected_time_s"],
@@ -348,7 +348,7 @@ def universe_counts(run_audit: pd.DataFrame, instance_audit: pd.DataFrame) -> di
     }
 
 
-def write_report(run_audit: pd.DataFrame, instance_audit: pd.DataFrame, path: Path) -> None:
+def write_report(run_audit: pd.DataFrame, instance_audit: pd.DataFrame, path: Path, cutoff_s: float) -> None:
     """Write a compact Markdown audit report."""
     public = instance_audit[instance_audit["dataset"].isin(BENCHMARK_FAMILY_ORDER)]
     noschedule = instance_audit[~instance_audit["schedule_available"].astype(bool)]
@@ -382,7 +382,7 @@ def write_report(run_audit: pd.DataFrame, instance_audit: pd.DataFrame, path: Pa
     lines = [
         "# ILS v2 strict equal-budget audit",
         "",
-        "The comparison value is reconstructed from each run trajectory using only improvements with `time_s <= 3600.0`. Within-run path relinking before the cutoff remains eligible; cross-run path relinking from summary files is reported as `ILS_v2_pr` and excluded from equal-budget comparisons.",
+        f"The comparison value is reconstructed from each run trajectory using only improvements with `time_s <= {cutoff_s:.1f}`. Within-run path relinking before the cutoff remains eligible; cross-run path relinking from summary files is reported as `ILS_v2_pr` and excluded from equal-budget comparisons.",
         "",
         "## Execution universes",
         "",
@@ -415,20 +415,31 @@ def write_report(run_audit: pd.DataFrame, instance_audit: pd.DataFrame, path: Pa
     atomic_write_text(path, "\n".join(lines) + "\n")
 
 
+def output_stem(cutoff_s: float) -> str:
+    """Return the audit filename stem for a cutoff."""
+    if abs(float(cutoff_s) - DEFAULT_CUTOFF_S) <= EPS:
+        return "ils_equal_budget"
+    return f"ils_equal_budget_{int(round(float(cutoff_s)))}"
+
+
 def write_outputs(cutoff_s: float = DEFAULT_CUTOFF_S, root: Path = ROOT, out: Path = OUT) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Build and write the ILS equal-budget audit CSV and report files."""
     _, _, run_audit, instance_audit = master_run_rows(cutoff_s=cutoff_s, root=root)
     out.mkdir(parents=True, exist_ok=True)
     run_export = run_audit.drop(columns=["scheduling"], errors="ignore")
-    write_table(run_export, out / "ils_equal_budget_runs.csv", ["dataset", "instance", "run_id"])
-    write_table(instance_audit, out / "ils_equal_budget.csv", ["dataset", "instance"])
-    write_report(run_audit, instance_audit, out / "ils_equal_budget_report.md")
+    stem = output_stem(cutoff_s)
+    write_table(run_export, out / f"{stem}_runs.csv", ["dataset", "instance", "run_id"])
+    write_table(instance_audit, out / f"{stem}.csv", ["dataset", "instance"])
+    write_report(run_audit, instance_audit, out / f"{stem}_report.md", cutoff_s=cutoff_s)
     return run_audit, instance_audit
 
 
 def main() -> int:
     """Command-line entry point for regenerating the audit artifacts."""
-    run_audit, instance_audit = write_outputs()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--cutoff", type=float, default=DEFAULT_CUTOFF_S, help="Wall-clock cutoff in seconds.")
+    args = parser.parse_args()
+    run_audit, instance_audit = write_outputs(cutoff_s=args.cutoff)
     counts = universe_counts(run_audit, instance_audit)
     noschedule = instance_audit[~instance_audit["schedule_available"].astype(bool)]
     print("ILS v2 strict equal-budget audit")

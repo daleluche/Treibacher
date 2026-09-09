@@ -1,4 +1,4 @@
-method,dataset,instance,run_id,seed,Z_at_3600,selected_time_s,selected_tag,final_objective,time_to_best_s,total_time_s,overrun_s,source_run_hard_stop_compliant,value_found_within_budget,comparison_eligible,T_json,J_json,I_json,iterations,source_path,paper_note
+method,dataset,instance,run_id,seed,Z_at_cutoff,selected_time_s,selected_tag,final_objective,time_to_best_s,total_time_s,overrun_s,source_run_hard_stop_compliant,value_found_within_budget,comparison_eligible,T_json,J_json,I_json,iterations,source_path,paper_note
 ILS_v2,S,S_10,1,1,6373.493,784.217,ILS,6373.493,784.217,3600.775,0.775000000000091,False,True,True,19,160,50,2258,experiments/GRASP/results_ils_v2/Ale_10_run01.json,
 ILS_v2,S,S_10,2,2,6201.172,1920.258,PR,6201.172,1920.258,3601.945,1.9450000000001637,False,True,True,19,160,50,2219,experiments/GRASP/results_ils_v2/Ale_10_run02.json,
 ILS_v2,S,S_10,3,3,6303.447,722.564,ILS,6303.447,722.564,3600.686,0.6860000000001492,False,True,True,19,160,50,2192,experiments/GRASP/results_ils_v2/Ale_10_run03.json,
