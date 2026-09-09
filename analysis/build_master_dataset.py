@@ -37,6 +37,7 @@ if ROOT not in sys.path:
 
 from experiments.matheuristics.psp_instance import load_instance
 from analysis.families import write_table
+from analysis.ils_equal_budget import DEFAULT_CUTOFF_S, master_run_rows, write_outputs as write_ils_equal_budget_outputs
 
 OUT = os.path.join(ROOT, "analysis", "output")
 os.makedirs(OUT, exist_ok=True)
@@ -136,12 +137,6 @@ HEURISTIC_SOURCES = [
      "experiments/GRASP/*/results/*_summary.json"),
     ("ILS_v1", "experiments/GRASP/results_ils/*_run*.json",
      "experiments/GRASP/results_ils/*_summary.json"),
-    ("ILS_v2", "experiments/GRASP/results_ils_v2/*_run*.json",
-     "experiments/GRASP/results_ils_v2/*_summary.json"),
-    ("ILS_v2", "experiments/matheuristics/results_production/s1/S_1_run*.json",
-     "experiments/matheuristics/results_production/s1/S_1_summary.json"),
-    ("ILS_v2", "experiments/matheuristics/results_production/real/REAL_1_run*.json",
-     "experiments/matheuristics/results_production/real/REAL_1_summary.json"),
 ]
 
 
@@ -296,8 +291,12 @@ def main() -> int:
     meta = instance_metadata()
     exact = collect_exact()
     heur, budgets = collect_heuristics()
+    ils_v2_rows, ils_v2_pr_rows, ils_run_audit, ils_instance_audit = master_run_rows(cutoff_s=DEFAULT_CUTOFF_S, root=Path(ROOT))
+    write_ils_equal_budget_outputs(cutoff_s=DEFAULT_CUTOFF_S, root=Path(ROOT), out=Path(OUT))
+    budgets["ILS_v2"] = DEFAULT_CUTOFF_S
+    budgets["ILS_v2_pr"] = DEFAULT_CUTOFF_S
     matheur = collect_matheuristics(meta)
-    runs = pd.DataFrame(exact + heur + matheur)
+    runs = pd.DataFrame(exact + heur + ils_v2_rows + ils_v2_pr_rows + matheur)
 
     for dim in ["T", "J", "I"]:
         canonical_values = runs["instance"].map(lambda name: meta.get(name, {}).get(dim))
@@ -344,9 +343,9 @@ def main() -> int:
     print("=" * 72)
     ok = True
 
-    for method in ["CPLEX22_3h", "ILS_v2"]:
+    for method in ["CPLEX22_3h", "ILS_v2", "ILS_v2_pr"]:
         n = inst.loc[inst.method == method, "instance"].nunique()
-        expected = 52 if method == "ILS_v2" else 50
+        expected = 52 if method in {"ILS_v2", "ILS_v2_pr"} else 50
         flag = "OK" if n == expected else "FAIL"
         if flag == "FAIL":
             ok = False
@@ -357,6 +356,11 @@ def main() -> int:
     flag = "OK" if n_v2 == 520 else "FAIL"
     ok &= (n_v2 == 520)
     print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 520)")
+
+    no_schedule = ils_instance_audit[~ils_instance_audit["schedule_available"].astype(bool)]
+    flag = "OK" if len(no_schedule) == 2 else "FAIL"
+    ok &= (len(no_schedule) == 2)
+    print(f"[{flag}] ILS_v2 strict-budget values without reproducible schedules: {len(no_schedule)} (expected 2)")
 
     real_rows = runs[(runs.dataset == "Real order book") & (runs.instance == "REAL_1")]
     flag = "OK" if not real_rows.empty else "FAIL"
