@@ -816,7 +816,7 @@ def main() -> int:
         "",
         "## Technical summary",
         "",
-        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on S--5X plus the reconstructed S_1 supplement, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, ILS, tuning, pilot, short-budget, scale, v2, MIP@10800s scale, reconstructed S_1, and production matheuristic JSONs; legacy GRASP_v1 is retained only in the raw master data because the BKS safeguard detected evaluator inconsistencies.",
+        "The final production grid is complete: Grade B contributes 180 short-budget runs, Grade A contributes 50 long-budget rf+fo runs on S--5X plus the reconstructed S_1 supplement, and Grade C contributes 24 seed-variability runs. The global BKS scanner now includes CPLEX, strict-budget ILS v2, tuning, pilot, short-budget, scale, v2, MIP@10800s scale, reconstructed S_1, and production matheuristic JSONs; ILS_v1 and GRASP_v1 are retained only in the raw master data.",
         "",
         f"The IncT8x_4 BKS audit passes the registered check: BKS = {bks_8x4['BKS']:.3f}, source = `{bks_8x4['bks_source']}`.",
         "",
@@ -848,7 +848,7 @@ def main() -> int:
         )
         + ".",
         "",
-        "BKS candidates are scanned from registered CPLEX, ILS, and matheuristic sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. Legacy GRASP_v1 remains in `master_runs.csv` only and is intentionally excluded from paper comparison tables because the safeguard exposed evaluator inconsistencies.",
+        "BKS candidates are scanned from registered CPLEX, strict-budget ILS v2, and matheuristic sources, but any candidate below an available CPLEX dual bound for the same instance is excluded as a consistency safeguard. ILS_v1 remains in `master_runs.csv` only as an unequal-budget legacy baseline, and GRASP_v1 is also excluded from paper comparison tables because the safeguard exposed evaluator inconsistencies.",
         "",
         "## Production frontier",
         "",

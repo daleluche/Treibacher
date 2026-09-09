@@ -8,11 +8,11 @@ The Sprint 3 table has one row per instance across the real order book, S,
 strict-budget ILS v2, and matheuristic runs collected in master_runs.csv.
 Cross-run path-relinking summaries are exposed as ILS_v2_pr in the master data
 but are excluded from BKS, tests, win counts, performance profiles, and
-frontier comparisons. GRASP_v1 remains in the raw master dataset but is
-excluded from comparison tables because the BKS safeguard detected legacy
-evaluator inconsistencies. The legacy Ale_1 record remains in master_runs.csv
-for provenance but is outside the paper comparison set and cannot enter any
-S-instance BKS.
+frontier comparisons. ILS_v1 and GRASP_v1 remain in the raw master dataset only:
+ILS_v1 is an unequal-budget legacy baseline, while GRASP_v1 is excluded because
+the BKS safeguard detected legacy evaluator inconsistencies. The legacy Ale_1
+record remains in master_runs.csv for provenance but is outside the paper
+comparison set and cannot enter any S-instance BKS.
 
 Run from the repository root:  python analysis/compute_gaps.py
 """
@@ -53,7 +53,7 @@ def best_row(
     ils_without_schedule: set[str] | None = None,
 ) -> pd.Series | None:
     """Return the best row for an instance, optionally restricted by methods."""
-    excluded = {"GRASP_v1", "ILS_v2_pr"}
+    excluded = {"GRASP_v1", "ILS_v1", "ILS_v2_pr"}
     subset = runs[(runs["instance"] == instance) & (~runs["method"].isin(excluded))].dropna(subset=["Z"])
     if methods is not None:
         subset = subset[subset["method"].isin(methods)]
@@ -165,7 +165,6 @@ def main() -> int:
         ils2_best = get_value(wide, "ILS_v2", name, "Z_best")
         ils2_mean = get_value(wide, "ILS_v2", name, "Z_mean")
         ils2_std = get_value(wide, "ILS_v2", name, "Z_std")
-        ils1_best = get_value(wide, "ILS_v1", name, "Z_best")
         mat_600_mip = get_value(wide, "MAT_mip_600s", name, "Z_best")
         mat_600_rf_fo = get_value(wide, "MAT_rf_fo_600s", name, "Z_best")
         mat_600_rf_mip = get_value(wide, "MAT_rf_mip_600s", name, "Z_best")
@@ -203,7 +202,6 @@ def main() -> int:
             "ils2_Z_best": ils2_best,
             "ils2_Z_mean": ils2_mean,
             "ils2_Z_std": ils2_std,
-            "ils1_Z_best": ils1_best,
             "BKS": bks,
             "bks_source": source_label(bks_row),
             "gap_ils2_vs_bound_pct": pct(ils2_best - bound, bound),

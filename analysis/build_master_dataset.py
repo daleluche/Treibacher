@@ -180,6 +180,8 @@ def collect_heuristics() -> tuple[list[dict], dict]:
         for f in sorted(glob.glob(os.path.join(ROOT, run_pat))):
             d = _load(f)
             dataset, instance, note = canonical_instance(d.get("dataset"), d.get("instance"))
+            if method == "ILS_v1" and note is None:
+                note = "Legacy unequal-budget baseline retained in master data only."
             observed_max = max(observed_max, float(d.get("total_time", 0.0)))
             rows.append({
                 "method": method,
