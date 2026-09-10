@@ -18,6 +18,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from analysis import code_identifiers
+from analysis.structural_disclosure_audit import public_summary, run_structural_audit, write_private_report
 from analysis.release_scope import (
     canonicalize_public_text,
     has_absolute_path,
@@ -312,6 +313,15 @@ def write_release_metadata() -> None:
     write_checksums()
 
 
+def run_private_structural_audit() -> None:
+    """Run the private structural audit and write the public-safe summary."""
+    result = run_structural_audit(DIST)
+    write_private_report(result)
+    if result.status != "passed":
+        raise RuntimeError(f"Structural disclosure audit failed: {result.failed_rule}")
+    write_text(DIST / "STRUCTURAL_AUDIT.md", public_summary(result))
+
+
 def iter_dist_files() -> list[Path]:
     """Return files in the distribution tree."""
     return sorted(path for path in DIST.rglob("*") if path.is_file())
@@ -432,6 +442,7 @@ def main(argv: list[str] | None = None) -> int:
     copy_public_analysis_outputs()
     copy_public_results()
     copy_public_code()
+    run_private_structural_audit()
     write_release_metadata()
     if refresh_inventory:
         verify_inventory(refresh=True)

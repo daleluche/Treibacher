@@ -2,6 +2,7 @@ LICENSE.md
 MANIFEST.expected_inventory.txt
 MANIFEST.public_analysis_outputs.txt
 README.md
+STRUCTURAL_AUDIT.md
 analysis_output/bks_counterfactual_without_mip10800.csv
 analysis_output/block_map.csv
 analysis_output/comparison_by_dataset.csv
