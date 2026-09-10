@@ -26,6 +26,7 @@ from experiments.matheuristics.psp_instance import load_instance
 
 
 TOL = 1e-3
+PAPER_FILES = [ROOT / "paper" / "main.tex", *sorted((ROOT / "paper" / "sections").glob("*.tex"))]
 
 
 def fail(message: str) -> None:
@@ -50,6 +51,20 @@ def assert_equal(label: str, observed: object, expected: object) -> None:
 def read_json(path: Path) -> dict:
     """Read a JSON artifact."""
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def read_paper_text() -> str:
+    """Read the manuscript LaTeX sources as a single searchable string."""
+    return "\n".join(path.read_text(encoding="utf-8", errors="ignore") for path in PAPER_FILES)
+
+
+def assert_pattern(label: str, text: str, pattern: str, expected_count: int | None = None) -> None:
+    """Assert that a regular expression occurs in the manuscript."""
+    matches = re.findall(pattern, text, flags=re.DOTALL)
+    if not matches:
+        fail(f"{label}: pattern not found: {pattern}")
+    if expected_count is not None and len(matches) != expected_count:
+        fail(f"{label}: observed {len(matches)} occurrences, expected {expected_count}")
 
 
 def citation_keys() -> tuple[set[str], set[str]]:
@@ -136,15 +151,20 @@ def verify_cplex_gap_summary() -> None:
 def verify_ils_baseline() -> None:
     """Verify ILS-v2 mean deficit over CPLEX primal by family."""
     expected = {
-        "S": 0.537680,
-        "2X": 2.573469,
-        "3X": 10.436313,
-        "4X": 16.390512,
-        "5X": 23.884445,
+        "S": 1.358558,
+        "2X": 2.866859,
+        "3X": 12.236636,
+        "4X": 17.518257,
+        "5X": 24.433145,
     }
     df = pd.read_csv(OUT / "comparison_by_dataset.csv").set_index("dataset")
     for dataset, value in expected.items():
         assert_close(f"{dataset} ILS-v2 mean gap vs CPLEX primal", df.loc[dataset, "gap_ils2_vs_primal_mean_pct"], value)
+    master = pd.read_csv(OUT / "master_instances.csv")
+    ils = master[master["method"] == "ILS_v2"]
+    derived_with_ils = ils[ils["dataset"].isin(["S", "2X", "3X", "4X", "5X"])]
+    assert_equal("derived S-5X instances with ILS-v2", derived_with_ils["instance"].nunique(), 50)
+    assert_equal("ILS-v2 instances in 8X/10X", int(ils["dataset"].isin(["8X", "10X"]).sum()), 0)
 
 
 def verify_gamma_effect() -> None:
@@ -202,15 +222,15 @@ def verify_sprint3_statistics() -> None:
 
     row = stat_row("rf+fo vs mip", 600, "S-10X benchmark")
     assert_close("600s rf+fo vs mip median block delta", row["median_block_delta_pct"], 0.135711)
-    assert_close("600s rf+fo vs mip p-value", row["p_value"], 0.046875)
+    assert_close("600s rf+fo vs mip p-value", row["p_randomization_mean"], 0.046875)
     row = stat_row("rf+fo vs truncated ILS v2", 600, "3X-5X short-budget subset")
     assert_close("600s rf+fo vs ILS median block delta", row["median_block_delta_pct"], -25.666359)
     row = stat_row("rf+fo vs mip", 3600, "8X scale subset")
     assert_close("8X 3600 rf+fo median", row["median_block_delta_pct"], 1.217222)
-    assert_equal("8X 3600 p-value omitted", bool(pd.isna(row["p_value"])), True)
+    assert_equal("8X 3600 p-value omitted", bool(pd.isna(row["p_randomization_mean"])), True)
     row = stat_row("rf+fo vs mip", 3600, "10X scale subset")
     assert_close("10X 3600 rf+fo median", row["median_block_delta_pct"], -13.894392)
-    assert_equal("10X 3600 p-value omitted", bool(pd.isna(row["p_value"])), True)
+    assert_equal("10X 3600 p-value omitted", bool(pd.isna(row["p_randomization_mean"])), True)
     row = stat_row("rf+mip vs mip", 3600, "8X scale subset")
     assert_close("8X 3600 rf+mip median", row["median_block_delta_pct"], -2.957130)
     row = stat_row("rf+mip vs mip", 3600, "10X scale subset")
@@ -235,6 +255,7 @@ def verify_sprint3_statistics() -> None:
     assert_equal("Q5 8X wins", int(q5.loc["8X", "mip10800_wins"]), 4)
     assert_equal("Q5 10X true", bool(q5.loc["10X", "Q5_true"]), True)
     assert_equal("Q5 10X wins", int(q5.loc["10X", "mip10800_wins"]), 3)
+    assert_equal("Q5 total wins across 8X/10X", int(q5["mip10800_wins"].sum()), 7)
 
     winners = {
         ("8X", 600): ("rf+mip", 3, 1, 1),
@@ -262,6 +283,118 @@ def verify_scale_and_q5_values() -> None:
     assert_close("IncT10x_6 Q5 decomp lead", q5.loc[("10X", "IncT10x_6"), "delta_rel_pct"], 2.069941)
 
 
+def verify_mip10800_bks_changes() -> None:
+    """Recompute BKS improvements from elementary candidates."""
+    master = pd.read_csv(OUT / "master_instances.csv")
+    candidates = master[master["Z_best"].notna()].copy()
+    candidates = candidates[
+        ~candidates["method"].isin(["GRASP_v1", "ILS_v1", "ILS_v2_pr"])
+    ]
+    keys = ["dataset", "instance"]
+    current = candidates.loc[candidates.groupby(keys)["Z_best"].idxmin()][
+        keys + ["method", "Z_best"]
+    ].rename(columns={"method": "current_method", "Z_best": "current_Z"})
+    previous_candidates = candidates[candidates["method"] != "MAT_mip_10800s"]
+    previous = previous_candidates.loc[previous_candidates.groupby(keys)["Z_best"].idxmin()][
+        keys + ["method", "Z_best"]
+    ].rename(columns={"method": "previous_method", "Z_best": "previous_Z"})
+    changes = current.merge(previous, on=keys)
+    changes = changes[
+        (changes["current_method"] == "MAT_mip_10800s")
+        & (changes["current_Z"] < changes["previous_Z"] - 1e-6)
+    ]
+    assert_equal("MIP@10800 new BKS count", len(changes), 6)
+    expected = {
+        ("8X", "IncT8x_2"),
+        ("8X", "IncT8x_3"),
+        ("8X", "IncT8x_6"),
+        ("10X", "IncT10x_3"),
+        ("10X", "IncT10x_4"),
+        ("10X", "IncT10x_5"),
+    }
+    observed = set(zip(changes["dataset"], changes["instance"]))
+    assert_equal("MIP@10800 new BKS instances", observed, expected)
+
+
+def verify_manuscript_claim_registry() -> None:
+    """Verify that audited claims appear in the manuscript text."""
+    text = read_paper_text()
+    claims = [
+        {
+            "id": "derived_instances",
+            "file": "paper/main.tex",
+            "source": "experiments/GAMSPy family folders",
+            "transform": "instance file count excluding REAL_1",
+            "pattern": r"benchmark of 60 derived\s+instances",
+        },
+        {
+            "id": "seven_families",
+            "file": "paper/sections/conclusions.tex",
+            "source": "experiments/GAMSPy/S,2X,3X,4X,5X,8X,10X",
+            "transform": "family count",
+            "pattern": r"seven derived instance\s+families",
+        },
+        {
+            "id": "real_shortage",
+            "file": "paper/sections/experiments.tex",
+            "source": "REAL_1_mip_seed1_b10800.json",
+            "transform": "shortage objective component",
+            "pattern": r"published optimal shortage of 10\{,\}475~kg",
+        },
+        {
+            "id": "gamma_tradeoff_2x",
+            "file": "paper/sections/experiments.tex",
+            "source": "analysis/output/gamma_tradeoff_2x.csv",
+            "transform": "count(delta_shortage > 0)",
+            "pattern": r"seven of the ten 2X instances incur .*?more.*?backlog",
+        },
+        {
+            "id": "gamma_tradeoff_all",
+            "file": "paper/sections/experiments.tex",
+            "source": "analysis/output/gamma_tradeoff_all.csv",
+            "transform": "count(delta_shortage > 0 across 2X-5X)",
+            "pattern": r"direction holds in 31 of the 40 instances",
+        },
+        {
+            "id": "ils_gap_sequence",
+            "file": "paper/sections/experiments.tex",
+            "source": "analysis/output/comparison_by_dataset.csv",
+            "transform": "mean ILS-v2 deficit vs CPLEX primal",
+            "pattern": r"1\.4\\% on S, 2\.9\\% on 2X, and\s+then 12\.2\\%, 17\.5\\% and 24\.4\\% on 3X, 4X and 5X",
+        },
+        {
+            "id": "ils_scope",
+            "file": "paper/sections/experiments.tex",
+            "source": "analysis/output/master_instances.csv",
+            "transform": "ILS-v2 rows absent for 8X and 10X",
+            "pattern": r"We did not run \\ILS\{\} on 8X and 10X",
+        },
+        {
+            "id": "short_budget_pvalues",
+            "file": "paper/sections/experiments.tex",
+            "source": "analysis/output/sprint3_statistical_tests.csv",
+            "transform": "randomization, Wilcoxon, sign-test p-values",
+            "pattern": r"p=0\.047.*?p=0\.055.*?p=0\.289",
+        },
+        {
+            "id": "q5_total_split",
+            "file": "paper/sections/experiments.tex",
+            "source": "analysis/output/sprint3_q5_verdict.csv",
+            "transform": "sum and split of strict MIP@10800 wins",
+            "pattern": r"in seven cases: four of\s+five at 8X and three of five at 10X",
+        },
+        {
+            "id": "mip10800_bks",
+            "file": "paper/sections/experiments.tex",
+            "source": "analysis/output/master_instances.csv",
+            "transform": "BKS recomputation excluding MAT_mip_10800s",
+            "pattern": r"longer MIP runs improved six best-known\s+solutions",
+        },
+    ]
+    for claim in claims:
+        assert_pattern(f"manuscript claim {claim['id']}", text, claim["pattern"])
+
+
 def main() -> int:
     """Run all checks."""
     checks = [
@@ -273,6 +406,8 @@ def main() -> int:
         verify_gamma_effect,
         verify_sprint3_statistics,
         verify_scale_and_q5_values,
+        verify_mip10800_bks_changes,
+        verify_manuscript_claim_registry,
     ]
     for check in checks:
         check()

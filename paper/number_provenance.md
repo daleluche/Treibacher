@@ -17,7 +17,7 @@ instance artifacts.
 |---|---|---|---|
 | 60 derived instances | `paper/main.tex:62`, `paper/main.tex:102`, `paper/sections/introduction.tex:92`, `paper/sections/conclusions.tex:39` | `experiments/GAMSPy/S`, `2X`, `3X`, `4X`, `5X`, `8X`, `10X` | `python analysis/verify_manuscript_numbers.py` |
 | 19 to 190 periods | `paper/main.tex:63`, `paper/sections/introduction.tex:62`, `paper/sections/introduction.tex:93` | GAMSPy instance files parsed by `experiments/matheuristics/psp_instance.py` | `python analysis/verify_manuscript_numbers.py` |
-| about 150 periods upward | `paper/main.tex:74`, `paper/sections/introduction.tex:67`, `paper/sections/conclusions.tex:29` | `analysis/output/sprint3_frontier_counts.csv`; `analysis/output/sprint3_descriptive_by_scale.csv` | `python analysis/verify_manuscript_numbers.py` |
+| 8X and 10X majority at 3,600 s | `paper/main.tex:71-74`, `paper/sections/conclusions.tex:31-35` | `analysis/output/sprint3_frontier_counts.csv`; `analysis/output/sprint3_descriptive_by_scale.csv` | `python analysis/verify_manuscript_numbers.py` |
 | 5--10 minutes; 1--3 hours | `paper/sections/introduction.tex:64` | Protocol budgets in `experiments/matheuristics/run_production.py` and result JSON `params.budget` | `python analysis/sprint3_report.py && python analysis/verify_manuscript_numbers.py` |
 | `|T| <= 95` | `paper/sections/conclusions.tex:58` | `experiments/GAMSPy/5X/*.py`; `analysis/output/comparison_by_dataset.csv` | `python analysis/verify_manuscript_numbers.py` |
 
@@ -48,7 +48,7 @@ instance artifacts.
 | direction holds in 31 of 40 gamma instances | `paper/sections/experiments.tex:162` | `analysis/output/gamma_tradeoff_all.csv` | `python -c "import pandas as pd; d=pd.read_csv('analysis/output/gamma_tradeoff_all.csv'); print(((d.delta_shortage>0)&d.instance.str.startswith('IncT')).sum())"` |
 | gamma=0 mean objective 58,200.5 in 2X--5X | `paper/sections/experiments.tex:170` | `analysis/output/gamma_effect_by_set.csv` | `python analysis/verify_manuscript_numbers.py` |
 | gamma=0.001 mean objectives 63,780, 66,812, 69,842, 73,403 | `paper/sections/experiments.tex:176-177` | `analysis/output/gamma_effect_by_set.csv` | `python analysis/verify_manuscript_numbers.py` |
-| ILS-v2 deficits 0.5%, 2.6%, 10.4%, 16.4%, 23.9% | `paper/sections/experiments.tex:208-209` | `analysis/output/comparison_by_dataset.csv` | `python analysis/verify_manuscript_numbers.py` |
+| ILS-v2 deficits 1.4%, 2.9%, 12.2%, 17.5%, 24.4% | `paper/sections/experiments.tex:210-213` | `analysis/output/comparison_by_dataset.csv` | `python analysis/verify_manuscript_numbers.py` |
 | 10--0, 9--1, 6--4 win counts through 5X | `paper/sections/experiments.tex:220-221` | `analysis/output/comparison_by_dataset.csv`; `analysis/output/comparison_table.csv` | `python analysis/compute_gaps.py && python analysis/verify_manuscript_numbers.py` |
 | IncT5x_10 RF+FO 4.6% below CPLEX@3h incumbent | `paper/sections/experiments.tex:222` | `analysis/output/comparison_table.csv`; `experiments/matheuristics/results_pilot/IncT5x_10_rf_fo_seed1.json` | `python analysis/verify_manuscript_numbers.py` |
 | 600 s: 3X--5X decompositions 4--5 wins per set; 8X RF+MIP 3/5; 10X RF+FO 4/5 | `paper/sections/experiments.tex:244-246` | `analysis/output/sprint3_descriptive_by_scale.csv`; `analysis/output/sprint3_frontier_counts.csv` | `python analysis/verify_manuscript_numbers.py` |
@@ -62,9 +62,8 @@ instance artifacts.
 | minimum attainable two-sided p=0.0625 | `paper/sections/experiments.tex:279` | `analysis/output/sprint3_statistical_tests.csv` | `python analysis/verify_manuscript_numbers.py` |
 | RF+FO +1.2% at 8X, -13.9% at 10X; RF+MIP -3.0% at 8X, +26.3% at 10X | `paper/sections/experiments.tex:280-282` | `analysis/output/sprint3_statistical_tests.csv` | `python analysis/verify_manuscript_numbers.py` |
 | IncT10x_4: RF+MIP 376,198; RF+FO 172,983 | `paper/sections/experiments.tex:287-288` | `analysis/output/sprint3_scale_8x10x_canonical_v2.csv` | `python analysis/verify_manuscript_numbers.py` |
-| Q5 yes: 4/5 at 8X and 3/5 at 10X; six BKS improvements | `paper/sections/experiments.tex:296-300` | `analysis/output/sprint3_q5_verdict.csv`; `analysis/output/sprint3_bks_changes_after_mip10800.csv` | `python analysis/verify_manuscript_numbers.py` |
+| Q5: seven cases total, 4/5 at 8X and 3/5 at 10X; six BKS improvements | `paper/sections/experiments.tex:307-317` | `analysis/output/sprint3_q5_verdict.csv`; BKS improvements recomputed from elemental candidates in `analysis/output/master_instances.csv` | `python analysis/verify_manuscript_numbers.py` |
 | IncT10x_2 14.5% and IncT10x_6 2.1% resist tripled budget | `paper/sections/experiments.tex:300-301` | `analysis/output/sprint3_q5_cross_budget.csv` | `python analysis/verify_manuscript_numbers.py` |
-| monolith 3x budget restores lead at 8/10 largest instances | `paper/sections/experiments.tex:303-304` | `analysis/output/sprint3_q5_cross_budget.csv` | `python analysis/verify_manuscript_numbers.py` |
 
 ## Sections 3, 4, and 5
 
@@ -82,4 +81,4 @@ instance artifacts.
 | RF+FO tuning: omega 12 gap +7.2%; omega 20 gap -1.1% | `paper/sections/matheuristics.tex:94-95` | `experiments/matheuristics/results_tuning/tuning_summary.md` | `Get-Content experiments/matheuristics/results_tuning/tuning_summary.md` |
 | `|T| >= 152` RF+MIP skips RF | `paper/sections/matheuristics.tex:126` | `experiments/matheuristics/rf_fo_psp.py`; v2 run JSON `construction_used` | `rg -n "skip_rf_for_large_mip|152|construction_used" experiments/matheuristics/rf_fo_psp.py` |
 | ILS constants: `alpha={0,...,0.30}`, tabu `[5,12]`, `|T|>40`, Or-opt 1--3, ten runs | `paper/sections/metaheuristic.tex:30-33` | `experiments/GRASP/grasp_ils_psp.py` | `rg -n "ALPHA_VALUES|TABU_TENURE|WINDOW_T_THRESH|OR_OPT_K_VALUES|n_runs" experiments/GRASP/grasp_ils_psp.py` |
-| ILS v1-to-v2 median improvements 5.7%, 20.5%, 34.6%, 42.1%, 47.9%, 39.5% | `paper/sections/metaheuristic.tex:47-49` | `analysis/output/master_instances.csv` after path-relinking accounting fix | `python analysis/build_master_dataset.py && python analysis/verify_manuscript_numbers.py` |
+| ILS-v2 appears on 50 derived S--5X instances and is absent from 8X/10X comparisons | `paper/sections/experiments.tex:216-221` | `analysis/output/master_instances.csv` | `python analysis/verify_manuscript_numbers.py` |
