@@ -2,7 +2,7 @@
 
 R3 base SHA: ce7fa16875fb76659ff6edce60b79a5740ded156
 Product mapping size: 50
-Files validated: 1553
+Files validated: 1554
 
 All validations compare decoded staged files with their private sources.
 
@@ -68,6 +68,7 @@ All validations compare decoded staged files with their private sources.
 | instance | passed | `experiments/GAMSPy/10X/IncT10x_4.py` | `release/staging/experiments/GAMSPy/10X/IncT10x_4.py` | dimensions, products, A, and D invariant |
 | instance | passed | `experiments/GAMSPy/10X/IncT10x_5.py` | `release/staging/experiments/GAMSPy/10X/IncT10x_5.py` | dimensions, products, A, and D invariant |
 | instance | passed | `experiments/GAMSPy/10X/IncT10x_6.py` | `release/staging/experiments/GAMSPy/10X/IncT10x_6.py` | dimensions, products, A, and D invariant |
+| result | passed | `analysis/output/bks_counterfactual_without_mip10800.csv` | `release/staging/analysis/output/bks_counterfactual_without_mip10800.csv` | decoded content invariant |
 | result | passed | `analysis/output/block_map.csv` | `release/staging/analysis/output/block_map.csv` | decoded content invariant |
 | result | passed | `analysis/output/comparison_by_dataset.csv` | `release/staging/analysis/output/comparison_by_dataset.csv` | decoded content invariant |
 | result | passed | `analysis/output/comparison_table.csv` | `release/staging/analysis/output/comparison_table.csv` | decoded content invariant |

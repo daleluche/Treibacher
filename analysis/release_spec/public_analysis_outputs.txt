@@ -1,0 +1,29 @@
+# Public analysis outputs included in the release candidate.
+# Each entry is copied by exact allowlist, never by directory glob.
+block_map.csv
+comparison_by_dataset.csv
+comparison_table.csv
+gamma_effect.csv
+gamma_effect_by_set.csv
+gamma_tradeoff_2x.csv
+gamma_tradeoff_all.csv
+ils_equal_budget_600.csv
+ils_equal_budget_600_runs.csv
+ils_equal_budget.csv
+ils_equal_budget_runs.csv
+master_instances.csv
+master_runs.csv
+sprint3_bks_audit.csv
+sprint3_canonical_3600_cells.csv
+sprint3_cell_sources.csv
+sprint3_descriptive_by_scale.csv
+sprint3_frontier_counts.csv
+sprint3_mip10800_8x10x.csv
+sprint3_q5_cross_budget.csv
+sprint3_q5_verdict.csv
+sprint3_scale_8x10x_canonical_v2.csv
+sprint3_scale_v2_construction.csv
+sprint3_seed_variability.csv
+sprint3_seed_window_audit.csv
+sprint3_statistical_tests.csv
+bks_counterfactual_without_mip10800.csv

@@ -1,80 +1,114 @@
-"""Build the public PSP benchmark release package."""
+"""Build the validated public release candidate from coded artifacts."""
 from __future__ import annotations
 
 import csv
 import hashlib
 import json
 import shutil
+import subprocess
+import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-RELEASE = ROOT / "release"
-ZIP_PATH = RELEASE / "psp_electrofused_benchmark_v1.zip"
-DATASETS = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
-
-import sys
-
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from analysis import code_identifiers
 from experiments.matheuristics.psp_instance import load_instance
 
 
-def reset_release() -> None:
-    """Create a clean release directory."""
-    if RELEASE.exists():
-        shutil.rmtree(RELEASE)
-    RELEASE.mkdir(parents=True)
+RELEASE = ROOT / "release"
+DIST = RELEASE / "dist"
+ZIP_PATH = RELEASE / "psp_electrofused_benchmark_v1.zip"
+SPEC = ROOT / "analysis" / "release_spec"
+EXPECTED_INVENTORY = SPEC / "expected_inventory.txt"
+PUBLIC_OUTPUTS = SPEC / "public_analysis_outputs.txt"
+README_TEMPLATE = SPEC / "README.template.md"
+DATASETS = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
+TEXT_SUFFIXES = {".py", ".json", ".csv", ".md", ".txt", ".tex", ".bib", ".yml", ".yaml", ".sha256"}
+PRIVATE_PATTERNS = [
+    "EK8",
+    "add_real_order_book.py",
+    "product_code_map.csv",
+    "analysis/private_release",
+    "analysis/code_identifiers.py",
+    "verify_manuscript_numbers.py",
+    "rebuild_s1.py",
+    "REAL_1.py",
+    "results_production/real",
+    "experiments/GAMSPy/Real",
+    "D:\\GitHub\\Treibacher",
+    "D:/GitHub/Treibacher",
+    "C:\\Users\\betoD",
+    "C:/Users/betoD",
+]
+
+
+def reset_dist() -> None:
+    """Create a clean release distribution directory."""
+    if DIST.exists():
+        shutil.rmtree(DIST)
+    DIST.mkdir(parents=True)
 
 
 def rel(path: Path) -> Path:
-    """Return a path relative to the repository root."""
+    """Return a repository-relative path."""
     return path.resolve().relative_to(ROOT)
 
 
 def copy_file(src: Path, dst: Path) -> None:
-    """Copy one file, creating parents."""
+    """Copy one file, creating parent directories."""
     dst.parent.mkdir(parents=True, exist_ok=True)
     shutil.copy2(src, dst)
 
 
-def copy_instance_script(src: Path, dst: Path, dataset: str) -> None:
-    """Copy a GAMSPy instance script, using the public dataset family label."""
-    copy_file(src, dst)
-    if dataset != "S":
-        return
-    text = dst.read_text(encoding="utf-8")
-    text = text.replace("DATASET    = 'Real'", "DATASET    = 'S'")
-    text = text.replace('DATASET    = "Real"', 'DATASET    = "S"')
-    dst.write_text(text, encoding="utf-8")
+def write_text(path: Path, text: str) -> None:
+    """Write UTF-8 text, creating parent directories."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
 
 
-def drop_retired_real_rows(frame: pd.DataFrame) -> pd.DataFrame:
-    """Remove nonreleased real-order-book rows from release-facing CSV files."""
-    if {"dataset", "instance"}.issubset(frame.columns):
-        dataset = frame["dataset"].astype(str)
-        instance = frame["instance"].astype(str)
-        mask = ((dataset == "Real") & (instance == "Ale_1")) | (
-            (dataset == "Real order book") & (instance == "REAL_1")
-        )
-        return frame.loc[~mask].copy()
-    return frame
+def coded_path(src: Path) -> Path:
+    """Return the staged coded copy of a repository path."""
+    return code_identifiers.STAGING / rel(src)
 
 
-def write_instances() -> None:
-    """Write instance data in open JSON/CSV form and copy GAMSPy scripts."""
-    rows_meta = []
-    production_rows = []
-    demand_rows = []
+def ensure_coded_staging() -> None:
+    """Regenerate coded staging artifacts and private invariance report."""
+    code_identifiers.main()
+
+
+def public_analysis_outputs() -> list[str]:
+    """Read the allowlist of public analysis outputs."""
+    outputs: list[str] = []
+    for line in PUBLIC_OUTPUTS.read_text(encoding="utf-8").splitlines():
+        clean = line.strip()
+        if not clean or clean.startswith("#"):
+            continue
+        outputs.append(clean)
+    return outputs
+
+
+def write_open_instance_files() -> None:
+    """Write coded instance scripts and open long-format instance files."""
+    meta_rows: list[dict] = []
+    a_rows: list[dict] = []
+    d_rows: list[dict] = []
     for dataset in DATASETS:
-        for path in sorted((ROOT / "experiments" / "GAMSPy" / dataset).glob("*.py")):
-            if path.stem == "REAL_1":
+        source_paths = sorted((ROOT / "experiments" / "GAMSPy" / dataset).glob("*.py"))
+        for source in source_paths:
+            if source.name == "REAL_1.py":
                 continue
-            inst = load_instance(path)
-            copy_instance_script(path, RELEASE / "instances" / "gamspy_py" / dataset / path.name, dataset)
+            staged = coded_path(source)
+            if not staged.exists():
+                raise FileNotFoundError(f"Missing coded staged instance: {staged}")
+            dst = DIST / "instances" / "gamspy_py" / dataset / source.name
+            copy_file(staged, dst)
+            inst = load_instance(staged)
             json_data = {
                 "name": inst.name,
                 "dataset": dataset,
@@ -86,19 +120,20 @@ def write_instances() -> None:
                     {"product": inst.products[i], "process": j + 1, "value": float(inst.A[i, j])}
                     for i in range(inst.I)
                     for j in range(inst.J)
-                    if abs(float(inst.A[i, j])) > 0.0
+                    if float(inst.A[i, j]) != 0.0
                 ],
                 "D_records": [
                     {"product": inst.products[i], "period": t + 1, "value": float(inst.D[i, t])}
                     for i in range(inst.I)
                     for t in range(inst.T)
-                    if abs(float(inst.D[i, t])) > 0.0
+                    if float(inst.D[i, t]) != 0.0
                 ],
             }
-            out_json = RELEASE / "instances" / "json" / dataset / f"{inst.name}.json"
-            out_json.parent.mkdir(parents=True, exist_ok=True)
-            out_json.write_text(json.dumps(json_data, ensure_ascii=False, indent=2), encoding="utf-8")
-            rows_meta.append(
+            write_text(
+                DIST / "instances" / "json" / dataset / f"{inst.name}.json",
+                json.dumps(json_data, ensure_ascii=False, indent=2),
+            )
+            meta_rows.append(
                 {
                     "dataset": dataset,
                     "instance": inst.name,
@@ -107,116 +142,64 @@ def write_instances() -> None:
                     "I": inst.I,
                     "binary_variables": inst.J * inst.T,
                     "continuous_variables": 2 * inst.I * inst.T + 1,
-                    "constraints": inst.I * inst.T + inst.T + 1,
-                    "source_py": str(Path("instances/gamspy_py") / dataset / path.name),
-                    "source_json": str(Path("instances/json") / dataset / f"{inst.name}.json"),
+                    "source_py": f"instances/gamspy_py/{dataset}/{source.name}",
+                    "source_json": f"instances/json/{dataset}/{inst.name}.json",
                 }
             )
             for rec in json_data["A_records"]:
-                production_rows.append({"dataset": dataset, "instance": inst.name, **rec})
+                a_rows.append({"dataset": dataset, "instance": inst.name, **rec})
             for rec in json_data["D_records"]:
-                demand_rows.append({"dataset": dataset, "instance": inst.name, **rec})
+                d_rows.append({"dataset": dataset, "instance": inst.name, **rec})
 
-    pd.DataFrame(rows_meta).to_csv(RELEASE / "instances" / "instance_metadata.csv", index=False)
-    pd.DataFrame(production_rows).to_csv(RELEASE / "instances" / "production_matrix_long.csv", index=False)
-    pd.DataFrame(demand_rows).to_csv(RELEASE / "instances" / "demand_long.csv", index=False)
-
-
-def load_schedule_from_result(source_path: str) -> list[dict]:
-    """Extract a period/process schedule from a result JSON."""
-    path = ROOT / source_path
-    if not path.exists():
-        return []
-    with path.open("r", encoding="utf-8") as fh:
-        data = json.load(fh)
-    if isinstance(data.get("scheduling"), list):
-        return data["scheduling"]
-    if isinstance(data.get("schedule"), list):
-        return [
-            {"period": period + 1, "process": int(process)}
-            for period, process in enumerate(data["schedule"])
-            if int(process) > 0
-        ]
-    return []
+    pd.DataFrame(meta_rows).to_csv(DIST / "instances" / "instance_metadata.csv", index=False)
+    pd.DataFrame(a_rows).to_csv(DIST / "instances" / "production_matrix_long.csv", index=False)
+    pd.DataFrame(d_rows).to_csv(DIST / "instances" / "demand_long.csv", index=False)
 
 
-def write_solution_and_bound_files() -> None:
-    """Write BKS, schedules, and dual-bound files."""
-    comp = pd.read_csv(ROOT / "analysis" / "output" / "comparison_table.csv")
-    bks_rows = []
-    bound_rows = []
-    schedules = {}
-    for _, row in comp.iterrows():
-        if str(row.get("dataset", "")) == "Real order book" and str(row.get("instance", "")) == "REAL_1":
-            continue
-        source = str(row.get("bks_source", ""))
-        source_path = ""
-        if " | " in source:
-            source_path = source.split(" | ")[-1]
-        bks_rows.append(
-            {
-                "dataset": row["dataset"],
-                "instance": row["instance"],
-                "BKS": row["BKS"],
-                "bks_source": row["bks_source"],
-                "source_path": source_path,
-            }
-        )
-        schedules[row["instance"]] = {
-            "dataset": row["dataset"],
-            "BKS": row["BKS"],
-            "source_path": source_path,
-            "schedule": load_schedule_from_result(source_path) if source_path else [],
-        }
-        bound_rows.append(
-            {
-                "dataset": row["dataset"],
-                "instance": row["instance"],
-                "cplex_bound": row.get("cplex_bound"),
-                "cplex_gap_pct": row.get("cplex_gap_pct"),
-                "cplex_mip_10800_bound": row.get("cplex_mip_10800_bound"),
-                "cplex_mip_10800_gap_pct": row.get("cplex_mip_10800_gap_pct"),
-            }
-        )
-    sol_dir = RELEASE / "solutions"
-    sol_dir.mkdir(parents=True, exist_ok=True)
-    pd.DataFrame(bks_rows).to_csv(sol_dir / "best_known_solutions.csv", index=False)
-    pd.DataFrame(bound_rows).to_csv(sol_dir / "dual_bounds.csv", index=False)
-    (sol_dir / "best_known_schedules.json").write_text(
-        json.dumps(schedules, ensure_ascii=False, indent=2), encoding="utf-8"
-    )
+def copy_public_analysis_outputs() -> None:
+    """Copy only allowlisted coded analysis outputs."""
+    for relative in public_analysis_outputs():
+        src = ROOT / "analysis" / "output" / relative
+        staged = coded_path(src)
+        if not src.exists():
+            raise FileNotFoundError(f"Missing analysis output: {src}")
+        if not staged.exists():
+            raise FileNotFoundError(f"Missing coded staged analysis output: {staged}")
+        dst = DIST / "analysis_output" / relative
+        if staged.suffix.lower() == ".csv":
+            frame = pd.read_csv(staged)
+            frame = drop_private_rows(frame)
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            frame.to_csv(dst, index=False)
+        else:
+            copy_file(staged, dst)
 
 
-def copy_analysis_outputs() -> None:
-    """Copy analysis CSV/Markdown outputs."""
-    out_dir = RELEASE / "analysis_output"
-    out_dir.mkdir(parents=True, exist_ok=True)
-    for path in sorted((ROOT / "analysis" / "output").glob("*")):
-        if path.is_file() and path.suffix.lower() in {".csv", ".md"}:
-            if path.name == "real_instance_crosscheck.md":
-                continue
-            dst = out_dir / path.name
-            if path.suffix.lower() == ".csv":
-                frame = drop_retired_real_rows(pd.read_csv(path))
-                frame.to_csv(dst, index=False)
-            else:
-                copy_file(path, dst)
+def drop_private_rows(frame: pd.DataFrame) -> pd.DataFrame:
+    """Drop rows that refer to excluded private real-order-book artifacts."""
+    if frame.empty:
+        return frame
+    text = frame.astype(str).agg(" ".join, axis=1)
+    private_tokens = [
+        "REAL_1",
+        "Real order book",
+        "results_production/real",
+        "results_production\\real",
+        "experiments/GAMSPy/Real",
+        "experiments\\GAMSPy\\Real",
+    ]
+    mask = pd.Series(False, index=frame.index)
+    for token in private_tokens:
+        mask = mask | text.str.contains(token, regex=False, na=False)
+    return frame.loc[~mask].copy()
 
 
-def copy_gamma_variant() -> None:
-    """Copy gamma=0 scripts and result files."""
-    src = ROOT / "experiments" / "GAMSPy" / "variant_gamma0"
-    dst = RELEASE / "gamma0_variant"
-    if src.exists():
-        shutil.copytree(src, dst)
-
-
-def copy_trajectories() -> None:
-    """Copy per-run trajectory JSON files for heuristic and matheuristic methods."""
-    traj_dir = RELEASE / "trajectories"
-    for rel_glob in [
+def copy_public_results() -> None:
+    """Copy coded result JSONs, trajectories, and window logs by allowlist."""
+    patterns = [
         "experiments/GRASP/results_ils_v2/*.json",
         "experiments/GRASP/results_ils/*.json",
+        "experiments/GAMSPy/variant_gamma0/results_gamma0/*.json",
         "experiments/matheuristics/results_pilot/*.json",
         "experiments/matheuristics/results_tuning/*.json",
         "experiments/matheuristics/results_short_budget/*.json",
@@ -227,202 +210,300 @@ def copy_trajectories() -> None:
         "experiments/matheuristics/results_production/b600/*.json",
         "experiments/matheuristics/results_production/a3600/*.json",
         "experiments/matheuristics/results_production/c_seeds/*.json",
-    ]:
-        for path in sorted(ROOT.glob(rel_glob)):
-            if path.stem == "Ale_1" or path.stem.startswith("Ale_1_"):
+        "experiments/matheuristics/results_production/s1/*.json",
+        "experiments/matheuristics/**/window_logs/*.csv",
+        "experiments/matheuristics/**/window_logs/*.parquet",
+    ]
+    for pattern in patterns:
+        for src in sorted(ROOT.glob(pattern)):
+            if "results_production\\real" in str(src) or "results_production/real" in str(src):
                 continue
-            copy_file(path, traj_dir / rel(path))
+            if src.name.startswith("REAL_1"):
+                continue
+            staged = coded_path(src)
+            if staged.exists():
+                copy_file(staged, DIST / "results" / rel(src))
 
 
-def copy_window_logs() -> None:
-    """Copy matheuristic per-window logs."""
-    dst_root = RELEASE / "window_logs"
-    for directory in (ROOT / "experiments" / "matheuristics").rglob("window_logs"):
-        for path in sorted(directory.glob("*")):
-            if path.is_file() and path.suffix.lower() in {".parquet", ".csv"}:
-                if path.stem == "Ale_1" or path.stem.startswith("Ale_1_"):
-                    continue
-                if path.stem == "REAL_1" or path.stem.startswith("REAL_1_"):
-                    continue
-                copy_file(path, dst_root / rel(path))
+def copy_public_code() -> None:
+    """Copy public reproduction code and add package-local entry points."""
+    code_files = [
+        "experiments/matheuristics/rf_fo_psp.py",
+        "experiments/matheuristics/psp_instance.py",
+        "experiments/GRASP/grasp_ils_psp.py",
+        "analysis/build_master_dataset.py",
+        "analysis/compute_gaps.py",
+        "analysis/ils_equal_budget.py",
+        "analysis/gamma_effect.py",
+        "analysis/gamma_tradeoff.py",
+        "analysis/sprint3_report.py",
+        "analysis/make_paper_tables.py",
+        "analysis/families.py",
+    ]
+    for relative in code_files:
+        copy_file(ROOT / relative, DIST / "code" / relative)
+    sanitize_public_code_copies()
+    write_text(DIST / "code" / "requirements-analysis.txt", (ROOT / "analysis" / "requirements.txt").read_text(encoding="utf-8"))
+    write_text(DIST / "code" / "reproduce_release.py", REPRODUCE_RELEASE)
+    write_text(DIST / "code" / "verify_release.py", VERIFY_RELEASE)
 
 
-def write_license() -> None:
-    """Write the release license notice."""
-    text = """# License
+def sanitize_public_code_copies() -> None:
+    """Remove private real-order-book references from generated code copies."""
+    replacements = {
+        "REAL_1.py": "PRIVATE_REAL_ORDER_BOOK_EXCLUDED",
+        "REAL_1": "PRIVATE_REAL_ORDER_BOOK",
+        "results_production/real": "private_results_excluded",
+        "results_production\\real": "private_results_excluded",
+        "experiments/GAMSPy/Real": "private_instances_excluded",
+        "experiments\\GAMSPy\\Real": "private_instances_excluded",
+        "anonymization": "identifier coding",
+        "anonymized": "coded",
+        "Anonymization": "Identifier coding",
+    }
+    for path in (DIST / "code").rglob("*"):
+        if not path.is_file() or path.suffix.lower() not in TEXT_SUFFIXES:
+            continue
+        text = path.read_text(encoding="utf-8")
+        new_text = text
+        for old, new in replacements.items():
+            new_text = new_text.replace(old, new)
+        if new_text != text:
+            path.write_text(new_text, encoding="utf-8", newline="\n")
 
-Data files in this release are provided under the Creative Commons Attribution 4.0
-International License (CC BY 4.0).
 
-Code files included for reproducibility are provided under the MIT License.
+def write_bks_counterfactual() -> None:
+    """Write the counterfactual BKS table excluding MIP@10800 candidates."""
+    master = pd.read_csv(ROOT / "analysis" / "output" / "master_instances.csv")
+    candidates = master[master["Z_best"].notna()].copy()
+    candidates = candidates[
+        ~candidates["method"].isin(["GRASP_v1", "ILS_v1", "ILS_v2_pr", "MAT_mip_10800s"])
+    ]
+    rows = candidates.loc[candidates.groupby(["dataset", "instance"])["Z_best"].idxmin()]
+    rows = rows[["dataset", "instance", "method", "Z_best"]].rename(
+        columns={"method": "counterfactual_bks_method", "Z_best": "counterfactual_BKS"}
+    )
+    rows.to_csv(ROOT / "analysis" / "output" / "bks_counterfactual_without_mip10800.csv", index=False)
 
-This release contains anonymized benchmark instances derived from randomized demand
-profiles. It does not include the plant's real order book.
-"""
-    (RELEASE / "LICENSE").write_text(text, encoding="utf-8")
+
+def write_release_metadata() -> None:
+    """Write release README, manifest, license, and checksums."""
+    readme = README_TEMPLATE.read_text(encoding="utf-8")
+    write_text(DIST / "README.md", readme)
+    license_text = (
+        "# License\n\n"
+        "Data files in this validated release candidate are prepared for CC BY 4.0.\n"
+        "Code files are prepared for MIT licensing. Final license and DOI metadata\n"
+        "will be filled at deposit time.\n"
+    )
+    write_text(DIST / "LICENSE.md", license_text)
+    copy_file(EXPECTED_INVENTORY, DIST / "MANIFEST.expected_inventory.txt")
+    copy_file(PUBLIC_OUTPUTS, DIST / "MANIFEST.public_analysis_outputs.txt")
+    write_checksums()
 
 
-def write_readme(file_count: int | None = None, zip_size_bytes: int | None = None) -> None:
-    """Write the release README."""
-    if file_count is None:
-        file_count_text = "computed during package generation"
-    else:
-        file_count_text = f"{file_count}"
-    if zip_size_bytes is None:
-        zip_size_text = "computed during package generation"
-    else:
-        zip_size_text = f"approximately {zip_size_bytes / (1024 * 1024):.2f} MiB"
-    text = f"""# PSP Electrofused-Grains Benchmark Release v1
-
-This package accompanies the PSP computational study. It contains the 60 benchmark
-instances, best-known solutions, dual bounds, run trajectories, window logs, analysis
-outputs, and the controlled `gamma=0` variant.
-
-## Contents
-
-Package inventory: {file_count_text} files in the ZIP archive; ZIP size
-{zip_size_text}.
-
-- `instances/gamspy_py/`: original GAMSPy instance scripts.
-- `instances/json/`: open JSON representation of each instance.
-- `instances/instance_metadata.csv`: dimensions and source paths.
-- `instances/production_matrix_long.csv`: nonzero production coefficients `(instance, product, process, value)`.
-- `instances/demand_long.csv`: nonzero demand records `(instance, product, period, value)`.
-- `solutions/best_known_solutions.csv`: BKS value and source.
-- `solutions/best_known_schedules.json`: schedule associated with each BKS source when available.
-- `solutions/dual_bounds.csv`: available CPLEX dual bounds and gaps.
-- `trajectories/`: per-run JSON outputs for ILS and matheuristic experiments.
-- `window_logs/`: per-window matheuristic instrumentation logs.
-- `analysis_output/`: CSV and Markdown outputs used to build manuscript tables and figures.
-- `gamma0_variant/`: scripts and results for the controlled `gamma=0` experiment.
-
-## Reproducing Tables and Figures
-
-From the repository root, rebuild the master analysis with:
-
-```bash
-python analysis/build_master_dataset.py
-python analysis/compute_gaps.py
-python analysis/gamma_effect.py
-python analysis/make_paper_tables.py
-```
-
-Sprint 3 figures and frontier tables are generated by the Sprint 3 analysis pipeline
-included in `analysis/`.
-
-## Software and Hardware Provenance
-
-Run JSON files include solver version, thread settings, hardware fields, random seeds,
-wall-clock budgets, and source paths where available. The production campaign used CPLEX
-22.1.2 through GAMSPy with explicit `threads=0`.
-
-## Anonymization
-
-The base family `S` contains ten randomized 19-period instances generated from a real
-order book that is not included in this release, following the anonymized benchmark
-construction of Luche et al. (2009). Larger families are horizon replications of `S`
-under the documented IncT construction. No released instance reproduces the real
-commercial order book. Product names are technical item labels retained to preserve
-benchmark structure.
-
-## Licensing
-
-Data are CC BY 4.0; code is MIT. See `LICENSE`.
-"""
-    (RELEASE / "README.md").write_text(text, encoding="utf-8")
+def iter_dist_files() -> list[Path]:
+    """Return files in the distribution tree."""
+    return sorted(path for path in DIST.rglob("*") if path.is_file())
 
 
 def write_checksums() -> None:
-    """Write SHA-256 checksums for all release files except the final zip."""
+    """Write a content-hash manifest for reproducibility checks."""
     rows = []
-    checksum_path = RELEASE / "checksums.sha256"
-    for path in sorted(RELEASE.rglob("*")):
-        if not path.is_file() or path in {ZIP_PATH, checksum_path}:
+    checksum_path = DIST / "checksums.sha256"
+    for path in iter_dist_files():
+        if path == checksum_path:
             continue
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
-        rows.append((digest, path.relative_to(RELEASE).as_posix()))
+        rows.append((digest, path.relative_to(DIST).as_posix()))
     with checksum_path.open("w", encoding="utf-8", newline="") as fh:
         writer = csv.writer(fh, delimiter=" ")
-        for digest, name in rows:
-            writer.writerow([digest, name])
+        writer.writerows(rows)
 
 
-def sanitize_release_texts() -> None:
-    """Remove local paths and legacy company/model identifiers from text files."""
-    replacements = {
-        str(ROOT): "<REPO_ROOT>",
-        str(ROOT).replace("\\", "\\\\"): "<REPO_ROOT>",
-        "D:\\\\GitHub\\\\Treibacher": "<REPO_ROOT>",
-        "D:\\GitHub\\Treibacher": "<REPO_ROOT>",
-        "ALCOA": "PSP_MODEL",
-    }
-    text_suffixes = {".py", ".json", ".csv", ".md", ".txt", ".log", ".sha256", ".bib", ".tex", ".yml", ".yaml"}
-    for path in RELEASE.rglob("*"):
-        if not path.is_file() or path.suffix.lower() not in text_suffixes:
+def current_inventory() -> list[str]:
+    """Return the actual distribution inventory."""
+    return sorted(path.relative_to(DIST).as_posix() for path in iter_dist_files())
+
+
+def verify_inventory(refresh: bool = False) -> None:
+    """Compare the distribution inventory with the versioned specification."""
+    inventory = current_inventory()
+    if refresh:
+        write_text(EXPECTED_INVENTORY, "\n".join(inventory) + "\n")
+        return
+    expected = [line.strip() for line in EXPECTED_INVENTORY.read_text(encoding="utf-8").splitlines() if line.strip()]
+    if inventory != expected:
+        missing = sorted(set(expected) - set(inventory))
+        extra = sorted(set(inventory) - set(expected))
+        raise RuntimeError(f"Inventory mismatch. Missing={missing[:10]} Extra={extra[:10]}")
+
+
+def scan_dist_content() -> None:
+    """Fail if public artifacts contain private identifiers or local paths."""
+    offenders: list[str] = []
+    for path in iter_dist_files():
+        if path.suffix.lower() not in TEXT_SUFFIXES:
             continue
         try:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
-        new_text = text
-        for old, new in replacements.items():
-            new_text = new_text.replace(old, new)
-        if new_text != text:
-            path.write_text(new_text, encoding="utf-8")
+        for pattern in PRIVATE_PATTERNS:
+            if pattern in text:
+                offenders.append(f"{path.relative_to(DIST).as_posix()}: {pattern}")
+    for path in iter_dist_files():
+        rel_name = path.relative_to(DIST).as_posix()
+        for pattern in PRIVATE_PATTERNS:
+            if pattern.replace("\\", "/") in rel_name:
+                offenders.append(f"{rel_name}: path")
+    if offenders:
+        raise RuntimeError("Private content found in release candidate:\n" + "\n".join(offenders[:50]))
 
 
 def create_zip() -> None:
-    """Create the final release zip with deterministic entry metadata."""
+    """Create a deterministic ZIP archive from the distribution tree."""
     if ZIP_PATH.exists():
         ZIP_PATH.unlink()
     with zipfile.ZipFile(ZIP_PATH, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zf:
-        for path in sorted(RELEASE.rglob("*")):
-            if path.is_file() and path != ZIP_PATH:
-                archive_name = path.relative_to(RELEASE).as_posix()
-                info = zipfile.ZipInfo(archive_name, date_time=(1980, 1, 1, 0, 0, 0))
-                info.compress_type = zipfile.ZIP_DEFLATED
-                info.external_attr = 0o644 << 16
-                zf.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
+        for path in iter_dist_files():
+            archive_name = path.relative_to(DIST).as_posix()
+            info = zipfile.ZipInfo(archive_name, date_time=(1980, 1, 1, 0, 0, 0))
+            info.compress_type = zipfile.ZIP_DEFLATED
+            info.external_attr = 0o644 << 16
+            zf.writestr(info, path.read_bytes(), compress_type=zipfile.ZIP_DEFLATED, compresslevel=9)
 
 
-def package_file_count() -> int:
-    """Return the number of files included in the release zip."""
-    return sum(1 for path in RELEASE.rglob("*") if path.is_file() and path != ZIP_PATH)
+def self_test_zip() -> None:
+    """Unpack the ZIP in an empty temporary directory and run public verifiers."""
+    with tempfile.TemporaryDirectory(prefix="psp_release_check_") as tmp:
+        tmp_path = Path(tmp)
+        with zipfile.ZipFile(ZIP_PATH) as zf:
+            zf.extractall(tmp_path)
+        subprocess.run([sys.executable, "code/reproduce_release.py"], cwd=tmp_path, check=True)
+        subprocess.run([sys.executable, "code/verify_release.py"], cwd=tmp_path, check=True)
 
 
-def finalize_readme_and_zip() -> None:
-    """Write package inventory into README and create a stable deterministic zip."""
-    previous_size_text: str | None = None
-    for _ in range(6):
-        size_bytes = None
-        if previous_size_text is not None:
-            size_bytes = int(float(previous_size_text) * 1024 * 1024)
-        write_readme(file_count=package_file_count(), zip_size_bytes=size_bytes)
-        sanitize_release_texts()
-        write_checksums()
-        create_zip()
-        size = ZIP_PATH.stat().st_size
-        size_text = f"{size / (1024 * 1024):.2f}"
-        if size_text == previous_size_text:
-            return
-        previous_size_text = size_text
-    raise RuntimeError("Release zip size did not stabilize after updating README inventory")
+def main(argv: list[str] | None = None) -> int:
+    """Build and validate the release candidate."""
+    argv = argv or sys.argv[1:]
+    refresh_inventory = "--refresh-inventory" in argv
+    write_bks_counterfactual()
+    ensure_coded_staging()
+    reset_dist()
+    write_open_instance_files()
+    copy_public_analysis_outputs()
+    copy_public_results()
+    copy_public_code()
+    write_release_metadata()
+    if refresh_inventory:
+        verify_inventory(refresh=True)
+        write_release_metadata()
+    verify_inventory(refresh=False)
+    scan_dist_content()
+    create_zip()
+    self_test_zip()
+    print(f"Release candidate written to {DIST}")
+    print(f"ZIP written to {ZIP_PATH}")
+    print(f"Files: {len(current_inventory())}")
+    return 0
+
+
+REPRODUCE_RELEASE = r'''"""Reproduce public release tables from packaged artifacts."""
+from __future__ import annotations
+
+import shutil
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+OUT = ROOT / "analysis_output"
+REPRO = ROOT / "reproduced_tables"
 
 
 def main() -> int:
-    """Build the full release package."""
-    reset_release()
-    write_instances()
-    write_solution_and_bound_files()
-    copy_analysis_outputs()
-    copy_gamma_variant()
-    copy_trajectories()
-    copy_window_logs()
-    write_license()
-    finalize_readme_and_zip()
-    print(f"Release written to {RELEASE}")
-    print(f"Zip written to {ZIP_PATH}")
+    """Regenerate compact public tables from release CSV artifacts."""
+    if REPRO.exists():
+        shutil.rmtree(REPRO)
+    REPRO.mkdir()
+    comparison = pd.read_csv(OUT / "comparison_by_dataset.csv")
+    comparison.to_csv(REPRO / "comparison_by_dataset.csv", index=False)
+    gamma = pd.read_csv(OUT / "gamma_effect_by_set.csv")
+    gamma.to_csv(REPRO / "gamma_effect_by_set.csv", index=False)
+    stats = pd.read_csv(OUT / "sprint3_statistical_tests.csv")
+    stats.to_csv(REPRO / "sprint3_statistical_tests.csv", index=False)
+    q5 = pd.read_csv(OUT / "sprint3_q5_verdict.csv")
+    q5.to_csv(REPRO / "sprint3_q5_verdict.csv", index=False)
+    print("Reproduced public analysis tables.")
     return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+'''
+
+
+VERIFY_RELEASE = r'''"""Verify the public release candidate using package-local files only."""
+from __future__ import annotations
+
+import hashlib
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+def verify_checksums() -> None:
+    """Validate SHA-256 content hashes."""
+    for line in (ROOT / "checksums.sha256").read_text(encoding="utf-8").splitlines():
+        digest, name = line.split(" ", 1)
+        observed = hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
+        if observed != digest:
+            raise AssertionError(f"Checksum mismatch for {name}")
+
+
+def verify_inventory() -> None:
+    """Validate the packaged inventory against the included manifest."""
+    expected = [
+        line.strip()
+        for line in (ROOT / "MANIFEST.expected_inventory.txt").read_text(encoding="utf-8").splitlines()
+        if line.strip()
+    ]
+    actual = sorted(
+        path.relative_to(ROOT).as_posix()
+        for path in ROOT.rglob("*")
+        if path.is_file() and not path.relative_to(ROOT).as_posix().startswith("reproduced_tables/")
+    )
+    if actual != sorted(expected):
+        raise AssertionError("Inventory mismatch inside release candidate.")
+
+
+def verify_public_tables() -> None:
+    """Check selected public table dimensions."""
+    meta = pd.read_csv(ROOT / "instances" / "instance_metadata.csv")
+    if len(meta) != 60:
+        raise AssertionError(f"Expected 60 derived instances, found {len(meta)}")
+    if set(meta["I"]) != {50} or set(meta["J"]) != {159}:
+        raise AssertionError("Unexpected instance dimensions.")
+    q5 = pd.read_csv(ROOT / "analysis_output" / "sprint3_q5_verdict.csv")
+    if int(q5["mip10800_wins"].sum()) != 7:
+        raise AssertionError("Q5 win count drifted.")
+
+
+def main() -> int:
+    """Run all public release checks."""
+    verify_checksums()
+    verify_inventory()
+    verify_public_tables()
+    print("Public release verification passed.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
+'''
 
 
 if __name__ == "__main__":
