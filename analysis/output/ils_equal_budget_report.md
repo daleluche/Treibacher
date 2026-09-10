@@ -30,7 +30,7 @@ The comparison value is reconstructed from each run trajectory using only improv
 
 ## Instances without a reproducible strict-budget schedule
 
-| dataset | instance | Z_best_truncated | selected_source_path | selected_time_s |
+| dataset | instance | Z_at_cutoff | selected_source_path | selected_time_s |
 |---|---|---|---|---|
 | 4X | IncT4x_7 | 26629.952000 | experiments\GRASP\results_ils_v2\IncT4x_7_run08.json | 2471.327000 |
 | 5X | IncT5x_2 | 128756.484000 | experiments\GRASP\results_ils_v2\IncT5x_2_run10.json | 3512.629000 |

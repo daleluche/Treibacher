@@ -213,10 +213,10 @@ def build_instance_audit(
         eligible = group[group["comparison_eligible"].astype(bool)].copy()
         if eligible.empty:
             selected = group.sort_values(["source_path"]).iloc[0]
-            z_best_truncated = math.nan
+            z_at_cutoff = math.nan
         else:
             selected = eligible.sort_values(["Z_at_cutoff", "selected_time_s", "source_path"]).iloc[0]
-            z_best_truncated = float(selected["Z_at_cutoff"])
+            z_at_cutoff = float(selected["Z_at_cutoff"])
         z_best_untruncated = float(group["final_objective"].min())
         summary = summaries.get((dataset, instance), {})
         z_best_with_cross_pr = summary.get("Z_best_with_cross_pr")
@@ -224,10 +224,10 @@ def build_instance_audit(
             z_best_with_cross_pr = z_best_untruncated
         z_best_with_cross_pr = float(z_best_with_cross_pr)
 
-        schedule_available = bool(abs(float(selected["final_objective"]) - z_best_truncated) <= EPS) if pd.notna(z_best_truncated) else False
+        schedule_available = bool(abs(float(selected["final_objective"]) - z_at_cutoff) <= EPS) if pd.notna(z_at_cutoff) else False
         schedule_validated = False
         if schedule_available and isinstance(selected.get("scheduling"), list):
-            schedule_validated = validate_schedule(dataset, instance, selected["scheduling"], z_best_truncated)
+            schedule_validated = validate_schedule(dataset, instance, selected["scheduling"], z_at_cutoff)
 
         rows.append(
             {
@@ -235,20 +235,20 @@ def build_instance_audit(
                 "dataset": dataset,
                 "instance": instance,
                 "n_runs": int(len(group)),
-                "Z_best_truncated": z_best_truncated,
-                "Z_mean_truncated": float(eligible["Z_at_cutoff"].mean()) if not eligible.empty else math.nan,
-                "Z_std_truncated": float(eligible["Z_at_cutoff"].std(ddof=1)) if len(eligible) > 1 else 0.0,
-                "Z_worst_truncated": float(eligible["Z_at_cutoff"].max()) if not eligible.empty else math.nan,
+                "Z_at_cutoff": z_at_cutoff,
+                "Z_mean_at_cutoff": float(eligible["Z_at_cutoff"].mean()) if not eligible.empty else math.nan,
+                "Z_std_at_cutoff": float(eligible["Z_at_cutoff"].std(ddof=1)) if len(eligible) > 1 else 0.0,
+                "Z_worst_at_cutoff": float(eligible["Z_at_cutoff"].max()) if not eligible.empty else math.nan,
                 "Z_best_untruncated": z_best_untruncated,
                 "Z_best_with_cross_pr": z_best_with_cross_pr,
-                "postbudget_gain_pct": 100.0 * (z_best_truncated - z_best_untruncated) / z_best_truncated
-                if pd.notna(z_best_truncated)
+                "postbudget_gain_pct": 100.0 * (z_at_cutoff - z_best_untruncated) / z_at_cutoff
+                if pd.notna(z_at_cutoff)
                 else math.nan,
                 "cross_pr_gain_pct": 100.0 * (z_best_untruncated - z_best_with_cross_pr) / z_best_untruncated
                 if z_best_untruncated
                 else math.nan,
-                "total_noncompliant_gain_pct": 100.0 * (z_best_truncated - z_best_with_cross_pr) / z_best_truncated
-                if pd.notna(z_best_truncated)
+                "total_noncompliant_gain_pct": 100.0 * (z_at_cutoff - z_best_with_cross_pr) / z_at_cutoff
+                if pd.notna(z_at_cutoff)
                 else math.nan,
                 "selected_run_id": selected.get("run_id"),
                 "selected_time_s": selected.get("selected_time_s"),
@@ -256,8 +256,8 @@ def build_instance_audit(
                 "schedule_available": schedule_available,
                 "schedule_validated": schedule_validated,
                 "source_run_hard_stop_compliant": False,
-                "value_found_within_budget": bool(pd.notna(z_best_truncated)),
-                "comparison_eligible": bool(pd.notna(z_best_truncated)),
+                "value_found_within_budget": bool(pd.notna(z_at_cutoff)),
+                "comparison_eligible": bool(pd.notna(z_at_cutoff)),
                 "cutoff_s": float(cutoff_s),
                 "summary_source_path": summary.get("summary_source_path"),
             }
@@ -409,7 +409,7 @@ def write_report(run_audit: pd.DataFrame, instance_audit: pd.DataFrame, path: Pa
     if noschedule.empty:
         lines.append("None.")
     else:
-        cols = ["dataset", "instance", "Z_best_truncated", "selected_source_path", "selected_time_s"]
+        cols = ["dataset", "instance", "Z_at_cutoff", "selected_source_path", "selected_time_s"]
         lines.extend(md_table(noschedule[cols]))
     lines.append("")
     atomic_write_text(path, "\n".join(lines) + "\n")
@@ -446,7 +446,7 @@ def main() -> int:
     for key, value in counts.items():
         print(f"{key}: {value}")
     print("Instances without strict-budget schedules:")
-    print(noschedule[["dataset", "instance", "Z_best_truncated", "selected_source_path"]].to_string(index=False))
+    print(noschedule[["dataset", "instance", "Z_at_cutoff", "selected_source_path"]].to_string(index=False))
     print("Gain metrics (mean/median/max):")
     print(instance_audit[["postbudget_gain_pct", "cross_pr_gain_pct", "total_noncompliant_gain_pct"]].agg(["mean", "median", "max"]).round(6).to_string())
     return 0
