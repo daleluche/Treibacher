@@ -1,10 +1,10 @@
 \section{Hybrid metaheuristic baseline}
 \label{sec:metaheuristic}
 
-To situate the matheuristics against the strongest \emph{pure}
-metaheuristic we could build, one that never calls a MIP solver, we developed a hybrid procedure (\ILS) combining components with
-strong track records in the GRASP literature. We summarize it here
-and refer to the released source code for full detail.
+To situate the matheuristics against a strong \emph{pure}
+metaheuristic baseline, one that never calls a MIP solver, we developed
+a hybrid procedure (\ILS) combining components with strong track
+records in the GRASP literature. We summarize it here.
 
 Solutions are schedules $s\in(\{0\}\cup J)^{|T|}$ evaluated by the
 same exact evaluator used by the matheuristics
@@ -23,9 +23,13 @@ multi-bridge reinsertions of schedule segments whose strength adapts
 to the horizon length. Each of ten workers, run in parallel from
 different seeds, maintains its own elite pool and applies path
 relinking within it
-\citep{laguna1999grasp,resende2016optimization}; once all workers
-finish, a final cross-run relinking step is applied to their best
-solutions. The incumbent trajectory of every worker is logged.
+\citep{laguna1999grasp,resende2016optimization}. The original run
+summaries also contained a final cross-run relinking stage applied
+after the ten workers had finished. Because that additional computation
+was not charged to the 3,600-second limit, its results are excluded
+from every equal-cutoff comparison and are retained only as a
+post-analysis diagnostic. The incumbent trajectory of every worker is
+logged.
 Parameter values follow the released implementation: reactive
 $\alpha$ drawn from $\{0, 0.05, \ldots, 0.30\}$ with exponentially
 smoothed weights, randomized tabu tenure in $[5,12]$ with aspiration,
@@ -33,18 +37,12 @@ windowed tabu search for $|T|>40$, Or-opt blocks of one to three
 periods, elite pools of ten solutions, and intra-run relinking every
 four improvements.
 
-Under the equal-resources protocol of
-Section~\ref{sec:experiments}, \ILS{} occupies a deliberately
-generous position in terms of attempts, not hardware: its ten workers
-run concurrently on the same cores and within the same wall-clock
-budget as the MIP-based methods, and its per-instance result is the
-best of ten stochastic attempts. Thus the comparison credits \ILS{}
-with more opportunities to find a good incumbent, but not with a
-separate machine or a longer elapsed time. Historically, this procedure
-is the modernized descendant of the heuristics proposed for the PSP
-in the original studies \citep{luche2009combining}, and it improves substantially upon them:
-relative to its own previous version, median best-objective
-improvements are 5.7\% on S, 20.5\% on 2X, 34.6\% on 3X, 42.1\% on 4X,
-and 47.9\% on 5X; across the large 3X--5X sets the
-median improvement is 39.5\%. Its role in this paper, however, is that of a
-calibrated baseline representing the pure-metaheuristic paradigm.
+Under the protocol of Section~\ref{sec:experiments}, \ILS{} occupies a
+deliberately generous position in terms of stochastic attempts: its
+per-instance result is the best incumbent attained by ten workers
+within the stated cutoff. Thus the comparison credits \ILS{} with more
+opportunities to find a good incumbent, but not with the uncharged
+cross-run post-processing stage. Historically, this procedure is the
+modernized descendant of the heuristics proposed for the PSP in the
+original studies \citep{luche2009combining}. This implementation serves
+as the strong hybrid metaheuristic baseline in the computational study.

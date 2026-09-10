@@ -32,8 +32,8 @@ every axis at once: MIP solvers have improved by orders of magnitude
 through presolve, cut separation, primal heuristics, and parallel tree
 search \citep{koch2022progress,achterberg2013analyzing,achterberg2020presolve},
 while commodity hardware has gained cores and clock speed. Whether a
-problem abandoned to heuristics by the original study is still hard \emph{today}, on
-a laptop, is a question of direct managerial relevance, independently
+problem motivated by enlarged benchmark instances is still hard \emph{today}, on
+a laptop, is a question of direct methodological and managerial relevance, independently
 of how the gain divides among its causes. Second, MIP-based
 construction and improvement heuristics, \emph{relax-and-fix} (\RF) and \emph{fix-and-optimize} (\FO), now
 standard components of the matheuristics toolbox
@@ -45,15 +45,16 @@ been examined is how they fare against a current solver on the problem
 at full industrial size.
 
 This paper reports a comprehensive computational study of the PSP that
-confronts three algorithmic paradigms under a strict equal-resources
-protocol: (i) the monolithic MIP model solved by a modern commercial
+confronts three algorithmic paradigms: (i) the monolithic MIP model solved by a modern commercial
 solver; (ii) temporal-decomposition matheuristics (\RFFO{} and an
 \RF-warm-started monolithic variant, \RFMIP); and (iii) a
-state-of-the-art hybrid metaheuristic combining reactive GRASP,
-iterated local search, variable neighborhood descent, tabu components,
-and cross-run path relinking (\ILS). All methods run on the same
-machine, with the same wall-clock budgets and explicit thread
-accounting, and the decision criteria of the central comparisons were
+strong hybrid metaheuristic baseline with intra-run path relinking
+(\ILS). For each equal-budget comparison, methods are evaluated using
+incumbents attained within the stated common cutoff. The \ILS{}
+incumbents used at 600 and 3{,}600 seconds were reconstructed
+retrospectively from the logged trajectories, excluding the additional
+cross-run path-relinking stage. All methods run on the same machine,
+with explicit thread accounting, and the decision criteria of the central comparisons were
 specified in the campaign's planning documents before the
 corresponding experiments were run, and are reported here as
 specified, including those that were not supported.
@@ -62,11 +63,9 @@ we map \emph{when} each method is the tool of choice as a function of
 instance scale (planning horizons from $T\!=\!19$ to $T\!\approx\!190$
 periods) and available computing time (from operational re-planning
 budgets of 5--10 minutes to tactical budgets of 1--3 hours).
-The resulting map shows the monolith dominant up to twice the
-industrial horizon, decomposition winning the majority of instances
-from roughly 150 periods upward at equal budgets, and the monolith
-recovering most, not all, of that ground when granted triple
-time.
+In the tested benchmark families, the monolithic MIP achieved most
+per-instance wins through 5X, whereas decomposition achieved the
+majority at 8X and 10X under the 3{,}600-second cutoff.
 
 The contributions are fourfold. First, we isolate a modeling effect
 that governs the problem's difficulty: penalizing accumulated excess
@@ -89,7 +88,7 @@ depend on scale and budget, and we characterize where the boundary
 lies. Third, we
 provide what is, to the best of our knowledge, the first publicly
 available benchmark for lot sizing with co-production in fixed
-proportions: the plant's order book and 60 instances derived from it,
+proportions: 60 instances derived from one industrial order book,
 spanning seven families and horizons from 19 to 190 periods, with
 best-known solutions, dual bounds, and full per-run trajectories,
 released in open formats. Fourth, we derive managerial insights for the
