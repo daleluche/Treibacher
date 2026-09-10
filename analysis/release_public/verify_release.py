@@ -8,6 +8,7 @@ import re
 import shutil
 import tempfile
 from pathlib import Path
+from typing import Iterable
 
 import pandas as pd
 
@@ -15,6 +16,16 @@ from release_compare import compare_output_dirs, manifest_outputs
 
 ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".py", ".json", ".csv", ".md", ".txt", ".sha256"}
+PUBLIC_DATASETS = {"S", "2X", "3X", "4X", "5X", "8X", "10X"}
+EXPECTED_INSTANCE_COUNTS = {"S": 10, "2X": 10, "3X": 10, "4X": 10, "5X": 10, "8X": 5, "10X": 5}
+FORBIDDEN_SCOPE_RE = r"(?<![A-Za-z0-9_])" + "Ale" + r"_1(?!\d)|REAL" + r"_1|synthetic_tiny|Synthetic"
+AUXILIARY_OUTPUTS = {
+    "gamma_effect_note.md",
+    "ils_equal_budget_600_report.md",
+    "ils_equal_budget_report.md",
+    "sprint3_bks_changes_after_mip10800.csv",
+    "sprint3_report.md",
+}
 
 
 def private_text_re() -> re.Pattern[str]:
@@ -112,6 +123,30 @@ def scan_private_content() -> None:
                     break
     if offenders:
         raise AssertionError(f"Private content or absolute paths found: {offenders[:20]}")
+    scan_parquet_content()
+
+
+def scan_parquet_content() -> None:
+    """Reject private tokens and invalid datasets in textual parquet columns."""
+    private_re = private_text_re()
+    path_re = local_path_re()
+    offenders: list[str] = []
+    for path in iter_files():
+        if path.suffix.lower() != ".parquet":
+            continue
+        try:
+            frame = pd.read_parquet(path)
+        except Exception as exc:  # pragma: no cover - exercised by release validation
+            raise AssertionError(f"Could not read parquet file {path.relative_to(ROOT).as_posix()}: {exc}") from exc
+        validate_frame_scope(frame, path.relative_to(ROOT).as_posix(), offenders)
+        for column in frame.select_dtypes(include=["object", "string", "category"]).columns:
+            for value in frame[column].dropna().astype(str):
+                normalized = value.replace("\\\\", "\\")
+                if private_re.search(normalized) or path_re.search(normalized):
+                    offenders.append(f"{path.relative_to(ROOT).as_posix()}:{column}")
+                    break
+    if offenders:
+        raise AssertionError(f"Forbidden parquet content found: {offenders[:20]}")
 
 
 def iter_json_strings(value: object) -> list[str]:
@@ -131,9 +166,8 @@ def iter_json_strings(value: object) -> list[str]:
 def verify_public_scope() -> None:
     """Check instance families and canonical S labels."""
     meta = pd.read_csv(ROOT / "instances" / "instance_metadata.csv")
-    expected_counts = {"S": 10, "2X": 10, "3X": 10, "4X": 10, "5X": 10, "8X": 5, "10X": 5}
     counts = meta.groupby("dataset")["instance"].nunique().to_dict()
-    if counts != expected_counts:
+    if counts != EXPECTED_INSTANCE_COUNTS:
         raise AssertionError(f"Unexpected public instance counts: {counts}")
     if set(meta["I"]) != {50} or set(meta["J"]) != {159}:
         raise AssertionError("Unexpected instance dimensions.")
@@ -141,6 +175,107 @@ def verify_public_scope() -> None:
     observed_s = set(meta.loc[meta["dataset"] == "S", "instance"])
     if observed_s != expected_s:
         raise AssertionError(f"S labels are not canonical: {sorted(observed_s)}")
+    py_files = list((ROOT / "instances" / "gamspy_py").glob("*/*.py"))
+    json_files = list((ROOT / "instances" / "json").glob("*/*.json"))
+    if len(py_files) != 60 or len(json_files) != 60:
+        raise AssertionError(f"Expected 60 Python and 60 JSON instance representations, found {len(py_files)} and {len(json_files)}")
+    validate_public_scope_everywhere()
+
+
+def validate_public_scope_everywhere() -> None:
+    """Reject unauthorized datasets or instances in public CSV, JSON, and parquet artifacts."""
+    offenders: list[str] = []
+    for path in iter_files():
+        rel = path.relative_to(ROOT).as_posix()
+        if path.suffix.lower() == ".csv":
+            validate_frame_scope(pd.read_csv(path), rel, offenders)
+        elif path.suffix.lower() == ".json":
+            try:
+                data = json.loads(path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                continue
+            validate_json_scope(data, rel, offenders)
+        elif path.suffix.lower() == ".parquet":
+            validate_frame_scope(pd.read_parquet(path), rel, offenders)
+    if offenders:
+        raise AssertionError(f"Unauthorized public-scope values found: {offenders[:20]}")
+
+
+def validate_frame_scope(frame: pd.DataFrame, rel: str, offenders: list[str]) -> None:
+    """Validate dataset and instance labels in one tabular artifact."""
+    if "dataset" in frame.columns:
+        invalid = sorted(set(frame["dataset"].dropna().astype(str)) - PUBLIC_DATASETS)
+        allowed_analytic = {"scale", "scope", "budget", "method", "metric"}
+        if invalid and not allowed_analytic.intersection(frame.columns):
+            offenders.append(f"{rel}:dataset={invalid[:5]}")
+        elif invalid:
+            forbidden = [value for value in invalid if value in {"Synthetic", "Real"} or value.startswith("Ale_")]
+            if forbidden:
+                offenders.append(f"{rel}:dataset={forbidden[:5]}")
+    for column in [col for col in frame.columns if col in {"instance", "name", "run_id"}]:
+        values = frame[column].dropna().astype(str)
+        bad = values[values.str.contains(FORBIDDEN_SCOPE_RE, regex=True)]
+        if not bad.empty:
+            offenders.append(f"{rel}:{column}={bad.iloc[0]}")
+
+
+def validate_json_scope(value: object, rel: str, offenders: list[str]) -> None:
+    """Validate dataset and instance labels in one decoded JSON artifact."""
+    if isinstance(value, dict):
+        if "dataset" in value and str(value["dataset"]) not in PUBLIC_DATASETS:
+            offenders.append(f"{rel}:dataset={value['dataset']!r}")
+        for key in ("instance", "name", "run_id"):
+            if key in value and re.search(FORBIDDEN_SCOPE_RE, str(value[key])):
+                offenders.append(f"{rel}:{key}={value[key]!r}")
+        for item in value.values():
+            validate_json_scope(item, rel, offenders)
+    elif isinstance(value, list):
+        for item in value:
+            validate_json_scope(item, rel, offenders)
+
+
+def verify_window_log_metadata() -> None:
+    """Validate that JSON window-log metadata exactly matches staged files."""
+    staged_logs = {
+        path.relative_to(ROOT).as_posix()
+        for path in iter_files()
+        if "window_logs" in path.parts and path.suffix.lower() in {".csv", ".parquet"}
+    }
+    log_refs: dict[str, int] = {}
+    included = missing = invalid = 0
+    for path in iter_files():
+        if path.suffix.lower() != ".json":
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        if not isinstance(data, dict) or "window_log_path" not in data:
+            continue
+        rel = path.relative_to(ROOT).as_posix()
+        flag = data.get("window_log_included")
+        log_path = data.get("window_log_path")
+        valid = isinstance(log_path, str) and log_path in staged_logs and not Path(log_path).is_absolute() and ".." not in Path(log_path).parts
+        if flag is True:
+            included += 1
+            if not valid:
+                invalid += 1
+                raise AssertionError(f"{rel}: included window log does not resolve inside package: {log_path!r}")
+            log_refs[log_path] = log_refs.get(log_path, 0) + 1
+        elif flag is False:
+            missing += 1
+            if log_path is not None:
+                invalid += 1
+                raise AssertionError(f"{rel}: missing window log must use null path, found {log_path!r}")
+        else:
+            invalid += 1
+            raise AssertionError(f"{rel}: window_log_included must be true or false")
+    if invalid:
+        raise AssertionError(f"Invalid window-log metadata count: {invalid}")
+    unreferenced = sorted(staged_logs - set(log_refs))
+    shared = {path: count for path, count in log_refs.items() if count != 1}
+    if unreferenced or shared:
+        raise AssertionError(f"Unexpected window-log reference cardinality. Unreferenced={unreferenced[:5]} shared={shared}")
 
 
 def verify_raw_source_coverage() -> None:
@@ -183,7 +318,7 @@ def verify_sentinels(reference_root: Path) -> None:
 
 
 def run_negative_test(args: argparse.Namespace) -> None:
-    """Verify that output comparison fails after a deliberate reference-cell edit."""
+    """Verify that deliberate comparison and scope defects are detected."""
     with tempfile.TemporaryDirectory(prefix="psp_negative_reference_") as tmp:
         mutated = Path(tmp) / "analysis_output"
         shutil.copytree(args.reference_root, mutated)
@@ -195,8 +330,39 @@ def run_negative_test(args: argparse.Namespace) -> None:
             compare_output_dirs(args.analysis_root, mutated, ROOT / "MANIFEST.public_analysis_outputs.txt")
         except AssertionError:
             print("Negative comparison test failed as expected.")
-            return
-        raise AssertionError("Negative comparison test did not detect the injected cell drift.")
+        else:
+            raise AssertionError("Negative comparison test did not detect the injected cell drift.")
+    with tempfile.TemporaryDirectory(prefix="psp_negative_scope_") as tmp:
+        sandbox = Path(tmp)
+        shutil.copytree(ROOT, sandbox / "pkg")
+        bad = sandbox / "pkg" / "results" / "bad_synthetic.json"
+        bad.write_text(json.dumps({"dataset": "Synthetic", "instance": "synthetic_tiny"}), encoding="utf-8")
+        old_root = globals()["ROOT"]
+        globals()["ROOT"] = sandbox / "pkg"
+        try:
+            try:
+                scan_private_content()
+                verify_public_scope()
+            except AssertionError:
+                print("Negative raw-dataset test failed as expected.")
+            else:
+                raise AssertionError("Negative raw-dataset test did not detect unauthorized dataset.")
+            bad.unlink()
+            target = globals()["ROOT"] / "analysis_output" / "master_instances.csv"
+            frame = pd.read_csv(target)
+            frame.loc[len(frame)] = {column: None for column in frame.columns}
+            frame.loc[len(frame) - 1, "dataset"] = "UnknownSet"
+            if "instance" in frame.columns:
+                frame.loc[len(frame) - 1, "instance"] = "bad_instance"
+            frame.to_csv(target, index=False)
+            try:
+                verify_public_scope()
+            except AssertionError:
+                print("Negative analytic-dataset test failed as expected.")
+                return
+            raise AssertionError("Negative analytic-dataset test did not detect unauthorized dataset.")
+        finally:
+            globals()["ROOT"] = old_root
 
 
 def main() -> int:
@@ -207,10 +373,14 @@ def main() -> int:
     scan_private_content()
     verify_public_scope()
     verify_raw_source_coverage()
+    verify_window_log_metadata()
     expected_names = set(manifest_outputs(ROOT / "MANIFEST.public_analysis_outputs.txt"))
-    observed_names = {path.relative_to(args.analysis_root).as_posix() for path in args.analysis_root.glob("*.csv")}
+    observed_names = {path.relative_to(args.analysis_root).as_posix() for path in args.analysis_root.iterdir() if path.is_file()}
     if not expected_names.issubset(observed_names):
         raise AssertionError(f"Missing reproduced outputs: {sorted(expected_names - observed_names)}")
+    unexpected = observed_names - expected_names - AUXILIARY_OUTPUTS
+    if unexpected:
+        raise AssertionError(f"Unexpected reproduced outputs: {sorted(unexpected)}")
     compare_output_dirs(args.analysis_root, args.reference_root, ROOT / "MANIFEST.public_analysis_outputs.txt")
     verify_sentinels(args.reference_root)
     if args.negative_test:

@@ -38,7 +38,6 @@ code/analysis/families.py
 code/analysis/gamma_effect.py
 code/analysis/gamma_tradeoff.py
 code/analysis/ils_equal_budget.py
-code/analysis/make_paper_tables.py
 code/analysis/sprint3_report.py
 code/experiments/GRASP/grasp_ils_psp.py
 code/experiments/matheuristics/psp_instance.py
@@ -1864,7 +1863,6 @@ results/experiments/matheuristics/results_pilot/IncT5x_10_rf_seed1.json
 results/experiments/matheuristics/results_pilot/IncT5x_3_rf_fo_seed1.json
 results/experiments/matheuristics/results_pilot/IncT5x_3_rf_fo_seed1_v2.json
 results/experiments/matheuristics/results_pilot/IncT5x_3_rf_seed1.json
-results/experiments/matheuristics/results_pilot/synthetic_tiny_rf_fo_seed1.json
 results/experiments/matheuristics/results_production/a3600/IncT2X_10_rf_fo_seed1_b3600.json
 results/experiments/matheuristics/results_production/a3600/IncT2X_1_rf_fo_seed1_b3600.json
 results/experiments/matheuristics/results_production/a3600/IncT2X_2_rf_fo_seed1_b3600.json

@@ -2,7 +2,7 @@
 
 R3 base SHA: ce7fa16875fb76659ff6edce60b79a5740ded156
 Product mapping size: 50
-Files validated: 2192
+Files validated: 2191
 
 All validations compare decoded staged files with their private sources.
 
@@ -1790,7 +1790,6 @@ All validations compare decoded staged files with their private sources.
 | result | passed | `experiments/matheuristics/results_pilot/IncT5x_3_rf_fo_seed1.json` | `release/staging/experiments/matheuristics/results_pilot/IncT5x_3_rf_fo_seed1.json` | decoded content invariant |
 | result | passed | `experiments/matheuristics/results_pilot/IncT5x_3_rf_fo_seed1_v2.json` | `release/staging/experiments/matheuristics/results_pilot/IncT5x_3_rf_fo_seed1_v2.json` | decoded content invariant |
 | result | passed | `experiments/matheuristics/results_pilot/IncT5x_3_rf_seed1.json` | `release/staging/experiments/matheuristics/results_pilot/IncT5x_3_rf_seed1.json` | decoded content invariant |
-| result | passed | `experiments/matheuristics/results_pilot/synthetic_tiny_rf_fo_seed1.json` | `release/staging/experiments/matheuristics/results_pilot/synthetic_tiny_rf_fo_seed1.json` | decoded content invariant |
 | result | passed | `experiments/matheuristics/results_tuning/IncT5x_10_rf_fo_seed1_omega12_tlfo30.json` | `release/staging/experiments/matheuristics/results_tuning/IncT5x_10_rf_fo_seed1_omega12_tlfo30.json` | decoded content invariant |
 | result | passed | `experiments/matheuristics/results_tuning/IncT5x_10_rf_fo_seed1_omega12_tlfo60.json` | `release/staging/experiments/matheuristics/results_tuning/IncT5x_10_rf_fo_seed1_omega12_tlfo60.json` | decoded content invariant |
 | result | passed | `experiments/matheuristics/results_tuning/IncT5x_10_rf_fo_seed1_omega20_tlfo30.json` | `release/staging/experiments/matheuristics/results_tuning/IncT5x_10_rf_fo_seed1_omega20_tlfo30.json` | decoded content invariant |

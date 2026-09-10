@@ -20,12 +20,14 @@ if str(ROOT) not in sys.path:
 from analysis import code_identifiers
 from analysis.structural_disclosure_audit import public_summary, run_structural_audit, write_private_report
 from analysis.release_scope import (
+    PUBLIC_DATASETS,
     canonicalize_relative_path,
     canonical_instance_name,
     canonicalize_public_text,
     has_absolute_path,
     is_private_instance_label,
     is_private_path,
+    is_public_record,
 )
 from experiments.matheuristics.psp_instance import load_instance
 
@@ -207,6 +209,8 @@ def drop_private_rows(frame: pd.DataFrame) -> pd.DataFrame:
         frame["dataset"] = frame["dataset"].map(
             lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
         )
+        if not is_analytic_dataset_schema(frame):
+            frame = frame[frame["dataset"].astype(str).isin(PUBLIC_DATASETS)]
     keep = pd.Series(True, index=frame.index)
     for column in frame.columns:
         if column in {"dataset", "instance", "name", "run_id"}:
@@ -220,6 +224,11 @@ def drop_private_rows(frame: pd.DataFrame) -> pd.DataFrame:
                 lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
             )
     return out
+
+
+def is_analytic_dataset_schema(frame: pd.DataFrame) -> bool:
+    """Return whether a table may contain non-instance aggregate dataset labels."""
+    return bool({"scope", "analysis_role", "test_note", "comparison"}.intersection(frame.columns))
 
 
 def copy_public_results() -> None:
@@ -269,9 +278,78 @@ def copy_public_results() -> None:
                 continue
             if src.name.startswith("REAL_1"):
                 continue
+            if "synthetic_tiny" in src.name or "Synthetic" in src.parts:
+                continue
             staged = coded_path(src)
             if staged.exists():
                 copy_file(staged, DIST / "results" / staged.relative_to(code_identifiers.STAGING))
+    repair_window_log_metadata()
+    validate_window_log_metadata()
+
+
+def repair_window_log_metadata() -> None:
+    """Align result JSON window-log metadata with logs actually staged."""
+    log_index: dict[str, list[Path]] = {}
+    for path in sorted((DIST / "results").rglob("*")):
+        if path.is_file() and "window_logs" in path.parts and path.suffix.lower() in {".csv", ".parquet"}:
+            log_index.setdefault(path.name, []).append(path)
+    ambiguous = {name: paths for name, paths in log_index.items() if len(paths) != 1}
+    if ambiguous:
+        sample = {name: [p.relative_to(DIST).as_posix() for p in paths] for name, paths in list(ambiguous.items())[:5]}
+        raise RuntimeError(f"Ambiguous staged window-log basenames: {sample}")
+
+    for path in sorted((DIST / "results").rglob("*.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict) or "window_log_path" not in data:
+            continue
+        old_path = data.get("window_log_path")
+        basename = Path(str(old_path).replace("\\", "/")).name if old_path else None
+        matches = log_index.get(basename or "", [])
+        if matches:
+            data["window_log_path"] = matches[0].relative_to(DIST).as_posix()
+            data["window_log_included"] = True
+        else:
+            data["window_log_path"] = None
+            data["window_log_included"] = False
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+
+
+def validate_window_log_metadata() -> dict[str, int]:
+    """Validate staged JSON window-log references and return summary counts."""
+    counts = {"included": 0, "missing": 0, "invalid": 0, "logs": 0}
+    log_refs: dict[str, int] = {}
+    staged_logs = {
+        path.relative_to(DIST).as_posix()
+        for path in sorted((DIST / "results").rglob("*"))
+        if path.is_file() and "window_logs" in path.parts and path.suffix.lower() in {".csv", ".parquet"}
+    }
+    counts["logs"] = len(staged_logs)
+    for path in sorted((DIST / "results").rglob("*.json")):
+        data = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(data, dict) or "window_log_path" not in data:
+            continue
+        included = data.get("window_log_included")
+        log_path = data.get("window_log_path")
+        valid_path = isinstance(log_path, str) and log_path in staged_logs and not Path(log_path).is_absolute() and ".." not in Path(log_path).parts
+        if included is True:
+            counts["included"] += 1
+            if not valid_path:
+                counts["invalid"] += 1
+                raise RuntimeError(f"Invalid included window log in {path.relative_to(DIST).as_posix()}: {log_path!r}")
+            log_refs[log_path] = log_refs.get(log_path, 0) + 1
+        elif included is False:
+            counts["missing"] += 1
+            if log_path is not None:
+                counts["invalid"] += 1
+                raise RuntimeError(f"Excluded window log keeps a path in {path.relative_to(DIST).as_posix()}: {log_path!r}")
+        else:
+            counts["invalid"] += 1
+            raise RuntimeError(f"window_log_included must be boolean in {path.relative_to(DIST).as_posix()}")
+    unreferenced = sorted(staged_logs - set(log_refs))
+    shared = {path: count for path, count in log_refs.items() if count != 1}
+    if unreferenced or shared:
+        raise RuntimeError(f"Unexpected staged window-log references. Unreferenced={unreferenced[:5]} shared={shared}")
+    return counts
 
 
 def copy_public_code() -> None:
@@ -286,7 +364,6 @@ def copy_public_code() -> None:
         "analysis/gamma_effect.py",
         "analysis/gamma_tradeoff.py",
         "analysis/sprint3_report.py",
-        "analysis/make_paper_tables.py",
         "analysis/families.py",
     ]
     for relative in code_files:
@@ -360,7 +437,7 @@ def run_private_structural_audit() -> None:
     result = run_structural_audit(DIST)
     write_private_report(result)
     if result.status != "passed":
-        raise RuntimeError(f"Structural disclosure audit failed: {result.failed_rule}")
+        raise RuntimeError(f"Structural disclosure audit failed: {result.failed_rules}")
     write_text(DIST / "STRUCTURAL_AUDIT.md", public_summary(result))
 
 

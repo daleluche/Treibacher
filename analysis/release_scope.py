@@ -99,6 +99,8 @@ def is_private_path(value: object) -> bool:
 
 def is_public_record(record: dict[str, Any]) -> bool:
     """Return whether a structured record is in public release scope."""
+    if "dataset" in record and str(record["dataset"]) not in PUBLIC_DATASETS:
+        return False
     for key in ("dataset", "instance", "name", "run_id"):
         if key in record and is_private_instance_label(record[key]):
             return False

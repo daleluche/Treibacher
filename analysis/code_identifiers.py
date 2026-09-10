@@ -25,6 +25,7 @@ if str(ROOT) not in sys.path:
 
 from experiments.matheuristics.psp_instance import load_instance
 from analysis.release_scope import (
+    PUBLIC_DATASETS,
     canonicalize_json_value,
     canonical_instance_name,
     canonicalize_public_text,
@@ -175,6 +176,8 @@ def result_paths() -> list[Path]:
                 continue
             if path.stem == "REAL_1" or path.stem.startswith("REAL_1_"):
                 continue
+            if "synthetic_tiny" in path.name or "Synthetic" in path.parts:
+                continue
             if is_private_instance_label(path.name) or is_private_path(path):
                 continue
             paths.append(path)
@@ -231,6 +234,8 @@ def filter_and_canonicalize_frame(frame: pd.DataFrame) -> pd.DataFrame:
         frame["dataset"] = frame["dataset"].map(
             lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
         )
+        if not is_analytic_dataset_schema(frame):
+            frame = frame[frame["dataset"].astype(str).isin(PUBLIC_DATASETS)]
     keep = pd.Series(True, index=frame.index)
     for column in frame.columns:
         if column in {"dataset", "instance", "name", "run_id"}:
@@ -244,6 +249,11 @@ def filter_and_canonicalize_frame(frame: pd.DataFrame) -> pd.DataFrame:
                 lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
             )
     return out
+
+
+def is_analytic_dataset_schema(frame: pd.DataFrame) -> bool:
+    """Return whether a table may contain non-instance aggregate dataset labels."""
+    return bool({"scope", "analysis_role", "test_note", "comparison"}.intersection(frame.columns))
 
 
 def validate_instance(src: Path, staged: Path, mapping: dict[str, str]) -> ValidationResult:
