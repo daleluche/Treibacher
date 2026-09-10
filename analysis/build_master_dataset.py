@@ -45,6 +45,7 @@ os.makedirs(OUT, exist_ok=True)
 DATASETS = ["S", "Real", "2X", "3X", "4X", "5X", "8X", "10X"]
 EXACT_DATASETS = ["Real", "2X", "3X", "4X", "5X"]
 EPS = 1e-6
+PUBLIC_RELEASE_MODE = os.environ.get("PSP_PUBLIC_RELEASE") == "1"
 
 
 def _load(path: str) -> dict:
@@ -347,7 +348,10 @@ def main() -> int:
 
     for method in ["CPLEX22_3h", "ILS_v2", "ILS_v2_pr"]:
         n = inst.loc[inst.method == method, "instance"].nunique()
-        expected = 52 if method in {"ILS_v2", "ILS_v2_pr"} else 50
+        if PUBLIC_RELEASE_MODE:
+            expected = 50 if method in {"ILS_v2", "ILS_v2_pr"} else 49
+        else:
+            expected = 52 if method in {"ILS_v2", "ILS_v2_pr"} else 50
         flag = "OK" if n == expected else "FAIL"
         if flag == "FAIL":
             ok = False
@@ -355,9 +359,10 @@ def main() -> int:
 
     summary_record = runs.get("summary_record", pd.Series(False, index=runs.index)).fillna(False).astype(bool)
     n_v2 = len(runs[(runs.method == "ILS_v2") & (~summary_record)])
-    flag = "OK" if n_v2 == 520 else "FAIL"
-    ok &= (n_v2 == 520)
-    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 520)")
+    expected_v2_runs = 500 if PUBLIC_RELEASE_MODE else 520
+    flag = "OK" if n_v2 == expected_v2_runs else "FAIL"
+    ok &= (n_v2 == expected_v2_runs)
+    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected {expected_v2_runs})")
 
     no_schedule = ils_instance_audit[~ils_instance_audit["schedule_available"].astype(bool)]
     flag = "OK" if len(no_schedule) == 2 else "FAIL"
@@ -365,14 +370,24 @@ def main() -> int:
     print(f"[{flag}] ILS_v2 strict-budget values without reproducible schedules: {len(no_schedule)} (expected 2)")
 
     real_rows = runs[(runs.dataset == "Real order book") & (runs.instance == "REAL_1")]
-    flag = "OK" if not real_rows.empty else "FAIL"
-    ok &= flag == "OK"
-    print(f"[{flag}] REAL_1 real order-book rows: {len(real_rows)}")
+    if PUBLIC_RELEASE_MODE:
+        flag = "OK" if real_rows.empty else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] REAL_1 real order-book rows excluded from public scope: {len(real_rows)}")
+    else:
+        flag = "OK" if not real_rows.empty else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] REAL_1 real order-book rows: {len(real_rows)}")
 
     ale1_rows = runs[(runs.dataset == "Real") & (runs.instance == "Ale_1")]
-    flag = "OK" if not ale1_rows.empty and ale1_rows["paper_note"].notna().any() else "FAIL"
-    ok &= flag == "OK"
-    print(f"[{flag}] Ale_1 retained with provenance note: {len(ale1_rows)} rows")
+    if PUBLIC_RELEASE_MODE:
+        flag = "OK" if ale1_rows.empty else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] Ale_1 legacy rows excluded from public scope: {len(ale1_rows)} rows")
+    else:
+        flag = "OK" if not ale1_rows.empty and ale1_rows["paper_note"].notna().any() else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] Ale_1 retained with provenance note: {len(ale1_rows)} rows")
 
     bad_z = runs[(runs.Z.isna()) | (runs.Z < -EPS)]
     flag = "OK" if bad_z.empty else "FAIL"

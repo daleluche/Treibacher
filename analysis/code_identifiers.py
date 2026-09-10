@@ -26,6 +26,7 @@ if str(ROOT) not in sys.path:
 from experiments.matheuristics.psp_instance import load_instance
 from analysis.release_scope import (
     canonicalize_json_value,
+    canonical_instance_name,
     canonicalize_public_text,
     canonicalize_relative_path,
     has_absolute_path,
@@ -125,19 +126,41 @@ def result_paths() -> list[Path]:
     """Return JSON/CSV/Markdown/parquet result artifacts eligible for staging."""
     patterns = [
         "analysis/output/*.csv",
+        "experiments/GAMSPy/Real/results/Ale_*.json",
+        "experiments/GAMSPy/Real/results_3horas/Ale_*.json",
+        "experiments/GAMSPy/2X/results/*.json",
+        "experiments/GAMSPy/2X/results_3horas/*.json",
+        "experiments/GAMSPy/3X/results/*.json",
+        "experiments/GAMSPy/3X/results_3horas/*.json",
+        "experiments/GAMSPy/4X/results/*.json",
+        "experiments/GAMSPy/4X/results_3horas/*.json",
+        "experiments/GAMSPy/5X/results/*.json",
+        "experiments/GAMSPy/5X/results_3horas/*.json",
+        "experiments/GRASP/Real/results/Ale_*.json",
+        "experiments/GRASP/2X/results/*.json",
+        "experiments/GRASP/3X/results/*.json",
+        "experiments/GRASP/4X/results/*.json",
+        "experiments/GRASP/5X/results/*.json",
         "experiments/GRASP/results_ils_v2/*.json",
         "experiments/GRASP/results_ils/*.json",
         "experiments/GAMSPy/variant_gamma0/results_gamma0/*.json",
         "experiments/matheuristics/results_pilot/*.json",
         "experiments/matheuristics/results_tuning/*.json",
         "experiments/matheuristics/results_short_budget/*.json",
+        "experiments/matheuristics/results_short_budget/*.csv",
         "experiments/matheuristics/results_short_budget_v2/*.json",
         "experiments/matheuristics/results_scale_8x10x/*.json",
+        "experiments/matheuristics/results_scale_8x10x/*.csv",
         "experiments/matheuristics/results_scale_8x10x_v2/*.json",
+        "experiments/matheuristics/results_scale_8x10x_v2/*.csv",
         "experiments/matheuristics/results_scale_8x10x_mip10800/*.json",
         "experiments/matheuristics/results_production/b600/*.json",
+        "experiments/matheuristics/results_production/b600/*.csv",
         "experiments/matheuristics/results_production/a3600/*.json",
+        "experiments/matheuristics/results_production/a3600/*.csv",
         "experiments/matheuristics/results_production/c_seeds/*.json",
+        "experiments/matheuristics/results_production/c_seeds/*.csv",
+        "experiments/matheuristics/results_production/c_seeds/window_logs/*.parquet",
         "experiments/matheuristics/results_production/s1/*.json",
     ]
     blocked = {
@@ -162,6 +185,10 @@ def stage_text_file(src: Path, mapping: dict[str, str]) -> Path:
     """Write one text artifact with coded identifiers to staging."""
     rel_path = canonicalize_relative_path(src.relative_to(ROOT))
     dst = STAGING / rel_path
+    if src.suffix.lower() == ".parquet":
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)
+        return dst
     if src.suffix.lower() == ".json":
         data = json.loads(src.read_text(encoding="utf-8"))
         coded = canonicalize_json_value(data)
@@ -172,6 +199,8 @@ def stage_text_file(src: Path, mapping: dict[str, str]) -> Path:
         frame = pd.read_csv(src)
         frame = filter_and_canonicalize_frame(frame)
         text = replace_labels(frame.to_csv(index=False), mapping)
+    elif src.suffix.lower() in {".md", ".txt"}:
+        text = replace_labels(canonicalize_public_text(src.read_text(encoding="utf-8")), mapping)
     else:
         text = replace_labels(canonicalize_public_text(src.read_text(encoding="utf-8")), mapping)
     dst.parent.mkdir(parents=True, exist_ok=True)
@@ -185,6 +214,23 @@ def filter_and_canonicalize_frame(frame: pd.DataFrame) -> pd.DataFrame:
     """Filter private rows and canonicalize public string columns."""
     if frame.empty:
         return frame
+    frame = frame.copy()
+    if "instance" in frame.columns:
+        frame["instance"] = frame["instance"].map(
+            lambda value: canonical_instance_name(str(value)) if pd.notna(value) else value
+        )
+    for column in ["name", "run_id"]:
+        if column in frame.columns:
+            frame[column] = frame[column].map(
+                lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
+            )
+    if "dataset" in frame.columns:
+        if "instance" in frame.columns:
+            public_s = frame["instance"].astype(str).str.fullmatch(r"S_(?:[2-9]|10)")
+            frame.loc[(frame["dataset"].astype(str) == "Real") & public_s, "dataset"] = "S"
+        frame["dataset"] = frame["dataset"].map(
+            lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
+        )
     keep = pd.Series(True, index=frame.index)
     for column in frame.columns:
         if column in {"dataset", "instance", "name", "run_id"}:
@@ -246,9 +292,14 @@ def validate_result(src: Path, staged: Path, mapping: dict[str, str]) -> Validat
         restored_text = restore_labels(staged.read_text(encoding="utf-8"), mapping)
         if restored_text.replace("\r\n", "\n") != original_text.replace("\r\n", "\n"):
             raise AssertionError(f"Decoded CSV differs from canonical original: {src}")
+    elif staged.suffix.lower() == ".parquet":
+        if src.read_bytes() != staged.read_bytes():
+            raise AssertionError(f"Parquet bytes differ from original: {src}")
+        return ValidationResult(src, staged, "result", "passed", "binary content invariant")
     else:
         restored = restore_labels(staged.read_text(encoding="utf-8"), mapping)
-        if restored != src.read_text(encoding="utf-8"):
+        original = canonicalize_public_text(src.read_text(encoding="utf-8"))
+        if restored != original:
             raise AssertionError(f"Decoded text differs from original: {src}")
     if "EK8" in staged.read_text(encoding="utf-8"):
         raise AssertionError(f"Residual private product label in {staged}")

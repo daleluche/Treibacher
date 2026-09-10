@@ -29,6 +29,7 @@ import pandas as pd
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "analysis", "output")
 EPS = 1e-6
+PUBLIC_RELEASE_MODE = os.environ.get("PSP_PUBLIC_RELEASE") == "1"
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
@@ -230,8 +231,9 @@ def main() -> int:
         print(viol[["instance", "BKS", "bks_source", "cplex_bound"]].to_string(index=False))
         return 1
 
-    if len(comp) != 61:
-        print(f"FATAL: comparison_table has {len(comp)} rows, expected 61.")
+    expected_rows = 60 if PUBLIC_RELEASE_MODE else 61
+    if len(comp) != expected_rows:
+        print(f"FATAL: comparison_table has {len(comp)} rows, expected {expected_rows}.")
         return 1
 
     missing_equal_mip = comp[comp["mip_equal_budget_3600_Z"].isna()]

@@ -20,6 +20,8 @@ if str(ROOT) not in sys.path:
 from analysis import code_identifiers
 from analysis.structural_disclosure_audit import public_summary, run_structural_audit, write_private_report
 from analysis.release_scope import (
+    canonicalize_relative_path,
+    canonical_instance_name,
     canonicalize_public_text,
     has_absolute_path,
     is_private_instance_label,
@@ -82,7 +84,7 @@ def write_text(path: Path, text: str) -> None:
 
 def coded_path(src: Path) -> Path:
     """Return the staged coded copy of a repository path."""
-    return code_identifiers.STAGING / rel(src)
+    return code_identifiers.STAGING / canonicalize_relative_path(rel(src))
 
 
 def ensure_coded_staging() -> None:
@@ -187,6 +189,23 @@ def drop_private_rows(frame: pd.DataFrame) -> pd.DataFrame:
     """Drop rows that refer to excluded private real-order-book artifacts."""
     if frame.empty:
         return frame
+    frame = frame.copy()
+    if "instance" in frame.columns:
+        frame["instance"] = frame["instance"].map(
+            lambda value: canonical_instance_name(str(value)) if pd.notna(value) else value
+        )
+    for column in ["name", "run_id"]:
+        if column in frame.columns:
+            frame[column] = frame[column].map(
+                lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
+            )
+    if "dataset" in frame.columns:
+        if "instance" in frame.columns:
+            public_s = frame["instance"].astype(str).str.fullmatch(r"S_(?:[2-9]|10)")
+            frame.loc[(frame["dataset"].astype(str) == "Real") & public_s, "dataset"] = "S"
+        frame["dataset"] = frame["dataset"].map(
+            lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
+        )
     keep = pd.Series(True, index=frame.index)
     for column in frame.columns:
         if column in {"dataset", "instance", "name", "run_id"}:
@@ -205,19 +224,40 @@ def drop_private_rows(frame: pd.DataFrame) -> pd.DataFrame:
 def copy_public_results() -> None:
     """Copy coded result JSONs, trajectories, and window logs by allowlist."""
     patterns = [
+        "experiments/GAMSPy/Real/results/Ale_*.json",
+        "experiments/GAMSPy/Real/results_3horas/Ale_*.json",
+        "experiments/GAMSPy/2X/results/*.json",
+        "experiments/GAMSPy/2X/results_3horas/*.json",
+        "experiments/GAMSPy/3X/results/*.json",
+        "experiments/GAMSPy/3X/results_3horas/*.json",
+        "experiments/GAMSPy/4X/results/*.json",
+        "experiments/GAMSPy/4X/results_3horas/*.json",
+        "experiments/GAMSPy/5X/results/*.json",
+        "experiments/GAMSPy/5X/results_3horas/*.json",
+        "experiments/GRASP/Real/results/Ale_*.json",
+        "experiments/GRASP/2X/results/*.json",
+        "experiments/GRASP/3X/results/*.json",
+        "experiments/GRASP/4X/results/*.json",
+        "experiments/GRASP/5X/results/*.json",
         "experiments/GRASP/results_ils_v2/*.json",
         "experiments/GRASP/results_ils/*.json",
         "experiments/GAMSPy/variant_gamma0/results_gamma0/*.json",
         "experiments/matheuristics/results_pilot/*.json",
         "experiments/matheuristics/results_tuning/*.json",
         "experiments/matheuristics/results_short_budget/*.json",
+        "experiments/matheuristics/results_short_budget/*.csv",
         "experiments/matheuristics/results_short_budget_v2/*.json",
         "experiments/matheuristics/results_scale_8x10x/*.json",
+        "experiments/matheuristics/results_scale_8x10x/*.csv",
         "experiments/matheuristics/results_scale_8x10x_v2/*.json",
+        "experiments/matheuristics/results_scale_8x10x_v2/*.csv",
         "experiments/matheuristics/results_scale_8x10x_mip10800/*.json",
         "experiments/matheuristics/results_production/b600/*.json",
+        "experiments/matheuristics/results_production/b600/*.csv",
         "experiments/matheuristics/results_production/a3600/*.json",
+        "experiments/matheuristics/results_production/a3600/*.csv",
         "experiments/matheuristics/results_production/c_seeds/*.json",
+        "experiments/matheuristics/results_production/c_seeds/*.csv",
         "experiments/matheuristics/results_production/s1/*.json",
         "experiments/matheuristics/**/window_logs/*.csv",
         "experiments/matheuristics/**/window_logs/*.parquet",
@@ -230,7 +270,7 @@ def copy_public_results() -> None:
                 continue
             staged = coded_path(src)
             if staged.exists():
-                copy_file(staged, DIST / "results" / rel(src))
+                copy_file(staged, DIST / "results" / staged.relative_to(code_identifiers.STAGING))
 
 
 def copy_public_code() -> None:
@@ -252,8 +292,8 @@ def copy_public_code() -> None:
         copy_file(ROOT / relative, DIST / "code" / relative)
     sanitize_public_code_copies()
     write_text(DIST / "code" / "requirements-analysis.txt", (ROOT / "analysis" / "requirements.txt").read_text(encoding="utf-8"))
-    write_text(DIST / "code" / "reproduce_release.py", REPRODUCE_RELEASE)
-    write_text(DIST / "code" / "verify_release.py", VERIFY_RELEASE)
+    for path in sorted((ROOT / "analysis" / "release_public").glob("*.py")):
+        copy_file(path, DIST / "code" / path.name)
 
 
 def sanitize_public_code_copies() -> None:
@@ -455,104 +495,6 @@ def main(argv: list[str] | None = None) -> int:
     print(f"ZIP written to {ZIP_PATH}")
     print(f"Files: {len(current_inventory())}")
     return 0
-
-
-REPRODUCE_RELEASE = r'''"""Reproduce public release tables from packaged artifacts."""
-from __future__ import annotations
-
-import shutil
-from pathlib import Path
-
-import pandas as pd
-
-ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT / "analysis_output"
-REPRO = ROOT / "reproduced_tables"
-
-
-def main() -> int:
-    """Regenerate compact public tables from release CSV artifacts."""
-    if REPRO.exists():
-        shutil.rmtree(REPRO)
-    REPRO.mkdir()
-    comparison = pd.read_csv(OUT / "comparison_by_dataset.csv")
-    comparison.to_csv(REPRO / "comparison_by_dataset.csv", index=False)
-    gamma = pd.read_csv(OUT / "gamma_effect_by_set.csv")
-    gamma.to_csv(REPRO / "gamma_effect_by_set.csv", index=False)
-    stats = pd.read_csv(OUT / "sprint3_statistical_tests.csv")
-    stats.to_csv(REPRO / "sprint3_statistical_tests.csv", index=False)
-    q5 = pd.read_csv(OUT / "sprint3_q5_verdict.csv")
-    q5.to_csv(REPRO / "sprint3_q5_verdict.csv", index=False)
-    print("Reproduced public analysis tables.")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
-'''
-
-
-VERIFY_RELEASE = r'''"""Verify the public release candidate using package-local files only."""
-from __future__ import annotations
-
-import hashlib
-from pathlib import Path
-
-import pandas as pd
-
-ROOT = Path(__file__).resolve().parents[1]
-
-
-def verify_checksums() -> None:
-    """Validate SHA-256 content hashes."""
-    for line in (ROOT / "checksums.sha256").read_text(encoding="utf-8").splitlines():
-        digest, name = line.split(" ", 1)
-        observed = hashlib.sha256((ROOT / name).read_bytes()).hexdigest()
-        if observed != digest:
-            raise AssertionError(f"Checksum mismatch for {name}")
-
-
-def verify_inventory() -> None:
-    """Validate the packaged inventory against the included manifest."""
-    expected = [
-        line.strip()
-        for line in (ROOT / "MANIFEST.expected_inventory.txt").read_text(encoding="utf-8").splitlines()
-        if line.strip()
-    ]
-    actual = sorted(
-        path.relative_to(ROOT).as_posix()
-        for path in ROOT.rglob("*")
-        if path.is_file() and not path.relative_to(ROOT).as_posix().startswith("reproduced_tables/")
-    )
-    if actual != sorted(expected):
-        raise AssertionError("Inventory mismatch inside release candidate.")
-
-
-def verify_public_tables() -> None:
-    """Check selected public table dimensions."""
-    meta = pd.read_csv(ROOT / "instances" / "instance_metadata.csv")
-    if len(meta) != 60:
-        raise AssertionError(f"Expected 60 derived instances, found {len(meta)}")
-    if set(meta["I"]) != {50} or set(meta["J"]) != {159}:
-        raise AssertionError("Unexpected instance dimensions.")
-    q5 = pd.read_csv(ROOT / "analysis_output" / "sprint3_q5_verdict.csv")
-    if int(q5["mip10800_wins"].sum()) != 7:
-        raise AssertionError("Q5 win count drifted.")
-
-
-def main() -> int:
-    """Run all public release checks."""
-    verify_checksums()
-    verify_inventory()
-    verify_public_tables()
-    print("Public release verification passed.")
-    return 0
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
-'''
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
