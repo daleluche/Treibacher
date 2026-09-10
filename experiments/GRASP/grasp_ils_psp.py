@@ -43,6 +43,7 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 ALGO_VERSION = "v2.0"
+HARD_STOP_ENFORCED = True
 
 # ── Core hyper-parameters ─────────────────────────────────────────────────────
 PESO_ESTOQUE         = 0.001   # excess-stock penalty weight (matches MIP)
@@ -282,7 +283,8 @@ class ReactiveGRASP:
 def construct(inst: Instance, rng: np.random.Generator,
               look_ahead: int, v: int,
               alpha: float = 0.15,
-              t_start: float = 0.0, iteration: int = 0) -> Solution:
+              t_start: float = 0.0, iteration: int = 0,
+              deadline: float = float('inf')) -> Solution:
     """
     Greedy-randomised construction using RCL threshold (Strategy 2).
 
@@ -290,10 +292,12 @@ def construct(inst: Instance, rng: np.random.Generator,
         fitness(j) >= f_max - alpha * (f_max - f_min)
     alpha=0 → pure greedy;  alpha=1 → all processes eligible.
     """
-    scheduling = np.zeros(inst.T, dtype=np.int32)
+    scheduling = np.full(inst.T, inst.J - 1, dtype=np.int32)
     stock_cur  = np.zeros(inst.I, dtype=np.float64)
 
     for t in range(inst.T):
+        if time.perf_counter() >= deadline:
+            break
         fitness   = _greedy_fitness(inst.A, inst.demand, t, inst.T,
                                     look_ahead, v, stock_cur)
         f_max     = float(fitness.max())
@@ -319,7 +323,7 @@ def tabu_search(sol: Solution, inst: Instance,
                 max_sweeps: int = TABU_SWEEPS,
                 t_start: float = 0.0,
                 iteration: int = 0,
-                time_limit: float = float('inf'),
+                deadline: float = float('inf'),
                 active_periods: Optional[np.ndarray] = None) -> Solution:
     """
     Enhanced Tabu Search.
@@ -347,13 +351,15 @@ def tabu_search(sol: Solution, inst: Instance,
     periods = active_periods if active_periods is not None else np.arange(inst.T)
 
     while iter_count < max_sweeps:
-        if time.perf_counter() - t_start > time_limit:
+        if time.perf_counter() >= deadline:
             break
         iter_count += 1
         improved = False
 
         # ── Single-substitution sweep (over active periods only) ──────────
         for t in periods:
+            if time.perf_counter() >= deadline:
+                break
             tenure  = int(rng.integers(TABU_TENURE_LO, TABU_TENURE_HI + 1))
             j_out   = int(sched[t])
             tabu[t, j_out] = iter_count + tenure
@@ -393,6 +399,8 @@ def tabu_search(sol: Solution, inst: Instance,
         if iter_count % 5 == 0 and len(periods) >= 2:
             n_pairs = min(len(periods) * (len(periods) - 1) // 2, 40)
             for _ in range(n_pairs):
+                if time.perf_counter() >= deadline:
+                    break
                 i1, i2 = rng.integers(0, len(periods), size=2)
                 if i1 == i2:
                     continue
@@ -433,7 +441,7 @@ def _sliding_window_ts(sol: Solution, inst: Instance,
                        lrc_history: np.ndarray,
                        t_start: float,
                        iteration: int,
-                       time_limit: float) -> Solution:
+                       deadline: float) -> Solution:
     """
     Apply TS over sequential overlapping windows of the schedule.
 
@@ -453,14 +461,14 @@ def _sliding_window_ts(sol: Solution, inst: Instance,
 
     w_start = 0
     while w_start < T:
-        if time.perf_counter() - t_start >= time_limit:
+        if time.perf_counter() >= deadline:
             break
         w_end   = min(w_start + WINDOW_SIZE, T)
         active  = np.arange(w_start, w_end, dtype=np.int32)
         best    = tabu_search(best, inst, rng, lrc_history,
                               max_sweeps=WINDOW_SWEEPS,
                               t_start=t_start, iteration=iteration,
-                              time_limit=time_limit,
+                              deadline=deadline,
                               active_periods=active)
         # Advance window; ensure last window always reaches end
         next_start = w_start + WINDOW_STEP
@@ -477,7 +485,7 @@ def _sliding_window_ts(sol: Solution, inst: Instance,
 
 def _or_opt_sweep(sol: Solution, inst: Instance,
                   rng: np.random.Generator,
-                  t_start: float, iteration: int, time_limit: float,
+                  t_start: float, iteration: int, deadline: float,
                   k_size: int = 1) -> Solution:
     """
     Or-opt: randomly try reinserting a contiguous block of k_size periods
@@ -494,7 +502,7 @@ def _or_opt_sweep(sol: Solution, inst: Instance,
     sched = best.scheduling.copy()
 
     for _ in range(OR_OPT_TRIES):
-        if time.perf_counter() - t_start >= time_limit:
+        if time.perf_counter() >= deadline:
             break
 
         # Random block start; random insertion index in remaining (len = T - k_size)
@@ -531,7 +539,7 @@ def _vnd_local_search(sol: Solution, inst: Instance,
                       rng: np.random.Generator,
                       lrc_history: np.ndarray,
                       t_start: float, iteration: int,
-                      time_limit: float) -> Solution:
+                      deadline: float) -> Solution:
     """
     Variable Neighborhood Descent as the local search within ILS.
 
@@ -547,20 +555,20 @@ def _vnd_local_search(sol: Solution, inst: Instance,
     best = sol.copy()
     k    = 0
 
-    while k <= 3 and time.perf_counter() - t_start < time_limit:
+    while k <= 3 and time.perf_counter() < deadline:
         if k == 0:
             candidate = (
                 _sliding_window_ts(best, inst, rng, lrc_history,
-                                   t_start, iteration, time_limit)
+                                   t_start, iteration, deadline)
                 if use_window else
                 tabu_search(best, inst, rng, lrc_history,
                             max_sweeps=TABU_SWEEPS,
                             t_start=t_start, iteration=iteration,
-                            time_limit=time_limit)
+                            deadline=deadline)
             )
         else:
             candidate = _or_opt_sweep(best, inst, rng,
-                                      t_start, iteration, time_limit,
+                                      t_start, iteration, deadline,
                                       k_size=k)
 
         if candidate.Z < best.Z - 1e-9:
@@ -579,7 +587,8 @@ def _vnd_local_search(sol: Solution, inst: Instance,
 def adaptive_perturb(sol: Solution, inst: Instance,
                      rng: np.random.Generator,
                      t_start: float = 0.0,
-                     iteration: int = 0) -> Solution:
+                     iteration: int = 0,
+                     deadline: float = float('inf')) -> Solution:
     """
     Multi-bridge perturbation scaled to T (Strategy 5).
 
@@ -590,6 +599,8 @@ def adaptive_perturb(sol: Solution, inst: Instance,
 
     Larger T → more cuts → stronger perturbation, escaping wider local optima.
     """
+    if time.perf_counter() >= deadline:
+        return sol.copy()
     T = inst.T
     n_cuts = next(nc for (th, nc) in BRIDGE_THRESHOLDS if T <= th)
 
@@ -632,7 +643,8 @@ def adaptive_perturb(sol: Solution, inst: Instance,
 def path_relinking(src: Solution, tgt: Solution,
                    inst: Instance,
                    t_start: float = 0.0,
-                   iteration: int = 0) -> Solution:
+                   iteration: int = 0,
+                   deadline: float = float('inf')) -> Solution:
     """Best-admissible forward + backward path relinking."""
 
     def _one_dir(s: Solution, target: Solution) -> Solution:
@@ -640,8 +652,12 @@ def path_relinking(src: Solution, tgt: Solution,
         sched = s.scheduling.copy()
         remaining = set(np.where(sched != target.scheduling)[0].tolist())
         while remaining:
+            if time.perf_counter() >= deadline:
+                break
             best_z = float('inf'); best_t = -1; best_j = -1
             for t in remaining:
+                if time.perf_counter() >= deadline:
+                    break
                 j_tgt = int(target.scheduling[t])
                 old_j = int(sched[t])
                 sched[t] = j_tgt
@@ -649,6 +665,8 @@ def path_relinking(src: Solution, tgt: Solution,
                 if Z_s < best_z:
                     best_z = Z_s; best_t = t; best_j = j_tgt
                 sched[t] = old_j
+            if best_t < 0:
+                break
             sched[best_t] = best_j
             remaining.discard(best_t)
             Z_p, st_p = evaluate(sched, inst.A, inst.demand, inst.T, inst.I)
@@ -746,6 +764,7 @@ def run_grasp_ils(inst: Instance,
         seed = random.randint(0, 2 ** 31 - 1)
     rng     = np.random.default_rng(seed)
     t_start = time.perf_counter()
+    deadline = t_start + max(0.0, time_limit_s)
 
     elite        = EliteSet()
     lrc_history  = np.zeros((inst.T, inst.J), dtype=np.int32)
@@ -762,6 +781,8 @@ def run_grasp_ils(inst: Instance,
         """Track RCL membership for lrc_history-guided TS."""
         stock_cur = np.zeros(inst.I)
         for t in range(inst.T):
+            if time.perf_counter() >= deadline:
+                break
             fit_t = _greedy_fitness(inst.A, inst.demand, t, inst.T,
                                     look_ahead, v, stock_cur)
             f_max = float(fit_t.max())
@@ -799,11 +820,11 @@ def run_grasp_ils(inst: Instance,
     # ──────────────────────────────────────────────────────────────────────
     # Phase 1: Reactive GRASP warm-up (first 20% of time, min 5 constructions)
     # ──────────────────────────────────────────────────────────────────────
-    warmup_limit  = min(time_limit_s * 0.20, time_limit_s - 60.0)
+    warmup_limit  = max(0.0, min(time_limit_s * 0.20, time_limit_s - 60.0))
     warmup_iters  = 0
 
     while elapsed() < warmup_limit or warmup_iters < 5:
-        if elapsed() >= time_limit_s:
+        if time.perf_counter() >= deadline:
             break
         warmup_iters += 1
         grasp_iters  += 1
@@ -812,13 +833,13 @@ def run_grasp_ils(inst: Instance,
         v          = int(rng.integers(0, V_MAX + 1))
         alpha, a_idx = reactive.select()                      # Strategy 2
 
-        sol = construct(inst, rng, look_ahead, v, alpha, t_start, grasp_iters)
+        sol = construct(inst, rng, look_ahead, v, alpha, t_start, grasp_iters, deadline)
         reactive.update(a_idx, sol.Z)                         # Strategy 2
         _build_lrc_history(sol, look_ahead, v, alpha)
 
         sol = _vnd_local_search(sol, inst, rng, lrc_history,  # Strategy 4+6
                                 t_start, grasp_iters,
-                                t_start + time_limit_s)
+                                deadline)
 
         _update_best(sol, 'GRASP_warmup')
         elite.try_add(sol)
@@ -828,17 +849,17 @@ def run_grasp_ils(inst: Instance,
     # ──────────────────────────────────────────────────────────────────────
     ils_no_improve = 0
 
-    while elapsed() < time_limit_s:
+    while time.perf_counter() < deadline:
         ils_iters += 1
 
         # Strategy 5: adaptive multi-bridge perturbation
         x_perturbed = adaptive_perturb(
-            best_overall, inst, rng, t_start, ils_iters)
+            best_overall, inst, rng, t_start, ils_iters, deadline)
         # Strategy 4+6: VND local search (windowed TS + Or-opt)
         x_ls = _vnd_local_search(
             x_perturbed, inst, rng, lrc_history,
             t_start, ils_iters,
-            t_start + time_limit_s)
+            deadline)
 
         improved = _update_best(x_ls, 'ILS')
         elite.try_add(x_ls)
@@ -853,9 +874,9 @@ def run_grasp_ils(inst: Instance,
         if pr_counter >= PR_FREQ and len(elite) >= 2:
             pr_counter = 0
             partner    = elite.random_partner(rng, best_overall)
-            if partner is not None and elapsed() < time_limit_s:
+            if partner is not None and time.perf_counter() < deadline:
                 pr_sol = path_relinking(
-                    best_overall, partner, inst, t_start, ils_iters)
+                    best_overall, partner, inst, t_start, ils_iters, deadline)
                 elite.try_add(pr_sol)
                 _update_best(pr_sol, 'PR')
 
@@ -866,12 +887,12 @@ def run_grasp_ils(inst: Instance,
             look_ahead = int(rng.integers(LOOK_AHEAD_LO, LOOK_AHEAD_HI + 1))
             v          = int(rng.integers(0, V_MAX + 1))
             alpha, a_idx = reactive.select()
-            sol_new = construct(inst, rng, look_ahead, v, alpha, t_start, grasp_iters)
+            sol_new = construct(inst, rng, look_ahead, v, alpha, t_start, grasp_iters, deadline)
             reactive.update(a_idx, sol_new.Z)
             _build_lrc_history(sol_new, look_ahead, v, alpha)
             sol_new = _vnd_local_search(sol_new, inst, rng, lrc_history,
                                         t_start, grasp_iters,
-                                        t_start + time_limit_s)
+                                        deadline)
             _update_best(sol_new, 'GRASP_restart')
             elite.try_add(sol_new)
 
@@ -879,7 +900,7 @@ def run_grasp_ils(inst: Instance,
 
     if best_overall is None:
         look_ahead = int(rng.integers(LOOK_AHEAD_LO, LOOK_AHEAD_HI + 1))
-        best_overall = construct(inst, rng, look_ahead, 0, 0.15, t_start, 0)
+        best_overall = construct(inst, rng, look_ahead, 0, 0.15, t_start, 0, deadline)
 
     st       = best_overall.stock[:, 1:]
     shortage = float(-np.sum(np.minimum(st, 0.0)))
@@ -942,6 +963,7 @@ def _worker_run(args: tuple) -> dict:
             "scheduling":    result.scheduling,
             "T": inst.T, "J": inst.J, "I": inst.I,
             "mip_bound":     inst.mip_bound,
+            "hard_stop_enforced": HARD_STOP_ENFORCED,
         }, f, indent=2)
 
     return {
@@ -959,7 +981,8 @@ def _worker_run(args: tuple) -> dict:
 # ══════════════════════════════════════════════════════════════════════════════
 
 def _cross_run_pr(run_dicts: List[dict], inst: Instance,
-                  out_dir: str, name: str) -> Optional[float]:
+                  out_dir: str, name: str,
+                  time_limit_s: float = CROSS_PR_TIME) -> tuple[Optional[float], float]:
     """
     Load best solutions from all completed runs and perform path relinking
     between top-N pairs from different workers.
@@ -986,12 +1009,13 @@ def _cross_run_pr(run_dicts: List[dict], inst: Instance,
             logger.warning(f"  cross-run PR: skipped {run_file}: {e}")
 
     if len(solutions) < 2:
-        return None
+        return None, 0.0
 
     solutions.sort(key=lambda s: s.Z)
     best_z_before = solutions[0].Z
     best_z_pr     = best_z_before
     t_pr_start    = time.perf_counter()
+    deadline      = t_pr_start + max(0.0, time_limit_s)
     n_top         = min(CROSS_PR_TOP, len(solutions))
 
     logger.info(f"  cross-run PR: {len(solutions)} solutions, "
@@ -999,19 +1023,21 @@ def _cross_run_pr(run_dicts: List[dict], inst: Instance,
 
     for i in range(n_top):
         for j in range(i + 1, n_top):
-            if time.perf_counter() - t_pr_start > CROSS_PR_TIME:
+            if time.perf_counter() >= deadline:
                 logger.info("  cross-run PR: time budget exhausted")
                 break
             try:
                 pr_sol = path_relinking(solutions[i], solutions[j], inst,
-                                        t_start=time.perf_counter(), iteration=0)
+                                        t_start=time.perf_counter(), iteration=0,
+                                        deadline=deadline)
                 if pr_sol.Z < best_z_pr:
                     best_z_pr = pr_sol.Z
                     logger.info(f"  cross-run PR improvement: {pr_sol.Z:.3f}")
             except Exception as e:
                 logger.debug(f"  cross-run PR pair ({i},{j}) error: {e}")
 
-    return best_z_pr if best_z_pr < best_z_before - 1e-9 else None
+    elapsed = time.perf_counter() - t_pr_start
+    return (best_z_pr if best_z_pr < best_z_before - 1e-9 else None), elapsed
 
 
 def run_instance(py_path: str, name: str, dataset: str,
@@ -1020,12 +1046,14 @@ def run_instance(py_path: str, name: str, dataset: str,
                  n_runs: int = 10,
                  time_limit_s: float = 3600.0,
                  base_seed: Optional[int] = None,
-                 n_workers: int = 0) -> Dict:
+                 n_workers: int = 0,
+                 enable_cross_run_pr: bool = False,
+                 cross_pr_time_s: float = CROSS_PR_TIME) -> Dict:
     """
     Run GRASP+ILS v2.0 n_runs times on one instance and save results.
 
-    After all parallel runs complete, performs cross-run path relinking
-    (Strategy 3) between the top CROSS_PR_TOP solutions.
+    Cross-run path relinking is disabled by default. When enabled, it uses a
+    separate post-run budget and reports that wall time independently.
     """
     import multiprocessing as mp
     os.makedirs(out_dir, exist_ok=True)
@@ -1082,11 +1110,16 @@ def run_instance(py_path: str, name: str, dataset: str,
         "gap_best_vs_mip": round(min(gaps), 4) if gaps else None,
         "gap_mean_vs_mip": round(float(np.mean(gaps)), 4) if gaps else None,
         "cross_run_pr_z":  None,
+        "cross_run_pr_enabled": bool(enable_cross_run_pr),
+        "cross_run_pr_time_limit_s": float(cross_pr_time_s),
+        "cross_run_pr_wall_time_s": 0.0,
+        "hard_stop_enforced": HARD_STOP_ENFORCED,
     }
 
     # ── Strategy 3: cross-run path relinking ─────────────────────────────
-    if len(run_dicts) >= 2:
-        pr_best = _cross_run_pr(run_dicts, inst_info, out_dir, name)
+    if enable_cross_run_pr and len(run_dicts) >= 2:
+        pr_best, pr_wall = _cross_run_pr(run_dicts, inst_info, out_dir, name, cross_pr_time_s)
+        summary["cross_run_pr_wall_time_s"] = round(pr_wall, 3)
         if pr_best is not None and pr_best < summary["Z_best"]:
             logger.info(
                 f"  cross-run PR improved Z_best: {pr_best:.3f} < {summary['Z_best']:.3f}"
@@ -1140,6 +1173,10 @@ if __name__ == "__main__":
                         help="Base random seed")
     parser.add_argument("--workers",    type=int,   default=0,
                         help="Parallel workers (0 = all CPU cores, 1 = sequential)")
+    parser.add_argument("--enable_cross_run_pr", action="store_true",
+                        help="Enable post-hoc cross-run path relinking (disabled by default)")
+    parser.add_argument("--cross_pr_time", type=float, default=CROSS_PR_TIME,
+                        help="Separate time budget for cross-run path relinking when enabled")
     args = parser.parse_args()
 
     name = args.name or Path(args.py_file).stem
@@ -1154,6 +1191,8 @@ if __name__ == "__main__":
         time_limit_s=args.time,
         base_seed=args.seed,
         n_workers=args.workers,
+        enable_cross_run_pr=args.enable_cross_run_pr,
+        cross_pr_time_s=args.cross_pr_time,
     )
 
     print(f"\n{'='*58}")
