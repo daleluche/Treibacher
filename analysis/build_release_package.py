@@ -36,6 +36,7 @@ ZIP_PATH = RELEASE / "psp_electrofused_benchmark_v1.zip"
 SPEC = ROOT / "analysis" / "release_spec"
 EXPECTED_INVENTORY = SPEC / "expected_inventory.txt"
 PUBLIC_OUTPUTS = SPEC / "public_analysis_outputs.txt"
+PUBLIC_SOURCES = SPEC / "public_analysis_sources.md"
 README_TEMPLATE = SPEC / "README.template.md"
 DATASETS = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
 TEXT_SUFFIXES = {".py", ".json", ".csv", ".md", ".txt", ".tex", ".bib", ".yml", ".yaml", ".sha256"}
@@ -96,7 +97,7 @@ def public_analysis_outputs() -> list[str]:
     """Read the allowlist of public analysis outputs."""
     outputs: list[str] = []
     for line in PUBLIC_OUTPUTS.read_text(encoding="utf-8").splitlines():
-        clean = line.strip()
+        clean = line.split("#", 1)[0].strip()
         if not clean or clean.startswith("#"):
             continue
         outputs.append(clean)
@@ -350,6 +351,7 @@ def write_release_metadata() -> None:
     write_text(DIST / "LICENSE.md", license_text)
     copy_file(EXPECTED_INVENTORY, DIST / "MANIFEST.expected_inventory.txt")
     copy_file(PUBLIC_OUTPUTS, DIST / "MANIFEST.public_analysis_outputs.txt")
+    copy_file(PUBLIC_SOURCES, DIST / "MANIFEST.public_analysis_sources.md")
     write_checksums()
 
 

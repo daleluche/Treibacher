@@ -58,7 +58,7 @@ def parse_args() -> argparse.Namespace:
 
 def iter_files() -> list[Path]:
     """Return package files excluding generated reproduction work."""
-    excluded = {"reproduced_analysis", ".reproduce_work", "__pycache__"}
+    excluded = {"reproduced_analysis", ".reproduce_work", "__pycache__", ".venv", "venv"}
     return sorted(
         path for path in ROOT.rglob("*")
         if path.is_file() and not any(part in excluded for part in path.relative_to(ROOT).parts)

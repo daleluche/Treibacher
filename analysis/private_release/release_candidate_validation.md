@@ -14,14 +14,23 @@ documentation lives in `analysis/release_spec/README.template.md`.
 Product identifiers are coded from private labels to `P01`--`P50` in staging
 copies only. The private reverse map is versioned in
 `analysis/private_release/product_code_map.csv` and is excluded from the public
-package. The invariance report records 1,554 validated staged files.
+package. The current invariance report records 2,192 validated staged files,
+including exact CPLEX JSONs, GRASP/ILS trajectories, matheuristic JSONs, runner
+summary CSVs, and window-log parquet files needed for public reproduction.
 
 ## Content Scan
 
-The built distribution was scanned for private product prefixes, excluded real
-order-book scripts and result folders, private mapping files, local absolute
-paths, and private verification scripts. No occurrence was found in the
-validated candidate.
+R4.1 corrected the R4 release candidate after a pre-edit audit found escaped
+absolute Windows paths, residual repository/corporate identifiers, and
+out-of-scope legacy rows. The corrected builder applies semantic public-scope
+filtering, canonicalizes historical synthetic labels to S-family labels, removes
+or relativizes local paths, and runs both textual and JSON-semantic scans before
+creating the ZIP.
+
+The final scan of the corrected candidate found zero public occurrences of the
+forbidden product prefix, repository identifier, corporate model identifier,
+excluded real-order-book labels, exact legacy index-1 token, local absolute
+paths, private scripts, and private directories.
 
 ## Self-Sufficiency
 
@@ -33,8 +42,14 @@ python code/reproduce_release.py
 python code/verify_release.py
 ```
 
-The first command regenerated the compact public analysis tables, and the
-second validated checksums, inventory, and selected public table dimensions.
+The first command regenerated all outputs listed in
+`MANIFEST.public_analysis_outputs.txt` from `instances/` and `results/`. It does
+not read `analysis_output/` during calculation. The second command validated
+checksums, inventory, public scope, private-content scans, raw source coverage,
+full table-by-table equality between regenerated outputs and packaged
+references, and the four sentinel counts: Q5 MIP@10800 wins `7/10` overall
+(`4/5` in 8X and `3/5` in 10X), gamma shortage increases `7/10` in 2X, gamma
+trade-off direction `31/40` in 2X--5X, and six strict BKS improvements.
 
 ## Reproducibility Criterion
 
@@ -44,6 +59,6 @@ The decisive reproducibility criterion is the SHA-256 content manifest in
 
 ## Inventory
 
-The candidate contains 1,635 files and is checked against
+The candidate contains 2,276 files and is checked against
 `analysis/release_spec/expected_inventory.txt`. Public analysis outputs are
 copied only from `analysis/release_spec/public_analysis_outputs.txt`.

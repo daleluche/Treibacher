@@ -15,6 +15,11 @@ the controlled `gamma=0` results used to isolate the inventory penalty effect.
 The plant's real order book, scripts that reconstruct it, the reversible product
 mapping, private audit signatures, and private result folders are excluded.
 
+The historical labels `Ale_2`--`Ale_10` refer to synthetic predecessors of the
+current S-family instances. They are canonicalized throughout the public package
+as `S_2`--`S_10`. The legacy index-1 case from that historical directory is
+outside the 60-instance public scope.
+
 ## Identifier Coding
 
 Product identifiers are coded from the private labels to neutral codes `P01` to
@@ -31,6 +36,13 @@ python code/reproduce_release.py
 python code/verify_release.py
 ```
 
+`code/reproduce_release.py` builds a temporary compatibility tree from
+`instances/` and `results/`, regenerates the declared analysis outputs in
+`reproduced_analysis/`, and only then can compare against `analysis_output/` if a
+reference path is provided. `code/verify_release.py` validates checksums,
+inventory, public scope, absence of private identifiers and local paths, raw
+source coverage, regenerated outputs, and sentinel scientific counts.
+
 Reexecution of the solvers is separate and requires GAMSPy plus a licensed CPLEX
 installation. The solver-facing scripts are included for inspection and reuse,
 but the packaged analysis can be checked without a solver license.
@@ -46,5 +58,7 @@ manifest and checks the declared inventory.
 
 `MANIFEST.expected_inventory.txt` declares the expected file list and
 `MANIFEST.public_analysis_outputs.txt` declares the analysis-output allowlist.
+`MANIFEST.public_analysis_sources.md` maps each regenerated output group to the
+raw evidence used.
 The builder fails if the generated distribution contains files outside the
 versioned inventory or omits expected files.

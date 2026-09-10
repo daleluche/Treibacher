@@ -1,29 +1,29 @@
 # Public analysis outputs included in the release candidate.
-# Each entry is copied by exact allowlist, never by directory glob.
-block_map.csv
-comparison_by_dataset.csv
-comparison_table.csv
-gamma_effect.csv
-gamma_effect_by_set.csv
-gamma_tradeoff_2x.csv
-gamma_tradeoff_all.csv
-ils_equal_budget_600.csv
-ils_equal_budget_600_runs.csv
-ils_equal_budget.csv
-ils_equal_budget_runs.csv
-master_instances.csv
-master_runs.csv
-sprint3_bks_audit.csv
-sprint3_canonical_3600_cells.csv
-sprint3_cell_sources.csv
-sprint3_descriptive_by_scale.csv
-sprint3_frontier_counts.csv
-sprint3_mip10800_8x10x.csv
-sprint3_q5_cross_budget.csv
-sprint3_q5_verdict.csv
-sprint3_scale_8x10x_canonical_v2.csv
-sprint3_scale_v2_construction.csv
-sprint3_seed_variability.csv
-sprint3_seed_window_audit.csv
-sprint3_statistical_tests.csv
-bks_counterfactual_without_mip10800.csv
+# Each entry is regenerated from package-local instances/ and results/ evidence.
+block_map.csv  # Sprint 3 block identifiers from regenerated comparison/frontier tables.
+comparison_by_dataset.csv  # Dataset aggregates from master_runs/master_instances and BKS logic.
+comparison_table.csv  # Instance comparison table from CPLEX, ILS, and matheuristic raw JSONs.
+gamma_effect.csv  # Controlled gamma=0 JSONs plus canonical CPLEX gamma=0.001 JSONs.
+gamma_effect_by_set.csv  # Aggregates derived from gamma_effect.csv.
+gamma_tradeoff_2x.csv  # Schedule evaluation from gamma=0 and gamma=0.001 raw JSONs.
+gamma_tradeoff_all.csv  # Schedule evaluation from gamma=0 and gamma=0.001 raw JSONs.
+ils_equal_budget_600.csv  # ILS v2 trajectories truncated at 600 seconds.
+ils_equal_budget_600_runs.csv  # Per-run ILS v2 600-second truncation audit.
+ils_equal_budget.csv  # ILS v2 trajectories truncated at 3600 seconds.
+ils_equal_budget_runs.csv  # Per-run ILS v2 3600-second truncation audit.
+master_instances.csv  # Aggregated method-instance rows from raw solver and heuristic results.
+master_runs.csv  # Per-run master table from raw solver and heuristic results.
+sprint3_bks_audit.csv  # Global BKS scan over regenerated master tables.
+sprint3_canonical_3600_cells.csv  # Canonical 3600-second frontier cells.
+sprint3_cell_sources.csv  # Source declaration for each frontier/statistical cell.
+sprint3_descriptive_by_scale.csv  # Descriptive block statistics from regenerated frontier tables.
+sprint3_frontier_counts.csv  # Method win counts by scale and budget.
+sprint3_mip10800_8x10x.csv  # Cold MIP 10800-second scale JSONs.
+sprint3_q5_cross_budget.csv  # Q5 per-instance cross-budget comparison.
+sprint3_q5_verdict.csv  # Q5 family-level verdicts.
+sprint3_scale_8x10x_canonical_v2.csv  # Canonical v2 8X/10X scale table.
+sprint3_scale_v2_construction.csv  # Construction diagnostics from v2 scale JSONs.
+sprint3_seed_variability.csv  # Seed variability from Grade C JSONs.
+sprint3_seed_window_audit.csv  # Seed window audit from Grade C window-log parquet files.
+sprint3_statistical_tests.csv  # Statistical/descriptive tests from regenerated tables.
+bks_counterfactual_without_mip10800.csv  # BKS recomputed after excluding MIP@10800 candidates.
