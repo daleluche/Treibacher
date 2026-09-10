@@ -43,3 +43,16 @@ R4 came from scanning only unescaped path text; JSON-escaped Windows paths were
 not decoded semantically. The legacy `Ale_1` case is present in public analysis
 tables and must be excluded by exact-token scope rules. Historical `Ale_2` to
 `Ale_10` labels must remain in scope but be canonicalized to `S_2` to `S_10`.
+
+## R4.2 Erratum
+
+The row `public result filenames with exact-token Ale_1` above was incorrect.
+The correct value for the audited R4 candidate was 29 filename occurrences,
+mostly in names such as `Ale_1_run...`. The cause was a token rule that did not
+treat underscore-delimited run suffixes as separators while still needing to
+avoid false positives on `Ale_10`.
+
+The current lexical rule detects `Ale_1` when it is not followed by another
+digit, including path and underscore-delimited contexts (`Ale_1.py`,
+`Ale_1_run1.json`, and `foo/Ale_1/bar`), while not matching `Ale_10.py`. The
+corrected R4.2 candidate remains at zero occurrences.

@@ -47,6 +47,12 @@ Reexecution of the solvers is separate and requires GAMSPy plus a licensed CPLEX
 installation. The solver-facing scripts are included for inspection and reuse,
 but the packaged analysis can be checked without a solver license.
 
+The package regenerates the declared CSV reference outputs under
+`analysis_output/` from packaged raw evidence. It does not promise to regenerate
+the manuscript layout or every LaTeX table used in the private paper build;
+those editorial artifacts belong to the manuscript repository, not this public
+benchmark release.
+
 ## Reproducibility Criterion
 
 The archive is built with deterministic ZIP metadata, but the primary
@@ -59,6 +65,7 @@ manifest and checks the declared inventory.
 `MANIFEST.expected_inventory.txt` declares the expected file list and
 `MANIFEST.public_analysis_outputs.txt` declares the analysis-output allowlist.
 `MANIFEST.public_analysis_sources.md` maps each regenerated output group to the
-raw evidence used.
+raw evidence used and documents auxiliary files that may be produced during
+reproduction but are not reference outputs.
 The builder fails if the generated distribution contains files outside the
 versioned inventory or omits expected files.

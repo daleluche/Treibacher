@@ -5,6 +5,15 @@ raw evidence. The included `analysis_output/` files are references for
 comparison only; `code/reproduce_release.py` does not read them during
 calculation.
 
+The declared reference set is limited to the 27 CSV files listed in
+`MANIFEST.public_analysis_outputs.txt`. Reproduction may also emit auxiliary
+diagnostics (`gamma_effect_note.md`, `ils_equal_budget_600_report.md`,
+`ils_equal_budget_report.md`, `sprint3_bks_changes_after_mip10800.csv`, and
+`sprint3_report.md`). These files are useful for local inspection but are not
+reference artifacts and are not compared for equality. Solver reexecution
+requires external GAMSPy/CPLEX software and license availability. Manuscript
+typesetting and LaTeX table assembly are outside this public release scope.
+
 | Output group | Public outputs | Raw evidence used |
 |---|---|---|
 | Instance metadata | `master_runs.csv`, `master_instances.csv`, `comparison_table.csv`, `comparison_by_dataset.csv` | `instances/gamspy_py/`, exact CPLEX JSONs in `results/experiments/GAMSPy/`, GRASP/ILS JSONs in `results/experiments/GRASP/`, matheuristic JSONs in `results/experiments/matheuristics/` |

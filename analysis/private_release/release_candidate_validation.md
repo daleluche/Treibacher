@@ -14,7 +14,7 @@ documentation lives in `analysis/release_spec/README.template.md`.
 Product identifiers are coded from private labels to `P01`--`P50` in staging
 copies only. The private reverse map is versioned in
 `analysis/private_release/product_code_map.csv` and is excluded from the public
-package. The current invariance report records 2,192 validated staged files,
+package. The current invariance report records 2,191 validated staged files,
 including exact CPLEX JSONs, GRASP/ILS trajectories, matheuristic JSONs, runner
 summary CSVs, and window-log parquet files needed for public reproduction.
 
@@ -46,8 +46,8 @@ The first command regenerated all outputs listed in
 `MANIFEST.public_analysis_outputs.txt` from `instances/` and `results/`. It does
 not read `analysis_output/` during calculation. The second command validated
 checksums, inventory, public scope, private-content scans, raw source coverage,
-full table-by-table equality between regenerated outputs and packaged
-references, and the four sentinel counts: Q5 MIP@10800 wins `7/10` overall
+full table-by-table equality between the 27 declared regenerated CSV outputs
+and packaged references, auxiliary-output classification, and the four sentinel counts: Q5 MIP@10800 wins `7/10` overall
 (`4/5` in 8X and `3/5` in 10X), gamma shortage increases `7/10` in 2X, gamma
 trade-off direction `31/40` in 2X--5X, and six strict BKS improvements.
 
@@ -59,6 +59,6 @@ The decisive reproducibility criterion is the SHA-256 content manifest in
 
 ## Inventory
 
-The candidate contains 2,276 files and is checked against
+The candidate contains 2,274 files and is checked against
 `analysis/release_spec/expected_inventory.txt`. Public analysis outputs are
 copied only from `analysis/release_spec/public_analysis_outputs.txt`.
