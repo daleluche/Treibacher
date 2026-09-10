@@ -18,6 +18,12 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from analysis import code_identifiers
+from analysis.release_scope import (
+    canonicalize_public_text,
+    has_absolute_path,
+    is_private_instance_label,
+    is_private_path,
+)
 from experiments.matheuristics.psp_instance import load_instance
 
 
@@ -32,6 +38,7 @@ DATASETS = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
 TEXT_SUFFIXES = {".py", ".json", ".csv", ".md", ".txt", ".tex", ".bib", ".yml", ".yaml", ".sha256"}
 PRIVATE_PATTERNS = [
     "EK8",
+    "Treibacher",
     "add_real_order_book.py",
     "product_code_map.csv",
     "analysis/private_release",
@@ -179,19 +186,19 @@ def drop_private_rows(frame: pd.DataFrame) -> pd.DataFrame:
     """Drop rows that refer to excluded private real-order-book artifacts."""
     if frame.empty:
         return frame
-    text = frame.astype(str).agg(" ".join, axis=1)
-    private_tokens = [
-        "REAL_1",
-        "Real order book",
-        "results_production/real",
-        "results_production\\real",
-        "experiments/GAMSPy/Real",
-        "experiments\\GAMSPy\\Real",
-    ]
-    mask = pd.Series(False, index=frame.index)
-    for token in private_tokens:
-        mask = mask | text.str.contains(token, regex=False, na=False)
-    return frame.loc[~mask].copy()
+    keep = pd.Series(True, index=frame.index)
+    for column in frame.columns:
+        if column in {"dataset", "instance", "name", "run_id"}:
+            keep &= ~frame[column].map(is_private_instance_label)
+        if column in {"source_path", "window_log_path", "path", "file", "source_file", "bks_source"}:
+            keep &= ~frame[column].map(is_private_path)
+    out = frame.loc[keep].copy().reset_index(drop=True)
+    for column in out.columns:
+        if out[column].dtype == object:
+            out[column] = out[column].map(
+                lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
+            )
+    return out
 
 
 def copy_public_results() -> None:
@@ -253,6 +260,9 @@ def sanitize_public_code_copies() -> None:
     replacements = {
         "REAL_1.py": "PRIVATE_REAL_ORDER_BOOK_EXCLUDED",
         "REAL_1": "PRIVATE_REAL_ORDER_BOOK",
+        "Ale_1.py": "LEGACY_SCOPE_EXCLUDED.py",
+        "Ale_1": "LEGACY_SCOPE_EXCLUDED",
+        "Treibacher": "PSP",
         "results_production/real": "private_results_excluded",
         "results_production\\real": "private_results_excluded",
         "experiments/GAMSPy/Real": "private_instances_excluded",
@@ -349,16 +359,43 @@ def scan_dist_content() -> None:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
-        for pattern in PRIVATE_PATTERNS:
-            if pattern in text:
-                offenders.append(f"{path.relative_to(DIST).as_posix()}: {pattern}")
+        normalized = text.replace("\\\\", "\\")
+        for candidate in {text, normalized, text.lower(), normalized.lower()}:
+            for pattern in PRIVATE_PATTERNS:
+                if pattern in candidate or pattern.lower() in candidate:
+                    offenders.append(f"{path.relative_to(DIST).as_posix()}: {pattern}")
+            if is_private_instance_label(candidate):
+                offenders.append(f"{path.relative_to(DIST).as_posix()}: Ale_1 token")
+        if path.suffix.lower() == ".json":
+            try:
+                data = json.loads(text)
+            except json.JSONDecodeError:
+                data = None
+            if data is not None:
+                for json_path, value in iter_json_strings(data):
+                    if has_absolute_path(value) or is_private_path(value) or is_private_instance_label(value):
+                        offenders.append(f"{path.relative_to(DIST).as_posix()}:{json_path}: private string")
     for path in iter_dist_files():
         rel_name = path.relative_to(DIST).as_posix()
         for pattern in PRIVATE_PATTERNS:
-            if pattern.replace("\\", "/") in rel_name:
+            if pattern.replace("\\", "/").lower() in rel_name.lower():
                 offenders.append(f"{rel_name}: path")
     if offenders:
         raise RuntimeError("Private content found in release candidate:\n" + "\n".join(offenders[:50]))
+
+
+def iter_json_strings(value: object, prefix: str = "$") -> list[tuple[str, str]]:
+    """Return JSON string values with simple dotted paths."""
+    rows: list[tuple[str, str]] = []
+    if isinstance(value, dict):
+        for key, item in value.items():
+            rows.extend(iter_json_strings(item, f"{prefix}.{key}"))
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            rows.extend(iter_json_strings(item, f"{prefix}[{index}]"))
+    elif isinstance(value, str):
+        rows.append((prefix, value))
+    return rows
 
 
 def create_zip() -> None:

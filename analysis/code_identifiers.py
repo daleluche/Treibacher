@@ -24,6 +24,15 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from experiments.matheuristics.psp_instance import load_instance
+from analysis.release_scope import (
+    canonicalize_json_value,
+    canonicalize_public_text,
+    canonicalize_relative_path,
+    has_absolute_path,
+    is_private_instance_label,
+    is_private_path,
+    is_public_record,
+)
 
 
 SALT = "treibacher-psp-private-release-coding-v1"
@@ -143,17 +152,52 @@ def result_paths() -> list[Path]:
                 continue
             if path.stem == "REAL_1" or path.stem.startswith("REAL_1_"):
                 continue
+            if is_private_instance_label(path.name) or is_private_path(path):
+                continue
             paths.append(path)
     return paths
 
 
 def stage_text_file(src: Path, mapping: dict[str, str]) -> Path:
     """Write one text artifact with coded identifiers to staging."""
-    dst = STAGING / src.relative_to(ROOT)
+    rel_path = canonicalize_relative_path(src.relative_to(ROOT))
+    dst = STAGING / rel_path
+    if src.suffix.lower() == ".json":
+        data = json.loads(src.read_text(encoding="utf-8"))
+        coded = canonicalize_json_value(data)
+        if isinstance(coded, dict) and not is_public_record(coded):
+            raise ValueError(f"Private JSON record reached staging: {src.relative_to(ROOT)}")
+        text = replace_labels(json.dumps(coded, ensure_ascii=False, indent=2), mapping)
+    elif src.suffix.lower() == ".csv":
+        frame = pd.read_csv(src)
+        frame = filter_and_canonicalize_frame(frame)
+        text = replace_labels(frame.to_csv(index=False), mapping)
+    else:
+        text = replace_labels(canonicalize_public_text(src.read_text(encoding="utf-8")), mapping)
     dst.parent.mkdir(parents=True, exist_ok=True)
-    text = src.read_text(encoding="utf-8")
-    dst.write_text(replace_labels(text, mapping), encoding="utf-8")
+    if dst.exists() and dst.read_text(encoding="utf-8") != text:
+        raise RuntimeError(f"Name collision after public canonicalization: {dst.relative_to(STAGING)}")
+    dst.write_text(text, encoding="utf-8", newline="\n")
     return dst
+
+
+def filter_and_canonicalize_frame(frame: pd.DataFrame) -> pd.DataFrame:
+    """Filter private rows and canonicalize public string columns."""
+    if frame.empty:
+        return frame
+    keep = pd.Series(True, index=frame.index)
+    for column in frame.columns:
+        if column in {"dataset", "instance", "name", "run_id"}:
+            keep &= ~frame[column].map(is_private_instance_label)
+        if column in {"source_path", "window_log_path", "path", "file", "source_file", "bks_source"}:
+            keep &= ~frame[column].map(is_private_path)
+    out = frame.loc[keep].copy().reset_index(drop=True)
+    for column in out.columns:
+        if out[column].dtype == object:
+            out[column] = out[column].map(
+                lambda value: canonicalize_public_text(str(value)) if pd.notna(value) else value
+            )
+    return out
 
 
 def validate_instance(src: Path, staged: Path, mapping: dict[str, str]) -> ValidationResult:
@@ -169,8 +213,11 @@ def validate_instance(src: Path, staged: Path, mapping: dict[str, str]) -> Valid
         raise AssertionError(f"A matrix changed in {src}")
     if not (original.D == coded.D).all():
         raise AssertionError(f"D matrix changed in {src}")
-    if "EK8" in staged.read_text(encoding="utf-8"):
+    staged_text = staged.read_text(encoding="utf-8")
+    if "EK8" in staged_text:
         raise AssertionError(f"Residual private product label in {staged}")
+    if "ALCOA" in staged_text or "Treibacher" in staged_text:
+        raise AssertionError(f"Residual private public-text marker in {staged}")
     return ValidationResult(src, staged, "instance", "passed", "dimensions, products, A, and D invariant")
 
 
@@ -189,25 +236,48 @@ def validate_result(src: Path, staged: Path, mapping: dict[str, str]) -> Validat
     """Validate that a coded result artifact decodes to the original content."""
     if staged.suffix.lower() == ".json":
         original = json.loads(src.read_text(encoding="utf-8"))
+        original = canonicalize_json_value(original)
         coded = json.loads(staged.read_text(encoding="utf-8"))
         restored = normalize_result_json(coded, mapping)
         if restored != original:
-            raise AssertionError(f"Decoded JSON differs from original: {src}")
+            raise AssertionError(f"Decoded JSON differs from canonical original: {src}")
     elif staged.suffix.lower() == ".csv":
-        original = pd.read_csv(src)
+        original_text = filter_and_canonicalize_frame(pd.read_csv(src)).to_csv(index=False)
         restored_text = restore_labels(staged.read_text(encoding="utf-8"), mapping)
-        temp = PRIVATE_DIR / "_restored_check.csv"
-        temp.write_text(restored_text, encoding="utf-8")
-        restored = pd.read_csv(temp)
-        temp.unlink()
-        pd.testing.assert_frame_equal(original, restored, check_dtype=False)
+        if restored_text.replace("\r\n", "\n") != original_text.replace("\r\n", "\n"):
+            raise AssertionError(f"Decoded CSV differs from canonical original: {src}")
     else:
         restored = restore_labels(staged.read_text(encoding="utf-8"), mapping)
         if restored != src.read_text(encoding="utf-8"):
             raise AssertionError(f"Decoded text differs from original: {src}")
     if "EK8" in staged.read_text(encoding="utf-8"):
         raise AssertionError(f"Residual private product label in {staged}")
+    if "ALCOA" in staged.read_text(encoding="utf-8"):
+        raise AssertionError(f"Residual corporate model identifier in {staged}")
+    if "Treibacher" in staged.read_text(encoding="utf-8"):
+        raise AssertionError(f"Residual repository name in {staged}")
+    if staged.suffix.lower() == ".json" and any(has_absolute_path(value) for value in iter_json_strings(staged)):
+        raise AssertionError(f"Residual absolute path in {staged}")
     return ValidationResult(src, staged, "result", "passed", "decoded content invariant")
+
+
+def iter_json_strings(path: Path) -> list[str]:
+    """Return all string values in a JSON file."""
+    data = json.loads(path.read_text(encoding="utf-8"))
+    values: list[str] = []
+
+    def walk(value: object) -> None:
+        if isinstance(value, dict):
+            for item in value.values():
+                walk(item)
+        elif isinstance(value, list):
+            for item in value:
+                walk(item)
+        elif isinstance(value, str):
+            values.append(value)
+
+    walk(data)
+    return values
 
 
 def write_report(results: list[ValidationResult], mapping: dict[str, str]) -> None:
