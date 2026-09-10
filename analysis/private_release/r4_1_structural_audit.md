@@ -3,7 +3,8 @@
 Protected signatures were built in memory from the private real order book.
 No signature values, hashes, product labels, demand records, or reverse map are written here.
 
-Files examined: 60
+Representations examined: 120
+Python/JSON equivalence: passed
 Status: passed
 
 | Rule | Status |
