@@ -739,6 +739,7 @@ class ILSResult:
     gap_vs_mip:    Optional[float]
     time_to_best:  float
     total_time:    float
+    deadline_overrun_s: float
     iterations:    int          # total ILS perturbation count
     grasp_iters:   int          # total GRASP constructions
     improvements:  List[Dict]
@@ -799,6 +800,8 @@ def run_grasp_ils(inst: Instance,
 
     def _update_best(sol: Solution, tag: str = '') -> bool:
         nonlocal best_overall
+        if time.perf_counter() >= deadline or sol.time_found > time_limit_s:
+            return False
         if best_overall is None or sol.Z < best_overall.Z:
             best_overall = sol.copy()
             entry: Dict = {
@@ -897,6 +900,7 @@ def run_grasp_ils(inst: Instance,
             elite.try_add(sol_new)
 
     total_time = elapsed()
+    deadline_overrun_s = max(0.0, total_time - time_limit_s)
 
     if best_overall is None:
         look_ahead = int(rng.integers(LOOK_AHEAD_LO, LOOK_AHEAD_HI + 1))
@@ -921,6 +925,7 @@ def run_grasp_ils(inst: Instance,
         gap_vs_mip=gap_vs_mip,
         time_to_best=round(best_overall.time_found, 3),
         total_time=round(total_time, 3),
+        deadline_overrun_s=round(deadline_overrun_s, 3),
         iterations=ils_iters,
         grasp_iters=grasp_iters,
         improvements=improvements,
@@ -957,6 +962,7 @@ def _worker_run(args: tuple) -> dict:
             "gap_vs_mip":    result.gap_vs_mip,
             "time_to_best":  result.time_to_best,
             "total_time":    result.total_time,
+            "deadline_overrun_s": result.deadline_overrun_s,
             "iterations":    result.iterations,
             "grasp_iters":   result.grasp_iters,
             "improvements":  result.improvements,
@@ -973,6 +979,7 @@ def _worker_run(args: tuple) -> dict:
         "time_to_best": result.time_to_best,
         "iterations":   result.iterations,
         "grasp_iters":  result.grasp_iters,
+        "deadline_overrun_s": result.deadline_overrun_s,
     }
 
 
@@ -1100,6 +1107,7 @@ def run_instance(py_path: str, name: str, dataset: str,
         "n_workers":      workers,
         "time_limit_s":   time_limit_s,
         "Z_best":         round(min(objs), 6),
+        "Z_best_equal_budget": round(min(objs), 6),
         "Z_mean":         round(float(np.mean(objs)), 6),
         "Z_std":          round(float(np.std(objs)), 6),
         "Z_worst":        round(max(objs), 6),
@@ -1109,10 +1117,12 @@ def run_instance(py_path: str, name: str, dataset: str,
         "mip_bound":      inst_info.mip_bound,
         "gap_best_vs_mip": round(min(gaps), 4) if gaps else None,
         "gap_mean_vs_mip": round(float(np.mean(gaps)), 4) if gaps else None,
+        "Z_cross_run_pr":  None,
         "cross_run_pr_z":  None,
         "cross_run_pr_enabled": bool(enable_cross_run_pr),
         "cross_run_pr_time_limit_s": float(cross_pr_time_s),
         "cross_run_pr_wall_time_s": 0.0,
+        "deadline_overrun_s_max": round(max(rd["deadline_overrun_s"] for rd in run_dicts), 3),
         "hard_stop_enforced": HARD_STOP_ENFORCED,
     }
 
@@ -1120,15 +1130,13 @@ def run_instance(py_path: str, name: str, dataset: str,
     if enable_cross_run_pr and len(run_dicts) >= 2:
         pr_best, pr_wall = _cross_run_pr(run_dicts, inst_info, out_dir, name, cross_pr_time_s)
         summary["cross_run_pr_wall_time_s"] = round(pr_wall, 3)
-        if pr_best is not None and pr_best < summary["Z_best"]:
+        if pr_best is not None and pr_best < summary["Z_best_equal_budget"]:
             logger.info(
-                f"  cross-run PR improved Z_best: {pr_best:.3f} < {summary['Z_best']:.3f}"
+                f"  cross-run PR improved post-hoc objective: "
+                f"{pr_best:.3f} < {summary['Z_best_equal_budget']:.3f}"
             )
-            summary["Z_best"]         = round(pr_best, 6)
+            summary["Z_cross_run_pr"] = round(pr_best, 6)
             summary["cross_run_pr_z"] = round(pr_best, 6)
-            if inst_info.mip_bound and inst_info.mip_bound > 0:
-                summary["gap_best_vs_mip"] = round(
-                    (pr_best - inst_info.mip_bound) / inst_info.mip_bound * 100, 4)
 
     summary_file = os.path.join(out_dir, f"{name}_summary.json")
     with open(summary_file, 'w') as f:
