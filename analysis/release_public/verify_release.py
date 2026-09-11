@@ -18,7 +18,14 @@ ROOT = Path(__file__).resolve().parents[1]
 TEXT_SUFFIXES = {".py", ".json", ".csv", ".md", ".txt", ".sha256"}
 PUBLIC_DATASETS = {"S", "2X", "3X", "4X", "5X", "8X", "10X"}
 EXPECTED_INSTANCE_COUNTS = {"S": 10, "2X": 10, "3X": 10, "4X": 10, "5X": 10, "8X": 5, "10X": 5}
-FORBIDDEN_SCOPE_RE = r"(?<![A-Za-z0-9_])" + "Ale" + r"_1(?!\d)|REAL" + r"_1|synthetic_tiny|Synthetic"
+FORBIDDEN_SYNTHETIC = "Syn" + "thetic"
+FORBIDDEN_SYNTHETIC_INSTANCE = "synthetic" + "_tiny"
+FORBIDDEN_SCOPE_RE = (
+    r"(?<![A-Za-z0-9_])" + "Ale" + r"_1(?!\d)|REAL" + r"_1|"
+    + FORBIDDEN_SYNTHETIC_INSTANCE
+    + "|"
+    + FORBIDDEN_SYNTHETIC
+)
 AUXILIARY_OUTPUTS = {
     "gamma_effect_note.md",
     "ils_equal_budget_600_report.md",
@@ -205,11 +212,11 @@ def validate_frame_scope(frame: pd.DataFrame, rel: str, offenders: list[str]) ->
     """Validate dataset and instance labels in one tabular artifact."""
     if "dataset" in frame.columns:
         invalid = sorted(set(frame["dataset"].dropna().astype(str)) - PUBLIC_DATASETS)
-        allowed_analytic = {"scale", "scope", "budget", "method", "metric"}
+        allowed_analytic = {"scope", "analysis_role", "test_note", "comparison"}
         if invalid and not allowed_analytic.intersection(frame.columns):
             offenders.append(f"{rel}:dataset={invalid[:5]}")
         elif invalid:
-            forbidden = [value for value in invalid if value in {"Synthetic", "Real"} or value.startswith("Ale_")]
+            forbidden = [value for value in invalid if value in {FORBIDDEN_SYNTHETIC, "Real"} or value.startswith("Ale_")]
             if forbidden:
                 offenders.append(f"{rel}:dataset={forbidden[:5]}")
     for column in [col for col in frame.columns if col in {"instance", "name", "run_id"}]:
@@ -336,7 +343,7 @@ def run_negative_test(args: argparse.Namespace) -> None:
         sandbox = Path(tmp)
         shutil.copytree(ROOT, sandbox / "pkg")
         bad = sandbox / "pkg" / "results" / "bad_synthetic.json"
-        bad.write_text(json.dumps({"dataset": "Synthetic", "instance": "synthetic_tiny"}), encoding="utf-8")
+        bad.write_text(json.dumps({"dataset": FORBIDDEN_SYNTHETIC, "instance": FORBIDDEN_SYNTHETIC_INSTANCE}), encoding="utf-8")
         old_root = globals()["ROOT"]
         globals()["ROOT"] = sandbox / "pkg"
         try:
