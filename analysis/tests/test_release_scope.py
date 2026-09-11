@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import json
 import sys
+import zipfile
 from pathlib import Path
 
 import pandas as pd
@@ -59,6 +60,36 @@ def test_release_file_iteration_uses_posix_relative_order(tmp_path: Path, monkey
     monkeypatch.setattr(build_release_package, "DIST", tmp_path)
     observed = [path.relative_to(tmp_path).as_posix() for path in build_release_package.iter_dist_files()]
     assert observed == sorted(names)
+
+
+def test_release_zip_metadata_is_platform_neutral(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """ZIP entries use fixed metadata and Windows creator-system bits on every OS."""
+    dist = tmp_path / "dist"
+    zip_path = tmp_path / "psp_electrofused_benchmark_v1.zip"
+    names = [
+        "LICENSE.md",
+        "STRUCTURAL_AUDIT.md",
+        "analysis_output/master_instances.csv",
+        "instances/gamspy_py/S/S_1.py",
+        "results/a.json",
+    ]
+    names.extend(f"results/generated/{index:04d}.json" for index in range(2269))
+    for name in names:
+        path = dist / Path(name)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(name, encoding="utf-8")
+    monkeypatch.setattr(build_release_package, "DIST", dist)
+    monkeypatch.setattr(build_release_package, "ZIP_PATH", zip_path)
+
+    build_release_package.create_zip()
+
+    with zipfile.ZipFile(zip_path) as archive:
+        infos = archive.infolist()
+    assert len(infos) == 2274
+    assert [info.filename for info in infos] == sorted(names)
+    assert {info.create_system for info in infos} == {0}
+    assert {info.date_time for info in infos} == {(1980, 1, 1, 0, 0, 0)}
+    assert {info.external_attr for info in infos} == {0o644 << 16}
 
 
 def test_public_record_rejects_unknown_dataset() -> None:
