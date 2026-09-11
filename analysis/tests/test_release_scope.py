@@ -102,3 +102,113 @@ def test_verify_release_rejects_synthetic_dataset_in_outputs(tmp_path: Path, mon
     offenders: list[str] = []
     verify_release.validate_frame_scope(pd.read_csv(out / "master_instances.csv"), "analysis_output/master_instances.csv", offenders)
     assert offenders
+
+
+def test_verify_release_rejects_unknown_instance_pair() -> None:
+    """Dataset-instance values must match the public instance registry exactly."""
+    authorized = {("S", "S_1"), ("2X", "IncT2X_1")}
+    offenders: list[str] = []
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["S"], "instance": ["bad_instance"]}),
+        "analysis_output/master_instances.csv",
+        offenders,
+        authorized,
+    )
+    assert offenders == ["analysis_output/master_instances.csv:pair=('S', 'bad_instance')"]
+
+
+def test_verify_release_rejects_crossed_instance_pair() -> None:
+    """An instance name authorized for one family is not valid in another family."""
+    authorized = {("S", "S_1"), ("2X", "IncT2X_1")}
+    offenders: list[str] = []
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["S"], "instance": ["IncT2X_1"]}),
+        "analysis_output/master_instances.csv",
+        offenders,
+        authorized,
+    )
+    assert offenders == ["analysis_output/master_instances.csv:pair=('S', 'IncT2X_1')"]
+
+
+def test_verify_release_rejects_dataset_mismatch_with_path() -> None:
+    """When a path declares a dataset, row metadata must agree with it."""
+    offenders: list[str] = []
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["S"], "instance": ["S_1"]}),
+        "instances/gamspy_py/2X/IncT2X_1.csv",
+        offenders,
+        {("S", "S_1"), ("2X", "IncT2X_1")},
+    )
+    assert offenders == ["instances/gamspy_py/2X/IncT2X_1.csv:path_dataset=2X, declared=['S']"]
+
+
+def test_verify_release_allows_only_declared_aggregate_exceptions() -> None:
+    """Aggregate labels are allowlisted by exact file and exact value."""
+    offenders: list[str] = []
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["8X/10X heterogeneous family aggregate pooled"]}),
+        "analysis_output/sprint3_descriptive_by_scale.csv",
+        offenders,
+        {("S", "S_1")},
+    )
+    assert not offenders
+
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["8X/10X heterogeneous family aggregate pooled"]}),
+        "analysis_output/master_instances.csv",
+        offenders,
+        {("S", "S_1")},
+    )
+    assert offenders == ["analysis_output/master_instances.csv:dataset=['8X/10X heterogeneous family aggregate pooled']"]
+
+
+def test_verify_release_allows_only_declared_gamma_instance_exceptions() -> None:
+    """MEDIAN and AGGREGATE pseudo-instances are valid only in the gamma table."""
+    offenders: list[str] = []
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["2X", "2X"], "instance": ["MEDIAN", "AGGREGATE"]}),
+        "analysis_output/gamma_tradeoff_2x.csv",
+        offenders,
+        {("2X", "IncT2X_1")},
+    )
+    assert not offenders
+
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["2X"], "instance": ["MEDIAN"]}),
+        "analysis_output/comparison_table.csv",
+        offenders,
+        {("2X", "IncT2X_1")},
+    )
+    assert offenders == ["analysis_output/comparison_table.csv:pair=('2X', 'MEDIAN')"]
+
+
+def test_verify_release_rejects_unknown_json_pair() -> None:
+    """JSON instance metadata must use an exact public pair."""
+    offenders: list[str] = []
+    verify_release.validate_json_scope(
+        {"dataset": "S", "instance": "bad_instance"},
+        "results/bad.json",
+        offenders,
+        {("S", "S_1")},
+    )
+    assert offenders == ["results/bad.json:pair=('S', 'bad_instance')"]
+
+
+def test_verify_release_rejects_unknown_parquet_pair() -> None:
+    """Parquet metadata receives the same exact scope validation as CSVs."""
+    offenders: list[str] = []
+    verify_release.validate_frame_scope(
+        pd.DataFrame({"dataset": ["Synthetic"], "instance": ["synthetic_tiny"]}),
+        "results/window_logs/bad.parquet",
+        offenders,
+        {("S", "S_1")},
+    )
+    assert offenders
+
+
+def test_verify_release_rejects_crlf_text_files(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Public text files are normalized to LF for byte-stable package builds."""
+    monkeypatch.setattr(verify_release, "ROOT", tmp_path)
+    (tmp_path / "README.md").write_bytes(b"one\r\ntwo\r\n")
+    with pytest.raises(AssertionError, match="Non-LF"):
+        verify_release.verify_lf_line_endings()

@@ -93,7 +93,7 @@ def write_table(df: pd.DataFrame, path: str | Path, key_cols: Sequence[str]) -> 
         )
     validate_key_columns(normalized, key_cols, path)
     target = Path(path)
-    atomic_write_text(target, normalized.to_csv(index=False))
+    atomic_write_text(target, normalized.to_csv(index=False, lineterminator="\n"))
 
 
 def validate_latex_first_cells(rows: Iterable[Sequence[object]], path: str | Path) -> None:

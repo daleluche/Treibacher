@@ -7,8 +7,7 @@ import json
 import re
 import shutil
 import tempfile
-from pathlib import Path
-from typing import Iterable
+from pathlib import Path, PurePosixPath
 
 import pandas as pd
 
@@ -32,6 +31,15 @@ AUXILIARY_OUTPUTS = {
     "ils_equal_budget_report.md",
     "sprint3_bks_changes_after_mip10800.csv",
     "sprint3_report.md",
+}
+DATASET_EXCEPTIONS_BY_FILE = {
+    "analysis_output/sprint3_descriptive_by_scale.csv": {
+        "S-10X benchmark pooled",
+        "8X/10X heterogeneous family aggregate pooled",
+    },
+}
+INSTANCE_EXCEPTIONS_BY_FILE = {
+    "analysis_output/gamma_tradeoff_2x.csv": {("2X", "MEDIAN"), ("2X", "AGGREGATE")},
 }
 
 
@@ -83,6 +91,19 @@ def iter_files() -> list[Path]:
     )
 
 
+def verify_lf_line_endings() -> None:
+    """Reject CRLF or CR line endings in public text artifacts."""
+    offenders: list[str] = []
+    for path in iter_files():
+        if path.suffix.lower() not in TEXT_SUFFIXES:
+            continue
+        data = path.read_bytes()
+        if b"\r\n" in data or b"\r" in data:
+            offenders.append(path.relative_to(ROOT).as_posix())
+    if offenders:
+        raise AssertionError(f"Non-LF line endings found: {offenders[:20]}")
+
+
 def verify_checksums() -> None:
     """Validate SHA-256 content hashes."""
     for line in (ROOT / "checksums.sha256").read_text(encoding="utf-8").splitlines():
@@ -130,10 +151,10 @@ def scan_private_content() -> None:
                     break
     if offenders:
         raise AssertionError(f"Private content or absolute paths found: {offenders[:20]}")
-    scan_parquet_content()
+    scan_parquet_content(canonical_instance_pairs())
 
 
-def scan_parquet_content() -> None:
+def scan_parquet_content(authorized_pairs: set[tuple[str, str]] | None = None) -> None:
     """Reject private tokens and invalid datasets in textual parquet columns."""
     private_re = private_text_re()
     path_re = local_path_re()
@@ -145,7 +166,7 @@ def scan_parquet_content() -> None:
             frame = pd.read_parquet(path)
         except Exception as exc:  # pragma: no cover - exercised by release validation
             raise AssertionError(f"Could not read parquet file {path.relative_to(ROOT).as_posix()}: {exc}") from exc
-        validate_frame_scope(frame, path.relative_to(ROOT).as_posix(), offenders)
+        validate_frame_scope(frame, path.relative_to(ROOT).as_posix(), offenders, authorized_pairs)
         for column in frame.select_dtypes(include=["object", "string", "category"]).columns:
             for value in frame[column].dropna().astype(str):
                 normalized = value.replace("\\\\", "\\")
@@ -186,39 +207,74 @@ def verify_public_scope() -> None:
     json_files = list((ROOT / "instances" / "json").glob("*/*.json"))
     if len(py_files) != 60 or len(json_files) != 60:
         raise AssertionError(f"Expected 60 Python and 60 JSON instance representations, found {len(py_files)} and {len(json_files)}")
-    validate_public_scope_everywhere()
+    validate_public_scope_everywhere(canonical_instance_pairs(meta))
 
 
-def validate_public_scope_everywhere() -> None:
+def canonical_instance_pairs(meta: pd.DataFrame | None = None) -> set[tuple[str, str]]:
+    """Return the exact public dataset-instance registry."""
+    if meta is None:
+        meta = pd.read_csv(ROOT / "instances" / "instance_metadata.csv")
+    return set(zip(meta["dataset"].astype(str), meta["instance"].astype(str)))
+
+
+def validate_public_scope_everywhere(authorized_pairs: set[tuple[str, str]]) -> None:
     """Reject unauthorized datasets or instances in public CSV, JSON, and parquet artifacts."""
     offenders: list[str] = []
     for path in iter_files():
         rel = path.relative_to(ROOT).as_posix()
         if path.suffix.lower() == ".csv":
-            validate_frame_scope(pd.read_csv(path), rel, offenders)
+            validate_frame_scope(pd.read_csv(path), rel, offenders, authorized_pairs)
         elif path.suffix.lower() == ".json":
             try:
                 data = json.loads(path.read_text(encoding="utf-8"))
             except json.JSONDecodeError:
                 continue
-            validate_json_scope(data, rel, offenders)
+            validate_json_scope(data, rel, offenders, authorized_pairs)
         elif path.suffix.lower() == ".parquet":
-            validate_frame_scope(pd.read_parquet(path), rel, offenders)
+            validate_frame_scope(pd.read_parquet(path), rel, offenders, authorized_pairs)
     if offenders:
         raise AssertionError(f"Unauthorized public-scope values found: {offenders[:20]}")
 
 
-def validate_frame_scope(frame: pd.DataFrame, rel: str, offenders: list[str]) -> None:
+def validate_frame_scope(
+    frame: pd.DataFrame,
+    rel: str,
+    offenders: list[str],
+    authorized_pairs: set[tuple[str, str]] | None = None,
+) -> None:
     """Validate dataset and instance labels in one tabular artifact."""
+    authorized_pairs = authorized_pairs or set()
+    authorized_instances = {instance for _, instance in authorized_pairs}
+    path_dataset = path_declared_dataset(rel)
     if "dataset" in frame.columns:
         invalid = sorted(set(frame["dataset"].dropna().astype(str)) - PUBLIC_DATASETS)
-        allowed_analytic = {"scope", "analysis_role", "test_note", "comparison"}
-        if invalid and not allowed_analytic.intersection(frame.columns):
-            offenders.append(f"{rel}:dataset={invalid[:5]}")
-        elif invalid:
-            forbidden = [value for value in invalid if value in {FORBIDDEN_SYNTHETIC, "Real"} or value.startswith("Ale_")]
-            if forbidden:
-                offenders.append(f"{rel}:dataset={forbidden[:5]}")
+        allowed = DATASET_EXCEPTIONS_BY_FILE.get(rel, set())
+        unexpected = [value for value in invalid if value not in allowed]
+        if unexpected:
+            offenders.append(f"{rel}:dataset={unexpected[:5]}")
+        if path_dataset is not None:
+            mismatched = sorted(
+                value
+                for value in set(frame["dataset"].dropna().astype(str))
+                if value in PUBLIC_DATASETS and value != path_dataset
+            )
+            if mismatched:
+                offenders.append(f"{rel}:path_dataset={path_dataset}, declared={mismatched[:5]}")
+    if authorized_pairs and {"dataset", "instance"}.issubset(frame.columns):
+        for dataset, instance in frame[["dataset", "instance"]].dropna().astype(str).itertuples(index=False, name=None):
+            pair = (dataset, instance)
+            if pair in INSTANCE_EXCEPTIONS_BY_FILE.get(rel, set()):
+                continue
+            if pair not in authorized_pairs:
+                offenders.append(f"{rel}:pair={pair}")
+                break
+    elif "instance" in frame.columns and authorized_instances:
+        for instance in frame["instance"].dropna().astype(str):
+            if any((dataset, instance) in INSTANCE_EXCEPTIONS_BY_FILE.get(rel, set()) for dataset in PUBLIC_DATASETS):
+                continue
+            if instance not in authorized_instances:
+                offenders.append(f"{rel}:instance={instance}")
+                break
     for column in [col for col in frame.columns if col in {"instance", "name", "run_id"}]:
         values = frame[column].dropna().astype(str)
         bad = values[values.str.contains(FORBIDDEN_SCOPE_RE, regex=True)]
@@ -226,19 +282,48 @@ def validate_frame_scope(frame: pd.DataFrame, rel: str, offenders: list[str]) ->
             offenders.append(f"{rel}:{column}={bad.iloc[0]}")
 
 
-def validate_json_scope(value: object, rel: str, offenders: list[str]) -> None:
+def path_declared_dataset(rel: str) -> str | None:
+    """Return the public dataset encoded by a package path, if any."""
+    parts = PurePosixPath(rel).parts
+    for index, part in enumerate(parts):
+        if part in PUBLIC_DATASETS and index > 0:
+            return part
+    return None
+
+
+def validate_json_scope(
+    value: object,
+    rel: str,
+    offenders: list[str],
+    authorized_pairs: set[tuple[str, str]],
+    inherited_dataset: str | None = None,
+) -> None:
     """Validate dataset and instance labels in one decoded JSON artifact."""
     if isinstance(value, dict):
-        if "dataset" in value and str(value["dataset"]) not in PUBLIC_DATASETS:
-            offenders.append(f"{rel}:dataset={value['dataset']!r}")
-        for key in ("instance", "name", "run_id"):
+        dataset = inherited_dataset
+        path_dataset = path_declared_dataset(rel)
+        if "dataset" in value:
+            dataset = str(value["dataset"])
+            if dataset not in PUBLIC_DATASETS:
+                offenders.append(f"{rel}:dataset={dataset!r}")
+            elif path_dataset is not None and dataset != path_dataset:
+                offenders.append(f"{rel}:path_dataset={path_dataset!r}, declared={dataset!r}")
+        if "instance" in value:
+            instance = str(value["instance"])
+            if re.search(FORBIDDEN_SCOPE_RE, instance):
+                offenders.append(f"{rel}:instance={instance!r}")
+            elif dataset is not None and (dataset, instance) not in authorized_pairs:
+                offenders.append(f"{rel}:pair={(dataset, instance)!r}")
+            elif dataset is None and instance not in {pair[1] for pair in authorized_pairs}:
+                offenders.append(f"{rel}:instance={instance!r}")
+        for key in ("name", "run_id"):
             if key in value and re.search(FORBIDDEN_SCOPE_RE, str(value[key])):
                 offenders.append(f"{rel}:{key}={value[key]!r}")
         for item in value.values():
-            validate_json_scope(item, rel, offenders)
+            validate_json_scope(item, rel, offenders, authorized_pairs, dataset)
     elif isinstance(value, list):
         for item in value:
-            validate_json_scope(item, rel, offenders)
+            validate_json_scope(item, rel, offenders, authorized_pairs, inherited_dataset)
 
 
 def verify_window_log_metadata() -> None:
@@ -332,7 +417,7 @@ def run_negative_test(args: argparse.Namespace) -> None:
         target = mutated / "sprint3_q5_verdict.csv"
         frame = pd.read_csv(target)
         frame.loc[0, "mip10800_wins"] = int(frame.loc[0, "mip10800_wins"]) + 1
-        frame.to_csv(target, index=False)
+        frame.to_csv(target, index=False, lineterminator="\n")
         try:
             compare_output_dirs(args.analysis_root, mutated, ROOT / "MANIFEST.public_analysis_outputs.txt")
         except AssertionError:
@@ -361,11 +446,21 @@ def run_negative_test(args: argparse.Namespace) -> None:
             frame.loc[len(frame) - 1, "dataset"] = "UnknownSet"
             if "instance" in frame.columns:
                 frame.loc[len(frame) - 1, "instance"] = "bad_instance"
-            frame.to_csv(target, index=False)
+            frame.to_csv(target, index=False, lineterminator="\n")
             try:
                 verify_public_scope()
             except AssertionError:
                 print("Negative analytic-dataset test failed as expected.")
+            else:
+                raise AssertionError("Negative analytic-dataset test did not detect unauthorized dataset.")
+            frame = pd.read_csv(target)
+            frame.loc[0, "dataset"] = "S"
+            frame.loc[0, "instance"] = "bad_instance"
+            frame.to_csv(target, index=False, lineterminator="\n")
+            try:
+                verify_public_scope()
+            except AssertionError:
+                print("Negative analytic-instance test failed as expected.")
                 return
             raise AssertionError("Negative analytic-dataset test did not detect unauthorized dataset.")
         finally:
@@ -377,6 +472,7 @@ def main() -> int:
     args = parse_args()
     verify_checksums()
     verify_inventory()
+    verify_lf_line_endings()
     scan_private_content()
     verify_public_scope()
     verify_raw_source_coverage()

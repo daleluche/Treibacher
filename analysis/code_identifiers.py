@@ -80,7 +80,7 @@ def write_private_map(mapping: dict[str, str]) -> None:
     """Write the reversible private mapping."""
     PRIVATE_DIR.mkdir(parents=True, exist_ok=True)
     with (PRIVATE_DIR / "product_code_map.csv").open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.DictWriter(fh, fieldnames=["private_label", "public_code"])
+        writer = csv.DictWriter(fh, fieldnames=["private_label", "public_code"], lineterminator="\n")
         writer.writeheader()
         for label, code in sorted(mapping.items(), key=lambda item: item[1]):
             writer.writerow({"private_label": label, "public_code": code})
@@ -201,16 +201,25 @@ def stage_text_file(src: Path, mapping: dict[str, str]) -> Path:
     elif src.suffix.lower() == ".csv":
         frame = pd.read_csv(src)
         frame = filter_and_canonicalize_frame(frame)
-        text = replace_labels(frame.to_csv(index=False), mapping)
+        text = replace_labels(frame.to_csv(index=False, lineterminator="\n"), mapping)
     elif src.suffix.lower() in {".md", ".txt"}:
         text = replace_labels(canonicalize_public_text(src.read_text(encoding="utf-8")), mapping)
     else:
         text = replace_labels(canonicalize_public_text(src.read_text(encoding="utf-8")), mapping)
+    if src in derived_instance_paths():
+        text = rewrite_public_instance_objective(text)
     dst.parent.mkdir(parents=True, exist_ok=True)
     if dst.exists() and dst.read_text(encoding="utf-8") != text:
         raise RuntimeError(f"Name collision after public canonicalization: {dst.relative_to(STAGING)}")
     dst.write_text(text, encoding="utf-8", newline="\n")
     return dst
+
+
+def rewrite_public_instance_objective(text: str) -> str:
+    """Clarify the weighted objective in public instance scripts."""
+    old = "Modelo MIP: minimiza falta de producao ao longo de"
+    new = "Modelo MIP: minimiza falta e 0.001 vezes o estoque excedente ao longo de"
+    return text.replace(old, new)
 
 
 def filter_and_canonicalize_frame(frame: pd.DataFrame) -> pd.DataFrame:
@@ -270,6 +279,14 @@ def validate_instance(src: Path, staged: Path, mapping: dict[str, str]) -> Valid
     if not (original.D == coded.D).all():
         raise AssertionError(f"D matrix changed in {src}")
     staged_text = staged.read_text(encoding="utf-8")
+    weighted_description = "minimiza falta e 0.001 vezes o estoque excedente"
+    shortage_only_description = "minimiza falta de producao"
+    if weighted_description not in staged_text:
+        raise AssertionError(f"Missing weighted objective description in {staged}")
+    if shortage_only_description in staged_text:
+        raise AssertionError(f"Residual shortage-only objective description in {staged}")
+    if "0.001*E" not in staged_text:
+        raise AssertionError(f"Objective coefficient changed or missing in {staged}")
     if "EK8" in staged_text:
         raise AssertionError(f"Residual private product label in {staged}")
     if "ALCOA" in staged_text or "Treibacher" in staged_text:
@@ -298,7 +315,7 @@ def validate_result(src: Path, staged: Path, mapping: dict[str, str]) -> Validat
         if restored != original:
             raise AssertionError(f"Decoded JSON differs from canonical original: {src}")
     elif staged.suffix.lower() == ".csv":
-        original_text = filter_and_canonicalize_frame(pd.read_csv(src)).to_csv(index=False)
+        original_text = filter_and_canonicalize_frame(pd.read_csv(src)).to_csv(index=False, lineterminator="\n")
         restored_text = restore_labels(staged.read_text(encoding="utf-8"), mapping)
         if restored_text.replace("\r\n", "\n") != original_text.replace("\r\n", "\n"):
             raise AssertionError(f"Decoded CSV differs from canonical original: {src}")

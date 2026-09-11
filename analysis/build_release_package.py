@@ -42,6 +42,18 @@ PUBLIC_SOURCES = SPEC / "public_analysis_sources.md"
 README_TEMPLATE = SPEC / "README.template.md"
 DATASETS = ["S", "2X", "3X", "4X", "5X", "8X", "10X"]
 TEXT_SUFFIXES = {".py", ".json", ".csv", ".md", ".txt", ".tex", ".bib", ".yml", ".yaml", ".sha256"}
+OBSOLETE_RELEASE_LAYOUT_ITEMS = {
+    "analysis_output",
+    "gamma0_variant",
+    "instances",
+    "solutions",
+    "trajectories",
+    "window_logs",
+    "checksums.sha256",
+    "LICENSE",
+    "README.md",
+}
+ALLOWED_RELEASE_ROOT_ITEMS = {"dist", "staging", ZIP_PATH.name}
 PRIVATE_PATTERNS = [
     "EK8",
     "Treibacher",
@@ -66,6 +78,31 @@ def reset_dist() -> None:
     if DIST.exists():
         shutil.rmtree(DIST)
     DIST.mkdir(parents=True)
+
+
+def clean_release_root() -> list[str]:
+    """Remove obsolete generated release layouts while preserving canonical outputs."""
+    RELEASE.mkdir(parents=True, exist_ok=True)
+    release_root = RELEASE.resolve()
+    removed: list[str] = []
+    unexpected: list[str] = []
+    for path in sorted(RELEASE.iterdir(), key=lambda item: item.name):
+        if path.name in ALLOWED_RELEASE_ROOT_ITEMS:
+            continue
+        if path.name not in OBSOLETE_RELEASE_LAYOUT_ITEMS:
+            unexpected.append(path.name)
+            continue
+        resolved = path.resolve()
+        if release_root not in resolved.parents and resolved != release_root:
+            raise RuntimeError(f"Refusing to remove path outside release root: {resolved}")
+        if path.is_dir():
+            shutil.rmtree(path)
+        else:
+            path.unlink()
+        removed.append(path.name)
+    if unexpected:
+        raise RuntimeError(f"Unexpected files in release root: {unexpected}")
+    return removed
 
 
 def rel(path: Path) -> Path:
@@ -121,6 +158,7 @@ def write_open_instance_files() -> None:
                 raise FileNotFoundError(f"Missing coded staged instance: {staged}")
             dst = DIST / "instances" / "gamspy_py" / dataset / source.name
             copy_file(staged, dst)
+            rewrite_public_instance_objective(dst)
             inst = load_instance(staged)
             json_data = {
                 "name": inst.name,
@@ -164,9 +202,19 @@ def write_open_instance_files() -> None:
             for rec in json_data["D_records"]:
                 d_rows.append({"dataset": dataset, "instance": inst.name, **rec})
 
-    pd.DataFrame(meta_rows).to_csv(DIST / "instances" / "instance_metadata.csv", index=False)
-    pd.DataFrame(a_rows).to_csv(DIST / "instances" / "production_matrix_long.csv", index=False)
-    pd.DataFrame(d_rows).to_csv(DIST / "instances" / "demand_long.csv", index=False)
+    pd.DataFrame(meta_rows).to_csv(DIST / "instances" / "instance_metadata.csv", index=False, lineterminator="\n")
+    pd.DataFrame(a_rows).to_csv(DIST / "instances" / "production_matrix_long.csv", index=False, lineterminator="\n")
+    pd.DataFrame(d_rows).to_csv(DIST / "instances" / "demand_long.csv", index=False, lineterminator="\n")
+
+
+def rewrite_public_instance_objective(path: Path) -> None:
+    """Clarify the weighted PSP objective in a staged public instance script."""
+    old = "Modelo MIP: minimiza falta de producao ao longo de"
+    new = "Modelo MIP: minimiza falta e 0.001 vezes o estoque excedente ao longo de"
+    text = path.read_text(encoding="utf-8")
+    updated = text.replace(old, new)
+    if updated != text:
+        path.write_text(updated, encoding="utf-8", newline="\n")
 
 
 def copy_public_analysis_outputs() -> None:
@@ -183,7 +231,7 @@ def copy_public_analysis_outputs() -> None:
             frame = pd.read_csv(staged)
             frame = drop_private_rows(frame)
             dst.parent.mkdir(parents=True, exist_ok=True)
-            frame.to_csv(dst, index=False)
+            frame.to_csv(dst, index=False, lineterminator="\n")
         else:
             copy_file(staged, dst)
 
@@ -412,7 +460,7 @@ def write_bks_counterfactual() -> None:
     rows = rows[["dataset", "instance", "method", "Z_best"]].rename(
         columns={"method": "counterfactual_bks_method", "Z_best": "counterfactual_BKS"}
     )
-    rows.to_csv(ROOT / "analysis" / "output" / "bks_counterfactual_without_mip10800.csv", index=False)
+    rows.to_csv(ROOT / "analysis" / "output" / "bks_counterfactual_without_mip10800.csv", index=False, lineterminator="\n")
 
 
 def write_release_metadata() -> None:
@@ -429,7 +477,20 @@ def write_release_metadata() -> None:
     copy_file(EXPECTED_INVENTORY, DIST / "MANIFEST.expected_inventory.txt")
     copy_file(PUBLIC_OUTPUTS, DIST / "MANIFEST.public_analysis_outputs.txt")
     copy_file(PUBLIC_SOURCES, DIST / "MANIFEST.public_analysis_sources.md")
+    normalize_dist_text_files()
     write_checksums()
+
+
+def normalize_dist_text_files() -> None:
+    """Normalize all public text artifacts to LF before checksums and ZIP creation."""
+    for path in iter_dist_files():
+        if path.suffix.lower() not in TEXT_SUFFIXES:
+            continue
+        data = path.read_bytes()
+        if b"\r" not in data:
+            continue
+        text = data.decode("utf-8")
+        path.write_text(text.replace("\r\n", "\n").replace("\r", "\n"), encoding="utf-8", newline="\n")
 
 
 def run_private_structural_audit() -> None:
@@ -456,7 +517,7 @@ def write_checksums() -> None:
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         rows.append((digest, path.relative_to(DIST).as_posix()))
     with checksum_path.open("w", encoding="utf-8", newline="") as fh:
-        writer = csv.writer(fh, delimiter=" ")
+        writer = csv.writer(fh, delimiter=" ", lineterminator="\n")
         writer.writerows(rows)
 
 
@@ -554,6 +615,9 @@ def main(argv: list[str] | None = None) -> int:
     """Build and validate the release candidate."""
     argv = argv or sys.argv[1:]
     refresh_inventory = "--refresh-inventory" in argv
+    removed = clean_release_root()
+    if removed:
+        print(f"Removed obsolete release-root items: {', '.join(removed)}")
     write_bks_counterfactual()
     ensure_coded_staging()
     reset_dist()
@@ -562,9 +626,11 @@ def main(argv: list[str] | None = None) -> int:
     copy_public_results()
     copy_public_code()
     run_private_structural_audit()
+    normalize_dist_text_files()
     write_release_metadata()
     if refresh_inventory:
         verify_inventory(refresh=True)
+        normalize_dist_text_files()
         write_release_metadata()
     verify_inventory(refresh=False)
     scan_dist_content()

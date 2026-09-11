@@ -29,11 +29,28 @@ not a guarantee of anonymity.
 
 ## Reproduction Modes
 
-Analysis reproduction does not require CPLEX. From an unpacked package, run:
+Analysis reproduction does not require CPLEX. Run the commands from the root of
+the unpacked ZIP. The packaged verifier was tested from a clean unpacked
+directory with Python 3.12 on POSIX and Windows PowerShell.
+
+POSIX quick start:
 
 ```bash
-python code/reproduce_release.py
-python code/verify_release.py
+python3.12 -m venv .venv
+.venv/bin/python -m pip install --upgrade pip
+.venv/bin/python -m pip install -r code/requirements-analysis.txt
+.venv/bin/python code/reproduce_release.py
+.venv/bin/python code/verify_release.py --analysis-root reproduced_analysis --reference-root analysis_output --negative-test
+```
+
+Windows PowerShell quick start:
+
+```powershell
+py -3.12 -m venv .venv
+.venv\Scripts\python.exe -m pip install --upgrade pip
+.venv\Scripts\python.exe -m pip install -r code\requirements-analysis.txt
+.venv\Scripts\python.exe code\reproduce_release.py
+.venv\Scripts\python.exe code\verify_release.py --analysis-root reproduced_analysis --reference-root analysis_output --negative-test
 ```
 
 `code/reproduce_release.py` builds a temporary compatibility tree from
@@ -43,12 +60,14 @@ reference path is provided. `code/verify_release.py` validates checksums,
 inventory, public scope, absence of private identifiers and local paths, raw
 source coverage, regenerated outputs, and sentinel scientific counts.
 
+`pyarrow` is required because the verifier reads packaged Parquet window logs.
 Reexecution of the solvers is separate and requires GAMSPy plus a licensed CPLEX
 installation. The solver-facing scripts are included for inspection and reuse,
 but the packaged analysis can be checked without a solver license.
 
-The package regenerates the declared CSV reference outputs under
-`analysis_output/` from packaged raw evidence. It does not promise to regenerate
+The package regenerates the declared CSV reference outputs from packaged raw
+evidence. `analysis_output/` is the reference used for verification, not an
+input source for recalculation. The package does not promise to regenerate
 the manuscript layout or every LaTeX table used in the private paper build;
 those editorial artifacts belong to the manuscript repository, not this public
 benchmark release.

@@ -96,7 +96,7 @@ def write_bks_counterfactual(work: Path) -> None:
     rows = rows[["dataset", "instance", "method", "Z_best"]].rename(
         columns={"method": "counterfactual_bks_method", "Z_best": "counterfactual_BKS"}
     )
-    rows.to_csv(out / "bks_counterfactual_without_mip10800.csv", index=False)
+    rows.to_csv(out / "bks_counterfactual_without_mip10800.csv", index=False, lineterminator="\n")
 
 
 def publish_outputs(work: Path, output_root: Path) -> None:
