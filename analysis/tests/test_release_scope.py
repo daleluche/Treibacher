@@ -42,6 +42,25 @@ def test_scanner_detects_json_escaped_absolute_path(tmp_path: Path, monkeypatch:
     build_release_package.scan_dist_content()
 
 
+def test_release_file_iteration_uses_posix_relative_order(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Archive and checksum order is defined by POSIX relative paths only."""
+    names = [
+        "results/z.json",
+        "instances/gamspy_py/S/S_1.py",
+        "analysis_output/master_instances.csv",
+        "STRUCTURAL_AUDIT.md",
+        "LICENSE.md",
+        "results/a.json",
+    ]
+    for name in names:
+        path = tmp_path / Path(name)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(name, encoding="utf-8")
+    monkeypatch.setattr(build_release_package, "DIST", tmp_path)
+    observed = [path.relative_to(tmp_path).as_posix() for path in build_release_package.iter_dist_files()]
+    assert observed == sorted(names)
+
+
 def test_public_record_rejects_unknown_dataset() -> None:
     """Structured records may only declare authorized public datasets."""
     assert is_public_record({"dataset": "S", "instance": "S_1"})

@@ -30,8 +30,8 @@ not a guarantee of anonymity.
 ## Reproduction Modes
 
 Analysis reproduction does not require CPLEX. Run the commands from the root of
-the unpacked ZIP. The packaged verifier was tested from a clean unpacked
-directory with Python 3.12 on POSIX and Windows PowerShell.
+the unpacked ZIP. The package was validated from clean unpacked directories with
+Python 3.11.9 on Windows PowerShell and Python 3.12.14 on POSIX.
 
 POSIX quick start:
 
@@ -46,7 +46,7 @@ python3.12 -m venv .venv
 Windows PowerShell quick start:
 
 ```powershell
-py -3.12 -m venv .venv
+py -3.11 -m venv .venv
 .venv\Scripts\python.exe -m pip install --upgrade pip
 .venv\Scripts\python.exe -m pip install -r code\requirements-analysis.txt
 .venv\Scripts\python.exe code\reproduce_release.py

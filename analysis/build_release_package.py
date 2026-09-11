@@ -504,7 +504,10 @@ def run_private_structural_audit() -> None:
 
 def iter_dist_files() -> list[Path]:
     """Return files in the distribution tree."""
-    return sorted(path for path in DIST.rglob("*") if path.is_file())
+    return sorted(
+        (path for path in DIST.rglob("*") if path.is_file()),
+        key=lambda path: path.relative_to(DIST).as_posix(),
+    )
 
 
 def write_checksums() -> None:
