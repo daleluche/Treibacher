@@ -1,0 +1,19 @@
+\begin{table}[t]
+\centering
+\footnotesize
+\caption{Block-structured statistical summaries over matched cells.}
+\label{tab:stats}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrrrrrr}
+\toprule
+Comparison & Budget & Scope & Blocks & Nonzero & Inst. & Mean $\Delta$ (\%) & Median $\Delta$ (\%) & $p_{mean}$ & $p_{W}$ & $p_{sign}$ & Note \\
+\midrule
+rf+fo vs truncated ILS v2 & 600 & 3X-5X short-budget subset & 3 & 3 & 6 & -21.62 & -25.67 & -- & -- & -- & not tested: 3 blocks \\
+rf+fo vs mip & 3\,600 & 10X scale subset & 5 & 5 & 5 & -7.94 & -13.89 & -- & -- & -- & not tested: 5 blocks, minimum attainable two-sided p = 0.0625 \\
+rf+fo vs mip & 3\,600 & 8X scale subset & 5 & 5 & 5 & 0.68 & 1.22 & -- & -- & -- & not tested: 5 blocks, minimum attainable two-sided p = 0.0625 \\
+rf+mip vs mip & 3\,600 & 10X scale subset & 5 & 5 & 5 & 28.11 & 26.30 & -- & -- & -- & not tested: 5 blocks, minimum attainable two-sided p = 0.0625 \\
+rf+mip vs mip & 3\,600 & 8X scale subset & 5 & 5 & 5 & -2.17 & -2.96 & -- & -- & -- & not tested: 5 blocks, minimum attainable two-sided p = 0.0625 \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}

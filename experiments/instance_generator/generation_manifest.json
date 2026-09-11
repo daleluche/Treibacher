@@ -1,0 +1,102 @@
+{
+  "provenance_seed": 20260706,
+  "deterministic": true,
+  "randomness_used": false,
+  "base_instances": [
+    "S_2",
+    "S_3",
+    "S_4",
+    "S_5",
+    "S_6"
+  ],
+  "generated": [
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_2",
+      "base_instance": "S_2",
+      "factor": 8,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_2.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_3",
+      "base_instance": "S_3",
+      "factor": 8,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_3.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_4",
+      "base_instance": "S_4",
+      "factor": 8,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_4.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_5",
+      "base_instance": "S_5",
+      "factor": 8,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_5.py"
+    },
+    {
+      "dataset": "8X",
+      "instance": "IncT8x_6",
+      "base_instance": "S_6",
+      "factor": 8,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\8X\\IncT8x_6.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_2",
+      "base_instance": "S_2",
+      "factor": 10,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_2.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_3",
+      "base_instance": "S_3",
+      "factor": 10,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_3.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_4",
+      "base_instance": "S_4",
+      "factor": 10,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_4.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_5",
+      "base_instance": "S_5",
+      "factor": 10,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_5.py"
+    },
+    {
+      "dataset": "10X",
+      "instance": "IncT10x_6",
+      "base_instance": "S_6",
+      "factor": 10,
+      "provenance_seed": 20260706,
+      "path": "experiments\\GAMSPy\\10X\\IncT10x_6.py"
+    }
+  ],
+  "exact_validation": {
+    "scope": "IncT2X--IncT5x, S_1--S_10",
+    "excluded": null,
+    "checked_instances": 40,
+    "passed_instances": 40,
+    "failed_instances": 0,
+    "failures": []
+  }
+}

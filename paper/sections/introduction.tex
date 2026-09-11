@@ -1,0 +1,108 @@
+\section{Introduction}
+\label{sec:introduction}
+
+Electrofused grains, notably silicon carbide and fused aluminum oxide,
+are synthetic raw materials employed in the manufacture of abrasive,
+refractory, and ceramic products. Production starts in
+electric-resistance (Acheson-type) or electric-arc furnaces, whose
+output blocks are subsequently crushed, milled, and classified by sets
+of screens into a large number of granulometric ranges (grits) with
+strict physical--chemical specifications. A distinctive feature of the
+grain-finishing stage is \emph{co-production in fixed proportions}:
+each configuration of the crushing and classification equipment, hereafter a \emph{production process}, simultaneously yields a
+specific mix of final products in technologically determined
+proportions. Planners therefore do not decide production quantities
+product by product; they decide \emph{which process to operate in each
+period}, and the product mix follows. Combined with lengthy setups
+(equipment reconfiguration and cleaning may take several hours),
+a portfolio of dozens of products, and tight order-book due dates,
+this makes production scheduling a genuinely hard combinatorial task.
+
+The problem was formalized by \citet{luche2009combining} as a
+\emph{process selection and lot-sizing problem} (PSP): a single-stage,
+big-bucket model in which at most one process may be assigned to each
+period and the objective is to minimize the total shortage of the
+order book (with a small penalty on excess production). At the time,
+the mixed-integer programming (MIP) model could not be solved to
+optimality within acceptable times for instances of practical size by
+the then state-of-the-art solver, which motivated the development of
+heuristic approaches. Two developments justify revisiting the problem
+today. First, the computational landscape has changed on
+every axis at once: MIP solvers have improved by orders of magnitude
+through presolve, cut separation, primal heuristics, and parallel tree
+search \citep{koch2022progress,achterberg2013analyzing,achterberg2020presolve},
+while commodity hardware has gained cores and clock speed. Whether a
+problem motivated by enlarged benchmark instances is still hard \emph{today}, on
+a laptop, is a question of direct methodological and managerial relevance, independently
+of how the gain divides among its causes. Second, MIP-based
+construction and improvement heuristics, \emph{relax-and-fix} (\RF) and \emph{fix-and-optimize} (\FO), now
+standard components of the matheuristics toolbox
+\citep{sahling2009solving,helber2010fix,toledo2015relax}, have
+matured on lot-sizing structures close to the PSP. They have been
+applied to a generalization of it by \citet{villasboas2021modeling},
+on reduced instances and under a different formulation; what has not
+been examined is how they fare against a current solver on the problem
+at full industrial size.
+
+This paper reports a comprehensive computational study of the PSP that
+confronts three algorithmic paradigms: (i) the monolithic MIP model solved by a modern commercial
+solver; (ii) temporal-decomposition matheuristics (\RFFO{} and an
+\RF-warm-started monolithic variant, \RFMIP); and (iii) a
+strong hybrid metaheuristic baseline with intra-run path relinking
+(\ILS). For each equal-budget comparison, methods are evaluated using
+incumbents attained within the stated common cutoff. The \ILS{}
+incumbents used at 600 and 3{,}600 seconds were reconstructed
+retrospectively from the logged trajectories, excluding the additional
+cross-run path-relinking stage. All methods run on the same machine,
+with explicit thread accounting, and the decision criteria of the central comparisons were
+specified in the campaign's planning documents before the
+corresponding experiments were run, and are reported here as
+specified, including those that were not supported.
+Rather than asking only \emph{whether} a heuristic beats the solver,
+we map \emph{when} each method is the tool of choice as a function of
+instance scale (planning horizons from $T\!=\!19$ to $T\!\approx\!190$
+periods) and available computing time (from operational re-planning
+budgets of 5--10 minutes to tactical budgets of 1--3 hours).
+In the tested benchmark families, the monolithic MIP achieved most
+per-instance wins through 5X, whereas decomposition achieved the
+majority at 8X and 10X under the 3{,}600-second cutoff.
+
+The contributions are fourfold. First, we isolate a modeling effect
+that governs the problem's difficulty: penalizing accumulated excess
+production, an inventory-cost proxy worth a thousandth of a unit of
+shortage, turns a formulation that a modern solver closes routinely
+into one that it leaves open on most instances of the same size. The
+comparison is controlled (same solver, machine, threads, budget, and
+instances; only the objective changes), and it qualifies a broader
+practice: secondary objective terms that look innocuous in a model can
+dominate its computational character. Second, we specify, at a
+reproducibility level rarely reported (bound-update mechanics,
+per-window time-limit policies, and budget guards included), \RF{} and
+\FO{} matheuristics tailored to the co-production structure of the PSP
+at full industrial size, together with an \RFMIP{} hybrid that trades
+a modest construction budget for a strong initial incumbent of the
+monolithic solve. Where an earlier study established that such
+heuristics outperform the solver on a larger formulation over reduced
+instances \citep{villasboas2021modeling}, we find the answer to
+depend on scale and budget, and we characterize where the boundary
+lies. Third, we
+provide what is, to the best of our knowledge, the first publicly
+available benchmark for lot sizing with co-production in fixed
+proportions: 60 instances derived from one industrial order book,
+spanning seven families and horizons from 19 to 190 periods, with
+best-known solutions, dual bounds, and full per-run trajectories,
+released in open formats. Fourth, we derive managerial insights for the
+electrofused grains mill, including the practical consequence that,
+at the scale of the plant's order book, scheduling can now be
+re-optimized \emph{exactly} within any daily re-planning deadline, by the solver itself, while decomposition becomes the operational
+tool only at horizons several times longer.
+
+The remainder of the paper is organized as follows.
+Section~\ref{sec:related} reviews the related literature and positions
+the PSP within the lot-sizing and scheduling taxonomy.
+Section~\ref{sec:problem} describes the industrial setting and the
+mathematical model. Section~\ref{sec:matheuristics} presents the
+\RF{}, \FO{}, and \RFMIP{} methods, and
+Section~\ref{sec:metaheuristic} summarizes the hybrid \ILS{} baseline.
+Section~\ref{sec:experiments} reports the experimental protocol and
+results, and Section~\ref{sec:conclusions} concludes.

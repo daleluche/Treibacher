@@ -26,16 +26,26 @@ import json
 import math
 import os
 import sys
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
+
+from experiments.matheuristics.psp_instance import load_instance
+from analysis.families import write_table
+from analysis.ils_equal_budget import DEFAULT_CUTOFF_S, master_run_rows, write_outputs as write_ils_equal_budget_outputs
+
 OUT = os.path.join(ROOT, "analysis", "output")
 os.makedirs(OUT, exist_ok=True)
 
-DATASETS = ["Real", "2X", "3X", "4X", "5X"]
+DATASETS = ["S", "Real", "2X", "3X", "4X", "5X", "8X", "10X"]
+EXACT_DATASETS = ["Real", "2X", "3X", "4X", "5X"]
 EPS = 1e-6
+PUBLIC_RELEASE_MODE = os.environ.get("PSP_PUBLIC_RELEASE") == "1"
 
 
 def _load(path: str) -> dict:
@@ -43,21 +53,62 @@ def _load(path: str) -> dict:
         return json.load(fh)
 
 
+def _method_label(method: str, budget: float | None) -> str:
+    """Return a stable method label that preserves the time budget."""
+    safe = str(method).replace("+", "_").replace("-", "_")
+    if budget is None or math.isnan(float(budget)):
+        return f"MAT_{safe}"
+    return f"MAT_{safe}_{int(round(float(budget)))}s"
+
+
+def canonical_instance(dataset: str | None, instance: str | None) -> tuple[str | None, str | None, str | None]:
+    """Return the paper-facing dataset/instance and an optional provenance note."""
+    if instance is None:
+        return dataset, instance, None
+    if instance == "REAL_1":
+        return "Real order book", instance, None
+    if dataset == "Real" and instance.startswith("Ale_"):
+        suffix = instance.rsplit("_", 1)[1]
+        if suffix == "1":
+            return dataset, instance, "Retained for provenance; not part of homogeneous set S."
+        return "S", f"S_{suffix}", None
+    if instance.startswith("S_"):
+        return "S", instance, None
+    return dataset, instance, None
+
+
+def instance_metadata() -> dict[str, dict]:
+    """Load T, J, and I metadata from GAMSPy instance scripts."""
+    meta: dict[str, dict] = {}
+    for dataset in DATASETS:
+        for path in sorted((Path(ROOT) / "experiments" / "GAMSPy" / dataset).glob("*.py")):
+            inst = load_instance(path)
+            dataset_name = path.parent.name
+            meta[inst.name] = {
+                "dataset": dataset_name,
+                "T": inst.T,
+                "J": inst.J,
+                "I": inst.I,
+            }
+    return meta
+
+
 # --------------------------------------------------------------------------- #
 # 1. Exact runs (GAMSPy / CPLEX 22)
 # --------------------------------------------------------------------------- #
 def collect_exact() -> list[dict]:
     rows = []
-    for ds in DATASETS:
+    for ds in EXACT_DATASETS:
         for folder, method in [("results", "CPLEX22_1h"),
                                ("results_3horas", "CPLEX22_3h")]:
             for f in sorted(glob.glob(
                     os.path.join(ROOT, "experiments", "GAMSPy", ds, folder, "*.json"))):
                 d = _load(f)
+                dataset, instance, note = canonical_instance(ds, d["instance"])
                 rows.append({
                     "method": method,
-                    "dataset": ds,
-                    "instance": d["instance"],
+                    "dataset": dataset,
+                    "instance": instance,
                     "run_id": 1,
                     "seed": None,
                     "Z": d.get("objective_value"),
@@ -71,6 +122,9 @@ def collect_exact() -> list[dict]:
                     "T": d.get("num_periods"),
                     "J": d.get("num_processes"),
                     "I": d.get("num_products"),
+                    "source_path": os.path.relpath(f, ROOT),
+                    "paper_note": note,
+                    "summary_record": False,
                 })
     return rows
 
@@ -84,8 +138,6 @@ HEURISTIC_SOURCES = [
      "experiments/GRASP/*/results/*_summary.json"),
     ("ILS_v1", "experiments/GRASP/results_ils/*_run*.json",
      "experiments/GRASP/results_ils/*_summary.json"),
-    ("ILS_v2", "experiments/GRASP/results_ils_v2/*_run*.json",
-     "experiments/GRASP/results_ils_v2/*_summary.json"),
 ]
 
 
@@ -96,20 +148,46 @@ def collect_heuristics() -> tuple[list[dict], dict]:
     for method, run_pat, sum_pat in HEURISTIC_SOURCES:
         # explicit budget from summaries when available
         budget = None
+        summary_rows = []
         for f in glob.glob(os.path.join(ROOT, sum_pat)):
             d = _load(f)
             if d.get("time_limit_s"):
                 budget = float(d["time_limit_s"])
-                break
+            if method == "ILS_v2" and d.get("Z_best") is not None:
+                dataset, instance, note = canonical_instance(d.get("dataset"), d.get("instance"))
+                summary_rows.append({
+                    "method": method,
+                    "dataset": dataset,
+                    "instance": instance,
+                    "run_id": "summary_pr",
+                    "seed": None,
+                    "Z": d.get("Z_best"),
+                    "bound": None,
+                    "gap_solver_pct": d.get("gap_best_vs_mip"),
+                    "time_to_best_s": d.get("t2best_best"),
+                    "total_time_s": d.get("time_limit_s"),
+                    "time_budget_s": d.get("time_limit_s"),
+                    "model_status": None,
+                    "iterations": None,
+                    "T": d.get("T"),
+                    "J": d.get("J"),
+                    "I": d.get("I"),
+                    "source_path": os.path.relpath(f, ROOT),
+                    "paper_note": note,
+                    "summary_record": True,
+                })
 
         observed_max = 0.0
         for f in sorted(glob.glob(os.path.join(ROOT, run_pat))):
             d = _load(f)
+            dataset, instance, note = canonical_instance(d.get("dataset"), d.get("instance"))
+            if method == "ILS_v1" and note is None:
+                note = "Legacy unequal-budget baseline retained in master data only."
             observed_max = max(observed_max, float(d.get("total_time", 0.0)))
             rows.append({
                 "method": method,
-                "dataset": d.get("dataset"),
-                "instance": d.get("instance"),
+                "dataset": dataset,
+                "instance": instance,
                 "run_id": d.get("run_id"),
                 "seed": d.get("seed"),
                 "Z": d.get("objective"),
@@ -123,7 +201,11 @@ def collect_heuristics() -> tuple[list[dict], dict]:
                 "T": d.get("T"),
                 "J": d.get("J"),
                 "I": d.get("I"),
+                "source_path": os.path.relpath(f, ROOT),
+                "paper_note": note,
+                "summary_record": False,
             })
+        rows.extend(summary_rows)
         if budget is None:
             # infer: round observed max up to nearest 100 s
             budget = math.ceil(observed_max / 100.0) * 100.0
@@ -135,38 +217,126 @@ def collect_heuristics() -> tuple[list[dict], dict]:
 
 
 # --------------------------------------------------------------------------- #
+# 3. Matheuristic runs
+# --------------------------------------------------------------------------- #
+MATHEURISTIC_RESULT_DIRS = [
+    "results_pilot",
+    "results_tuning",
+    "results_short_budget",
+    "results_short_budget_v2",
+    "results_scale_8x10x",
+    "results_scale_8x10x_v2",
+    "results_scale_8x10x_mip10800",
+    os.path.join("results_production", "b600"),
+    os.path.join("results_production", "a3600"),
+    os.path.join("results_production", "c_seeds"),
+    os.path.join("results_production", "s1"),
+    os.path.join("results_production", "real"),
+]
+
+
+def collect_matheuristics(meta: dict[str, dict]) -> list[dict]:
+    """Collect matheuristic JSON outputs from all sprint result folders."""
+    rows = []
+    base = Path(ROOT) / "experiments" / "matheuristics"
+    for rel_dir in MATHEURISTIC_RESULT_DIRS:
+        directory = base / rel_dir
+        if not directory.exists():
+            continue
+        for path in sorted(directory.glob("*.json")):
+            data = _load(str(path))
+            if "Z_final" not in data or "method" not in data:
+                continue
+            params = data.get("params", {})
+            budget = float(params.get("budget", np.nan))
+            dataset, instance, note = canonical_instance(data.get("dataset"), data.get("instance"))
+            inst_meta = meta.get(instance, {})
+            method = _method_label(data.get("method"), budget)
+            improvements = data.get("improvements") or []
+            time_to_best = None
+            if improvements:
+                best = min(improvements, key=lambda item: item.get("Z", math.inf))
+                time_to_best = best.get("time_s")
+            rows.append({
+                "method": method,
+                "dataset": dataset or inst_meta.get("dataset"),
+                "instance": instance,
+                "run_id": data.get("run_id") or path.stem,
+                "seed": data.get("seed"),
+                "Z": data.get("Z_final"),
+                "bound": data.get("best_bound") or data.get("dual_bound"),
+                "gap_solver_pct": data.get("gap_solver_pct") or data.get("gap_pct"),
+                "time_to_best_s": time_to_best,
+                "total_time_s": data.get("wall_time_total"),
+                "time_budget_s": budget,
+                "model_status": data.get("model_status") or data.get("status"),
+                "iterations": None,
+                "T": inst_meta.get("T"),
+                "J": inst_meta.get("J"),
+                "I": inst_meta.get("I"),
+                "source_path": str(path.relative_to(Path(ROOT))),
+                "raw_method": data.get("method"),
+                "construction_used": data.get("construction_used"),
+                "Z_construction": data.get("construction", {}).get("Z")
+                if isinstance(data.get("construction"), dict)
+                else data.get("Z_rf"),
+                "rf_wall_time_s": data.get("rf_wall_time_s"),
+                "paper_note": note,
+                "summary_record": False,
+            })
+    return rows
+
+
+# --------------------------------------------------------------------------- #
 # 3. Build, validate, aggregate
 # --------------------------------------------------------------------------- #
 def main() -> int:
+    meta = instance_metadata()
     exact = collect_exact()
     heur, budgets = collect_heuristics()
-    runs = pd.DataFrame(exact + heur)
+    ils_v2_rows, ils_v2_pr_rows, ils_run_audit, ils_instance_audit = master_run_rows(cutoff_s=DEFAULT_CUTOFF_S, root=Path(ROOT))
+    write_ils_equal_budget_outputs(cutoff_s=DEFAULT_CUTOFF_S, root=Path(ROOT), out=Path(OUT))
+    budgets["ILS_v2"] = DEFAULT_CUTOFF_S
+    budgets["ILS_v2_pr"] = DEFAULT_CUTOFF_S
+    matheur = collect_matheuristics(meta)
+    runs = pd.DataFrame(exact + heur + ils_v2_rows + ils_v2_pr_rows + matheur)
+
+    for dim in ["T", "J", "I"]:
+        canonical_values = runs["instance"].map(lambda name: meta.get(name, {}).get(dim))
+        runs[dim] = canonical_values.combine_first(runs[dim])
 
     runs = runs.sort_values(["method", "dataset", "instance", "run_id"]).reset_index(drop=True)
-    runs.to_csv(os.path.join(OUT, "master_runs.csv"), index=False)
+    write_table(runs, os.path.join(OUT, "master_runs.csv"), ["method", "dataset", "instance", "run_id"])
 
     # instance-level aggregation
     def agg(g: pd.DataFrame) -> pd.Series:
+        summary_mask = g.get("summary_record", pd.Series(False, index=g.index)).fillna(False).astype(bool)
+        distribution = g.loc[~summary_mask]
+        if distribution.empty:
+            distribution = g
+        best = g.loc[g["Z"].idxmin()] if g["Z"].notna().any() else None
         return pd.Series({
-            "n_runs": len(g),
+            "n_runs": len(distribution),
             "Z_best": g["Z"].min(),
-            "Z_mean": g["Z"].mean(),
-            "Z_std": g["Z"].std(ddof=1) if len(g) > 1 else 0.0,
-            "Z_worst": g["Z"].max(),
-            "t2b_mean": g["time_to_best_s"].mean(),
-            "total_time_mean": g["total_time_s"].mean(),
+            "Z_mean": distribution["Z"].mean(),
+            "Z_std": distribution["Z"].std(ddof=1) if len(distribution) > 1 else 0.0,
+            "Z_worst": distribution["Z"].max(),
+            "t2b_mean": distribution["time_to_best_s"].mean(),
+            "total_time_mean": distribution["total_time_s"].mean(),
             "time_budget_s": g["time_budget_s"].max(),
             "bound": g["bound"].max(),
             "gap_solver_pct": g["gap_solver_pct"].max(),
             "model_status": g["model_status"].dropna().iloc[0] if g["model_status"].notna().any() else None,
-            "T": g["T"].dropna().max(),
-            "J": g["J"].dropna().max(),
-            "I": g["I"].dropna().max(),
+            "T": distribution["T"].dropna().max(),
+            "J": distribution["J"].dropna().max(),
+            "I": distribution["I"].dropna().max(),
+            "source_path": best["source_path"] if best is not None and pd.notna(best.get("source_path")) else None,
+            "raw_method": g["raw_method"].dropna().iloc[0] if "raw_method" in g and g["raw_method"].notna().any() else None,
         })
 
     inst = (runs.groupby(["method", "dataset", "instance"])
                 .apply(agg, include_groups=False).reset_index())
-    inst.to_csv(os.path.join(OUT, "master_instances.csv"), index=False)
+    write_table(inst, os.path.join(OUT, "master_instances.csv"), ["method", "dataset", "instance"])
 
     # ------------------------------------------------------------------ #
     # Validation report
@@ -176,18 +346,48 @@ def main() -> int:
     print("=" * 72)
     ok = True
 
-    for method in ["CPLEX22_3h", "ILS_v2"]:
+    for method in ["CPLEX22_3h", "ILS_v2", "ILS_v2_pr"]:
         n = inst.loc[inst.method == method, "instance"].nunique()
-        expected = 47 if method == "CPLEX22_3h" else 50   # 3 missing 3X jsons
+        if PUBLIC_RELEASE_MODE:
+            expected = 50 if method in {"ILS_v2", "ILS_v2_pr"} else 49
+        else:
+            expected = 52 if method in {"ILS_v2", "ILS_v2_pr"} else 50
         flag = "OK" if n == expected else "FAIL"
         if flag == "FAIL":
             ok = False
         print(f"[{flag}] {method}: {n} distinct instances (expected {expected})")
 
-    n_v2 = len(runs[runs.method == "ILS_v2"])
-    flag = "OK" if n_v2 == 500 else "FAIL"
-    ok &= (n_v2 == 500)
-    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected 500)")
+    summary_record = runs.get("summary_record", pd.Series(False, index=runs.index)).fillna(False).astype(bool)
+    n_v2 = len(runs[(runs.method == "ILS_v2") & (~summary_record)])
+    expected_v2_runs = 500 if PUBLIC_RELEASE_MODE else 520
+    flag = "OK" if n_v2 == expected_v2_runs else "FAIL"
+    ok &= (n_v2 == expected_v2_runs)
+    print(f"[{flag}] ILS_v2 runs: {n_v2} (expected {expected_v2_runs})")
+
+    no_schedule = ils_instance_audit[~ils_instance_audit["schedule_available"].astype(bool)]
+    flag = "OK" if len(no_schedule) == 2 else "FAIL"
+    ok &= (len(no_schedule) == 2)
+    print(f"[{flag}] ILS_v2 strict-budget values without reproducible schedules: {len(no_schedule)} (expected 2)")
+
+    real_rows = runs[(runs.dataset == "Real order book") & (runs.instance == "REAL_1")]
+    if PUBLIC_RELEASE_MODE:
+        flag = "OK" if real_rows.empty else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] REAL_1 real order-book rows excluded from public scope: {len(real_rows)}")
+    else:
+        flag = "OK" if not real_rows.empty else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] REAL_1 real order-book rows: {len(real_rows)}")
+
+    ale1_rows = runs[(runs.dataset == "Real") & (runs.instance == "Ale_1")]
+    if PUBLIC_RELEASE_MODE:
+        flag = "OK" if ale1_rows.empty else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] Ale_1 legacy rows excluded from public scope: {len(ale1_rows)} rows")
+    else:
+        flag = "OK" if not ale1_rows.empty and ale1_rows["paper_note"].notna().any() else "FAIL"
+        ok &= flag == "OK"
+        print(f"[{flag}] Ale_1 retained with provenance note: {len(ale1_rows)} rows")
 
     bad_z = runs[(runs.Z.isna()) | (runs.Z < -EPS)]
     flag = "OK" if bad_z.empty else "FAIL"
@@ -212,6 +412,11 @@ def main() -> int:
     flag = "OK" if n_viol == 0 else "FAIL"
     ok &= (n_viol == 0)
     print(f"[{flag}] ILS_v2 Z_best below proven-optimal bound: {n_viol} instances")
+
+    n_mat = len(runs[runs.method.astype(str).str.startswith("MAT_")])
+    flag = "OK" if n_mat > 0 else "FAIL"
+    ok &= (n_mat > 0)
+    print(f"[{flag}] matheuristic rows collected: {n_mat}")
 
     print("\nInferred/declared time budgets (s):", budgets)
 

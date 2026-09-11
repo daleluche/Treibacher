@@ -1,0 +1,72 @@
+\section{Conclusions}
+\label{sec:conclusions}
+
+We revisited a real-world process selection and lot-sizing problem
+whose original plant order book was solved by MIP, but whose enlarged
+benchmark instances motivated heuristic development. The study
+confronted a modern MIP solver, temporal-decomposition matheuristics,
+and a strong hybrid metaheuristic baseline using comparison criteria
+fixed in advance, on a benchmark extended across seven derived instance
+families.
+
+Three answers emerge. First, on the practical status of the
+problem: at the scale of the plant's order book it is simply solved,
+with proven optima in seconds, and this remains true for the smallest
+derived families. The first-line recommendation for practitioners is
+therefore to try the monolith with a modern solver before building
+heuristics. What decides difficulty at a given size, however, is not
+only the size. If decision makers value inventory reduction, the
+weighted formulation offers substantial inventory reductions, but these
+are accompanied by higher shortage in seven of the ten 2X instances,
+the only set in which both variants are solved to proven optimality;
+the same direction holds descriptively in 31 of 40 instances across
+2X--5X. Whether this trade-off is operationally acceptable requires
+decision-maker assessment. Second, on the question of paradigms: when
+the monolith does falter, what replaces it is not the pure
+metaheuristic. On the scales where it was run, our strong hybrid
+GRASP-ILS baseline is credited with the best of ten attempts within the
+stated cutoff, but is still dominated by MIP-based methods. The
+effective replacement is decomposition that keeps the solver in the
+loop.
+Third, on the question of \emph{when}: the method-choice map has
+two genuine axes. In the tested 8X and 10X families, decomposition
+wins the majority of instances at the 3,600-second cutoff; granting the
+monolith triple time restores its lead in seven of those ten cases,
+though decomposition remains superior in the other three. This
+cross-budget comparison is asymmetric, because decomposition was not
+run at 10,800 seconds, but it marks the practical frontier between
+rolling re-planning deadlines and longer offline runs.
+
+Beyond the verdicts, the study contributes methodological assets:
+a fully specified, reproducible implementation of relax-and-fix and
+fix-and-optimize in an algebraic modeling environment, including
+the budget-guard and construction-floor policies whose absence we
+showed can silently invalidate comparisons; a 60-instance derived
+benchmark with best-known solutions, dual bounds, trajectories, and
+per-window logs; and a worked example of stating decision criteria
+before experimentation in computational OR, including two hypotheses
+that were not supported and whose diagnosis improved the methods.
+
+Limitations bound the claims. Our comparison with the original
+study is a statement about practice, not a controlled measurement of
+solver progress: solver version, hardware, parallelism, and objective
+all differ, and disentangling them would require machine-independent
+protocols we did not attempt. All benchmark instances derive from a
+single industrial case, with only five base patterns represented in
+the new 8X and 10X families, so the results are not a population sample
+of grain-fusion order books. The MFP model prices setups implicitly
+through the one-process-per-period structure rather than explicitly;
+horizon replication, while faithful to the inherited benchmark, yields
+periodic demand; matheuristic construction at
+extreme scale fell back on a greedy floor, leaving the
+relax-and-fix window policy suboptimal precisely where
+decomposition matters most; decompositions were not run at the
+largest budget; and the pure metaheuristic was not run on the two
+largest families, so its comparison is bounded by $|T|\le 95$.
+Future work follows directly: the shortage- and
+setup-cost extensions of the original study under modern solvers;
+stochastic order books; and, most immediately, replacing fixed
+window policies with learned, state-dependent ones, the released
+per-window logs, containing dual signals, incumbent profiles, and
+realized improvements for every solve of this campaign, were
+designed as training data for exactly that line of research.

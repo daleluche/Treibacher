@@ -1,0 +1,169 @@
+\section{Matheuristics}
+\label{sec:matheuristics}
+
+We propose temporal-decomposition matheuristics that use the MIP
+solver as a subroutine over restricted versions of
+model~\eqref{eq:obj}--\eqref{eq:dom}. A \emph{schedule} is a vector
+$s\in(\{0\}\cup J)^{|T|}$ assigning to each period a process or
+idleness; any schedule is feasible, and its cost is computed by an
+evaluator that replicates the MIP objective exactly (the evaluator
+reproduces the solver objective on reference solutions to within
+$10^{-2}$, a consistency check enforced throughout).
+
+\subsection{A single restricted model with bound control}
+\label{sec:boundcontrol}
+
+Relax-and-fix requires period-dependent variable regimes (fixed,
+binary, or linearly relaxed), whereas algebraic modeling systems
+attach integrality to whole variables. We therefore build, once per
+instance, a single model with two variable families: binary $x_{jt}$
+and continuous $\bar{x}_{jt}\in[0,1]$, every occurrence of the
+assignment variable in \eqref{eq:dem}--\eqref{eq:prop} being replaced
+by $x_{jt}+\bar{x}_{jt}$. Period regimes are then governed purely by
+bounds: a \emph{relaxed} period fixes $x_{jt}=0$ and frees
+$\bar{x}_{jt}$; a \emph{binary} period frees $x_{jt}$ and fixes
+$\bar{x}_{jt}=0$; a \emph{fixed} period sets $x_{jt}$ to the
+incumbent value and $\bar{x}_{jt}=0$. Between consecutive solves only
+bounds change, so the model is generated once. An implementation
+detail proved decisive: updating bounds record-by-record dominated
+the running time, whereas batch record updates reduced the
+construction phase from hundreds of seconds to below ten on the
+largest instances. We report this because the practicality of
+temporal decomposition in algebraic modeling environments hinges on
+it.
+
+\subsection{Relax-and-fix construction}
+\label{sec:rf}
+
+The construction sweeps time windows of width $\sigma$ advancing by
+$\delta<\sigma$ periods (overlap $\sigma-\delta$), the last window
+anchored at the end of the horizon so that binary windows cover
+$1..|T|$. At each iteration the current window is binary, all
+earlier periods are fixed at the incumbent partial schedule (only
+the first $\delta$ periods of the previous window are fixed
+definitively; the overlap is re-optimized), and all later periods
+are relaxed. Each window MIP is solved with relative gap tolerance
+$10^{-3}$ and a dynamic time limit
+$\ell = \max\{5,\;\min\{\ell_{\mathrm{RF}},\;
+B_{\mathrm{RF}}^{\mathrm{rem}}/w^{\mathrm{rem}},\;
+B^{\mathrm{rem}}\}\}$ seconds, where $\ell_{\mathrm{RF}}$ caps the
+per-window limit, $B_{\mathrm{RF}}^{\mathrm{rem}}$ and
+$B^{\mathrm{rem}}$ are the remaining construction and global budgets,
+and $w^{\mathrm{rem}}$ the number of windows still to solve. The
+construction budget is
+$B_{\mathrm{RF}}=\min\{0.25\,B,\; w\,\ell_{\mathrm{RF}}\}$ for global
+budget $B$ and $w$ windows. If a window solve yields no integer
+incumbent, it is retried within whatever remains of the construction
+and global budgets; if it fails again, or whenever the wall-clock
+guard triggers, all undecided periods
+are completed by a greedy rule based on the evaluator, so the
+construction never returns an incomplete schedule. Under very short
+budgets, where the per-window allowance drops below a threshold
+($B_{\mathrm{RF}}/w<10$~s), windowed construction is skipped
+altogether in favor of the greedy rule, and the entire budget is
+transferred to the improvement phase. In addition, a wall-clock guard charges all per-window overhead to
+the construction budget (early implementations that charged only
+solver time silently overran it by a factor above two on the longest
+horizons), and every run computes the greedy solution regardless, the
+improvement phase starting from the better of the two constructions
+(\emph{greedy floor}).
+
+\subsection{Fix-and-optimize improvement}
+\label{sec:fo}
+
+Improvement re-optimizes windows of $\omega$ consecutive periods:
+binaries inside the window are freed, all others are fixed at the
+incumbent, and the window MIP is solved with relative gap tolerance
+$10^{-2}$, per-window limit $\ell_{\mathrm{FO}}$, and the incumbent
+supplied as a MIP start, whose provision is recorded from the solver
+log. A solution is accepted if it improves the global objective by
+more than $10^{-6}$; since the start is feasible for every window
+subproblem, accepted moves never degrade the incumbent, and the
+method reports the best solution found in \emph{any} phase of the
+run. Windows first sweep the horizon with step $\omega/2$; after a
+full sweep without improvement, contiguous windows with random start
+positions (seeded) are drawn until the budget is exhausted. When
+$\omega\ge|T|$ the window covers the whole horizon, in which case a
+single solve with the entire remaining budget replaces the sweep and
+the run stops: no proper subset of periods can improve on a
+full-horizon optimum within the same tolerance.
+Parameters were tuned on the two hardest 5X instances over the grid
+$\omega\in\{12,20,28\}\times\ell_{\mathrm{FO}}\in\{30,60\}$
+(Section~\ref{sec:experiments} discloses this choice and its
+implications), selecting $\omega=20$, $\ell_{\mathrm{FO}}=30$~s: on
+$|T|=95$, $\omega=12$ proved too myopic (mean gap $+7.2\%$ to BKS)
+while $\omega=20$ attained $-1.1\%$, i.e., new best-known solutions.
+
+\begin{algorithm}[t]
+\caption{\RFFO{} (sketch; \RFMIP{} replaces lines 6--9 by one
+warm-started solve of the full model)}
+\label{alg:rffo}
+\begin{algorithmic}[1]
+\State build restricted model with bound control
+(Section~\ref{sec:boundcontrol})
+\If{$B_{\mathrm{RF}}/w < 10$ s} $s \gets$ greedy construction
+\Else{} $s \gets$ relax-and-fix sweep (Section~\ref{sec:rf})
+\EndIf
+\State $s^\ast \gets s$
+\While{budget remains}
+  \State choose next window (sweep, then random after a
+  no-improvement sweep)
+  \State fix all periods outside the window at $s^\ast$; free the
+  window; MIP-start at $s^\ast$
+  \State solve with limit $\ell_{\mathrm{FO}}$, tolerance $10^{-2}$
+  \If{improvement $>10^{-6}$} update $s^\ast$ \EndIf
+\EndWhile
+\State \Return best schedule found in any phase
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Warm-started monolith (\RFMIP)}
+\label{sec:rfmip}
+
+The third method uses relax-and-fix only to produce a high-quality
+integer solution quickly, in seconds on the smaller sets and in
+roughly a quarter of an hour under the wall-clock guard at
+$|T|\ge 152$, then solves the \emph{monolithic} model with the remaining budget,
+zero gap tolerance, and the \RF{} solution as a MIP start. Relative
+to the cold-started solver under the same wall-clock budget, \RFMIP{}
+sacrifices a fraction of branch-and-bound time in exchange for a
+strong initial incumbent; unlike \RFFO{}, it retains the solver's
+global view and dual bound. Because the construction consumes budget, \RFMIP{} is not
+dominant by construction: a post-mortem on one 10X instance showed a
+poor construction consuming over half the budget and an accepted, but unhelpful, MIP start, motivating the wall-clock guard and
+greedy floor above. Empirically, \RFMIP{} is the best variant at 8X,
+where the solver's global view still pays, while at 10X the
+monolithic model itself becomes the bottleneck and window-based
+\FO{} improvement scales better (Section~\ref{sec:frontier}).
+
+\subsection{Parameter summary}
+\label{sec:params}
+
+Table~\ref{tab:params} summarizes the parameter values used in the
+final campaign.
+
+\begin{table}[t]
+\centering
+\caption{Matheuristic parameters (final values).}
+\label{tab:params}
+\begin{tabular}{llll}
+\toprule
+Phase & Parameter & Value & Meaning \\
+\midrule
+\RF{} & $\sigma$ / $\delta$ & 10 / 5 & window width / step \\
+\RF{} & $\ell_{\mathrm{RF}}$ & 120 s & per-window cap \\
+\RF{} & optcr & $10^{-3}$ & window gap tolerance \\
+\RF{} & $B_{\mathrm{RF}}$ & $\min\{0.25B,\,w\ell_{\mathrm{RF}}\}$ &
+construction budget \\
+\FO{} & $\omega$ / step & 20 / 10 & window width / sweep step \\
+\FO{} & $\ell_{\mathrm{FO}}$ & 30 s & per-window cap \\
+\FO{} & optcr & $10^{-2}$ & window gap tolerance \\
+all & threads & 0 (all cores) & explicit solver threads \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\noindent All runs record full provenance (solver version, threads,
+hardware, seeds) and per-window logs (window position, wall time,
+incumbent profile, and post-solve duals of \eqref{eq:dem} and
+\eqref{eq:prop}); the logs are released with the benchmark.
