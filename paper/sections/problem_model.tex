@@ -9,7 +9,7 @@ grains (silicon carbide and fused aluminum oxide). Upstream, raw
 materials are fused in electric furnaces and cooled into blocks of
 roughly twenty tonnes; the finishing stage crushes, mills, and screens
 this material into final products defined by granulometric ranges and
-physical--chemical specifications. The finishing equipment can be
+physicochemical specifications. The finishing equipment can be
 arranged in a number of alternative configurations, the
 \emph{production processes}. Two features of these processes drive the
 planning problem. First, \emph{co-production in fixed proportions}:
@@ -44,9 +44,9 @@ inventory at the end of that period. Summed over periods, the two
 terms of \eqref{eq:obj} are therefore the classical backlog-periods
 and inventory-periods of dynamic lot sizing
 \citep{pochet2006production}, and $\gamma$ is a holding cost expressed
-as a fraction of the unit backlog cost. The model, referred to as
-MFP (minimization of shortage of production, after
-\citealp{luche2009combining}), reads:
+as a fraction of the unit backlog cost. The formulation extends the
+Minimizing the Production Shortage (MPS) model of
+\citet{luche2009combining} by adding a small inventory penalty and reads:
 %
 \begin{align}
 \min \quad & \sum_{i\in I}\sum_{t\in T}\bigl(f_{it} + \gamma\, e_{it}\bigr)
@@ -63,14 +63,14 @@ MFP (minimization of shortage of production, after
 Constraints~\eqref{eq:dem} balance cumulative production against
 cumulative demand for every product and period, so that $f_{it}$
 captures lateness with respect to due dates (not only end-of-horizon
-shortage), and constraints~\eqref{eq:prop} allow at most one process, possibly none, per period. The objective is
-a weighted scalarization, not a strict priority ordering: at
-$\gamma=0.001$ the model does trade service for inventory when the
-exchange is favourable enough, and Section~\ref{sec:gamma} quantifies
-how often and at what rate. We use a weighted extension of the
-shortage-only MFP published by \citet{luche2009combining}, which
-includes explicit inventory variables and assigns a weight of
-$\gamma=0.001$ to cumulative inventory. Charging inventory, even
+shortage), and constraints~\eqref{eq:prop} allow at most one process, possibly none, per period. We use a weighted extension of the
+original shortage-only MPS model published by \citet{luche2009combining},
+including explicit inventory variables and assigning a weight of
+$\gamma=0.001$ to cumulative inventory. The objective is
+a weighted scalarization, not a strict priority ordering: at this
+weight the model does trade service for inventory when the exchange
+is favorable enough, and Section~\ref{sec:gamma} quantifies how often
+and at what rate. Charging inventory, even
 lightly, matters industrially: grain inventories tie up capital and
 covered storage, and, as Section~\ref{sec:gamma} shows, this term is
 what governs the computational character of the model. The
@@ -81,7 +81,7 @@ the dimensions of the full benchmark family.
 
 \input{tables/tab_instances}
 
-Model MFP is a single-stage, big-bucket member of the simultaneous
+The weighted MPS model is a single-stage, big-bucket member of the simultaneous
 lot-sizing and scheduling family \citep{copil2017simultaneous}, with
 an assignment-type setup structure per period; its distinctive
 element is that each period's assignment releases the fixed output
@@ -93,7 +93,7 @@ constraints~\eqref{eq:dem}.
 
 Our benchmark is rooted in one real order book of the plant, covering
 19 daily periods with $|J|=159$ processes and $|I|=50$ items, of which
-36 carry demand totalling 279{,}400~kg. From it, the original study
+36 carry demand totaling 279{,}400~kg. From it, the original study
 derived a set of ten instances, denoted S, by summing each item's
 demand over the horizon and redistributing the total at random across
 periods, subject to a lower bound that prevents negligible period
