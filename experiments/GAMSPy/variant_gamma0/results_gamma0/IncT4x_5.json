@@ -1,0 +1,528 @@
+{
+  "instance": "IncT4x_5",
+  "dataset": "4X",
+  "source_instance_py": "experiments\\GAMSPy\\4X\\IncT4x_5.py",
+  "variant": "gamma0",
+  "gamma": 0.0,
+  "run_timestamp": "2026-07-31T23:05:36",
+  "num_periods": 76,
+  "num_processes": 159,
+  "num_products": 50,
+  "num_variables": 15885.0,
+  "num_equations": 3877.0,
+  "num_nonzeros": 2986649.0,
+  "num_discrete": 12084.0,
+  "solver": "CPLEX",
+  "optcr": 0.0,
+  "iterlim": 10000000,
+  "reslim_s": 10800,
+  "threads": 0,
+  "optfile_used": false,
+  "model_status": "ModelStatus.OptimalGlobal",
+  "solve_status": "SolveStatus.NormalCompletion",
+  "objective_value": 33103.0,
+  "best_bound": 33103.0,
+  "gap_pct": 0.0,
+  "wall_time_s": 39.593,
+  "algorithm_time_s": 245.0168,
+  "total_solve_time_s": 39.55,
+  "total_solver_time_s": 38.489,
+  "model_gen_time_s": 1.046,
+  "solve_model_time_s": 37.781,
+  "num_nodes_used": 3028.0,
+  "num_iterations": 122616.0,
+  "num_infeasibilities": 0.0,
+  "max_infeasibility": 0.0,
+  "solver_version": "nan",
+  "hardware": {
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "processor_model": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_bytes": 33667739648,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "num_periods_scheduled": 76,
+  "scheduling": [
+    {
+      "period": 1,
+      "process": 6
+    },
+    {
+      "period": 2,
+      "process": 143
+    },
+    {
+      "period": 3,
+      "process": 147
+    },
+    {
+      "period": 4,
+      "process": 145
+    },
+    {
+      "period": 5,
+      "process": 42
+    },
+    {
+      "period": 6,
+      "process": 151
+    },
+    {
+      "period": 7,
+      "process": 151
+    },
+    {
+      "period": 8,
+      "process": 86
+    },
+    {
+      "period": 9,
+      "process": 137
+    },
+    {
+      "period": 10,
+      "process": 148
+    },
+    {
+      "period": 11,
+      "process": 148
+    },
+    {
+      "period": 12,
+      "process": 143
+    },
+    {
+      "period": 13,
+      "process": 150
+    },
+    {
+      "period": 14,
+      "process": 126
+    },
+    {
+      "period": 15,
+      "process": 145
+    },
+    {
+      "period": 16,
+      "process": 146
+    },
+    {
+      "period": 17,
+      "process": 139
+    },
+    {
+      "period": 18,
+      "process": 150
+    },
+    {
+      "period": 19,
+      "process": 147
+    },
+    {
+      "period": 20,
+      "process": 151
+    },
+    {
+      "period": 21,
+      "process": 148
+    },
+    {
+      "period": 22,
+      "process": 18
+    },
+    {
+      "period": 23,
+      "process": 133
+    },
+    {
+      "period": 24,
+      "process": 140
+    },
+    {
+      "period": 25,
+      "process": 141
+    },
+    {
+      "period": 26,
+      "process": 146
+    },
+    {
+      "period": 27,
+      "process": 145
+    },
+    {
+      "period": 28,
+      "process": 150
+    },
+    {
+      "period": 29,
+      "process": 150
+    },
+    {
+      "period": 30,
+      "process": 148
+    },
+    {
+      "period": 31,
+      "process": 145
+    },
+    {
+      "period": 32,
+      "process": 138
+    },
+    {
+      "period": 33,
+      "process": 139
+    },
+    {
+      "period": 34,
+      "process": 62
+    },
+    {
+      "period": 35,
+      "process": 152
+    },
+    {
+      "period": 36,
+      "process": 135
+    },
+    {
+      "period": 37,
+      "process": 143
+    },
+    {
+      "period": 38,
+      "process": 141
+    },
+    {
+      "period": 39,
+      "process": 139
+    },
+    {
+      "period": 40,
+      "process": 150
+    },
+    {
+      "period": 41,
+      "process": 94
+    },
+    {
+      "period": 42,
+      "process": 123
+    },
+    {
+      "period": 43,
+      "process": 51
+    },
+    {
+      "period": 44,
+      "process": 149
+    },
+    {
+      "period": 45,
+      "process": 16
+    },
+    {
+      "period": 46,
+      "process": 146
+    },
+    {
+      "period": 47,
+      "process": 145
+    },
+    {
+      "period": 48,
+      "process": 1
+    },
+    {
+      "period": 49,
+      "process": 140
+    },
+    {
+      "period": 50,
+      "process": 156
+    },
+    {
+      "period": 51,
+      "process": 155
+    },
+    {
+      "period": 52,
+      "process": 143
+    },
+    {
+      "period": 53,
+      "process": 147
+    },
+    {
+      "period": 54,
+      "process": 4
+    },
+    {
+      "period": 55,
+      "process": 150
+    },
+    {
+      "period": 56,
+      "process": 10
+    },
+    {
+      "period": 57,
+      "process": 71
+    },
+    {
+      "period": 58,
+      "process": 151
+    },
+    {
+      "period": 59,
+      "process": 7
+    },
+    {
+      "period": 60,
+      "process": 148
+    },
+    {
+      "period": 61,
+      "process": 86
+    },
+    {
+      "period": 62,
+      "process": 128
+    },
+    {
+      "period": 63,
+      "process": 1
+    },
+    {
+      "period": 64,
+      "process": 7
+    },
+    {
+      "period": 65,
+      "process": 137
+    },
+    {
+      "period": 66,
+      "process": 7
+    },
+    {
+      "period": 67,
+      "process": 7
+    },
+    {
+      "period": 68,
+      "process": 7
+    },
+    {
+      "period": 69,
+      "process": 150
+    },
+    {
+      "period": 70,
+      "process": 146
+    },
+    {
+      "period": 71,
+      "process": 139
+    },
+    {
+      "period": 72,
+      "process": 139
+    },
+    {
+      "period": 73,
+      "process": 147
+    },
+    {
+      "period": 74,
+      "process": 7
+    },
+    {
+      "period": 75,
+      "process": 138
+    },
+    {
+      "period": 76,
+      "process": 155
+    }
+  ],
+  "product_details": [
+    {
+      "product": "EK8A_24",
+      "period": 7,
+      "shortage": 38.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 16,
+      "shortage": 486.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 10,
+      "shortage": 897.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 11,
+      "shortage": 897.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 3,
+      "shortage": 576.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 4,
+      "shortage": 576.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 1,
+      "shortage": 6000.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 3,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 4,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 5,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 6,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 7,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 8,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 9,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 10,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 11,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 12,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 13,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 3,
+      "shortage": 503.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 4,
+      "shortage": 503.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 2,
+      "shortage": 556.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 3,
+      "shortage": 556.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 4,
+      "shortage": 556.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 2,
+      "shortage": 75.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 3,
+      "shortage": 3943.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 10,
+      "shortage": 6255.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 11,
+      "shortage": 755.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 12,
+      "shortage": 755.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 2,
+      "shortage": 6272.0,
+      "excess": 0.0
+    }
+  ]
+}

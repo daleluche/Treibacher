@@ -1,0 +1,109 @@
+% =====================================================================
+% Exact and matheuristic approaches for a real-world process selection
+% and lot-sizing problem in the electrofused grains industry
+% Target: Computers & Operations Research (Elsevier)
+% Build: pdflatex main && bibtex main && pdflatex main && pdflatex main
+% =====================================================================
+\documentclass[review,authoryear]{elsarticle}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% ---- Working commands -----------------------------------------------
+\ifdefined\submissionbuild
+  \newcommand{\todo}[1]{}
+  \newcommand{\sprintii}[1]{}
+\else
+  \newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+  \newcommand{\sprintii}[1]{\textcolor{blue}{\textbf{[SPRINT-2 DATA: #1]}}}
+\fi
+
+% ---- Notation shortcuts ---------------------------------------------
+\newcommand{\RF}{\textsc{rf}}
+\newcommand{\FO}{\textsc{fo}}
+\newcommand{\RFFO}{\textsc{rf+fo}}
+\newcommand{\RFMIP}{\textsc{rf+mip}}
+\newcommand{\ILS}{\textsc{grasp-ils-pr}}
+
+\journal{Computers \& Operations Research}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Exact and matheuristic approaches for a real-world process
+selection and lot-sizing problem in the electrofused grains industry}
+
+\author[unesp]{Jos\'e Roberto Dale Luche\corref{cor1}}
+\ead{...} % TODO
+\author[ufscar]{Vit\'oria Pureza}
+\author[ufscar]{Reinaldo Morabito}
+\cortext[cor1]{Corresponding author.}
+\address[unesp]{S\~ao Paulo State University (UNESP), Guaratinguet\'a, SP, Brazil} % TODO confirm affiliation text
+\address[ufscar]{Department of Production Engineering, Federal University of S\~ao Carlos (UFSCar), S\~ao Carlos, SP, Brazil}
+
+\begin{abstract}
+We revisit a real-world process selection and lot-sizing problem
+from the electrofused grains industry, in which each production
+process yields multiple products in fixed proportions and at most
+one process runs per period. The plant's real order book was solved
+to optimality by the original study, but its enlarged benchmark
+instances motivated heuristic approaches. Using comparison criteria
+fixed before the corresponding experiments were run, we compare
+a modern MIP solver on
+the monolithic model, temporal-decomposition matheuristics
+(relax-and-fix construction with fix-and-optimize improvement, and
+a warm-started monolith), and a strong hybrid GRASP-ILS baseline
+with intra-run path relinking, on a benchmark of 60 derived
+instances spanning horizons from 19 to 190 periods. We also
+isolate a modeling effect that governs difficulty: penalizing
+accumulated excess production at a thousandth of the weight of
+shortage moves four instance sets from routinely closed to largely
+open, holding everything else fixed. The pure metaheuristic,
+on the scales where it was run, is dominated by MIP-based methods
+even when credited with the best of ten concurrent attempts. The
+resulting method-choice map has two axes:
+In the tested benchmark families, the monolithic MIP achieved most
+per-instance wins through 5X, whereas decomposition achieved the
+majority at 8X and 10X under the 3{,}600-second cutoff. Tripling the
+monolithic MIP cutoff restored its lead on seven of the ten largest
+benchmark instances, while one-hour decomposition remained superior
+on three. The supporting material includes solutions, bounds, logged
+trajectories, and per-window logs, including
+dual signals, to support reproduction and learning-based extensions.
+\end{abstract}
+
+\begin{keyword}
+Lot sizing \sep Process selection \sep Co-production \sep
+Matheuristics \sep Relax-and-fix \sep Fix-and-optimize \sep GRASP
+\end{keyword}
+
+\end{frontmatter}
+
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/problem_model}
+\input{sections/matheuristics}
+\input{sections/metaheuristic}
+\input{sections/experiments}
+\input{sections/conclusions}
+
+\section*{Acknowledgements}
+\todo{Funding agencies (CNPq/FAPESP/CAPES?); company acknowledgement
+thank GAMS academic license if applicable.}
+
+\section*{Data availability}
+The real order book is not part of any public deposit. A sanitized
+release containing the derived benchmark instances and selected
+supporting artifacts is under preparation; the definitive inventory
+and persistent identifier will be reported after release validation.
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{references}
+
+\end{document}

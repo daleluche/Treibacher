@@ -1,0 +1,37 @@
+% Local syntax-validation wrapper: emulates the elsarticle front-matter
+% API on top of the standard article class. NOT part of the deliverable
+% build — final compilation uses elsarticle.cls (Overleaf / author).
+\documentclass[11pt]{article}
+\usepackage[authoryear,round]{natbib}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,graphicx,xcolor}
+\usepackage{algorithm,algpseudocode}
+\usepackage[hidelinks]{hyperref}
+\newcommand{\todo}[1]{\textcolor{red}{\textbf{[TODO: #1]}}}
+\newcommand{\sprintii}[1]{\textcolor{blue}{\textbf{[SPRINT-2 DATA: #1]}}}
+\newcommand{\RF}{\textsc{rf}}\newcommand{\FO}{\textsc{fo}}
+\newcommand{\RFFO}{\textsc{rf+fo}}\newcommand{\RFMIP}{\textsc{rf+mip}}
+\newcommand{\ILS}{\textsc{grasp-ils-pr}}
+% elsarticle API shims
+\newcommand{\journal}[1]{}\newcommand{\ead}[1]{}
+\newcommand{\cortext}[2][]{}\newcommand{\corref}[1]{}
+\newcommand{\sep}{;\ }
+\newenvironment{frontmatter}{}{}
+\newenvironment{keyword}{\paragraph{Keywords.}}{}
+\makeatletter
+\renewcommand{\author}[2][]{}\newcommand{\address}[2][]{}
+\makeatother
+\begin{document}
+\title{Exact and matheuristic approaches for a real-world process
+selection and lot-sizing problem in the electrofused grains industry}
+\date{}\maketitle
+\input{sections/introduction}
+\input{sections/related_work}
+\input{sections/problem_model}
+\input{sections/matheuristics}
+\input{sections/metaheuristic}
+\input{sections/experiments}
+\input{sections/conclusions}
+\bibliographystyle{plainnat}
+\bibliography{references}
+\end{document}

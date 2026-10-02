@@ -1,0 +1,22 @@
+{
+  "instance": "REAL_1",
+  "dataset": "Real order book",
+  "algo_version": "v2.0",
+  "T": 19,
+  "J": 160,
+  "I": 50,
+  "n_runs": 10,
+  "n_workers": 1,
+  "time_limit_s": 3600.0,
+  "Z_best": 11442.625,
+  "Z_mean": 11487.995,
+  "Z_std": 7.506512,
+  "Z_worst": 11493.95,
+  "t2best_best": 65.052,
+  "t2best_mean": 497.22,
+  "ils_iters_mean": 4067.8,
+  "mip_bound": null,
+  "gap_best_vs_mip": null,
+  "gap_mean_vs_mip": null,
+  "cross_run_pr_z": 11442.625
+}

@@ -1,0 +1,509 @@
+{
+  "instance": "IncT4x_7",
+  "dataset": "4X",
+  "method": "rf+fo",
+  "params": {
+    "budget": 3600.0,
+    "sigma": 10,
+    "step": 5,
+    "omega": 12,
+    "step_fo": 6,
+    "tl_rf": 120.0,
+    "tl_fo": 60.0,
+    "method": "rf+fo",
+    "start_from": null
+  },
+  "seed": 1,
+  "Z_final": 19873.039,
+  "shortage": 8336.0,
+  "excess": 11537039.0,
+  "schedule": [
+    151,
+    143,
+    152,
+    78,
+    150,
+    145,
+    147,
+    148,
+    152,
+    146,
+    40,
+    150,
+    1,
+    139,
+    159,
+    141,
+    140,
+    154,
+    149,
+    143,
+    0,
+    151,
+    153,
+    153,
+    145,
+    152,
+    142,
+    146,
+    147,
+    155,
+    149,
+    159,
+    141,
+    145,
+    140,
+    148,
+    143,
+    0,
+    0,
+    0,
+    151,
+    157,
+    150,
+    153,
+    152,
+    142,
+    156,
+    146,
+    148,
+    150,
+    146,
+    159,
+    1,
+    141,
+    155,
+    143,
+    0,
+    0,
+    153,
+    152,
+    151,
+    150,
+    145,
+    142,
+    147,
+    157,
+    156,
+    154,
+    149,
+    146,
+    159,
+    141,
+    155,
+    148,
+    138,
+    157
+  ],
+  "improvements": [
+    {
+      "time_s": 48.572,
+      "Z": 26299518.733,
+      "phase": "RF",
+      "window_start": 1
+    },
+    {
+      "time_s": 73.724,
+      "Z": 20761517.429,
+      "phase": "RF",
+      "window_start": 6
+    },
+    {
+      "time_s": 100.468,
+      "Z": 16968116.17,
+      "phase": "RF",
+      "window_start": 11
+    },
+    {
+      "time_s": 111.248,
+      "Z": 13600052.9,
+      "phase": "RF",
+      "window_start": 16
+    },
+    {
+      "time_s": 121.334,
+      "Z": 11423737.5,
+      "phase": "RF",
+      "window_start": 21
+    },
+    {
+      "time_s": 133.684,
+      "Z": 9060411.074,
+      "phase": "RF",
+      "window_start": 26
+    },
+    {
+      "time_s": 146.109,
+      "Z": 6341185.07,
+      "phase": "RF",
+      "window_start": 31
+    },
+    {
+      "time_s": 153.316,
+      "Z": 4349432.869,
+      "phase": "RF",
+      "window_start": 36
+    },
+    {
+      "time_s": 160.481,
+      "Z": 2891564.061,
+      "phase": "RF",
+      "window_start": 41
+    },
+    {
+      "time_s": 168.401,
+      "Z": 1651373.136,
+      "phase": "RF",
+      "window_start": 46
+    },
+    {
+      "time_s": 175.503,
+      "Z": 1209883.549,
+      "phase": "RF",
+      "window_start": 51
+    },
+    {
+      "time_s": 181.867,
+      "Z": 249876.903,
+      "phase": "RF",
+      "window_start": 56
+    },
+    {
+      "time_s": 188.021,
+      "Z": 127739.595,
+      "phase": "RF",
+      "window_start": 61
+    },
+    {
+      "time_s": 194.129,
+      "Z": 20151.567,
+      "phase": "RF",
+      "window_start": 66
+    },
+    {
+      "time_s": 200.205,
+      "Z": 19952.367,
+      "phase": "RF",
+      "window_start": 67
+    },
+    {
+      "time_s": 224.064,
+      "Z": 19946.439,
+      "phase": "FO_sweep",
+      "window_start": 13
+    },
+    {
+      "time_s": 231.472,
+      "Z": 19945.167,
+      "phase": "FO_sweep",
+      "window_start": 19
+    },
+    {
+      "time_s": 245.953,
+      "Z": 19894.914,
+      "phase": "FO_sweep",
+      "window_start": 31
+    },
+    {
+      "time_s": 288.849,
+      "Z": 19873.039,
+      "phase": "FO_sweep",
+      "window_start": 65
+    }
+  ],
+  "Z_rf": 19952.367,
+  "wall_time_total": 3600.03,
+  "versions": {
+    "gamspy": "1.23.0",
+    "solver": "CPLEX"
+  },
+  "rf_windows": 15,
+  "rf_wall_time": 199.809,
+  "rf_validation_checks": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "has_relaxed_tail": true,
+      "Z_model": 11719.512816,
+      "Z_evaluate": 26299518.733,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "has_relaxed_tail": true,
+      "Z_model": 13947.16749,
+      "Z_evaluate": 20761517.429,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 11,
+      "window_end": 20,
+      "has_relaxed_tail": true,
+      "Z_model": 16559.548718,
+      "Z_evaluate": 16968116.17,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 16,
+      "window_end": 25,
+      "has_relaxed_tail": true,
+      "Z_model": 16805.277272,
+      "Z_evaluate": 13600052.9,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 21,
+      "window_end": 30,
+      "has_relaxed_tail": true,
+      "Z_model": 17076.647151,
+      "Z_evaluate": 11423737.5,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 26,
+      "window_end": 35,
+      "has_relaxed_tail": true,
+      "Z_model": 17346.145431,
+      "Z_evaluate": 9060411.074,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 31,
+      "window_end": 40,
+      "has_relaxed_tail": true,
+      "Z_model": 18054.27171,
+      "Z_evaluate": 6341185.07,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 36,
+      "window_end": 45,
+      "has_relaxed_tail": true,
+      "Z_model": 18336.572831,
+      "Z_evaluate": 4349432.869,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 41,
+      "window_end": 50,
+      "has_relaxed_tail": true,
+      "Z_model": 18477.932543,
+      "Z_evaluate": 2891564.061,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 46,
+      "window_end": 55,
+      "has_relaxed_tail": true,
+      "Z_model": 18972.502072,
+      "Z_evaluate": 1651373.136,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 51,
+      "window_end": 60,
+      "has_relaxed_tail": true,
+      "Z_model": 19172.408767,
+      "Z_evaluate": 1209883.549,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 56,
+      "window_end": 65,
+      "has_relaxed_tail": true,
+      "Z_model": 19688.648545,
+      "Z_evaluate": 249876.903,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 61,
+      "window_end": 70,
+      "has_relaxed_tail": true,
+      "Z_model": 19815.984469,
+      "Z_evaluate": 127739.595,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 66,
+      "window_end": 75,
+      "has_relaxed_tail": true,
+      "Z_model": 19951.567,
+      "Z_evaluate": 20151.567,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 67,
+      "window_end": 76,
+      "has_relaxed_tail": false,
+      "Z_model": 19952.367,
+      "Z_evaluate": 19952.367,
+      "abs_diff": 0.0,
+      "passed": true,
+      "completed_with_solver": true
+    }
+  ],
+  "rf_window_diag": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "status": "solved",
+      "reslim_used": 59.974,
+      "wall_time_s": 48.114,
+      "fixed_until": 0,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "status": "solved",
+      "reslim_used": 60.816,
+      "wall_time_s": 25.085,
+      "fixed_until": 5,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 11,
+      "window_end": 20,
+      "status": "solved",
+      "reslim_used": 63.56,
+      "wall_time_s": 26.674,
+      "fixed_until": 10,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 16,
+      "window_end": 25,
+      "status": "solved",
+      "reslim_used": 66.628,
+      "wall_time_s": 10.69,
+      "fixed_until": 15,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 21,
+      "window_end": 30,
+      "status": "solved",
+      "reslim_used": 71.705,
+      "wall_time_s": 10.02,
+      "fixed_until": 20,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 26,
+      "window_end": 35,
+      "status": "solved",
+      "reslim_used": 77.867,
+      "wall_time_s": 12.283,
+      "fixed_until": 25,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 31,
+      "window_end": 40,
+      "status": "solved",
+      "reslim_used": 85.146,
+      "wall_time_s": 12.357,
+      "fixed_until": 30,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 36,
+      "window_end": 45,
+      "status": "solved",
+      "reslim_used": 94.236,
+      "wall_time_s": 7.144,
+      "fixed_until": 35,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 41,
+      "window_end": 50,
+      "status": "solved",
+      "reslim_used": 106.669,
+      "wall_time_s": 7.099,
+      "fixed_until": 40,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 46,
+      "window_end": 55,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 7.85,
+      "fixed_until": 45,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 51,
+      "window_end": 60,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 7.033,
+      "fixed_until": 50,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 56,
+      "window_end": 65,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 6.299,
+      "fixed_until": 55,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 61,
+      "window_end": 70,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 6.086,
+      "fixed_until": 60,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 66,
+      "window_end": 75,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 6.038,
+      "fixed_until": 65,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 67,
+      "window_end": 76,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 5.987,
+      "fixed_until": 66,
+      "relaxed_tail": false
+    }
+  ],
+  "fo_accepts": 4,
+  "warm_start_checked": true,
+  "warm_start_log_has_mipstart": true,
+  "warm_start_log_excerpt": ">>  mipstart 1",
+  "warm_start_log_evidence_lines": [
+    ">>  mipstart 1",
+    "Processing 1 MIP starts.",
+    "MIP start 'm1' defined solution with objective 19952.3670.",
+    "1 of 1 MIP starts provided solutions.",
+    "MIP start 'm1' defined initial solution with objective 19952.3670."
+  ],
+  "run_timestamp": "2026-07-04T19:24:26"
+}

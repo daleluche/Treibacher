@@ -1,0 +1,188 @@
+{
+  "instance": "REAL_1",
+  "dataset": "S",
+  "method": "rf+mip",
+  "construction": "rf",
+  "construction_used": "rf",
+  "params": {
+    "budget": 600.0,
+    "sigma": 10,
+    "step": 5,
+    "omega": 20,
+    "step_fo": 10,
+    "tl_rf": 120.0,
+    "tl_fo": 30.0,
+    "method": "rf+mip",
+    "start_from": null,
+    "threads": 0,
+    "output_suffix": "_b600",
+    "log_windows": true
+  },
+  "seed": 1,
+  "Z_final": 11442.625,
+  "Z_best_overall": 11442.625,
+  "Z_greedy": 72043.3,
+  "shortage": 10475.0,
+  "excess": 967625.0,
+  "schedule": [
+    141,
+    142,
+    120,
+    143,
+    159,
+    145,
+    146,
+    147,
+    149,
+    148,
+    145,
+    150,
+    151,
+    152,
+    158,
+    154,
+    156,
+    155,
+    158
+  ],
+  "improvements": [
+    {
+      "time_s": 0.649,
+      "Z": 72043.3,
+      "phase": "greedy_construction",
+      "window_start": 1
+    },
+    {
+      "time_s": 2.238,
+      "Z": 508740.375,
+      "phase": "RF",
+      "window_start": 1
+    },
+    {
+      "time_s": 3.177,
+      "Z": 44161.1,
+      "phase": "RF",
+      "window_start": 6
+    },
+    {
+      "time_s": 3.792,
+      "Z": 11442.625,
+      "phase": "RF",
+      "window_start": 10
+    },
+    {
+      "time_s": 6.0,
+      "Z": 11442.625,
+      "phase": "MIP",
+      "window_start": null,
+      "model_status": "OptimalGlobal",
+      "solve_status": "NormalCompletion",
+      "best_bound": 11442.625,
+      "gap_solver_pct": 0.0
+    }
+  ],
+  "Z_rf": 11442.625,
+  "wall_time_total": 7.287,
+  "versions": {
+    "gamspy": "1.23.0",
+    "solver": "CPLEX",
+    "solver_version": "22.1.2.0"
+  },
+  "model_status": "OptimalGlobal",
+  "solve_status": "NormalCompletion",
+  "best_bound": 11442.625,
+  "dual_bound": 11442.625,
+  "gap_solver_pct": 0.0,
+  "gap_pct": 0.0,
+  "solver_objective": 11442.625,
+  "hardware": {
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "processor_model": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_bytes": 33667739648,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "rf_windows": 3,
+  "rf_wall_time": 3.143,
+  "rf_wall_time_s": 3.143,
+  "greedy_wall_time_s": 0.285,
+  "instrumentation_wall_time_s": 0.024974,
+  "early_stop_reason": null,
+  "rf_validation_checks": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "has_relaxed_tail": true,
+      "Z_model": 7265.023443,
+      "Z_evaluate": 508740.375,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "has_relaxed_tail": true,
+      "Z_model": 11421.760304,
+      "Z_evaluate": 44161.1,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 10,
+      "window_end": 19,
+      "has_relaxed_tail": false,
+      "Z_model": 11442.625,
+      "Z_evaluate": 11442.625,
+      "abs_diff": 0.0,
+      "passed": true,
+      "completed_with_solver": true
+    }
+  ],
+  "rf_window_diag": [
+    {
+      "window_start": 1,
+      "window_end": 10,
+      "status": "solved",
+      "reslim_used": 50.0,
+      "wall_time_s": 1.534,
+      "fixed_until": 0,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 6,
+      "window_end": 15,
+      "status": "solved",
+      "reslim_used": 74.206,
+      "wall_time_s": 0.805,
+      "fixed_until": 5,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 10,
+      "window_end": 19,
+      "status": "solved",
+      "reslim_used": 120.0,
+      "wall_time_s": 0.565,
+      "fixed_until": 9,
+      "relaxed_tail": false
+    }
+  ],
+  "window_log_rows": 3,
+  "fo_accepts": 0,
+  "fo_sweeps_completed": 0,
+  "warm_start_checked": true,
+  "warm_start_log_has_mipstart": true,
+  "warm_start_log_excerpt": ">>  mipstart 1",
+  "warm_start_log_evidence_lines": [
+    ">>  mipstart 1",
+    "Processing 1 MIP starts.",
+    "MIP start 'm1' defined solution with objective 11442.6250.",
+    "1 of 1 MIP starts provided solutions.",
+    "MIP start 'm1' defined initial solution with objective 11442.6250."
+  ],
+  "run_timestamp": "2026-08-03T10:23:52",
+  "real_order_book": true,
+  "window_log_path": "D:\\GitHub\\Treibacher\\experiments\\matheuristics\\results_production\\real\\window_logs\\REAL_1_rf_mip_seed1_b600_windows.parquet",
+  "instrumentation_overhead_percent": 0.342723
+}

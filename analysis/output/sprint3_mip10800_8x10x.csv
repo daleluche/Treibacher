@@ -1,0 +1,11 @@
+dataset,instance,mip_10800_Z,best_bound,gap_solver_pct,model_status,solve_status,source_mip_10800
+10X,IncT10x_2,163595.478,121983.558742,25.435862,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_2_mip_seed1_b10800.json
+10X,IncT10x_3,80690.614,63022.489107,21.896134,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_3_mip_seed1_b10800.json
+10X,IncT10x_4,168985.52,149996.9316,11.236814,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_4_mip_seed1_b10800.json
+10X,IncT10x_5,66696.973,56266.832414,15.638102,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_5_mip_seed1_b10800.json
+10X,IncT10x_6,111304.255,89998.806037,19.14163,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT10x_6_mip_seed1_b10800.json
+8X,IncT8x_2,128054.148,119114.37535,6.981244,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_2_mip_seed1_b10800.json
+8X,IncT8x_3,67597.088,56443.211709,16.500528,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_3_mip_seed1_b10800.json
+8X,IncT8x_4,159561.553,146138.917624,8.412199,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_4_mip_seed1_b10800.json
+8X,IncT8x_5,59137.359,51343.598242,13.179082,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_5_mip_seed1_b10800.json
+8X,IncT8x_6,95679.146,86447.032741,9.649034,Integer,ResourceInterrupt,experiments/matheuristics/results_scale_8x10x_mip10800/IncT8x_6_mip_seed1_b10800.json

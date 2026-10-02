@@ -1,0 +1,122 @@
+{
+  "instance": "synthetic_tiny",
+  "dataset": "Synthetic",
+  "method": "rf+fo",
+  "params": {
+    "budget": 60.0,
+    "sigma": 4,
+    "step": 2,
+    "omega": 12,
+    "step_fo": 6,
+    "tl_rf": 120.0,
+    "tl_fo": 60.0,
+    "method": "rf+fo",
+    "start_from": null
+  },
+  "seed": 1,
+  "Z_final": 248.049,
+  "shortage": 248.0,
+  "excess": 49.0,
+  "schedule": [
+    4,
+    8,
+    2,
+    8,
+    5,
+    2,
+    8,
+    2
+  ],
+  "improvements": [
+    {
+      "time_s": 0.533,
+      "Z": 681.012,
+      "phase": "RF",
+      "window_start": 1
+    },
+    {
+      "time_s": 0.7,
+      "Z": 375.023,
+      "phase": "RF",
+      "window_start": 3
+    },
+    {
+      "time_s": 0.845,
+      "Z": 248.049,
+      "phase": "RF",
+      "window_start": 5
+    }
+  ],
+  "Z_rf": 248.049,
+  "wall_time_total": 60.011,
+  "versions": {
+    "gamspy": "1.23.0",
+    "solver": "CPLEX"
+  },
+  "rf_windows": 3,
+  "rf_wall_time": 0.476,
+  "rf_validation_checks": [
+    {
+      "window_start": 1,
+      "window_end": 4,
+      "has_relaxed_tail": true,
+      "Z_model": 240.875095,
+      "Z_evaluate": 681.012,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 3,
+      "window_end": 6,
+      "has_relaxed_tail": true,
+      "Z_model": 247.042,
+      "Z_evaluate": 375.023,
+      "abs_diff": null,
+      "passed": true
+    },
+    {
+      "window_start": 5,
+      "window_end": 8,
+      "has_relaxed_tail": false,
+      "Z_model": 248.049,
+      "Z_evaluate": 248.049,
+      "abs_diff": 0.0,
+      "passed": true,
+      "completed_with_solver": true
+    }
+  ],
+  "rf_window_diag": [
+    {
+      "window_start": 1,
+      "window_end": 4,
+      "status": "solved",
+      "reslim_used": 5.0,
+      "wall_time_s": 0.131,
+      "fixed_until": 0,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 3,
+      "window_end": 6,
+      "status": "solved",
+      "reslim_used": 7.234,
+      "wall_time_s": 0.137,
+      "fixed_until": 2,
+      "relaxed_tail": true
+    },
+    {
+      "window_start": 5,
+      "window_end": 8,
+      "status": "solved",
+      "reslim_used": 14.3,
+      "wall_time_s": 0.114,
+      "fixed_until": 4,
+      "relaxed_tail": false
+    }
+  ],
+  "fo_accepts": 0,
+  "warm_start_checked": true,
+  "warm_start_log_has_mipstart": true,
+  "warm_start_log_excerpt": ">>  mipstart 1",
+  "run_timestamp": "2026-07-04T12:14:39"
+}

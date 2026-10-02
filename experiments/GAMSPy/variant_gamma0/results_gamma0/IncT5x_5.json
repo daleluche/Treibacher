@@ -1,0 +1,604 @@
+{
+  "instance": "IncT5x_5",
+  "dataset": "5X",
+  "source_instance_py": "experiments\\GAMSPy\\5X\\IncT5x_5.py",
+  "variant": "gamma0",
+  "gamma": 0.0,
+  "run_timestamp": "2026-07-31T23:31:49",
+  "num_periods": 95,
+  "num_processes": 159,
+  "num_products": 50,
+  "num_variables": 19856.0,
+  "num_equations": 4846.0,
+  "num_nonzeros": 4648446.0,
+  "num_discrete": 15105.0,
+  "solver": "CPLEX",
+  "optcr": 0.0,
+  "iterlim": 10000000,
+  "reslim_s": 10800,
+  "threads": 0,
+  "optfile_used": false,
+  "model_status": "ModelStatus.OptimalGlobal",
+  "solve_status": "SolveStatus.NormalCompletion",
+  "objective_value": 33103.0,
+  "best_bound": 33103.0,
+  "gap_pct": 0.0,
+  "wall_time_s": 106.4367,
+  "algorithm_time_s": 379.5902,
+  "total_solve_time_s": 106.392,
+  "total_solver_time_s": 104.748,
+  "model_gen_time_s": 1.641,
+  "solve_model_time_s": 103.687,
+  "num_nodes_used": 5138.0,
+  "num_iterations": 197517.0,
+  "num_infeasibilities": 0.0,
+  "max_infeasibility": 0.0,
+  "solver_version": "nan",
+  "hardware": {
+    "processor": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+    "processor_model": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "cpu_count_logical": 16,
+    "cpu_count_physical": 8,
+    "ram_bytes": 33667739648,
+    "platform": "Windows-11-10.0.26200-SP0"
+  },
+  "num_periods_scheduled": 95,
+  "scheduling": [
+    {
+      "period": 1,
+      "process": 6
+    },
+    {
+      "period": 2,
+      "process": 143
+    },
+    {
+      "period": 3,
+      "process": 147
+    },
+    {
+      "period": 4,
+      "process": 145
+    },
+    {
+      "period": 5,
+      "process": 42
+    },
+    {
+      "period": 6,
+      "process": 151
+    },
+    {
+      "period": 7,
+      "process": 151
+    },
+    {
+      "period": 8,
+      "process": 86
+    },
+    {
+      "period": 9,
+      "process": 137
+    },
+    {
+      "period": 10,
+      "process": 148
+    },
+    {
+      "period": 11,
+      "process": 148
+    },
+    {
+      "period": 12,
+      "process": 143
+    },
+    {
+      "period": 13,
+      "process": 150
+    },
+    {
+      "period": 14,
+      "process": 126
+    },
+    {
+      "period": 15,
+      "process": 145
+    },
+    {
+      "period": 16,
+      "process": 146
+    },
+    {
+      "period": 17,
+      "process": 151
+    },
+    {
+      "period": 18,
+      "process": 150
+    },
+    {
+      "period": 19,
+      "process": 8
+    },
+    {
+      "period": 20,
+      "process": 143
+    },
+    {
+      "period": 21,
+      "process": 140
+    },
+    {
+      "period": 22,
+      "process": 145
+    },
+    {
+      "period": 23,
+      "process": 148
+    },
+    {
+      "period": 24,
+      "process": 149
+    },
+    {
+      "period": 25,
+      "process": 153
+    },
+    {
+      "period": 26,
+      "process": 18
+    },
+    {
+      "period": 27,
+      "process": 141
+    },
+    {
+      "period": 28,
+      "process": 54
+    },
+    {
+      "period": 29,
+      "process": 153
+    },
+    {
+      "period": 30,
+      "process": 141
+    },
+    {
+      "period": 31,
+      "process": 157
+    },
+    {
+      "period": 32,
+      "process": 150
+    },
+    {
+      "period": 33,
+      "process": 145
+    },
+    {
+      "period": 34,
+      "process": 146
+    },
+    {
+      "period": 35,
+      "process": 147
+    },
+    {
+      "period": 36,
+      "process": 157
+    },
+    {
+      "period": 37,
+      "process": 78
+    },
+    {
+      "period": 38,
+      "process": 150
+    },
+    {
+      "period": 39,
+      "process": 143
+    },
+    {
+      "period": 40,
+      "process": 140
+    },
+    {
+      "period": 41,
+      "process": 157
+    },
+    {
+      "period": 42,
+      "process": 153
+    },
+    {
+      "period": 43,
+      "process": 148
+    },
+    {
+      "period": 44,
+      "process": 148
+    },
+    {
+      "period": 45,
+      "process": 151
+    },
+    {
+      "period": 46,
+      "process": 156
+    },
+    {
+      "period": 47,
+      "process": 147
+    },
+    {
+      "period": 48,
+      "process": 152
+    },
+    {
+      "period": 49,
+      "process": 144
+    },
+    {
+      "period": 50,
+      "process": 155
+    },
+    {
+      "period": 51,
+      "process": 150
+    },
+    {
+      "period": 52,
+      "process": 146
+    },
+    {
+      "period": 53,
+      "process": 145
+    },
+    {
+      "period": 54,
+      "process": 157
+    },
+    {
+      "period": 55,
+      "process": 157
+    },
+    {
+      "period": 56,
+      "process": 41
+    },
+    {
+      "period": 57,
+      "process": 149
+    },
+    {
+      "period": 58,
+      "process": 143
+    },
+    {
+      "period": 59,
+      "process": 143
+    },
+    {
+      "period": 60,
+      "process": 154
+    },
+    {
+      "period": 61,
+      "process": 159
+    },
+    {
+      "period": 62,
+      "process": 156
+    },
+    {
+      "period": 63,
+      "process": 151
+    },
+    {
+      "period": 64,
+      "process": 148
+    },
+    {
+      "period": 65,
+      "process": 141
+    },
+    {
+      "period": 66,
+      "process": 152
+    },
+    {
+      "period": 67,
+      "process": 147
+    },
+    {
+      "period": 68,
+      "process": 144
+    },
+    {
+      "period": 69,
+      "process": 155
+    },
+    {
+      "period": 70,
+      "process": 150
+    },
+    {
+      "period": 71,
+      "process": 146
+    },
+    {
+      "period": 72,
+      "process": 145
+    },
+    {
+      "period": 73,
+      "process": 157
+    },
+    {
+      "period": 74,
+      "process": 142
+    },
+    {
+      "period": 75,
+      "process": 149
+    },
+    {
+      "period": 76,
+      "process": 149
+    },
+    {
+      "period": 77,
+      "process": 53
+    },
+    {
+      "period": 78,
+      "process": 157
+    },
+    {
+      "period": 79,
+      "process": 154
+    },
+    {
+      "period": 80,
+      "process": 79
+    },
+    {
+      "period": 81,
+      "process": 157
+    },
+    {
+      "period": 82,
+      "process": 156
+    },
+    {
+      "period": 83,
+      "process": 151
+    },
+    {
+      "period": 84,
+      "process": 153
+    },
+    {
+      "period": 85,
+      "process": 131
+    },
+    {
+      "period": 86,
+      "process": 137
+    },
+    {
+      "period": 87,
+      "process": 131
+    },
+    {
+      "period": 88,
+      "process": 155
+    },
+    {
+      "period": 89,
+      "process": 150
+    },
+    {
+      "period": 90,
+      "process": 146
+    },
+    {
+      "period": 91,
+      "process": 145
+    },
+    {
+      "period": 92,
+      "process": 147
+    },
+    {
+      "period": 93,
+      "process": 157
+    },
+    {
+      "period": 94,
+      "process": 78
+    },
+    {
+      "period": 95,
+      "process": 149
+    }
+  ],
+  "product_details": [
+    {
+      "product": "EK8A_24",
+      "period": 7,
+      "shortage": 38.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8A_46",
+      "period": 16,
+      "shortage": 486.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 10,
+      "shortage": 897.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8A_54",
+      "period": 11,
+      "shortage": 897.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 3,
+      "shortage": 576.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_3_5_7",
+      "period": 4,
+      "shortage": 576.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_12_16",
+      "period": 1,
+      "shortage": 6000.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 3,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 4,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 5,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 6,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 7,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 8,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 9,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 10,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 11,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 12,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_10_36",
+      "period": 13,
+      "shortage": 264.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 3,
+      "shortage": 503.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_20_40",
+      "period": 4,
+      "shortage": 503.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 2,
+      "shortage": 556.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 3,
+      "shortage": 556.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8R_40_F",
+      "period": 4,
+      "shortage": 556.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 2,
+      "shortage": 75.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_12_30",
+      "period": 3,
+      "shortage": 3943.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 10,
+      "shortage": 6255.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 11,
+      "shortage": 755.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_30_50",
+      "period": 12,
+      "shortage": 755.0,
+      "excess": 0.0
+    },
+    {
+      "product": "EK8RM_28_F",
+      "period": 2,
+      "shortage": 6272.0,
+      "excess": 0.0
+    }
+  ]
+}
